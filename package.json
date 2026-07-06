@@ -1,12 +1,11 @@
 {
-  "name": "@keystatic/templates-astro",
-  "version": "0.0.64",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Thinkmill/keystatic/",
-    "directory": "templates/astro"
+  "name": "acosa",
+  "author": {
+    "name": "Luke De Kiewt",
+    "email": "luke.dekiewit@yahoo.com",
+    "url": "https://lukedekiewit.xyz/"
   },
+  "version": "1.0.0",
   "dependencies": {
     "@astrojs/markdoc": "^1.0.3",
     "@astrojs/node": "^10.0.5",
