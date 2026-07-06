@@ -3,11 +3,176 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
+@font-face {
+  font-family: "Montserrat";
+  src: url(/fonts/Montserrat-Variable-Font.ttf);
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat Italic";
+  src: url(/fonts/Montserrat-Italic-Variable-Font.ttf);
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat Italic";
+  src: url(/fonts/Montserrat-Italic-Variable-Font.ttf);
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Thin.ttf);
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-ThinItalic.ttf);
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-ExtraLight.ttf);
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-ExtraLightItalic.ttf);
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Light.ttf);
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-LightItalic.ttf);
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Regular.ttf);
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Italic.ttf);
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Medium.ttf);
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-MediumItalic.ttf);
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-SemiBold.ttf);
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-SemiBoldItalic.ttf);
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Bold.ttf);
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-BoldItalic.ttf);
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-ExtraBold.ttf);
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-ExtraBoldItalic.ttf);
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-Black.ttf);
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/Poppins-BlackItalic.ttf);
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Inter Variable', sans-serif;
+    --font-heading: 'Montserrat', sans-serif;
+    --font-sans: 'Poppins', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,72 +214,73 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(18.723% 0.09407 268.652);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(18.723% 0.09407 268.652);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(18.723% 0.09407 268.652);
+  --primary: oklch(18.723% 0.09407 268.652);
+  --primary-foreground: oklch(86.74% 0.01616 73.565);
+  --secondary: oklch(69.938% 0.14807 72.864);
+  --secondary-foreground: oklch(18.723% 0.09407 268.652);
+  --muted: oklch(87.048% 0.01624 73.663);
+  --muted-foreground: oklch(56% 0.02537 65.444);
+  --accent: oklch(69.938% 0.14807 72.864);
+  --accent-foreground: oklch(18.723% 0.09407 268.652);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(82.888% 0.01824 81.324);
+  --input: oklch(82.888% 0.01824 81.324);
+  --ring: oklch(69.938% 0.14807 72.864);
+  --chart-1: oklch(18.723% 0.09407 268.652);
+  --chart-2: oklch(69.938% 0.14807 72.864);
+  --chart-3: oklch(64.346% 0.02915 65.444);
+  --chart-4: oklch(82.888% 0.01824 81.324);
+  --chart-5: oklch(87.048% 0.01624 73.663);
+  --radius: 0.625rem;
+  --sidebar: oklch(18.723% 0.09407 268.652);
+  --sidebar-foreground: oklch(86.74% 0.01616 73.565);
+  --sidebar-primary: oklch(69.938% 0.14807 72.864);
+  --sidebar-primary-foreground: oklch(18.723% 0.09407 268.652);
+  --sidebar-accent: oklch(24% 0.08 268.652);
+  --sidebar-accent-foreground: oklch(86.74% 0.01616 73.565);
+  --sidebar-border: oklch(24% 0.08 268.652);
+  --sidebar-ring: oklch(69.938% 0.14807 72.864);
 }
 
+
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(11% 0.035 268.652);
+  --foreground: oklch(86.74% 0.01616 73.565);
+  --card: oklch(18.723% 0.09407 268.652);
+  --card-foreground: oklch(86.74% 0.01616 73.565);
+  --popover: oklch(18.723% 0.09407 268.652);
+  --popover-foreground: oklch(86.74% 0.01616 73.565);
+  --primary: oklch(69.938% 0.14807 72.864);
+  --primary-foreground: oklch(18.723% 0.09407 268.652);
+  --secondary: oklch(27% 0.075 268.652);
+  --secondary-foreground: oklch(86.74% 0.01616 73.565);
+  --muted: oklch(27% 0.075 268.652);
+  --muted-foreground: oklch(82.888% 0.01824 81.324);
+  --accent: oklch(69.938% 0.14807 72.864);
+  --accent-foreground: oklch(18.723% 0.09407 268.652);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(86.74% 0.01616 73.565 / 12%);
+  --input: oklch(86.74% 0.01616 73.565 / 16%);
+  --ring: oklch(69.938% 0.14807 72.864);
+  --chart-1: oklch(69.938% 0.14807 72.864);
+  --chart-2: oklch(86.74% 0.01616 73.565);
+  --chart-3: oklch(82.888% 0.01824 81.324);
+  --chart-4: oklch(64.346% 0.02915 65.444);
+  --chart-5: oklch(65% 0.09 268.652);
+  --sidebar: oklch(18.723% 0.09407 268.652);
+  --sidebar-foreground: oklch(86.74% 0.01616 73.565);
+  --sidebar-primary: oklch(69.938% 0.14807 72.864);
+  --sidebar-primary-foreground: oklch(18.723% 0.09407 268.652);
+  --sidebar-accent: oklch(27% 0.075 268.652);
+  --sidebar-accent-foreground: oklch(86.74% 0.01616 73.565);
+  --sidebar-border: oklch(86.74% 0.01616 73.565 / 12%);
+  --sidebar-ring: oklch(69.938% 0.14807 72.864);
 }
 
 @layer base {
@@ -130,4 +296,14 @@
   html {
     @apply font-sans;
     }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold;
+    }
+  
+}
+
+::selection,
+::-moz-selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
