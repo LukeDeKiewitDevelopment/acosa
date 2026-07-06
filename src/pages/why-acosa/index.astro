@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 import { Button } from "@/components/ui/button.tsx";
 import { ThemeToggle } from "@/components/custom/theme-toggle";
 
@@ -9,6 +9,6 @@ export const prerender = true;
 const posts = await getCollection("posts");
 ---
 
-<Layout title="Keystatic & Astro's Content Collections">
-  <h1>Home</h1>
+<Layout title="Why ACOSA">
+  <h1>Why ACOSA</h1>
 </Layout>

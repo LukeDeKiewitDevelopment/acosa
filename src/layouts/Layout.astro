@@ -19,6 +19,7 @@ const { title } = Astro.props;
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+	<meta name="robots" content="noindex, nofollow" />
     <title>{title}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -45,8 +46,8 @@ const { title } = Astro.props;
  <ClientRouter />
   </head>
   <body class="flex min-h-screen flex-col overflow-x-hidden antialiased">
-	<Navbar/>
-    <main class="size-full flex-1 mx-auto max-w-[90%] py-8" transition:animate="fade">
+	<Navbar client:load/>
+    <main class="size-full flex-1 mx-auto max-w-[92%] py-8" transition:animate="fade">
       <slot />
     </main>
 	<Footer/>
