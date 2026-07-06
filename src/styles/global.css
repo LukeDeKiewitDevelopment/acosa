@@ -294,12 +294,14 @@
     cursor: pointer;
     }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
     }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-semibold;
     }
-  
+  a {
+    @apply underline;
+  }
 }
 
 ::selection,
