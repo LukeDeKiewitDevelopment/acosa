@@ -1,10 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { Button } from "@/components/ui/button.tsx";
 
 export const prerender = true;
 
-const posts = await getCollection('posts');
+const posts = await getCollection("posts");
 ---
 
 <Layout title="Keystatic & Astro's Content Collections">
@@ -17,10 +18,11 @@ const posts = await getCollection('posts');
       <a href="/keystatic">Click here to visit the Admin UI</a>, or the link
       below to view a post in the collection.
     </p>
+    <Button>ShadCN wORKING?</Button>
     <h2>Posts</h2>
     <ul>
       {
-        posts.map(post => (
+        posts.map((post) => (
           <li>
             <a href={`/posts/${post.id}`}>{post.data.title}</a>
           </li>
