@@ -7,7 +7,7 @@ import keystatic from "@keystatic/astro";
 import sitemap from "@astrojs/sitemap";
 
 import tailwindcss from "@tailwindcss/vite";
-import critters from "@critters-rs/astro";
+// import critters from "@critters-rs/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,7 +18,7 @@ export default defineConfig({
     markdoc(),
     keystatic(),
     sitemap(),
-    critters(),
+    // critters(), // TODO: Find deps fix
     // aiReadiness({
     //   site: "https://www.summerwoodcountryestate.co.za/",
     //   organization: {
