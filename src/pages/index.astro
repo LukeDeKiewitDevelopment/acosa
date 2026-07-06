@@ -11,4 +11,25 @@ const posts = await getCollection("posts");
 
 <Layout title="Keystatic & Astro's Content Collections">
   <h1>Home</h1>
+  <br/>
+   <div>
+    <h1>Keystatic ⚡️ + Astro 🚀</h1>
+    <p>
+      This homepage shows how to load data from Astro's content collections.
+    </p>
+    <p>
+      <a href="/keystatic">Click here to visit the Admin UI</a>, or the link
+      below to view a post in the collection.
+    </p>
+    <h2>Posts (D)</h2>
+    <ul>
+      {
+        posts.map((post) => (
+          <li>
+            <a href={`/posts/${post.id}`}>{post.data.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </Layout>
