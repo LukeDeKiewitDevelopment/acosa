@@ -47,7 +47,7 @@ const { title } = Astro.props;
   </head>
   <body class="flex min-h-screen flex-col overflow-x-hidden antialiased">
 	<Navbar client:load/>
-    <main class="size-full flex-1 mx-auto max-w-[92%] py-8" transition:animate="fade">
+    <main class="size-full flex-1 mx-auto p-8" transition:animate="fade">
       <slot />
     </main>
 	<Footer/>
