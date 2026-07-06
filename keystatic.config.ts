@@ -4,6 +4,9 @@ export default config({
   storage: {
     kind: 'cloud',
   },
+  cloud: {
+    project: 'acosa/acosa',
+  },
   collections: {
     posts: collection({
       label: 'Posts',
