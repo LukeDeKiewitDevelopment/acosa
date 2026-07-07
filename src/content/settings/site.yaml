@@ -1,0 +1,7 @@
+defaultWhatsapp: '27720000000'
+enquiryEmail: vanessa@acosa.example
+socialLinks:
+- label: LinkedIn
+  url: https://www.linkedin.com/company/acosa-example
+- label: Instagram
+  url: https://www.instagram.com/acosa.example

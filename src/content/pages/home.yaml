@@ -1,0 +1,25 @@
+hero:
+  heading: Business accommodation you can rely on
+  subheading: South Africa's curated platform for vetted guesthouses, boutique hotels
+    and executive stays — built around the way business travellers actually work.
+  image: ../../assets/images/pages/home/hero.jpg
+founderStrip:
+  heading: Personally vetted, personally accountable
+  body: Every property on Acosa has been assessed by our team against the Business
+    Traveller Essentials framework. If it's listed, it works — reliable WiFi, backup
+    power, secure parking and a proper place to work.
+  image: ../../assets/images/pages/home/founder.jpg
+whyAcosaPreview:
+  heading: Why Acosa?
+  body: Generic booking sites optimise for holidays. Acosa optimises for Monday-morning
+    meetings, load-shedding schedules and six-week project stays.
+ownerCta:
+  heading: Own a guesthouse or executive stay?
+  body: List your property on Acosa and connect with South Africa's professional corporate
+    travellers.
+  buttonLabel: List Your Property
+seo:
+  title: Acosa | Vetted Business Accommodation in South Africa
+  description: Find vetted business accommodation in South Africa's key business nodes.
+    Guesthouses, boutique hotels and executive stays that meet the Business Traveller
+    Essentials standard.

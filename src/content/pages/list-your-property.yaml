@@ -1,0 +1,28 @@
+hero:
+  heading: Grow your corporate bookings
+  subheading: Join South Africa's curated business accommodation platform and connect
+    with professional travellers who value what you offer.
+  image: ../../assets/images/pages/list-your-property/hero.jpg
+whoWeWorkWith:
+  heading: Who we work with
+  body: Guesthouses, boutique hotels, executive stays and serviced apartments that
+    take the business traveller seriously.
+benefits:
+- title: Qualified corporate enquiries
+  detail: Reach travellers and booking decision makers actively searching your business
+    node.
+- title: The Acosa Approved™ badge
+  detail: Independent vetting that gives corporate bookers confidence to choose you.
+- title: Direct relationships
+  detail: Enquiries come straight to you via WhatsApp and email — no commission on
+    bookings.
+acosaStandards:
+  heading: The Acosa standard
+  body: 'We assess every property in person against the Business Traveller Essentials
+    framework: connectivity, power resilience, security, workspace and service consistency.'
+formIntro: Tell us about your property and we'll be in touch to begin the vetting
+  conversation.
+seo:
+  title: List Your Property | Acosa
+  description: List your guesthouse, boutique hotel or executive stay on Acosa and
+    receive qualified corporate accommodation enquiries.
