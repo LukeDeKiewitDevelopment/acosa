@@ -1,35 +1,189 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import { Button } from "@/components/ui/button.tsx";
-import { ThemeToggle } from "@/components/custom/theme-toggle";
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import {
+  getHomePage,
+  getPopularNodes,
+  getFeaturedProperties,
+  getGeneralTestimonials,
+  getSiteSettings,
+  whatsappLink,
+  provinceLabel,
+  propertyTypeLabel,
+} from "@/lib/content";
 
 export const prerender = true;
 
-const posts = await getCollection("posts");
+const page = await getHomePage();
+const { hero, founderStrip, whyAcosaPreview, ownerCta, seo } = page.data;
+
+const popularNodes = await getPopularNodes();
+const featuredProperties = await getFeaturedProperties();
+const essentials = await getCollection("essentials");
+const testimonials = await getGeneralTestimonials();
+const settings = await getSiteSettings();
 ---
 
-<Layout title="Keystatic & Astro's Content Collections">
-  <h1>Home</h1>
-  <br/>
-   <div>
-    <h1>Keystatic ⚡️ + Astro 🚀</h1>
-    <p>
-      This homepage shows how to load data from Astro's content collections.
-    </p>
-    <p>
-      <a href="/keystatic">Click here to visit the Admin UI</a>, or the link
-      below to view a post in the collection.
-    </p>
-    <h2>Posts (Dynamic content from Keystatic CMS)</h2>
+<Layout
+  title={seo?.title || "Acosa | Vetted Business Accommodation in South Africa"}
+>
+  <!-- Hero -->
+  <section>
+    <h1>{hero.heading}</h1>
+    <p>{hero.subheading}</p>
+    {
+      hero.image && (
+        <Image
+          src={hero.image}
+          alt=""
+          widths={[640, 1024, 1600]}
+          sizes="100vw"
+        />
+      )
+    }
+  </section>
+
+  <!-- Business Node Search: client-side search island goes here.
+       Fetch /search.json for the property/node index. -->
+  <section>
+    <h2>Find accommodation in your business node</h2>
+    <form action="/business-nodes" method="get">
+      <input
+        type="search"
+        name="q"
+        placeholder="Search by node, province or property"
+      />
+      <button type="submit">Search</button>
+    </form>
+  </section>
+
+  <!-- Founder Trust Strip -->
+  <section>
+    <h2>{founderStrip.heading}</h2>
+    <p>{founderStrip.body}</p>
+    {
+      founderStrip.image && (
+        <Image
+          src={founderStrip.image}
+          alt="Acosa founder"
+          widths={[400, 800]}
+          sizes="(min-width: 768px) 400px, 100vw"
+        />
+      )
+    }
+  </section>
+
+  <!-- Popular Business Nodes -->
+  <section>
+    <h2>Popular Business Nodes</h2>
     <ul>
       {
-        posts.map((post) => (
+        popularNodes.map((node) => (
           <li>
-            <a href={`/posts/${post.id}`}>{post.data.title}</a>
+            <a href={`/business-nodes/${node.data.province}/${node.id}`}>
+              <Image
+                src={node.data.heroImage}
+                alt={node.data.name}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
+              <h3>{node.data.name}</h3>
+              <p>{provinceLabel(node.data.province)}</p>
+            </a>
           </li>
         ))
       }
     </ul>
-  </div>
+  </section>
+
+  <!-- Business Traveller Essentials™ -->
+  <section>
+    <h2>Business Traveller Essentials™</h2>
+    <ul>
+      {
+        essentials.map((tag) => (
+          <li data-icon={tag.data.icon}>{tag.data.name}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Featured Properties -->
+  <section>
+    <h2>Featured Properties</h2>
+    <ul>
+      {
+        featuredProperties.map((property) => (
+          <li>
+            <a href={`/properties/${property.id}`}>
+              <Image
+                src={property.data.heroImage}
+                alt={property.data.name}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
+              <h3>{property.data.name}</h3>
+              <p>
+                {propertyTypeLabel(property.data.propertyType)} ·{" "}
+                {provinceLabel(property.data.province)}
+              </p>
+              <p>{property.data.shortDescription}</p>
+              {property.data.acosaApproved.approved && (
+                <span>
+                  Acosa Approved™ {property.data.acosaApproved.score}%
+                </span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Testimonials -->
+  {
+    testimonials.length > 0 && (
+      <section>
+        <h2>What travellers say</h2>
+        <ul>
+          {testimonials.map((t) => (
+            <li>
+              <blockquote>{t.data.review}</blockquote>
+              <cite>{t.data.reviewer}</cite>
+              {t.data.rating > 0 && <span>{t.data.rating}/5</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <!-- Why Acosa Preview -->
+  <section>
+    <h2>{whyAcosaPreview.heading}</h2>
+    <p>{whyAcosaPreview.body}</p>
+    <a href="/why-acosa">Learn more</a>
+  </section>
+
+  <!-- Property Owner CTA -->
+  <section>
+    <h2>{ownerCta.heading}</h2>
+    <p>{ownerCta.body}</p>
+    <a href="/list-your-property"
+      >{ownerCta.buttonLabel || "List Your Property"}</a
+    >
+  </section>
+
+  <!-- Persistent WhatsApp button (homepage, per spec §8) -->
+  <a
+    href={whatsappLink(
+      settings.data.defaultWhatsapp,
+      "Hi Acosa, I have an accommodation enquiry.",
+    )}
+    target="_blank"
+    rel="noopener"
+  >
+    WhatsApp us
+  </a>
 </Layout>

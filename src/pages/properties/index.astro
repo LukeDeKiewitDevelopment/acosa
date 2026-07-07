@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import {
+  getPublishedProperties,
+  provinceLabel,
+  propertyTypeLabel,
+} from "@/lib/content";
+
+export const prerender = true;
+
+const properties = await getPublishedProperties();
+---
+
+<Layout title="All Properties | Acosa">
+  <section>
+    <h1>All properties</h1>
+    <!-- Search/filter island goes here; /search.json provides the index.
+         Cards below carry data-* attributes so filtering can also be done
+         purely client-side against the rendered DOM. -->
+  </section>
+
+  <section>
+    <ul>
+      {
+        properties.map((property) => (
+          <li
+            data-name={property.data.name.toLowerCase()}
+            data-province={property.data.province}
+            data-node={property.data.businessNode.id}
+            data-property-type={property.data.propertyType}
+            data-essentials={property.data.essentials
+              .map((e) => e.id)
+              .join(",")}
+            data-nearby={property.data.nearbyConvenience
+              .map((n) => n.id)
+              .join(",")}
+            data-featured={property.data.featured}
+          >
+            <a href={`/properties/${property.id}`}>
+              <Image
+                src={property.data.heroImage}
+                alt={property.data.name}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
+              <h2>{property.data.name}</h2>
+              <p>
+                {propertyTypeLabel(property.data.propertyType)} ·{" "}
+                {provinceLabel(property.data.province)}
+              </p>
+              <p>{property.data.shortDescription}</p>
+              {property.data.acosaApproved.approved && (
+                <span>
+                  Acosa Approved™ {property.data.acosaApproved.score}%
+                </span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>

@@ -1,14 +1,41 @@
 ---
-import { getCollection } from "astro:content";
+import { getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
-import { Button } from "@/components/ui/button.tsx";
-import { ThemeToggle } from "@/components/custom/theme-toggle";
 
 export const prerender = true;
 
-const posts = await getCollection("posts");
+const page = await getEntry("whyAcosaPage", "why-acosa");
+if (!page) throw new Error("Why Acosa page content not found");
+const { Content } = await render(page);
+const seo = page.data.seo;
 ---
 
-<Layout title="Why ACOSA">
-  <h1>Why ACOSA</h1>
+<Layout title={seo?.title || "Why Acosa"}>
+  <!-- Hero -->
+  <section>
+    <h1>{page.data.heroHeading}</h1>
+    {
+      page.data.heroImage && (
+        <Image
+          src={page.data.heroImage}
+          alt=""
+          widths={[640, 1024, 1600]}
+          sizes="100vw"
+        />
+      )
+    }
+  </section>
+
+  <!-- Founder Story / The Problem / Our Difference / Acosa Approved™ / Essentials™
+       all authored as sections inside the Markdoc body -->
+  <section>
+    <Content />
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <a href="/business-nodes">Find accommodation</a>
+    <a href="/list-your-property">List your property</a>
+  </section>
 </Layout>

@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '@/layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = true;
+
+const page = await getEntry('listYourPropertyPage', 'list-your-property');
+if (!page) throw new Error('List Your Property page content not found');
+const { hero, whoWeWorkWith, benefits, acosaStandards, formIntro, seo } = page.data;
+---
+
+<Layout title={seo?.title || 'List Your Property | Acosa'}>
+  <!-- Hero -->
+  <section>
+    <h1>{hero.heading}</h1>
+    <p>{hero.subheading}</p>
+    {hero.image && <Image src={hero.image} alt="" widths={[640, 1024, 1600]} sizes="100vw" />}
+  </section>
+
+  <!-- Who We Work With -->
+  <section>
+    <h2>{whoWeWorkWith.heading}</h2>
+    <p>{whoWeWorkWith.body}</p>
+  </section>
+
+  <!-- Benefits -->
+  <section>
+    <h2>Benefits</h2>
+    <ul>
+      {benefits.map((b) => (
+        <li>
+          <h3>{b.title}</h3>
+          <p>{b.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Acosa Standards -->
+  <section>
+    <h2>{acosaStandards.heading}</h2>
+    <p>{acosaStandards.body}</p>
+  </section>
+
+  <!-- Application Form: needs a serverless submit handler (form service or
+       Vercel function) that emails the enquiry address in site settings -->
+  <section>
+    <h2>Apply to list your property</h2>
+    <p>{formIntro}</p>
+    <form method="post" action="/api/list-property">
+      <input name="propertyName" placeholder="Property name" required />
+      <input name="contactName" placeholder="Your name" required />
+      <input name="email" type="email" placeholder="Email" required />
+      <input name="phone" type="tel" placeholder="Phone" />
+      <textarea name="message" placeholder="Tell us about your property"></textarea>
+      <button type="submit">Submit application</button>
+    </form>
+  </section>
+</Layout>

@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '@/layouts/Layout.astro';
+import {
+  getNodes,
+  getNodesByProvince,
+  getPropertiesByProvince,
+  provinceLabel,
+} from '@/lib/content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const nodes = await getNodes();
+  const provinces = [...new Set(nodes.map((n) => n.data.province))];
+  return provinces.map((province) => ({ params: { province } }));
+}
+
+const { province } = Astro.params;
+const label = provinceLabel(province!);
+const nodes = await getNodesByProvince(province!);
+const properties = await getPropertiesByProvince(province!);
+---
+
+<Layout
+  title={`Business Accommodation in ${label} | Acosa`}
+>
+  <section>
+    <h1>{label}</h1>
+    <p>{nodes.length} business node{nodes.length === 1 ? '' : 's'} · {properties.length} vetted propert{properties.length === 1 ? 'y' : 'ies'}</p>
+  </section>
+
+  <section>
+    <h2>Business nodes in {label}</h2>
+    <ul>
+      {nodes.map((node) => (
+        <li>
+          <a href={`/business-nodes/${province}/${node.id}`}>
+            <Image src={node.data.heroImage} alt={node.data.name} widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
+            <h3>{node.data.name}</h3>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>

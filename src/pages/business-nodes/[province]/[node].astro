@@ -1,0 +1,98 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '@/layouts/Layout.astro';
+import {
+  getNodes,
+  getPropertiesByNode,
+  provinceLabel,
+  propertyTypeLabel,
+} from '@/lib/content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const nodes = await getNodes();
+  return nodes.map((node) => ({
+    params: { province: node.data.province, node: node.id },
+    props: { node },
+  }));
+}
+
+const { node } = Astro.props;
+const { Content } = await render(node);
+const properties = await getPropertiesByNode(node.id);
+const seo = node.data.seo;
+---
+
+<Layout
+  title={seo?.title || `Business Accommodation in ${node.data.name} | Acosa`}
+>
+  <!-- Hero -->
+  <section>
+    <h1>{node.data.name}</h1>
+    <p>{provinceLabel(node.data.province)}</p>
+    <Image src={node.data.heroImage} alt={node.data.name} widths={[640, 1024, 1600]} sizes="100vw" />
+  </section>
+
+  <!-- Node Description -->
+  <section>
+    <Content />
+  </section>
+
+  <!-- Map -->
+  {node.data.mapUrl && (
+    <section>
+      <h2>Location</h2>
+      <a href={node.data.mapUrl} target="_blank" rel="noopener">View {node.data.name} on Google Maps</a>
+      <!-- Swap for an embedded map component when building the frontend -->
+    </section>
+  )}
+
+  <!-- Filters: property cards carry data-* attributes for client-side filtering -->
+  <!-- Property Grid -->
+  <section>
+    <h2>Vetted properties in {node.data.name}</h2>
+    <ul>
+      {properties.map((property) => (
+        <li
+          data-property-type={property.data.propertyType}
+          data-essentials={property.data.essentials.map((e) => e.id).join(',')}
+          data-nearby={property.data.nearbyConvenience.map((n) => n.id).join(',')}
+          data-featured={property.data.featured}
+        >
+          <a href={`/properties/${property.id}`}>
+            <Image src={property.data.heroImage} alt={property.data.name} widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
+            <h3>{property.data.name}</h3>
+            <p>{propertyTypeLabel(property.data.propertyType)}</p>
+            <p>{property.data.shortDescription}</p>
+            {property.data.acosaApproved.approved && (
+              <span>Acosa Approved™ {property.data.acosaApproved.score}%</span>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Business Information -->
+  {node.data.businessHighlights.length > 0 && (
+    <section>
+      <h2>Business information</h2>
+      <ul>
+        {node.data.businessHighlights.map((h) => (
+          <li>
+            <h3>{h.title}</h3>
+            <p>{h.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section>
+    <h2>Need help choosing?</h2>
+    <a href="/contact">Send us an enquiry</a>
+  </section>
+</Layout>

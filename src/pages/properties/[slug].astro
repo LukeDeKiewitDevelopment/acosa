@@ -1,0 +1,211 @@
+---
+import { render } from "astro:content";
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import {
+  getPublishedProperties,
+  resolvePropertyTags,
+  getTestimonialsForProperty,
+  getPropertiesByNode,
+  whatsappLink,
+  provinceLabel,
+  propertyTypeLabel,
+} from "@/lib/content";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const properties = await getPublishedProperties();
+  return properties.map((property) => ({
+    params: { slug: property.id },
+    props: { property },
+  }));
+}
+
+const { property } = Astro.props;
+const { Content } = await render(property);
+const { essentials, facilities, nearbyConvenience, perfectFor } =
+  await resolvePropertyTags(property);
+const testimonials = await getTestimonialsForProperty(property.id);
+const node = await getEntry(property.data.businessNode);
+const related = (
+  await getPropertiesByNode(property.data.businessNode.id)
+).filter((p) => p.id !== property.id);
+const seo = property.data.seo;
+const enquiryMessage = `Hi, I'd like to enquire about ${property.data.name} (via Acosa).`;
+---
+
+<Layout title={seo?.title || `${property.data.name} | Acosa`}>
+  <!-- Gallery -->
+  <section>
+    <Image
+      src={property.data.heroImage}
+      alt={property.data.name}
+      widths={[640, 1024, 1600]}
+      sizes="100vw"
+      loading="eager"
+    />
+    <ul>
+      {
+        property.data.gallery.map((item) => (
+          <li>
+            <Image
+              src={item.image}
+              alt={item.alt || property.data.name}
+              widths={[400, 800]}
+              sizes="(min-width: 768px) 33vw, 100vw"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Property Overview -->
+  <section>
+    <h1>{property.data.name}</h1>
+    <p>
+      {propertyTypeLabel(property.data.propertyType)} ·{" "}
+      {
+        node && (
+          <a href={`/business-nodes/${node.data.province}/${node.id}`}>
+            {node.data.name}
+          </a>
+        )
+      }
+      , {provinceLabel(property.data.province)}
+    </p>
+
+    <!-- Acosa Approved™ -->
+    {
+      property.data.acosaApproved.approved && (
+        <p>
+          <strong>Acosa Approved™</strong> — {property.data.acosaApproved.score}
+          % assessment score
+        </p>
+      )
+    }
+
+    <p>{property.data.shortDescription}</p>
+    <Content />
+  </section>
+
+  <!-- Business Traveller Essentials™ -->
+  <section>
+    <h2>Business Traveller Essentials™</h2>
+    <ul>
+      {
+        essentials.map((tag) => (
+          <li data-icon={tag.data.icon}>{tag.data.name}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Perfect For -->
+  {
+    perfectFor.length > 0 && (
+      <section>
+        <h2>Perfect for</h2>
+        <ul>
+          {perfectFor.map((tag) => (
+            <li data-icon={tag.data.icon}>{tag.data.name}</li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <!-- Facilities -->
+  <section>
+    <h2>Facilities</h2>
+    <ul>
+      {
+        facilities.map((tag) => (
+          <li data-icon={tag.data.icon}>{tag.data.name}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Nearby Convenience -->
+  <section>
+    <h2>Nearby convenience</h2>
+    <ul>
+      {
+        nearbyConvenience.map((tag) => (
+          <li data-icon={tag.data.icon}>{tag.data.name}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Map -->
+  {
+    property.data.location.mapUrl && (
+      <section>
+        <h2>Location</h2>
+        <p>{property.data.location.address}</p>
+        <a href={property.data.location.mapUrl} target="_blank" rel="noopener">
+          View on Google Maps
+        </a>
+      </section>
+    )
+  }
+
+  <!-- Testimonials -->
+  {
+    testimonials.length > 0 && (
+      <section>
+        <h2>Reviews</h2>
+        <ul>
+          {testimonials.map((t) => (
+            <li>
+              <blockquote>{t.data.review}</blockquote>
+              <cite>{t.data.reviewer}</cite>
+              {t.data.rating > 0 && <span>{t.data.rating}/5</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <!-- Sticky Enquiry Card: wrap in a positioned aside when styling -->
+  <aside>
+    <h2>Make an enquiry</h2>
+    <p>Send an enquiry directly to the property.</p>
+    <a
+      href={whatsappLink(property.data.contact.whatsapp, enquiryMessage)}
+      target="_blank"
+      rel="noopener"
+    >
+      WhatsApp
+    </a>
+    {
+      property.data.contact.phone && (
+        <a href={`tel:${property.data.contact.phone.replace(/\s/g, "")}`}>
+          {property.data.contact.phone}
+        </a>
+      )
+    }
+    <a href={`/contact?property=${property.id}`}>Send enquiry form</a>
+  </aside>
+
+  <!-- Related properties in the same node -->
+  {
+    related.length > 0 && (
+      <section>
+        <h2>More in {node?.data.name}</h2>
+        <ul>
+          {related.map((p) => (
+            <li>
+              <a href={`/properties/${p.id}`}>{p.data.name}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Layout>

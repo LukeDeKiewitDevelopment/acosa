@@ -1,0 +1,61 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import { getNodes, getActiveProvinces, provinceLabel } from "@/lib/content";
+
+export const prerender = true;
+
+const nodes = await getNodes();
+const provinces = await getActiveProvinces();
+---
+
+<Layout title="Business Nodes | Acosa">
+  <!-- Hero -->
+  <section>
+    <h1>Business Nodes</h1>
+    <p>Vetted accommodation, organised around where you actually work.</p>
+  </section>
+
+  <!-- Province Selector -->
+  <nav aria-label="Provinces">
+    <ul>
+      {
+        provinces.map((p) => (
+          <li>
+            <a href={`/business-nodes/${p.slug}`}>
+              {p.label} ({p.nodeCount})
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <!-- Business Node Cards -->
+  <section>
+    <ul>
+      {
+        nodes.map((node) => (
+          <li>
+            <a href={`/business-nodes/${node.data.province}/${node.id}`}>
+              <Image
+                src={node.data.heroImage}
+                alt={node.data.name}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
+              <h2>{node.data.name}</h2>
+              <p>{provinceLabel(node.data.province)}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <h2>Can't find your node?</h2>
+    <a href="/contact">Contact us</a>
+  </section>
+</Layout>

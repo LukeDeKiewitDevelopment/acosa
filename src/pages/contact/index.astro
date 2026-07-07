@@ -1,14 +1,49 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import { Button } from "@/components/ui/button.tsx";
-import { ThemeToggle } from "@/components/custom/theme-toggle";
+import Layout from '@/layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+import { getSiteSettings, whatsappLink } from '@/lib/content';
 
 export const prerender = true;
 
-const posts = await getCollection("posts");
+const page = await getEntry('contactPage', 'contact');
+if (!page) throw new Error('Contact page content not found');
+const settings = await getSiteSettings();
+const seo = page.data.seo;
 ---
 
-<Layout title="Contact Us">
-  <h1>Contact Us</h1>
+<Layout title={seo?.title || 'Contact Acosa'}>
+  <!-- Hero -->
+  <section>
+    <h1>{page.data.heroHeading}</h1>
+    <p>{page.data.intro}</p>
+  </section>
+
+  <!-- WhatsApp CTA -->
+  <section>
+    <a href={whatsappLink(settings.data.defaultWhatsapp, 'Hi Acosa!')} target="_blank" rel="noopener">
+      Message us on WhatsApp
+    </a>
+  </section>
+
+  <!-- Contact Form: general + corporate enquiry. Needs a serverless submit
+       handler that emails settings.data.enquiryEmail -->
+  <section>
+    <form method="post" action="/api/contact">
+      <select name="enquiryType">
+        <option value="general">General enquiry</option>
+        <option value="corporate">Corporate enquiry</option>
+      </select>
+      <input name="name" placeholder="Your name" required />
+      <input name="email" type="email" placeholder="Email" required />
+      <textarea name="message" placeholder="How can we help?" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Map (optional) -->
+  {page.data.showMap && page.data.mapUrl && (
+    <section>
+      <a href={page.data.mapUrl} target="_blank" rel="noopener">Find us on Google Maps</a>
+    </section>
+  )}
 </Layout>
