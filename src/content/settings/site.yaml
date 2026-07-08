@@ -1,7 +1,14 @@
+logos:
+  light:
+    image: ../../assets/images/brand/logos/light/image.png
+    alt: ACOSA Logo
+  dark:
+    image: ../../assets/images/brand/logos/dark/image.png
+    alt: ACOSA Logo
 defaultWhatsapp: '27720000000'
 enquiryEmail: vanessa@acosa.example
 socialLinks:
-- label: LinkedIn
-  url: https://www.linkedin.com/company/acosa-example
-- label: Instagram
-  url: https://www.instagram.com/acosa.example
+  - label: LinkedIn
+    url: https://www.linkedin.com/company/acosa-example
+  - label: Instagram
+    url: https://www.instagram.com/acosa.example
