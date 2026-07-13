@@ -1,31 +1,28 @@
 import { cn } from "@/lib/utils";
-import { Separator } from "../ui/separator";
 import type { ReactNode } from "react";
 
 export type SectionProps = {
-  title?: string;
   slotName?: string;
   children?: ReactNode;
   className?: string;
+  fullWidth?: boolean;
 };
 
 export const Section = ({
-  title,
   slotName,
   children,
   className,
+  fullWidth = false,
 }: SectionProps) => {
   return (
     <section
-      data-slot={slotName}
-      className={cn("mx-auto flex max-w-4/5 flex-col gap-8", className)}
-    >
-
-      {title && (
-        <h2 className="xl:text-5x1 heading-font text-center text-2xl font-semibold md:text-3xl lg:text-4xl">
-          {title}
-        </h2>
+      data-slot={slotName || "section"}
+      className={cn(
+        "flex flex-col gap-8 my-12",
+        fullWidth ? "w-full" : "mx-4 md:mx-6 lg:mx-8",
+        className,
       )}
+    >
       {children}
     </section>
   );
