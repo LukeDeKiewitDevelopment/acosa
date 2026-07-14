@@ -4,6 +4,7 @@ hero:
     South Africa's curated platform for vetted guesthouses, boutique hotels and
     executive stays — built around the way business travellers actually work.
   image: ../../assets/images/pages/hero/image.jpg
+  overlayOpacity: 65
 founderStrip:
   heading: Personally vetted, personally accountable
   body: >-
