@@ -4,13 +4,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
@@ -40,7 +33,7 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
   return (
     <header
       data-slot="header"
-      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen shadow-md shadow-black/20 px-4 py-2 md:px-6 md:py-2.5 lg:px-8 lg:py-3"
+      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen px-4 py-2 shadow-md shadow-black/20 md:px-6 md:py-2.5 lg:px-8 lg:py-3"
     >
       <div
         data-slot="header-content"
@@ -49,10 +42,16 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
         {logo ? (
           <a href="/">
             <StaticAcosaImage
+              fetchPriority="high"
+              loading="eager"
+              decoding="sync"
               {...logo.light}
               className="h-10 w-auto dark:hidden"
             />
             <StaticAcosaImage
+              fetchPriority="high"
+              loading="eager"
+              decoding="sync"
               {...logo.dark}
               className="hidden h-10 w-auto dark:block"
             />

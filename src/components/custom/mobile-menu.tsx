@@ -34,12 +34,18 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
             {logo ? (
               <>
                 <StaticAcosaImage
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="sync"
                   {...logo.light}
-                  className="h-8 w-auto dark:hidden"
+                  className="h-10 w-auto dark:hidden"
                 />
                 <StaticAcosaImage
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="sync"
                   {...logo.dark}
-                  className="hidden h-8 w-auto dark:block"
+                  className="hidden h-10 w-auto dark:block"
                 />
               </>
             ) : (
