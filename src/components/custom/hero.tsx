@@ -55,7 +55,7 @@ export const Hero = async ({
             {heading}
           </h1>
         )}
-        {subheading && <Separator />}
+        {subheading && <Separator className="bg-foreground not-dark:bg-background"/>}
         {subheading && (
           <div className="mx-auto max-w-prose text-center font-sans">
             {subheading}

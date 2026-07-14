@@ -400,6 +400,13 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
+            overlayOpacity: fields.integer({
+              label: "Overlay Opacity (%)",
+              description:
+                "Darkness of the overlay on top of the hero image, 0 (none) to 100 (solid). Keeps the heading readable over busy photos.",
+              defaultValue: 50,
+              validation: { min: 0, max: 100 },
+            }),
           },
           { label: "Hero" },
         ),

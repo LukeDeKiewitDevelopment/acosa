@@ -167,6 +167,7 @@ const homePage = defineCollection({
         heading: z.string(),
         subheading: z.string().optional().default(""),
         image: ctx.image().optional().nullable(),
+        overlayOpacity: z.number().min(0).max(100).optional().default(50),
       }),
       founderStrip: z.object({
         heading: z.string().optional().default(""),
