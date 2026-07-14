@@ -42,7 +42,7 @@ const settings = await getSiteSettings();
 
   <!-- Business Node Search: client-side search island goes here.
        Fetch /search.json for the property/node index. -->
-  <Section>
+  <!-- <Section>
     <h2>Find accommodation in your business node</h2>
     <form action="/business-nodes" method="get">
       <input
@@ -52,10 +52,10 @@ const settings = await getSiteSettings();
       />
       <button type="submit">Search</button>
     </form>
-  </Section>
+  </Section> -->
 
   <!-- Founder Trust Strip -->
-  <Section>
+  <!-- <Section>
     <h2>{founderStrip.heading}</h2>
     <p>{founderStrip.body}</p>
     {
@@ -68,10 +68,10 @@ const settings = await getSiteSettings();
         />
       )
     }
-  </Section>
+  </Section> -->
 
   <!-- Popular Business Nodes -->
-  <Section>
+  <!-- <Section>
     <h2>Popular Business Nodes</h2>
     <ul>
       {
@@ -91,10 +91,10 @@ const settings = await getSiteSettings();
         ))
       }
     </ul>
-  </Section>
+  </Section> -->
 
   <!-- Business Traveller Essentials™ -->
-  <Section>
+  <!-- <Section>
     <h2>Business Traveller Essentials™</h2>
     <ul>
       {
@@ -103,10 +103,10 @@ const settings = await getSiteSettings();
         ))
       }
     </ul>
-  </Section>
+  </Section> -->
 
   <!-- Featured Properties -->
-  <Section>
+  <!-- <Section>
     <h2>Featured Properties</h2>
     <ul>
       {
@@ -135,10 +135,10 @@ const settings = await getSiteSettings();
         ))
       }
     </ul>
-  </Section>
+  </Section> -->
 
   <!-- Testimonials -->
-  {
+  <!-- {
     testimonials.length > 0 && (
       <Section>
         <h2>What travellers say</h2>
@@ -153,26 +153,26 @@ const settings = await getSiteSettings();
         </ul>
       </Section>
     )
-  }
+  } -->
 
   <!-- Why Acosa Preview -->
-  <Section>
+  <!-- <Section>
     <h2>{whyAcosaPreview.heading}</h2>
     <p>{whyAcosaPreview.body}</p>
     <a href="/why-acosa">Learn more</a>
-  </Section>
+  </Section> -->
 
   <!-- Property Owner CTA -->
-  <Section>
+  <!-- <Section>
     <h2>{ownerCta.heading}</h2>
     <p>{ownerCta.body}</p>
     <a href="/list-your-property"
       >{ownerCta.buttonLabel || "List Your Property"}</a
     >
-  </Section>
+  </Section> -->
 
   <!-- Persistent WhatsApp button (homepage, per spec §8) -->
-  <Section
+  <!-- <Section
     ><a
       href={whatsappLink(
         settings.data.defaultWhatsapp,
@@ -183,5 +183,5 @@ const settings = await getSiteSettings();
     >
       WhatsApp us
     </a></Section
-  >
+  > -->
 </Layout>
