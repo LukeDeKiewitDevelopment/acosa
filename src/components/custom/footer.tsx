@@ -1,3 +1,4 @@
+import { getCurrentYear } from "@/lib/get-current-year";
 import { Button } from "../ui/button";
 import { DropdownMenu } from "../ui/dropdown-menu";
 import { Separator } from "../ui/separator";
@@ -21,10 +22,6 @@ export type FooterSocial = {
   href?: string;
 };
 
-function getCurrentYear() {
-  return new Date().getFullYear();
-}
-
 export const Footer = ({
   logo,
   description,
@@ -45,14 +42,17 @@ export const Footer = ({
                 {...logo.light}
                 className="h-22 w-auto"
               /> */}
-              <StaticAcosaImage {...logo.dark} className="h-22 w-auto" />
+              <StaticAcosaImage
+                {...logo.dark}
+                className="h-12 w-auto object-contain md:h-16 lg:h-20"
+              />
             </a>
           ) : (
             <a href="/">Acosa</a>
           )}
 
           {description && <p className="max-w-prose text-xs">{description}</p>}
-          <small className="text-xs font-semibold">
+          <small className="text-[0.6rem]">
             &copy; {currentYear} ACOSA. Work in Progress.
           </small>
         </div>

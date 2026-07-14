@@ -17,10 +17,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { getCurrentYear } from "@/lib/get-current-year";
 
 export type MobileMenuProps = { logo?: HeaderLogo; navItems?: NavItem[] };
 
 export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
+  const currentYear = getCurrentYear();
   return (
     <Sheet>
       <SheetTrigger asChild className="flex lg:hidden">
@@ -104,8 +106,11 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
               </li>
             ))}
         </ul>
-        <SheetFooter>
-          <ThemeToggle className="ml-auto" />
+        <SheetFooter className="flex flex-row items-center justify-between">
+          <small className="text-[0.6rem]">
+            &copy; {currentYear} ACOSA.
+          </small>
+          <ThemeToggle />
         </SheetFooter>
       </SheetContent>
     </Sheet>

@@ -45,15 +45,15 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
               fetchPriority="high"
               loading="eager"
               decoding="sync"
+              className="h-10 w-auto object-contain dark:hidden"
               {...logo.light}
-              className="h-10 w-auto dark:hidden"
             />
             <StaticAcosaImage
               fetchPriority="high"
               loading="eager"
               decoding="sync"
+              className="hidden h-10 w-auto object-contain dark:block"
               {...logo.dark}
-              className="hidden h-10 w-auto dark:block"
             />
           </a>
         ) : (
