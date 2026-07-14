@@ -40,7 +40,7 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
   return (
     <header
       data-slot="header"
-      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen border-b-2 px-4 py-2 md:px-6 lg:px-8"
+      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen border-b-2 px-4 py-2 md:px-6 md:py-2.5 lg:px-8 lg:py-3"
     >
       <div
         data-slot="header-content"
@@ -50,11 +50,11 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
           <a href="/">
             <StaticAcosaImage
               {...logo.light}
-              className="h-8 w-auto dark:hidden"
+              className="h-10 w-auto dark:hidden"
             />
             <StaticAcosaImage
               {...logo.dark}
-              className="hidden h-8 w-auto dark:block"
+              className="hidden h-10 w-auto dark:block"
             />
           </a>
         ) : (

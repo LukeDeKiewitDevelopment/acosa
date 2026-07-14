@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import { DropdownMenu } from "../ui/dropdown-menu";
+import { Separator } from "../ui/separator";
 import type { NavItem } from "./header";
 import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
 
@@ -49,6 +50,7 @@ export const Footer = ({
           ) : (
             <a href="/">Acosa</a>
           )}
+
           {description && <p className="max-w-prose text-xs">{description}</p>}
           <small className="text-xs font-semibold">
             &copy; {currentYear} ACOSA. Work in Progress.
@@ -56,7 +58,7 @@ export const Footer = ({
         </div>
         <div
           data-slot="footer-links"
-          className="grid w-full grid-cols-1 md:w-[65%] md:grid-cols-3"
+          className="grid w-full grid-cols-1 gap-4 md:w-[65%] md:grid-cols-3"
         >
           <nav data-slot="footer-links-platform">
             <h5 className="my-4 text-sm">Platform</h5>
