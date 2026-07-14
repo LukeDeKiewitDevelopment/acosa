@@ -40,7 +40,7 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
   return (
     <header
       data-slot="header"
-      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen border-b-2 px-4 py-2 md:px-6 md:py-2.5 lg:px-8 lg:py-3"
+      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen shadow-md shadow-black/20 px-4 py-2 md:px-6 md:py-2.5 lg:px-8 lg:py-3"
     >
       <div
         data-slot="header-content"
