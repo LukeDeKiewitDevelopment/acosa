@@ -33,7 +33,7 @@ export const Footer = ({
   const currentYear = getCurrentYear();
   return (
     <footer className="not-dark:bg-primary not-dark:text-primary-foreground dark:bg-card dark:text-card-foreground w-full max-w-screen px-8 py-12">
-      <div className="flex flex-col gap-y-6 md:flex-row">
+      <div className="flex flex-col gap-8 md:flex-row">
         <div
           data-slot="footer-info"
           className="flex w-full flex-col gap-8 md:w-[35%]"
@@ -49,9 +49,9 @@ export const Footer = ({
           ) : (
             <a href="/">Acosa</a>
           )}
-          {description && <p>{description}</p>}
+          {description && <p className="max-w-prose text-xs">{description}</p>}
           <small className="text-xs font-semibold">
-            &copy; {currentYear} ACOSA.
+            &copy; {currentYear} ACOSA. Work in Progress.
           </small>
         </div>
         <div
@@ -59,10 +59,10 @@ export const Footer = ({
           className="grid w-full grid-cols-1 md:w-[65%] md:grid-cols-3"
         >
           <nav data-slot="footer-links-platform">
-            <h5 className="my-2 text-sm">Platform</h5>
-            <ul className="flex flex-col gap-2">
+            <h5 className="my-4 text-sm">Platform</h5>
+            <ul className="flex flex-col gap-4 text-xs">
               <li>
-                <a href="/" className="text-xs no-underline">
+                <a href="/" className="no-underline">
                   Home
                 </a>
               </li>
@@ -99,13 +99,13 @@ export const Footer = ({
                     className="flex flex-col"
                     key={i}
                   >
-                    <h5 className="my-2 text-sm">Business Nodes</h5>
-                    <ul className="flex flex-col gap-2">
+                    <h5 className="my-4 text-sm">Business Nodes</h5>
+                    <ul className="flex flex-col gap-4 text-xs">
                       {footerItem.subItems.map((subItem, i) => (
                         <li key={i}>
                           <a
                             href={subItem.href}
-                            className="text-xs no-underline hover:underline"
+                            className="no-underline hover:underline"
                           >
                             {subItem.label}
                           </a>
@@ -117,25 +117,13 @@ export const Footer = ({
               }
             })}
 
-          <nav data-slot="footer-links-socials">
-            <h5 className="my-2 text-sm">Socials</h5>
-            <ul className="flex flex-col gap-2">
-              {footerItems &&
-                footerItems.length > 0 &&
-                footerItems.map((footerItem, i) => {
-                  if (!footerItem.subItems) {
-                    return (
-                      <li key={i}>
-                        <a
-                          href={footerItem.href}
-                          className="text-xs no-underline hover:underline"
-                        >
-                          {footerItem.label}
-                        </a>
-                      </li>
-                    );
-                  }
-                })}
+          <nav data-slot="footer-links-socials" className="flex flex-col">
+            <h5 className="my-4 text-sm">Socials</h5>
+            <ul className="flex flex-col gap-4 text-xs">
+              <li>LinkedIn</li>
+              <li>Facebook</li>
+              <li>LinkedIn</li>
+              <li>Instagram</li>
             </ul>
           </nav>
         </div>
