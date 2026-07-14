@@ -13,12 +13,17 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AcosaImage, type AcosaImageProps } from "./image";
+import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
 import { ThemeToggle } from "./theme-toggle";
 import { MobileMenu } from "./mobile-menu";
 
+export type HeaderLogo = {
+  light: StaticAcosaImageProps;
+  dark: StaticAcosaImageProps;
+};
+
 export type HeaderProps = {
-  logo?: AcosaImageProps;
+  logo?: HeaderLogo;
   navItems?: NavItem[];
 };
 export type NavItem = {
@@ -35,7 +40,7 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
   return (
     <header
       data-slot="header"
-      className="bg-card text-card-foreground sticky top-0 left-0 z-50 border-b-2 px-4 py-2 md:px-6 lg:px-8"
+      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen border-b-2 px-4 py-2 md:px-6 lg:px-8"
     >
       <div
         data-slot="header-content"
@@ -43,15 +48,13 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
       >
         {logo ? (
           <a href="/">
-            <AcosaImage
-              src={logo.src}
-              alt={logo.alt}
-              width={logo.width}
-              height={logo.height}
-              widths={logo.widths}
-              sizes={logo.sizes}
-              format={logo.format}
-              className=""
+            <StaticAcosaImage
+              {...logo.light}
+              className="h-8 w-auto dark:hidden"
+            />
+            <StaticAcosaImage
+              {...logo.dark}
+              className="hidden h-8 w-auto dark:block"
             />
           </a>
         ) : (
@@ -59,6 +62,13 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
         )}
         <nav data-slot="header-navigation">
           <ul className="hidden items-center gap-2 lg:flex">
+            <li>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="/" className="text-xs no-underline">
+                  Home
+                </a>
+              </Button>
+            </li>
             {navItems &&
               navItems.length > 0 &&
               navItems?.map((navItem, i) => (
@@ -76,7 +86,7 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
                             <DropdownMenuItem key={subItem.href}>
                               <a
                                 href={subItem.href}
-                                className="text-sm no-underline"
+                                className="w-full text-sm no-underline"
                               >
                                 {subItem.label}
                               </a>

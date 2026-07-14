@@ -46,7 +46,7 @@ export const Hero = async ({
     >
       <div
         className={cn(
-          "relative z-20 mx-auto my-24 flex w-4/5 flex-col gap-4",
+          "dark:text-foreground relative z-20 mx-auto my-24 flex w-4/5 flex-col gap-4",
           contentClassName,
         )}
       >

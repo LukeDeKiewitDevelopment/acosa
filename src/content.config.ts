@@ -255,6 +255,7 @@ const siteSettings = defineCollection({
   loader: glob({ pattern: "site.yaml", base: "./src/content/settings" }),
   schema: (ctx) =>
     z.object({
+      footerDescription: z.string().optional().default(""),
       defaultWhatsapp: z.string(),
       enquiryEmail: z.string(),
       socialLinks: z

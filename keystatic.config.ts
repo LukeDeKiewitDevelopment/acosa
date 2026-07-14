@@ -592,6 +592,11 @@ export default config({
           },
           { label: "Logos" },
         ),
+        footerDescription: fields.text({
+          label: "Footer Description",
+          description: "Short blurb shown under the logo in the site footer.",
+          multiline: true,
+        }),
         defaultWhatsapp: fields.text({
           label: "Default WhatsApp Number",
           description:

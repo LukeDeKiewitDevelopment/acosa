@@ -1,27 +1,24 @@
 import { Menu } from "lucide-react";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
 import { Button } from "../ui/button";
-import { AcosaImage, type AcosaImageProps } from "./image";
-import type { NavItem } from "./header";
+import { StaticAcosaImage } from "./image";
+import type { HeaderLogo, NavItem } from "./header";
 import { ThemeToggle } from "./theme-toggle";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-export type MobileMenuProps = { logo?: AcosaImageProps; navItems?: NavItem[] };
+export type MobileMenuProps = { logo?: HeaderLogo; navItems?: NavItem[] };
 
 export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
   return (
@@ -35,50 +32,62 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
         <SheetHeader>
           <SheetTitle>
             {logo ? (
-              <a href="/">
-                <AcosaImage
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={logo.width}
-                  height={logo.height}
-                  widths={logo.widths}
-                  sizes={logo.sizes}
-                  format={logo.format}
-                  className=""
+              <>
+                <StaticAcosaImage
+                  {...logo.light}
+                  className="h-8 w-auto dark:hidden"
                 />
-              </a>
+                <StaticAcosaImage
+                  {...logo.dark}
+                  className="hidden h-8 w-auto dark:block"
+                />
+              </>
             ) : (
-              <a href="/">Acosa</a>
+              <span>Acosa</span>
             )}
           </SheetTitle>
         </SheetHeader>
-        <ul className="mx-4 my-2 flex flex-col gap-2">
+        <ul className="mx-4 my-2 flex scrollbar-thin flex-col gap-2 overflow-y-auto pr-2">
+          <li>
+            <Button variant="ghost" size="sm" asChild>
+              <a href="/" className="text-xs no-underline">
+                Home
+              </a>
+            </Button>
+          </li>
           {navItems &&
             navItems.length > 0 &&
             navItems?.map((navItem, i) => (
               <li key={i}>
                 {navItem.subItems && navItem.subItems.length > 0 ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="text-xs">
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full border-0"
+                  >
+                    <AccordionItem
+                      value={navItem.label}
+                      className="border-b-0 data-open:bg-transparent"
+                    >
+                      <AccordionTrigger className="hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-8 w-full items-center justify-between gap-1 rounded-4xl p-0 px-3 py-0 font-sans text-xs font-medium! whitespace-nowrap transition-all outline-none hover:no-underline">
                         {navItem.label}
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-40" align="start">
-                      <DropdownMenuGroup>
-                        {navItem.subItems.map((subItem, i) => (
-                          <DropdownMenuItem key={i}>
-                            <a
-                              href={subItem.href}
-                              className="text-sm no-underline"
-                            >
-                              {subItem.label}
-                            </a>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-0 py-1 [&_a]:no-underline">
+                        <ul className="flex flex-col gap-2 ps-3">
+                          {navItem.subItems.map((subItem, i) => (
+                            <li key={i}>
+                              <a
+                                href={subItem.href}
+                                className="text-xs hover:underline"
+                              >
+                                {subItem.label}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 ) : (
                   <Button variant="ghost" size="sm" asChild>
                     <a href={navItem.href} className="text-xs no-underline">
