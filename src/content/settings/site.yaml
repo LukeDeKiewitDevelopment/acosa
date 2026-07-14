@@ -5,6 +5,9 @@ logos:
   dark:
     image: ../../assets/images/brand/logos/dark/image.png
     alt: ACOSA Logo
+footerDescription: >-
+  South Africa's curated platform for vetted guesthouses, boutique hotels and
+  executive stays — built around the way business travellers actually work.
 defaultWhatsapp: '27720000000'
 enquiryEmail: vanessa@acosa.example
 socialLinks:
