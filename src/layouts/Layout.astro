@@ -4,7 +4,6 @@ import { Footer } from "@/components/custom/footer";
 import { BackToTop } from "@/components/custom/back-to-top";
 import "@/styles/global.css";
 import { getCollection } from "astro:content";
-import { PROVINCES, type ProvinceSlug } from "@/content.config";
 
 const nodes = await getCollection("businessNodes");
 
@@ -16,19 +15,10 @@ const navItems: NavItem[] = [
   {
     label: "Business Nodes",
     href: "/business-nodes",
-    subItems: (Object.keys(PROVINCES) as ProvinceSlug[])
-      .map((province) => ({
-        categoryName: PROVINCES[province],
-        categoryHref: `/business-nodes/${province}`,
-        items: nodes
-          .filter((node) => node.data.province === province)
-          .sort((a, b) => a.data.name.localeCompare(b.data.name))
-          .map((node) => ({
-            label: node.data.name,
-            href: `/business-nodes/${province}/${node.id}`,
-          })),
-      }))
-      .filter((category) => category.items.length > 0),
+    subItems: nodes.map((node) => ({
+      label: node.data.name,
+      href: `/business-nodes/${node.id}`,
+    })),
   },
   { label: "Properties", href: "/properties" },
   { label: "Why Acosa?", href: "/why-acosa" },
@@ -79,9 +69,9 @@ const { title } = Astro.props;
       }
     </script>
   </head>
-  
+
   <body class="flex min-h-screen flex-col overflow-x-hidden antialiased">
-    <Header navItems={navItems} client:load />
+    <Header client:load />
     <main class="size-full flex-1">
       <slot />
     </main>

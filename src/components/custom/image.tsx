@@ -51,7 +51,7 @@ export const AcosaImage = async ({
       decoding={decoding || "sync"}
       fetchPriority={fetchPriority || "auto"}
       className={cn(
-        "pointer-events-none block h-auto max-w-full select-none",
+        "text-muted-foreground pointer-events-none flex h-auto max-w-full items-center justify-center text-xs italic select-none",
         className,
       )}
     />
