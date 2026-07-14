@@ -8,12 +8,14 @@ import {
   getFeaturedProperties,
   getGeneralTestimonials,
   getSiteSettings,
+  getActiveProvinces,
   whatsappLink,
   provinceLabel,
   propertyTypeLabel,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
+import { BusinessNodeSearch } from "@/components/custom/business-node-search";
 
 export const prerender = true;
 
@@ -25,6 +27,16 @@ const featuredProperties = await getFeaturedProperties();
 const essentials = await getCollection("essentials");
 const testimonials = await getGeneralTestimonials();
 const settings = await getSiteSettings();
+const provinces = await getActiveProvinces();
+
+// Plain, serializable suggestions shown before the client-side fetch of
+// /search.json resolves — avoids an empty results panel on first paint.
+const popularNodesForSearch = popularNodes.map((node) => ({
+  slug: node.id,
+  name: node.data.name,
+  url: `/business-nodes/${node.data.province}/${node.id}`,
+  provinceLabel: provinceLabel(node.data.province),
+}));
 ---
 
 <Layout
@@ -40,18 +52,15 @@ const settings = await getSiteSettings();
     contentClassName="text-background"
   />
 
-  Business Node Search: client-side search island goes here.
-       Fetch /search.json for the property/node index.
-<Section>
-    <h2>Find accommodation in your business node</h2>
-    <form action="/business-nodes" method="get">
-      <input
-        type="search"
-        name="q"
-        placeholder="Search by node, province or property"
-      />
-      <button type="submit">Search</button>
-    </form>
+  <Section
+    slotName="business-node-search"
+    className="relative mb-72 mt-20"
+  >
+    <BusinessNodeSearch
+      client:load
+      provinces={provinces}
+      popularNodes={popularNodesForSearch}
+    />
   </Section>
 
   <!-- Founder Trust Strip -->

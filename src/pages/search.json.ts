@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import {
   getPublishedProperties,
   getNodes,
+  getActiveProvinces,
   provinceLabel,
   propertyTypeLabel,
 } from '../lib/content';
@@ -14,13 +15,14 @@ export const prerender = true;
  * filter by essentials, property type, nearby convenience, featured.
  */
 export const GET: APIRoute = async () => {
-  const [properties, nodes] = await Promise.all([
+  const [properties, nodes, provinces] = await Promise.all([
     getPublishedProperties(),
     getNodes(),
+    getActiveProvinces(),
   ]);
   const nodeNames = new Map(nodes.map((n) => [n.id, n.data.name]));
 
-  const index = properties.map((p) => ({
+  const propertyIndex = properties.map((p) => ({
     slug: p.id,
     name: p.data.name,
     url: `/properties/${p.id}`,
@@ -37,7 +39,21 @@ export const GET: APIRoute = async () => {
     shortDescription: p.data.shortDescription,
   }));
 
-  return new Response(JSON.stringify({ properties: index }), {
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const nodeIndex = nodes.map((n) => ({
+    slug: n.id,
+    name: n.data.name,
+    url: `/business-nodes/${n.data.province}/${n.id}`,
+    province: n.data.province,
+    provinceLabel: provinceLabel(n.data.province),
+    featured: n.data.featured,
+  }));
+
+  return new Response(
+    JSON.stringify({
+      properties: propertyIndex,
+      nodes: nodeIndex,
+      provinces,
+    }),
+    { headers: { 'Content-Type': 'application/json' } },
+  );
 };
