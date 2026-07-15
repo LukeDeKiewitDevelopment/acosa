@@ -21,6 +21,7 @@ import {
   BusinessNodeSearch,
   type BusinessNodeSearchItem,
 } from "@/components/custom/business-node-search";
+import { TrustStrip } from "@/components/custom/trust-strip";
 
 export const prerender = true;
 
@@ -81,25 +82,13 @@ const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
     />
   </Section>
 
-  <Section slotName="business-node-search" className="relative mt-20 mb-72">
+  <Section fullWidth>
     <BusinessNodeSearch nodes={searchNodes} client:load />
   </Section>
 
-  <!-- Founder Trust Strip -->
-  <!-- <Section>
-    <h2>{founderStrip.heading}</h2>
-    <p>{founderStrip.body}</p>
-    {
-      founderStrip.image && (
-        <Image
-          src={founderStrip.image}
-          alt="Acosa founder"
-          widths={[400, 800]}
-          sizes="(min-width: 768px) 400px, 100vw"
-        />
-      )
-    }
-  </Section> -->
+  <Section>
+    <TrustStrip client:load />
+  </Section>
 
   <!-- Popular Business Nodes -->
   <!-- <Section>

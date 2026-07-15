@@ -109,7 +109,7 @@ export const BusinessNodeSearch = ({
             ))}
           </ul>
         ) : (
-          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed p-10 text-center text-muted-foreground">
+          <div className="text-muted-foreground flex flex-col items-center gap-3 rounded-xl border border-dashed p-10 text-center">
             <p>No business nodes match your search.</p>
             {province && (
               <Button
@@ -127,11 +127,11 @@ export const BusinessNodeSearch = ({
   );
 };
 
-function BusinessNodeCard({ node }: { node: BusinessNodeSearchItem }) {
+export const BusinessNodeCard = ({ node }: { node: BusinessNodeSearchItem }) => {
   return (
     <li>
       <article className="group bg-card text-card-foreground relative flex h-full flex-col overflow-hidden rounded-xl border shadow-sm transition-shadow hover:shadow-md">
-        <div className="bg-muted relative aspect-[16/10] overflow-hidden">
+        <div className="bg-muted relative aspect-16/10 overflow-hidden">
           <StaticAcosaImage
             {...node.image}
             alt={node.imageAlt}
@@ -171,4 +171,4 @@ function BusinessNodeCard({ node }: { node: BusinessNodeSearchItem }) {
       </article>
     </li>
   );
-}
+};
