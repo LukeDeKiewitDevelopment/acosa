@@ -61,7 +61,7 @@ export const BusinessNodeSearch = ({}: BusinessNodeSearchProps) => {
             placeholder="Search by province or property name..."
           />
         </Field>
-        <div className="flex min-w-0 flex-col gap-4 lg:flex-35 lg:flex-row">
+        <div className="flex min-w-0 flex-col gap-4 lg:flex-35">
           <Combobox items={provinces}>
             <ComboboxInput placeholder="All Provinces" />
             <ComboboxContent>
@@ -75,9 +75,6 @@ export const BusinessNodeSearch = ({}: BusinessNodeSearchProps) => {
               </ComboboxList>
             </ComboboxContent>
           </Combobox>
-          <Button className="bg-secondary text-secondary-foreground w-full lg:w-auto">
-            Search <ArrowRightIcon />
-          </Button>
         </div>
       </div>
       <Separator />
