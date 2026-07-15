@@ -1,15 +1,12 @@
 import { getCollection, getEntry, getEntries } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import { PROVINCES, PROPERTY_TYPES, type ProvinceSlug } from '../content.config';
+import { PROVINCES, PROPERTY_TYPES } from '../content.config';
+import { provinceLabel } from './provinces';
 
-export { PROVINCES, PROPERTY_TYPES };
+export { PROVINCES, PROPERTY_TYPES, provinceLabel };
 export type Property = CollectionEntry<'properties'>;
 export type BusinessNode = CollectionEntry<'businessNodes'>;
 export type Testimonial = CollectionEntry<'testimonials'>;
-
-export function provinceLabel(slug: string): string {
-  return PROVINCES[slug as ProvinceSlug] ?? slug;
-}
 
 export function propertyTypeLabel(slug: string): string {
   return PROPERTY_TYPES[slug as keyof typeof PROPERTY_TYPES] ?? slug;
@@ -64,17 +61,23 @@ export async function resolvePropertyTags(property: Property) {
 // ---------------------------------------------------------------------------
 
 export async function getNodes(): Promise<BusinessNode[]> {
-  return getCollection('businessNodes');
+  return getCollection('businessNodes', ({ data }) => data.published);
 }
 
 export async function getPopularNodes(): Promise<BusinessNode[]> {
-  return getCollection('businessNodes', ({ data }) => data.featured);
+  return getCollection(
+    'businessNodes',
+    ({ data }) => data.published && data.featured
+  );
 }
 
 export async function getNodesByProvince(
   province: string
 ): Promise<BusinessNode[]> {
-  return getCollection('businessNodes', ({ data }) => data.province === province);
+  return getCollection(
+    'businessNodes',
+    ({ data }) => data.published && data.province === province
+  );
 }
 
 /** Provinces that actually have at least one business node, for the province selector. */

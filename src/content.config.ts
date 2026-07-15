@@ -1,6 +1,7 @@
 import { defineCollection, reference } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { PROVINCES, type ProvinceSlug } from "@/lib/provinces";
 
 // ---------------------------------------------------------------------------
 // Shared image-context type (structural — no internal Astro imports needed)
@@ -18,19 +19,7 @@ function seoFields({ image }: ImageCtx) {
 // ---------------------------------------------------------------------------
 // Province / property-type lookup maps (exported for use in routes + lib)
 // ---------------------------------------------------------------------------
-export const PROVINCES = {
-  gauteng: "Gauteng",
-  "western-cape": "Western Cape",
-  "kwazulu-natal": "KwaZulu-Natal",
-  "eastern-cape": "Eastern Cape",
-  "free-state": "Free State",
-  limpopo: "Limpopo",
-  mpumalanga: "Mpumalanga",
-  "north-west": "North West",
-  "northern-cape": "Northern Cape",
-} as const;
-
-export type ProvinceSlug = keyof typeof PROVINCES;
+export { PROVINCES, type ProvinceSlug };
 
 export const PROPERTY_TYPES = {
   guesthouse: "Guesthouse",
@@ -119,11 +108,13 @@ const businessNodes = defineCollection({
   schema: (ctx) =>
     z.object({
       name: z.string(),
+      published: z.boolean().default(false),
       featured: z.boolean().default(false),
       province: z.enum(
         Object.keys(PROVINCES) as [ProvinceSlug, ...ProvinceSlug[]],
       ),
       heroImage: ctx.image(),
+      imageAlt: z.string().optional().default(""),
       businessHighlights: z
         .array(
           z.object({

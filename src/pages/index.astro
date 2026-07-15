@@ -1,10 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import {
   getHomePage,
+  getNodes,
   getPopularNodes,
+  getPublishedProperties,
   getFeaturedProperties,
   getGeneralTestimonials,
   getSiteSettings,
@@ -15,7 +17,10 @@ import {
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
-import { BusinessNodeSearch } from "@/components/custom/business-node-search";
+import {
+  BusinessNodeSearch,
+  type BusinessNodeSearchItem,
+} from "@/components/custom/business-node-search";
 
 export const prerender = true;
 
@@ -29,14 +34,36 @@ const testimonials = await getGeneralTestimonials();
 const settings = await getSiteSettings();
 const provinces = await getActiveProvinces();
 
-// Plain, serializable suggestions shown before the client-side fetch of
-// /search.json resolves — avoids an empty results panel on first paint.
-const popularNodesForSearch = popularNodes.map((node) => ({
-  slug: node.id,
-  name: node.data.name,
-  url: `/business-nodes/${node.data.province}/${node.id}`,
-  provinceLabel: provinceLabel(node.data.province),
-}));
+const nodes = await getNodes();
+const properties = await getPublishedProperties();
+
+const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
+  nodes.map(async (node) => {
+    const img = await getImage({
+      src: node.data.heroImage,
+      widths: [400, 800, 1200],
+      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+    });
+    return {
+      id: node.id,
+      name: node.data.name,
+      province: node.data.province,
+      featured: node.data.featured,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: node.data.imageAlt || node.data.name,
+      highlights: node.data.businessHighlights.map((h) => h.title),
+      propertyNames: properties
+        .filter((p) => p.data.businessNode.id === node.id)
+        .map((p) => p.data.name),
+    };
+  }),
+);
 ---
 
 <Layout
@@ -55,7 +82,7 @@ const popularNodesForSearch = popularNodes.map((node) => ({
   </Section>
 
   <Section slotName="business-node-search" className="relative mt-20 mb-72">
-    <BusinessNodeSearch client:load />
+    <BusinessNodeSearch nodes={searchNodes} client:load />
   </Section>
 
   <!-- Founder Trust Strip -->

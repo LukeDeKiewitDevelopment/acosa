@@ -1,4 +1,5 @@
 import { config, fields, collection, singleton } from "@keystatic/core";
+import { PROVINCE_OPTIONS } from "./src/lib/provinces";
 
 // ---------------------------------------------------------------------------
 // Shared field helpers
@@ -24,18 +25,6 @@ const seoFields = fields.object(
   },
   { label: "SEO" },
 );
-
-const provinceOptions = [
-  { label: "Gauteng", value: "gauteng" },
-  { label: "Western Cape", value: "western-cape" },
-  { label: "KwaZulu-Natal", value: "kwazulu-natal" },
-  { label: "Eastern Cape", value: "eastern-cape" },
-  { label: "Free State", value: "free-state" },
-  { label: "Limpopo", value: "limpopo" },
-  { label: "Mpumalanga", value: "mpumalanga" },
-  { label: "North West", value: "north-west" },
-  { label: "Northern Cape", value: "northern-cape" },
-] as const;
 
 // A simple reusable "tag" collection factory: label + slug (+ optional icon).
 const tagCollection = (label: string, path: string) =>
@@ -129,7 +118,7 @@ export default config({
         ),
         province: fields.select({
           label: "Province",
-          options: provinceOptions.slice(),
+          options: PROVINCE_OPTIONS,
           defaultValue: "gauteng",
         }),
         businessNode: fields.relationship({
@@ -273,15 +262,20 @@ export default config({
               "Do NOT change after publishing — property references will break.",
           },
         }),
+        published: fields.checkbox({
+          label: "Published",
+          description: "Untick to keep as a draft (hidden from the live site).",
+          defaultValue: false,
+        }),
         featured: fields.checkbox({
           label: "Popular Business Node",
           description:
-            "Show in the Popular Business Nodes section on the homepage.",
+            "Shown in the homepage Popular Business Nodes section and badged as Popular in search results.",
           defaultValue: false,
         }),
         province: fields.select({
           label: "Province",
-          options: provinceOptions.slice(),
+          options: PROVINCE_OPTIONS,
           defaultValue: "gauteng",
         }),
         heroImage: fields.image({
@@ -289,6 +283,10 @@ export default config({
           directory: "src/assets/images/nodes",
           publicPath: "../../assets/images/nodes/",
           validation: { isRequired: true },
+        }),
+        imageAlt: fields.text({
+          label: "Hero Image Alt Text",
+          description: "Describe the image for accessibility and SEO.",
         }),
         description: fields.markdoc({
           label: "Description",
