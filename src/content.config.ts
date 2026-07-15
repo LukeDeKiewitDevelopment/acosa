@@ -165,6 +165,15 @@ const homePage = defineCollection({
         body: z.string().optional().default(""),
         image: ctx.image().optional().nullable(),
       }),
+      trustStrip: z
+        .array(
+          z.object({
+            icon: z.string().optional().default(""),
+            title: z.string(),
+            detail: z.string().optional().default(""),
+          }),
+        )
+        .default([]),
       whyAcosaPreview: z.object({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),

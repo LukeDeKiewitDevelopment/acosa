@@ -420,6 +420,25 @@ export default config({
           },
           { label: "Founder Trust Strip" },
         ),
+        trustStrip: fields.array(
+          fields.object({
+            icon: fields.text({
+              label: "Icon",
+              description:
+                'Lucide icon name, e.g. "briefcase-business", "shield". See lucide.dev/icons',
+            }),
+            title: fields.text({
+              label: "Title",
+              validation: { isRequired: true },
+            }),
+            detail: fields.text({ label: "Detail", multiline: true }),
+          }),
+          {
+            label: "Trust Strip",
+            description: "The icon strip under the hero (4 items recommended).",
+            itemLabel: (props) => props.fields.title.value || "Item",
+          },
+        ),
         whyAcosaPreview: fields.object(
           {
             heading: fields.text({ label: "Heading" }),

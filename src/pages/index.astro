@@ -26,7 +26,8 @@ import { TrustStrip } from "@/components/custom/trust-strip";
 export const prerender = true;
 
 const page = await getHomePage();
-const { hero, founderStrip, whyAcosaPreview, ownerCta, seo } = page.data;
+const { hero, founderStrip, trustStrip, whyAcosaPreview, ownerCta, seo } =
+  page.data;
 
 const popularNodes = await getPopularNodes();
 const featuredProperties = await getFeaturedProperties();
@@ -82,12 +83,12 @@ const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
     />
   </Section>
 
-  <Section fullWidth>
+  <Section>
     <BusinessNodeSearch nodes={searchNodes} client:load />
   </Section>
 
   <Section>
-    <TrustStrip client:load />
+    <TrustStrip items={trustStrip} />
   </Section>
 
   <!-- Popular Business Nodes -->

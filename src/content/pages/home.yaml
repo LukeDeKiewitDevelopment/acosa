@@ -12,6 +12,19 @@ founderStrip:
     Traveller Essentials framework. If it's listed, it works — reliable WiFi,
     backup power, secure parking and a proper place to work.
   image: ../../assets/images/pages/founderStrip/image.jpg
+trustStrip:
+  - icon: briefcase-business
+    title: Curated for Business
+    detail: Every stay is chosen for business travellers.
+  - icon: shield
+    title: Quality You Can Trust
+    detail: We check for reliability, safety, amenities.
+  - icon: map-pin
+    title: Key Business Locations
+    detail: Stay close to where business happens.
+  - icon: life-buoy
+    title: Support Local
+    detail: Supporting Independent Hosts.
 whyAcosaPreview:
   heading: Why Acosa?
   body: >-
