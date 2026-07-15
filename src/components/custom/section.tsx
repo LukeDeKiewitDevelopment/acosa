@@ -18,7 +18,7 @@ export const Section = ({
     <section
       data-slot={slotName || "section"}
       className={cn(
-        "flex flex-col gap-8 my-12",
+        "my-12 flex flex-col gap-8",
         fullWidth ? "w-full" : "mx-4 md:mx-6 lg:mx-8",
         className,
       )}

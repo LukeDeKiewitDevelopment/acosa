@@ -42,25 +42,20 @@ const popularNodesForSearch = popularNodes.map((node) => ({
 <Layout
   title={seo?.title || "Acosa | Vetted Business Accommodation in South Africa"}
 >
-  <Hero
-    heading={hero.heading}
-    subheading={hero.subheading}
-    image={hero.image}
-    overlay={{
-      opacity: hero.overlayOpacity,
-    }}
-    contentClassName="text-background"
-  />
-
-  <Section
-    slotName="business-node-search"
-    className="relative mb-72 mt-20"
-  >
-    <BusinessNodeSearch
-      client:load
-      provinces={provinces}
-      popularNodes={popularNodesForSearch}
+  <Section fullWidth className="m-0">
+    <Hero
+      heading={hero.heading}
+      subheading={hero.subheading}
+      image={hero.image}
+      overlay={{
+        opacity: hero.overlayOpacity,
+      }}
+      contentClassName="text-background"
     />
+  </Section>
+
+  <Section slotName="business-node-search" className="relative mt-20 mb-72">
+    <BusinessNodeSearch client:load />
   </Section>
 
   <!-- Founder Trust Strip -->
