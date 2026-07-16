@@ -21,7 +21,7 @@ import {
   BusinessNodeSearch,
   type BusinessNodeSearchItem,
 } from "@/components/custom/business-node-search";
-import { TrustStrip } from "@/components/custom/trust-strip";
+import { TrustIcons } from "@/components/custom/trust-icons";
 
 export const prerender = true;
 
@@ -88,7 +88,7 @@ const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
   </Section>
 
   <Section>
-    <TrustStrip items={trustStrip} />
+    <TrustIcons items={trustStrip} />
   </Section>
 
   <!-- Popular Business Nodes -->

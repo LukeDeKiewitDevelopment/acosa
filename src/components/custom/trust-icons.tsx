@@ -1,14 +1,14 @@
 // src/components/custom/trust-strip.tsx
 import { Dot, icons } from "lucide-react";
 
-export type TrustStripItem = {
+export type TrustIconsItem = {
   icon: string;
   title: string;
   detail: string;
 };
 
-export type TrustStripProps = {
-  items: TrustStripItem[];
+export type TrustIconsProps = {
+  items: TrustIconsItem[];
 };
 
 function resolveIcon(name: string) {
@@ -21,7 +21,7 @@ function resolveIcon(name: string) {
   return icons[pascalName as keyof typeof icons] ?? Dot;
 }
 
-export const TrustStrip = ({ items }: TrustStripProps) => {
+export const TrustIcons = ({ items }: TrustIconsProps) => {
   if (items.length === 0) return null;
 
   return (
