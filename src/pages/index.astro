@@ -26,7 +26,10 @@ import {
   PopularNodes,
   type PopularNodeItem,
 } from "@/components/custom/popular-nodes";
-import { FeaturedProperties } from "@/components/custom/featured-properties.tsx";
+import {
+  FeaturedProperties,
+  type FeaturedPropertyItem,
+} from "@/components/custom/featured-properties";
 
 export const prerender = true;
 
@@ -95,6 +98,31 @@ const popularNodeItems: PopularNodeItem[] = await Promise.all(
     };
   }),
 );
+
+const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
+  featuredProperties.map(async (property) => {
+    const img = await getImage({
+      src: property.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+    });
+    return {
+      id: property.id,
+      name: property.data.name,
+      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+      approved: property.data.acosaApproved.approved,
+      shortDescription: property.data.shortDescription,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: property.data.imageAlt || property.data.name,
+    };
+  }),
+);
 ---
 
 <Layout
@@ -137,7 +165,7 @@ const popularNodeItems: PopularNodeItem[] = await Promise.all(
   </Section> -->
 
   <Section>
-    <FeaturedProperties />
+    <FeaturedProperties items={featuredPropertyItems} />
   </Section>
 
   <!-- Testimonials -->

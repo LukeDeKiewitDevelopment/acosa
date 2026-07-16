@@ -71,6 +71,7 @@ const properties = defineCollection({
         ],
       ),
       heroImage: ctx.image(),
+      imageAlt: z.string().optional().default(""),
       gallery: z
         .array(
           z.object({

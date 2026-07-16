@@ -142,6 +142,10 @@ export default config({
           publicPath: "../../assets/images/properties/",
           validation: { isRequired: true },
         }),
+        imageAlt: fields.text({
+          label: "Hero Image Alt Text",
+          description: "Describe the image for accessibility and SEO.",
+        }),
         gallery: fields.array(
           fields.object({
             image: fields.image({
