@@ -455,6 +455,40 @@ export default config({
           },
           { label: "Why Acosa Preview" },
         ),
+        vettingScorecard: fields.object(
+          {
+            headlineScore: fields.integer({
+              label: "Headline Score (%)",
+              description: "The big percentage at the top of the scorecard.",
+              defaultValue: 0,
+              validation: { min: 0, max: 100 },
+            }),
+            criteria: fields.array(
+              fields.object({
+                label: fields.text({
+                  label: "Criterion",
+                  validation: { isRequired: true },
+                }),
+                score: fields.integer({
+                  label: "Score (%)",
+                  defaultValue: 0,
+                  validation: { min: 0, max: 100 },
+                }),
+              }),
+              {
+                label: "Criteria",
+                description: "The labelled progress bars (4 recommended).",
+                itemLabel: (props) => props.fields.label.value || "Criterion",
+              },
+            ),
+            footnote: fields.text({
+              label: "Footnote",
+              description: "Small print under the bars.",
+              multiline: true,
+            }),
+          },
+          { label: "Vetting Scorecard" },
+        ),
         ownerCta: fields.object(
           {
             heading: fields.text({ label: "Heading" }),

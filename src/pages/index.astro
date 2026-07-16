@@ -30,12 +30,21 @@ import {
   FeaturedProperties,
   type FeaturedPropertyItem,
 } from "@/components/custom/featured-properties";
+import { VettingPreview } from "@/components/custom/vetting-preview";
+import { OwnerCta } from "@/components/custom/owner-cta";
 
 export const prerender = true;
 
 const page = await getHomePage();
-const { hero, founderStrip, trustStrip, whyAcosaPreview, ownerCta, seo } =
-  page.data;
+const {
+  hero,
+  founderStrip,
+  trustStrip,
+  whyAcosaPreview,
+  vettingScorecard,
+  ownerCta,
+  seo,
+} = page.data;
 
 const popularNodes = await getPopularNodes();
 const featuredProperties = await getFeaturedProperties();
@@ -140,79 +149,34 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
     />
   </Section>
 
-  <Section>
+  <Section className="mt-28">
     <BusinessNodeSearch nodes={searchNodes} client:load />
   </Section>
 
-  <Section>
+  <Section className="mt-28">
     <TrustIcons items={trustStrip} />
   </Section>
 
-  <Section>
+  <Section className="mt-28">
     <PopularNodes items={popularNodeItems} />
   </Section>
 
-  <!-- Business Traveller Essentials™ -->
-  <!-- <Section>
-    <h2>Business Traveller Essentials™</h2>
-    <ul>
-      {
-        essentials.map((tag) => (
-          <li data-icon={tag.data.icon}>{tag.data.name}</li>
-        ))
-      }
-    </ul>
-  </Section> -->
-
-  <Section>
+  <Section className="mt-28">
     <FeaturedProperties items={featuredPropertyItems} />
   </Section>
 
-  <!-- Testimonials -->
-  <!-- {
-    testimonials.length > 0 && (
-      <Section>
-        <h2>What travellers say</h2>
-        <ul>
-          {testimonials.map((t) => (
-            <li>
-              <blockquote>{t.data.review}</blockquote>
-              <cite>{t.data.reviewer}</cite>
-              {t.data.rating > 0 && <span>{t.data.rating}/5</span>}
-            </li>
-          ))}
-        </ul>
-      </Section>
-    )
-  } -->
+  <Section className="mt-28">
+    <VettingPreview
+      heading={whyAcosaPreview.heading}
+      body={whyAcosaPreview.body}
+      essentials={essentials.map((e) => e.data.name)}
+      headlineScore={vettingScorecard.headlineScore}
+      criteria={vettingScorecard.criteria}
+      footnote={vettingScorecard.footnote}
+    />
+  </Section>
 
-  <!-- Why Acosa Preview -->
-  <!-- <Section>
-    <h2>{whyAcosaPreview.heading}</h2>
-    <p>{whyAcosaPreview.body}</p>
-    <a href="/why-acosa">Learn more</a>
-  </Section> -->
-
-  <!-- Property Owner CTA -->
-  <!-- <Section>
-    <h2>{ownerCta.heading}</h2>
-    <p>{ownerCta.body}</p>
-    <a href="/list-your-property"
-      >{ownerCta.buttonLabel || "List Your Property"}</a
-    >
-  </Section> -->
-
-  <!-- Persistent WhatsApp button (homepage, per spec §8) -->
-  <!-- <Section
-    ><a
-      href={whatsappLink(
-        settings.data.defaultWhatsapp,
-        "Hi Acosa, I have an accommodation enquiry.",
-      )}
-      target="_blank"
-      rel="noopener"
-    >
-      WhatsApp us
-    </a></Section
-  > -->
+  <Section fullWidth className="mt-28">
+    <OwnerCta />
+  </Section>
 </Layout>

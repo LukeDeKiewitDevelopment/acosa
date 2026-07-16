@@ -1,6 +1,7 @@
 // src/components/custom/featured-properties.tsx
 import { ArrowRight, BadgeCheck, MapPin } from "lucide-react";
 import { StaticAcosaImage, type ResolvedAcosaImage } from "./image";
+import { Button } from "../ui/button";
 
 export type FeaturedPropertyItem = {
   id: string;
@@ -30,12 +31,11 @@ export const FeaturedProperties = ({
             Handpicked for business travellers across key South African nodes
           </p>
         </div>
-        <a
-          href="/business-nodes"
-          className="bg-secondary text-secondary-foreground inline-flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium"
-        >
-          View All Nodes <ArrowRight className="size-4" aria-hidden="true" />
-        </a>
+        <Button asChild>
+          <a href="/business-nodes" className="no-underline">
+            View All Nodes <ArrowRight aria-hidden="true" />
+          </a>
+        </Button>
       </div>
 
       <ul
@@ -45,7 +45,7 @@ export const FeaturedProperties = ({
         {items.map((item) => (
           <li key={item.id}>
             <article className="bg-card text-card-foreground relative flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition-shadow hover:shadow-md">
-              <div className="relative m-3 aspect-[16/11] overflow-hidden rounded-xl">
+              <div className="relative m-3 aspect-16/11 overflow-hidden rounded-xl">
                 <StaticAcosaImage
                   {...item.image}
                   alt={item.imageAlt}
@@ -78,7 +78,8 @@ export const FeaturedProperties = ({
                   <span className="line-clamp-2">{item.shortDescription}</span>
                 </p>
                 <span className="border-secondary text-secondary mt-auto inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-sm font-medium">
-                  View Details <ArrowRight className="size-4" aria-hidden="true" />
+                  View Details{" "}
+                  <ArrowRight className="size-4" aria-hidden="true" />
                 </span>
               </div>
             </article>
