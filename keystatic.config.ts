@@ -278,6 +278,11 @@ export default config({
           options: PROVINCE_OPTIONS,
           defaultValue: "gauteng",
         }),
+        city: fields.text({
+          label: "City",
+          description:
+            'Display city shown on node cards, e.g. "Johannesburg", "Pretoria".',
+        }),
         heroImage: fields.image({
           label: "Hero Image",
           directory: "src/assets/images/nodes",

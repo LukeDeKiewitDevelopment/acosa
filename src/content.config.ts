@@ -113,6 +113,7 @@ const businessNodes = defineCollection({
       province: z.enum(
         Object.keys(PROVINCES) as [ProvinceSlug, ...ProvinceSlug[]],
       ),
+      city: z.string().optional().default(""),
       heroImage: ctx.image(),
       imageAlt: z.string().optional().default(""),
       businessHighlights: z

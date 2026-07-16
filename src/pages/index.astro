@@ -22,6 +22,11 @@ import {
   type BusinessNodeSearchItem,
 } from "@/components/custom/business-node-search";
 import { TrustIcons } from "@/components/custom/trust-icons";
+import {
+  PopularNodes,
+  type PopularNodeItem,
+} from "@/components/custom/popular-nodes";
+import { FeaturedProperties } from "@/components/custom/featured-properties.tsx";
 
 export const prerender = true;
 
@@ -66,6 +71,30 @@ const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
     };
   }),
 );
+
+const popularNodeItems: PopularNodeItem[] = await Promise.all(
+  popularNodes.map(async (node) => {
+    const img = await getImage({
+      src: node.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
+    });
+    return {
+      id: node.id,
+      name: node.data.name,
+      city: node.data.city,
+      province: node.data.province,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: node.data.imageAlt || node.data.name,
+    };
+  }),
+);
 ---
 
 <Layout
@@ -91,28 +120,9 @@ const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
     <TrustIcons items={trustStrip} />
   </Section>
 
-  <!-- Popular Business Nodes -->
-  <!-- <Section>
-    <h2>Popular Business Nodes</h2>
-    <ul>
-      {
-        popularNodes.map((node) => (
-          <li>
-            <a href={`/business-nodes/${node.data.province}/${node.id}`}>
-              <Image
-                src={node.data.heroImage}
-                alt={node.data.name}
-                widths={[400, 800]}
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-              <h3>{node.data.name}</h3>
-              <p>{provinceLabel(node.data.province)}</p>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </Section> -->
+  <Section>
+    <PopularNodes items={popularNodeItems} />
+  </Section>
 
   <!-- Business Traveller Essentials™ -->
   <!-- <Section>
@@ -126,37 +136,9 @@ const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
     </ul>
   </Section> -->
 
-  <!-- Featured Properties -->
-  <!-- <Section>
-    <h2>Featured Properties</h2>
-    <ul>
-      {
-        featuredProperties.map((property) => (
-          <li>
-            <a href={`/properties/${property.id}`}>
-              <Image
-                src={property.data.heroImage}
-                alt={property.data.name}
-                widths={[400, 800]}
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-              <h3>{property.data.name}</h3>
-              <p>
-                {propertyTypeLabel(property.data.propertyType)} ·{" "}
-                {provinceLabel(property.data.province)}
-              </p>
-              <p>{property.data.shortDescription}</p>
-              {property.data.acosaApproved.approved && (
-                <span>
-                  Acosa Approved™ {property.data.acosaApproved.score}%
-                </span>
-              )}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </Section> -->
+  <Section>
+    <FeaturedProperties />
+  </Section>
 
   <!-- Testimonials -->
   <!-- {
