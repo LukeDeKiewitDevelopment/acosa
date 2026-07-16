@@ -494,6 +494,10 @@ export default config({
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
             buttonLabel: fields.text({ label: "Button Label" }),
+            secondButtonLabel: fields.text({
+              label: "Second Button Label",
+              description: "Optional outlined button. Leave empty to hide it.",
+            }),
           },
           { label: "Property Owner CTA" },
         ),

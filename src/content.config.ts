@@ -198,6 +198,7 @@ const homePage = defineCollection({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),
         buttonLabel: z.string().optional().default(""),
+        secondButtonLabel: z.string().optional().default(""),
       }),
       seo: seoFields(ctx).optional(),
     }),

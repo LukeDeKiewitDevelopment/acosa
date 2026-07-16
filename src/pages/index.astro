@@ -176,7 +176,12 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
     />
   </Section>
 
-  <Section fullWidth className="mt-28">
-    <OwnerCta />
+  <Section fullWidth className="m-0">
+    <OwnerCta
+      heading={ownerCta.heading}
+      body={ownerCta.body}
+      buttonLabel={ownerCta.buttonLabel}
+      secondButtonLabel={ownerCta.secondButtonLabel}
+    />
   </Section>
 </Layout>
