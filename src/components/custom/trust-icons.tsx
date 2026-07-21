@@ -1,5 +1,6 @@
 // src/components/custom/trust-strip.tsx
-import { Dot, icons } from "lucide-react";
+import { Dot } from "lucide-react";
+import { resolveIcon } from "@/lib/lucide";
 
 export type TrustIconsItem = {
   icon: string;
@@ -11,16 +12,6 @@ export type TrustIconsProps = {
   items: TrustIconsItem[];
 };
 
-function resolveIcon(name: string) {
-  if (!name) return Dot;
-  const pascalName = name
-    .split("-")
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join("");
-  return icons[pascalName as keyof typeof icons] ?? Dot;
-}
-
 export const TrustIcons = ({ items }: TrustIconsProps) => {
   if (items.length === 0) return null;
 
@@ -30,7 +21,7 @@ export const TrustIcons = ({ items }: TrustIconsProps) => {
       className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
     >
       {items.map((item) => {
-        const Icon = resolveIcon(item.icon);
+        const Icon = resolveIcon(item.icon, Dot);
         return (
           <li key={item.title} className="flex items-start gap-4">
             <span className="bg-secondary/10 text-secondary flex size-12 shrink-0 items-center justify-center rounded-xl">

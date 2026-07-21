@@ -180,20 +180,6 @@ const homePage = defineCollection({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),
       }),
-      vettingScorecard: z
-        .object({
-          headlineScore: z.number().min(0).max(100).default(0),
-          criteria: z
-            .array(
-              z.object({
-                label: z.string(),
-                score: z.number().min(0).max(100).default(0),
-              }),
-            )
-            .default([]),
-          footnote: z.string().optional().default(""),
-        })
-        .default({ headlineScore: 0, criteria: [], footnote: "" }),
       ownerCta: z.object({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),

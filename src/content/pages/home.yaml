@@ -30,20 +30,6 @@ whyAcosaPreview:
   body: >-
     Generic booking sites optimise for holidays. Acosa optimises for
     Monday-morning meetings, load-shedding schedules and six-week project stays.
-vettingScorecard:
-  headlineScore: 92
-  criteria:
-    - label: Operational Reliability
-      score: 96
-    - label: Business Usability
-      score: 92
-    - label: Infrastructure
-      score: 88
-    - label: Guest Responsiveness
-      score: 94
-  footnote: >-
-    Properties are scored by our operational assessment team. Only
-    properties meeting the threshold earn the Acosa Approved™ badge.
 ownerCta:
   heading: Own a guesthouse or executive stay?
   body: >-

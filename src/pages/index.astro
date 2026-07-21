@@ -41,7 +41,6 @@ const {
   founderStrip,
   trustStrip,
   whyAcosaPreview,
-  vettingScorecard,
   ownerCta,
   seo,
 } = page.data;
@@ -169,10 +168,10 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
     <VettingPreview
       heading={whyAcosaPreview.heading}
       body={whyAcosaPreview.body}
-      essentials={essentials.map((e) => e.data.name)}
-      headlineScore={vettingScorecard.headlineScore}
-      criteria={vettingScorecard.criteria}
-      footnote={vettingScorecard.footnote}
+      essentials={essentials.map((e) => ({
+        name: e.data.name,
+        icon: e.data.icon,
+      }))}
     />
   </Section>
 
