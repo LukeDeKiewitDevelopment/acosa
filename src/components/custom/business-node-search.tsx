@@ -150,7 +150,7 @@ export const BusinessNodeCard = ({ node }: { node: BusinessNodeSearchItem }) => 
           <h3 className="text-base leading-snug font-semibold">
             <a
               href={`/business-nodes/${node.province}/${node.id}`}
-              className="after:absolute after:inset-0"
+              className="after:absolute after:inset-0 no-underline"
             >
               {node.name}
             </a>

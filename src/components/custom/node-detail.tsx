@@ -69,14 +69,16 @@ export const NodeDetail = ({
           {/* city + province label */}
           <p className="flex items-center gap-1.5 text-sm text-white/80 md:text-base">
             <MapPin className="size-4" aria-hidden="true" />
-            {node.city ? `${node.city}, ${node.provinceLabel}` : node.provinceLabel}
+            {node.city
+              ? `${node.city}, ${node.provinceLabel}`
+              : node.provinceLabel}
           </p>
         </div>
       </div>
 
       {/* ---- Node Description (markdoc children) + Map ---- */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_20rem]">
-        <div className="prose prose-sm text-muted-foreground max-w-none md:prose-base">
+        <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
           {children}
         </div>
         {node.mapUrl && (
@@ -84,7 +86,7 @@ export const NodeDetail = ({
             href={node.mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-card text-card-foreground flex h-fit items-center justify-between gap-3 rounded-xl border p-4 text-sm font-medium shadow-sm"
+            className="bg-card text-card-foreground flex h-fit items-center justify-between gap-3 rounded-xl border p-4 text-sm font-medium no-underline shadow-sm"
           >
             <span className="flex items-center gap-2">
               <MapPin className="text-secondary size-5" aria-hidden="true" />
@@ -130,7 +132,7 @@ export const NodeDetail = ({
                   <h3 className="text-primary text-lg font-bold">
                     <a
                       href={`/properties/${item.id}`}
-                      className="after:absolute after:inset-0"
+                      className="after:absolute after:inset-0 no-underline"
                     >
                       {item.name}
                     </a>
