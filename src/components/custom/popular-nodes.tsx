@@ -10,6 +10,36 @@ export type PopularNodeItem = {
   imageAlt: string;
 };
 
+export const NodeCard = ({
+  id,
+  name,
+  city,
+  province,
+  image,
+  imageAlt,
+}: PopularNodeItem) => {
+  return (
+    <a
+      href={`/business-nodes/${province}/${id}`}
+      className="group relative block aspect-3/4 overflow-hidden rounded-2xl"
+    >
+      <StaticAcosaImage
+        {...image}
+        alt={imageAlt}
+        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent"
+      />
+      <span className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-4 text-white">
+        <span className="text-lg font-bold">{name}</span>
+        {city && <span className="text-sm text-white/80">{city}</span>}
+      </span>
+    </a>
+  );
+};
+
 export const PopularNodes = ({ items }: { items: PopularNodeItem[] }) => {
   if (items.length === 0) return null;
 
@@ -30,26 +60,7 @@ export const PopularNodes = ({ items }: { items: PopularNodeItem[] }) => {
       >
         {items.map((item) => (
           <li key={item.id}>
-            <a
-              href={`/business-nodes/${item.province}/${item.id}`}
-              className="group relative block aspect-[3/4] overflow-hidden rounded-2xl"
-            >
-              <StaticAcosaImage
-                {...item.image}
-                alt={item.imageAlt}
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent"
-              />
-              <span className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-4 text-white">
-                <span className="text-lg font-bold">{item.name}</span>
-                {item.city && (
-                  <span className="text-sm text-white/80">{item.city}</span>
-                )}
-              </span>
-            </a>
+            <NodeCard {...item} />
           </li>
         ))}
       </ul>
