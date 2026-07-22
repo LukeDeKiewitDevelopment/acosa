@@ -27,7 +27,7 @@ export const NodeDirectory = ({ groups }: { groups: DirectoryGroup[] }) => {
           <h2 className="text-primary flex items-baseline gap-2 text-lg font-bold md:text-xl">
             <a
               href={`/business-nodes/${group.slug}`}
-              className="hover:underline"
+              className="hover:underline no-underline"
             >
               {group.label}
             </a>
