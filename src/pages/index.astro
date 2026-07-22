@@ -4,23 +4,19 @@ import { Image, getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import {
   getHomePage,
-  getNodes,
   getPopularNodes,
-  getPublishedProperties,
   getFeaturedProperties,
   getGeneralTestimonials,
   getSiteSettings,
   getActiveProvinces,
+  buildSearchNodes,
   whatsappLink,
   provinceLabel,
   propertyTypeLabel,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
-import {
-  BusinessNodeSearch,
-  type BusinessNodeSearchItem,
-} from "@/components/custom/business-node-search";
+import { BusinessNodeSearch } from "@/components/custom/business-node-search";
 import { TrustIcons } from "@/components/custom/trust-icons";
 import {
   PopularNodes,
@@ -52,36 +48,7 @@ const testimonials = await getGeneralTestimonials();
 const settings = await getSiteSettings();
 const provinces = await getActiveProvinces();
 
-const nodes = await getNodes();
-const properties = await getPublishedProperties();
-
-const searchNodes: BusinessNodeSearchItem[] = await Promise.all(
-  nodes.map(async (node) => {
-    const img = await getImage({
-      src: node.data.heroImage,
-      widths: [400, 800, 1200],
-      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-    });
-    return {
-      id: node.id,
-      name: node.data.name,
-      province: node.data.province,
-      featured: node.data.featured,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: node.data.imageAlt || node.data.name,
-      highlights: node.data.businessHighlights.map((h) => h.title),
-      propertyNames: properties
-        .filter((p) => p.data.businessNode.id === node.id)
-        .map((p) => p.data.name),
-    };
-  }),
-);
+const searchNodes = await buildSearchNodes();
 
 const popularNodeItems: PopularNodeItem[] = await Promise.all(
   popularNodes.map(async (node) => {

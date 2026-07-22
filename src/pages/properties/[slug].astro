@@ -1,17 +1,19 @@
 ---
 import { render } from "astro:content";
-import { getEntry } from "astro:content";
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import {
   getPublishedProperties,
   resolvePropertyTags,
   getTestimonialsForProperty,
-  getPropertiesByNode,
-  whatsappLink,
-  provinceLabel,
   propertyTypeLabel,
 } from "@/lib/content";
+import { Section } from "@/components/custom/section";
+import {
+  PropertyGallery,
+  type PropertyGallerySlide,
+} from "@/components/custom/property-gallery";
+import { PropertyDetail } from "@/components/custom/property-detail";
 
 export const prerender = true;
 
@@ -28,184 +30,74 @@ const { Content } = await render(property);
 const { essentials, facilities, nearbyConvenience, perfectFor } =
   await resolvePropertyTags(property);
 const testimonials = await getTestimonialsForProperty(property.id);
-const node = await getEntry(property.data.businessNode);
-const related = (
-  await getPropertiesByNode(property.data.businessNode.id)
-).filter((p) => p.id !== property.id);
 const seo = property.data.seo;
-const enquiryMessage = `Hi, I'd like to enquire about ${property.data.name} (via Acosa).`;
+
+// Slides = heroImage first, then gallery[] in order.
+const slideSources = [
+  {
+    image: property.data.heroImage,
+    alt: property.data.imageAlt || property.data.name,
+  },
+  ...property.data.gallery.map((entry) => ({
+    image: entry.image,
+    alt: entry.alt || property.data.name,
+  })),
+];
+
+const slides: PropertyGallerySlide[] = await Promise.all(
+  slideSources.map(async (slide) => {
+    const img = await getImage({
+      src: slide.image,
+      widths: [800, 1200, 1600],
+      sizes: "(min-width: 1024px) 66vw, 100vw",
+    });
+    return {
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      alt: slide.alt,
+    };
+  }),
+);
 ---
 
 <Layout title={seo?.title || `${property.data.name} | Acosa`}>
-  <!-- Gallery -->
-  <section>
-    <Image
-      src={property.data.heroImage}
-      alt={property.data.name}
-      widths={[640, 1024, 1600]}
-      sizes="100vw"
-      loading="eager"
-    />
-    <ul>
-      {
-        property.data.gallery.map((item) => (
-          <li>
-            <Image
-              src={item.image}
-              alt={item.alt || property.data.name}
-              widths={[400, 800]}
-              sizes="(min-width: 768px) 33vw, 100vw"
-            />
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <Section className="mt-28">
+    <PropertyGallery client:load slides={slides} />
+  </Section>
 
-  <!-- Property Overview -->
-  <section>
-    <h1>{property.data.name}</h1>
-    <p>
-      {propertyTypeLabel(property.data.propertyType)} ·{" "}
-      {
-        node && (
-          <a href={`/business-nodes/${node.data.province}/${node.id}`}>
-            {node.data.name}
-          </a>
-        )
-      }
-      , {provinceLabel(property.data.province)}
-    </p>
-
-    <!-- Acosa Approved™ -->
-    {
-      property.data.acosaApproved.approved && (
-        <p>
-          <strong>Acosa Approved™</strong> — {property.data.acosaApproved.score}
-          % assessment score
-        </p>
-      )
-    }
-
-    <p>{property.data.shortDescription}</p>
-    <Content />
-  </section>
-
-  <!-- Business Traveller Essentials™ -->
-  <section>
-    <h2>Business Traveller Essentials™</h2>
-    <ul>
-      {
-        essentials.map((tag) => (
-          <li data-icon={tag.data.icon}>{tag.data.name}</li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <!-- Perfect For -->
-  {
-    perfectFor.length > 0 && (
-      <section>
-        <h2>Perfect for</h2>
-        <ul>
-          {perfectFor.map((tag) => (
-            <li data-icon={tag.data.icon}>{tag.data.name}</li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
-
-  <!-- Facilities -->
-  <section>
-    <h2>Facilities</h2>
-    <ul>
-      {
-        facilities.map((tag) => (
-          <li data-icon={tag.data.icon}>{tag.data.name}</li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <!-- Nearby Convenience -->
-  <section>
-    <h2>Nearby convenience</h2>
-    <ul>
-      {
-        nearbyConvenience.map((tag) => (
-          <li data-icon={tag.data.icon}>{tag.data.name}</li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <!-- Map -->
-  {
-    property.data.location.mapUrl && (
-      <section>
-        <h2>Location</h2>
-        <p>{property.data.location.address}</p>
-        <a href={property.data.location.mapUrl} target="_blank" rel="noopener">
-          View on Google Maps
-        </a>
-      </section>
-    )
-  }
-
-  <!-- Testimonials -->
-  {
-    testimonials.length > 0 && (
-      <section>
-        <h2>Reviews</h2>
-        <ul>
-          {testimonials.map((t) => (
-            <li>
-              <blockquote>{t.data.review}</blockquote>
-              <cite>{t.data.reviewer}</cite>
-              {t.data.rating > 0 && <span>{t.data.rating}/5</span>}
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
-
-  <!-- Sticky Enquiry Card: wrap in a positioned aside when styling -->
-  <aside>
-    <h2>Make an enquiry</h2>
-    <p>Send an enquiry directly to the property.</p>
-    <a
-      href={whatsappLink(property.data.contact.whatsapp, enquiryMessage)}
-      target="_blank"
-      rel="noopener"
+  <Section className="mt-16 mb-28">
+    <PropertyDetail
+      property={{
+        name: property.data.name,
+        propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+        approved: property.data.acosaApproved.approved,
+        score: property.data.acosaApproved.score,
+        shortDescription: property.data.shortDescription,
+        address: property.data.location.address,
+        mapUrl: property.data.location.mapUrl ?? "",
+        whatsapp: property.data.contact.whatsapp,
+        phone: property.data.contact.phone,
+        email: property.data.contact.email,
+      }}
+      essentials={essentials.map((tag) => ({
+        name: tag.data.name,
+        icon: tag.data.icon,
+      }))}
+      perfectFor={perfectFor.map((tag) => tag.data.name)}
+      facilities={facilities.map((tag) => tag.data.name)}
+      nearby={nearbyConvenience.map((tag) => tag.data.name)}
+      testimonials={testimonials.map((testimonial) => ({
+        reviewer: testimonial.data.reviewer,
+        review: testimonial.data.review,
+        rating: testimonial.data.rating,
+      }))}
     >
-      WhatsApp
-    </a>
-    {
-      property.data.contact.phone && (
-        <a href={`tel:${property.data.contact.phone.replace(/\s/g, "")}`}>
-          {property.data.contact.phone}
-        </a>
-      )
-    }
-    <a href={`/contact?property=${property.id}`}>Send enquiry form</a>
-  </aside>
-
-  <!-- Related properties in the same node -->
-  {
-    related.length > 0 && (
-      <section>
-        <h2>More in {node?.data.name}</h2>
-        <ul>
-          {related.map((p) => (
-            <li>
-              <a href={`/properties/${p.id}`}>{p.data.name}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
+      <Content />
+    </PropertyDetail>
+  </Section>
 </Layout>

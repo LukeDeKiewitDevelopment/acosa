@@ -1,13 +1,16 @@
 ---
-import { render } from 'astro:content';
-import { Image } from 'astro:assets';
-import Layout from '@/layouts/Layout.astro';
+import { render, getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
 import {
   getNodes,
-  getPropertiesByNode,
+  getPublishedProperties,
   provinceLabel,
   propertyTypeLabel,
-} from '@/lib/content';
+} from "@/lib/content";
+import { Section } from "@/components/custom/section";
+import { NodeDetail } from "@/components/custom/node-detail";
+import type { FeaturedPropertyItem } from "@/components/custom/featured-properties";
 
 export const prerender = true;
 
@@ -21,78 +24,81 @@ export async function getStaticPaths() {
 
 const { node } = Astro.props;
 const { Content } = await render(node);
-const properties = await getPropertiesByNode(node.id);
 const seo = node.data.seo;
+
+const heroImg = await getImage({
+  src: node.data.heroImage,
+  widths: [800, 1200, 1600],
+  sizes: "100vw",
+});
+
+const nodeProperties = (await getPublishedProperties()).filter(
+  (property) => property.data.businessNode.id === node.id,
+);
+
+const propertyItems: FeaturedPropertyItem[] = await Promise.all(
+  nodeProperties.map(async (property) => {
+    const img = await getImage({
+      src: property.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+    });
+    return {
+      id: property.id,
+      name: property.data.name,
+      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+      approved: property.data.acosaApproved.approved,
+      shortDescription: property.data.shortDescription,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: property.data.imageAlt || property.data.name,
+    };
+  }),
+);
+
+// Nearby Convenience is derived: unique tag ids across this node's
+// properties, in first-seen order, resolved to names.
+const nearbyIds: string[] = [];
+for (const property of nodeProperties) {
+  for (const tag of property.data.nearbyConvenience) {
+    if (!nearbyIds.includes(tag.id)) nearbyIds.push(tag.id);
+  }
+}
+const nearbyTags = await getCollection("nearbyConvenience");
+const nearby = nearbyIds
+  .map((id) => nearbyTags.find((tag) => tag.id === id)?.data.name)
+  .filter((name): name is string => Boolean(name));
 ---
 
-<Layout
-  title={seo?.title || `Business Accommodation in ${node.data.name} | Acosa`}
->
-  <!-- Hero -->
-  <section>
-    <h1>{node.data.name}</h1>
-    <p>{provinceLabel(node.data.province)}</p>
-    <Image src={node.data.heroImage} alt={node.data.name} widths={[640, 1024, 1600]} sizes="100vw" />
-  </section>
-
-  <!-- Node Description -->
-  <section>
-    <Content />
-  </section>
-
-  <!-- Map -->
-  {node.data.mapUrl && (
-    <section>
-      <h2>Location</h2>
-      <a href={node.data.mapUrl} target="_blank" rel="noopener">View {node.data.name} on Google Maps</a>
-      <!-- Swap for an embedded map component when building the frontend -->
-    </section>
-  )}
-
-  <!-- Filters: property cards carry data-* attributes for client-side filtering -->
-  <!-- Property Grid -->
-  <section>
-    <h2>Vetted properties in {node.data.name}</h2>
-    <ul>
-      {properties.map((property) => (
-        <li
-          data-property-type={property.data.propertyType}
-          data-essentials={property.data.essentials.map((e) => e.id).join(',')}
-          data-nearby={property.data.nearbyConvenience.map((n) => n.id).join(',')}
-          data-featured={property.data.featured}
-        >
-          <a href={`/properties/${property.id}`}>
-            <Image src={property.data.heroImage} alt={property.data.name} widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
-            <h3>{property.data.name}</h3>
-            <p>{propertyTypeLabel(property.data.propertyType)}</p>
-            <p>{property.data.shortDescription}</p>
-            {property.data.acosaApproved.approved && (
-              <span>Acosa Approved™ {property.data.acosaApproved.score}%</span>
-            )}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <!-- Business Information -->
-  {node.data.businessHighlights.length > 0 && (
-    <section>
-      <h2>Business information</h2>
-      <ul>
-        {node.data.businessHighlights.map((h) => (
-          <li>
-            <h3>{h.title}</h3>
-            <p>{h.detail}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
-
-  <!-- CTA -->
-  <section>
-    <h2>Need help choosing?</h2>
-    <a href="/contact">Send us an enquiry</a>
-  </section>
+<Layout title={seo?.title || `${node.data.name} | Acosa`}>
+  <Section className="mt-28 mb-28">
+    <NodeDetail
+      node={{
+        id: node.id,
+        name: node.data.name,
+        city: node.data.city,
+        province: node.data.province,
+        provinceLabel: provinceLabel(node.data.province),
+        mapUrl: node.data.mapUrl ?? "",
+        image: {
+          src: heroImg.src,
+          srcSet: heroImg.srcSet.attribute || undefined,
+          sizes: heroImg.attributes.sizes,
+          width: heroImg.attributes.width,
+          height: heroImg.attributes.height,
+        },
+        imageAlt: node.data.imageAlt || node.data.name,
+      }}
+      properties={propertyItems}
+      highlights={node.data.businessHighlights}
+      nearby={nearby}
+    >
+      <Content />
+    </NodeDetail>
+  </Section>
 </Layout>

@@ -1,7 +1,9 @@
 import { getCollection, getEntry, getEntries } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
 import { PROVINCES, PROPERTY_TYPES } from '../content.config';
 import { provinceLabel } from './provinces';
+import type { BusinessNodeSearchItem } from '@/components/custom/business-node-search';
 
 export { PROVINCES, PROPERTY_TYPES, provinceLabel };
 export type Property = CollectionEntry<'properties'>;
@@ -77,6 +79,42 @@ export async function getNodesByProvince(
   return getCollection(
     'businessNodes',
     ({ data }) => data.published && data.province === province
+  );
+}
+
+/** Payload for the BusinessNodeSearch island: every published node with a
+ *  pre-resolved hero image plus the names of its published properties. */
+export async function buildSearchNodes(): Promise<BusinessNodeSearchItem[]> {
+  const [nodes, properties] = await Promise.all([
+    getNodes(),
+    getPublishedProperties(),
+  ]);
+  return Promise.all(
+    nodes.map(async (node) => {
+      const img = await getImage({
+        src: node.data.heroImage,
+        widths: [400, 800, 1200],
+        sizes: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+      });
+      return {
+        id: node.id,
+        name: node.data.name,
+        province: node.data.province,
+        featured: node.data.featured,
+        image: {
+          src: img.src,
+          srcSet: img.srcSet.attribute || undefined,
+          sizes: img.attributes.sizes,
+          width: img.attributes.width,
+          height: img.attributes.height,
+        },
+        imageAlt: node.data.imageAlt || node.data.name,
+        highlights: node.data.businessHighlights.map((h) => h.title),
+        propertyNames: properties
+          .filter((p) => p.data.businessNode.id === node.id)
+          .map((p) => p.data.name),
+      };
+    })
   );
 }
 
