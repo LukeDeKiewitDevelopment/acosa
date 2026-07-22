@@ -10,7 +10,7 @@ export type PopularNodeItem = {
   imageAlt: string;
 };
 
-export const NodeCard = ({
+export const PopularNodeCard = ({
   id,
   name,
   city,
@@ -60,7 +60,7 @@ export const PopularNodes = ({ items }: { items: PopularNodeItem[] }) => {
       >
         {items.map((item) => (
           <li key={item.id}>
-            <NodeCard {...item} />
+            <PopularNodeCard {...item} />
           </li>
         ))}
       </ul>

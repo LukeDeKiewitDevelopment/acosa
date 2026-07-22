@@ -1,61 +1,82 @@
 ---
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
-import { getNodes, getActiveProvinces, provinceLabel } from "@/lib/content";
+import { getNodes, getActiveProvinces } from "@/lib/content";
+import { Section } from "@/components/custom/section";
+import {
+  NodeDirectory,
+  type DirectoryGroup,
+  type DirectoryNode,
+} from "@/components/custom/node-directory";
 
 export const prerender = true;
 
 const nodes = await getNodes();
 const provinces = await getActiveProvinces();
+
+const sortedProvinces = [...provinces].sort(
+  (a, b) => b.nodeCount - a.nodeCount || a.label.localeCompare(b.label),
+);
+
+const directoryNodes: DirectoryNode[] = await Promise.all(
+  nodes.map(async (node) => {
+    const img = await getImage({
+      src: node.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
+    });
+    return {
+      id: node.id,
+      name: node.data.name,
+      city: node.data.city,
+      province: node.data.province,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: node.data.imageAlt || node.data.name,
+    };
+  }),
+);
+
+const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
+  slug: province.slug,
+  label: province.label,
+  nodeCount: province.nodeCount,
+  nodes: directoryNodes.filter((node) => node.province === province.slug),
+}));
 ---
 
 <Layout title="Business Nodes | Acosa">
-  <!-- Hero -->
-  <section>
-    <h1>Business Nodes</h1>
-    <p>Vetted accommodation, organised around where you actually work.</p>
-  </section>
+  <Section className="mt-28">
+    <div class="flex flex-col gap-2 text-center">
+      <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
+        Business Nodes
+      </h1>
+      <p class="text-muted-foreground text-sm md:text-base">
+        Vetted accommodation, organised around where you actually work.
+      </p>
+    </div>
+  </Section>
 
-  <!-- Province Selector -->
-  <nav aria-label="Provinces">
-    <ul>
-      {
-        provinces.map((p) => (
-          <li>
-            <a href={`/business-nodes/${p.slug}`}>
-              {p.label} ({p.nodeCount})
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
+  <Section className="mt-16">
+    <NodeDirectory groups={groups} />
+  </Section>
 
-  <!-- Business Node Cards -->
-  <section>
-    <ul>
-      {
-        nodes.map((node) => (
-          <li>
-            <a href={`/business-nodes/${node.data.province}/${node.id}`}>
-              <Image
-                src={node.data.heroImage}
-                alt={node.data.name}
-                widths={[400, 800]}
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-              <h2>{node.data.name}</h2>
-              <p>{provinceLabel(node.data.province)}</p>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <!-- CTA -->
-  <section>
-    <h2>Can't find your node?</h2>
-    <a href="/contact">Contact us</a>
-  </section>
+  <Section className="mt-16 mb-28">
+    <div class="flex flex-col items-center gap-6 text-center">
+      <h2 class="text-primary text-xl font-bold md:text-2xl">
+        Can't find your node?
+      </h2>
+      <a
+        href="/contact"
+        class="bg-secondary text-secondary-foreground rounded-full px-5 py-2.5 text-sm font-medium"
+      >
+        Contact us
+      </a>
+    </div>
+  </Section>
 </Layout>
