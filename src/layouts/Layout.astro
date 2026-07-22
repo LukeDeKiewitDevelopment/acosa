@@ -47,7 +47,7 @@ const navItems: NavItem[] = [
     href: "/business-nodes",
     subItems: nodes.map((node) => ({
       label: node.data.name,
-      href: `/business-nodes/${node.id}`,
+      href: `/business-nodes/${node.data.province}/${node.id}`,
     })),
   },
   { label: "Properties", href: "/properties" },
