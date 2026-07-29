@@ -1,12 +1,16 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import Layout from '@/layouts/Layout.astro';
 import {
   getNodes,
   getNodesByProvince,
   getPropertiesByProvince,
   provinceLabel,
+  propertyTypeLabel,
 } from '@/lib/content';
+import { Section } from '@/components/custom/section';
+import { StaticAcosaImage, type ResolvedAcosaImage } from '@/components/custom/image';
+import { ArrowRight, BadgeCheck, MapPin } from 'lucide-react';
 
 export const prerender = true;
 
@@ -20,27 +24,159 @@ const { province } = Astro.params;
 const label = provinceLabel(province!);
 const nodes = await getNodesByProvince(province!);
 const properties = await getPropertiesByProvince(province!);
+
+const resolvedNodes = await Promise.all(
+  nodes.map(async (node) => {
+    const img = await getImage({
+      src: node.data.heroImage,
+      widths: [400, 800],
+      sizes: '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw',
+    });
+    const image: ResolvedAcosaImage = {
+      src: img.src,
+      srcSet: img.srcSet.attribute || undefined,
+      sizes: img.attributes.sizes,
+      width: img.attributes.width,
+      height: img.attributes.height,
+    };
+    return { node, image };
+  }),
+);
+
+const resolvedProperties = await Promise.all(
+  properties.map(async (property) => {
+    const img = await getImage({
+      src: property.data.heroImage,
+      widths: [400, 800],
+      sizes: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+    });
+    const image: ResolvedAcosaImage = {
+      src: img.src,
+      srcSet: img.srcSet.attribute || undefined,
+      sizes: img.attributes.sizes,
+      width: img.attributes.width,
+      height: img.attributes.height,
+    };
+    return { property, image };
+  }),
+);
+
+const hasNodes = nodes.length > 0;
+const hasProperties = properties.length > 0;
 ---
 
 <Layout
   title={`Business Accommodation in ${label} | Acosa`}
 >
-  <section>
-    <h1>{label}</h1>
-    <p>{nodes.length} business node{nodes.length === 1 ? '' : 's'} · {properties.length} vetted propert{properties.length === 1 ? 'y' : 'ies'}</p>
-  </section>
+  <Section className="mt-28">
+    <div class="flex flex-col gap-2 text-center">
+      <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
+        {label}
+      </h1>
+      <p class="text-muted-foreground text-sm md:text-base">
+        {nodes.length} business {nodes.length === 1 ? 'node' : 'nodes'} · {properties.length} {properties.length === 1 ? 'property' : 'properties'}
+      </p>
+    </div>
+  </Section>
 
-  <section>
-    <h2>Business nodes in {label}</h2>
-    <ul>
-      {nodes.map((node) => (
-        <li>
-          <a href={`/business-nodes/${province}/${node.id}`}>
-            <Image src={node.data.heroImage} alt={node.data.name} widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
-            <h3>{node.data.name}</h3>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
+  {hasNodes && (
+    <Section className={hasProperties ? "mt-16" : "mt-16 mb-28"}>
+      <h2 class="text-primary font-bold text-xl md:text-2xl">
+        Business Nodes in {label}
+      </h2>
+      <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {resolvedNodes.map(({ node, image }) => (
+          <li>
+            <a
+              href={`/business-nodes/${province}/${node.id}`}
+              class="group relative block aspect-3/4 overflow-hidden rounded-2xl"
+            >
+              <StaticAcosaImage
+                {...image}
+                alt={node.data.imageAlt || node.data.name}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <span
+                aria-hidden="true"
+                class="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent"
+              />
+              <span class="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-4 text-white">
+                <span class="text-lg font-bold">{node.data.name}</span>
+                {node.data.city && (
+                  <span class="text-sm text-white/80">{node.data.city}</span>
+                )}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )}
+
+  {hasProperties && (
+    <Section className="mt-16 mb-28">
+      <h2 class="text-primary font-bold text-xl md:text-2xl">
+        Properties in {label}
+      </h2>
+      <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {resolvedProperties.map(({ property, image }) => (
+          <li>
+            <article class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md">
+              <div class="relative m-3 aspect-16/11 overflow-hidden rounded-xl">
+                <StaticAcosaImage
+                  {...image}
+                  alt={property.data.imageAlt || property.data.name}
+                  className="h-full w-full object-cover"
+                />
+                <span class="bg-primary text-primary-foreground absolute top-3 left-3 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
+                  {propertyTypeLabel(property.data.propertyType)}
+                </span>
+                {property.data.acosaApproved.approved && (
+                  <span class="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
+                    <BadgeCheck className="size-3.5" aria-hidden="true" />
+                    Acosa Approved™
+                  </span>
+                )}
+              </div>
+              <div class="flex flex-1 flex-col gap-3 p-4 pt-1">
+                <h3 class="text-primary text-lg font-bold">
+                  <a
+                    href={`/properties/${property.id}`}
+                    class="after:absolute after:inset-0"
+                  >
+                    {property.data.name}
+                  </a>
+                </h3>
+                {property.data.shortDescription && (
+                  <p class="text-muted-foreground flex items-start gap-1.5 text-sm">
+                    <MapPin className="text-secondary mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                    <span class="line-clamp-2">{property.data.shortDescription}</span>
+                  </p>
+                )}
+                <span class="border-secondary text-secondary mt-auto inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-sm font-medium">
+                  View Details <ArrowRight className="size-4" aria-hidden="true" />
+                </span>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )}
+
+  {!hasNodes && !hasProperties && (
+    <Section className="mt-16 mb-28">
+      <div class="flex flex-col items-center gap-6 rounded-2xl border border-dashed border-border p-12 text-center">
+        <p class="text-muted-foreground">
+          No listings in {label} yet.
+        </p>
+        <a
+          href="/business-nodes"
+          class="bg-secondary text-secondary-foreground rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+        >
+          Back to Business Nodes
+        </a>
+      </div>
+    </Section>
+  )}
 </Layout>

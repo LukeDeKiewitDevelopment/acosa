@@ -1,64 +1,55 @@
 ---
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
+import { Section } from "@/components/custom/section";
+import { getPublishedProperties, propertyTypeLabel } from "@/lib/content";
 import {
-  getPublishedProperties,
-  provinceLabel,
-  propertyTypeLabel,
-} from "@/lib/content";
+  PropertySearch,
+  type PropertySearchItem,
+} from "@/components/custom/property-search";
 
 export const prerender = true;
 
 const properties = await getPublishedProperties();
+
+const items: PropertySearchItem[] = await Promise.all(
+  properties.map(async (property) => {
+    const img = await getImage({
+      src: property.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+    });
+    return {
+      id: property.id,
+      name: property.data.name,
+      province: property.data.province,
+      propertyType: property.data.propertyType,
+      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+      approved: property.data.acosaApproved.approved,
+      shortDescription: property.data.shortDescription,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: property.data.imageAlt || property.data.name,
+    };
+  }),
+);
 ---
 
 <Layout title="All Properties | Acosa">
-  <section>
-    <h1>All properties</h1>
-    <!-- Search/filter island goes here; /search.json provides the index.
-         Cards below carry data-* attributes so filtering can also be done
-         purely client-side against the rendered DOM. -->
-  </section>
-
-  <section>
-    <ul>
-      {
-        properties.map((property) => (
-          <li
-            data-name={property.data.name.toLowerCase()}
-            data-province={property.data.province}
-            data-node={property.data.businessNode.id}
-            data-property-type={property.data.propertyType}
-            data-essentials={property.data.essentials
-              .map((e) => e.id)
-              .join(",")}
-            data-nearby={property.data.nearbyConvenience
-              .map((n) => n.id)
-              .join(",")}
-            data-featured={property.data.featured}
-          >
-            <a href={`/properties/${property.id}`}>
-              <Image
-                src={property.data.heroImage}
-                alt={property.data.name}
-                widths={[400, 800]}
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-              <h2>{property.data.name}</h2>
-              <p>
-                {propertyTypeLabel(property.data.propertyType)} ·{" "}
-                {provinceLabel(property.data.province)}
-              </p>
-              <p>{property.data.shortDescription}</p>
-              {property.data.acosaApproved.approved && (
-                <span>
-                  Acosa Approved™ {property.data.acosaApproved.score}%
-                </span>
-              )}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <Section className="mt-28">
+    <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
+      All Properties
+    </h1>
+    <p class="text-muted-foreground mt-2 text-sm md:text-base">
+      Browse business accommodation across South Africa's key corporate nodes.
+    </p>
+  </Section>
+  <Section className="mt-16 mb-28">
+    <PropertySearch client:load items={items} />
+  </Section>
 </Layout>

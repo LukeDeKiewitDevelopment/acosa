@@ -2,6 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import { getEntry } from 'astro:content';
 import { getSiteSettings, whatsappLink } from '@/lib/content';
+import { Section } from '@/components/custom/section';
+import { ContactForm } from '@/components/custom/contact-form';
+import { ExternalLink, MapPin, MessageCircle } from 'lucide-react';
 
 export const prerender = true;
 
@@ -9,41 +12,67 @@ const page = await getEntry('contactPage', 'contact');
 if (!page) throw new Error('Contact page content not found');
 const settings = await getSiteSettings();
 const seo = page.data.seo;
+
+const hcaptchaSiteKey: string = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY ?? '';
 ---
 
 <Layout title={seo?.title || 'Contact Acosa'}>
-  <!-- Hero -->
-  <section>
-    <h1>{page.data.heroHeading}</h1>
-    <p>{page.data.intro}</p>
-  </section>
+  <Section className="mt-28">
+    <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
+      {page.data.heroHeading}
+    </h1>
+    {
+      page.data.intro && (
+        <p class="text-muted-foreground mt-2 text-sm md:text-base">
+          {page.data.intro}
+        </p>
+      )
+    }
+  </Section>
 
-  <!-- WhatsApp CTA -->
-  <section>
-    <a href={whatsappLink(settings.data.defaultWhatsapp, 'Hi Acosa!')} target="_blank" rel="noopener">
-      Message us on WhatsApp
-    </a>
-  </section>
+  <Section className="mt-16 mb-28">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_20rem]">
+      <div>
+        <ContactForm
+          client:load
+          enquiryEmail={settings.data.enquiryEmail}
+          hcaptchaSiteKey={hcaptchaSiteKey}
+        />
+      </div>
 
-  <!-- Contact Form: general + corporate enquiry. Needs a serverless submit
-       handler that emails settings.data.enquiryEmail -->
-  <section>
-    <form method="post" action="/api/contact">
-      <select name="enquiryType">
-        <option value="general">General enquiry</option>
-        <option value="corporate">Corporate enquiry</option>
-      </select>
-      <input name="name" placeholder="Your name" required />
-      <input name="email" type="email" placeholder="Email" required />
-      <textarea name="message" placeholder="How can we help?" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
+      <aside class="bg-card flex h-fit flex-col gap-4 rounded-2xl border p-6 shadow-sm lg:sticky lg:top-24">
+        <h2 class="text-primary text-lg font-semibold">Other ways to reach us</h2>
 
-  <!-- Map (optional) -->
-  {page.data.showMap && page.data.mapUrl && (
-    <section>
-      <a href={page.data.mapUrl} target="_blank" rel="noopener">Find us on Google Maps</a>
-    </section>
-  )}
+        <a
+          href={whatsappLink(settings.data.defaultWhatsapp, 'Hi Acosa!')}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
+        >
+          <MessageCircle className="size-4" aria-hidden="true" />
+          Message us on WhatsApp
+        </a>
+
+        {
+          page.data.showMap && page.data.mapUrl && (
+            <a
+              href={page.data.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="border-border hover:bg-muted/50 flex items-center justify-between gap-3 rounded-xl border p-4 text-sm font-medium no-underline transition-colors"
+            >
+              <span class="flex items-center gap-2">
+                <MapPin className="text-secondary size-4" aria-hidden="true" />
+                Find us on the map
+              </span>
+              <ExternalLink
+                className="text-muted-foreground size-4"
+                aria-hidden="true"
+              />
+            </a>
+          )
+        }
+      </aside>
+    </div>
+  </Section>
 </Layout>

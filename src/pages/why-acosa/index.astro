@@ -1,7 +1,13 @@
 ---
 import { getEntry, render } from "astro:content";
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
+import { Section } from "@/components/custom/section";
+import {
+  StaticAcosaImage,
+  type ResolvedAcosaImage,
+} from "@/components/custom/image";
+import { ArrowRight } from "lucide-react";
 
 export const prerender = true;
 
@@ -9,33 +15,64 @@ const page = await getEntry("whyAcosaPage", "why-acosa");
 if (!page) throw new Error("Why Acosa page content not found");
 const { Content } = await render(page);
 const seo = page.data.seo;
+
+let heroImage: ResolvedAcosaImage | null = null;
+if (page.data.heroImage) {
+  const img = await getImage({
+    src: page.data.heroImage,
+    widths: [640, 1024, 1600],
+    sizes: "100vw",
+  });
+  heroImage = {
+    src: img.src,
+    srcSet: img.srcSet.attribute || undefined,
+    sizes: img.attributes.sizes,
+    width: img.attributes.width,
+    height: img.attributes.height,
+  };
+}
 ---
 
 <Layout title={seo?.title || "Why Acosa"}>
-  <!-- Hero -->
-  <section>
-    <h1>{page.data.heroHeading}</h1>
+  <Section className="mt-28">
+    <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
+      {page.data.heroHeading}
+    </h1>
     {
-      page.data.heroImage && (
-        <Image
-          src={page.data.heroImage}
-          alt=""
-          widths={[640, 1024, 1600]}
-          sizes="100vw"
-        />
+      heroImage && (
+        <div class="mt-6 overflow-hidden rounded-2xl">
+          <StaticAcosaImage
+            {...heroImage}
+            alt=""
+            className="aspect-21/9 w-full object-cover"
+          />
+        </div>
       )
     }
-  </section>
+  </Section>
 
-  <!-- Founder Story / The Problem / Our Difference / Acosa Approved™ / Essentials™
-       all authored as sections inside the Markdoc body -->
-  <section>
-    <Content />
-  </section>
+  <Section className="mt-16">
+    <div
+      class="prose prose-sm md:prose-base text-muted-foreground max-w-none"
+    >
+      <Content />
+    </div>
+  </Section>
 
-  <!-- CTA -->
-  <section>
-    <a href="/business-nodes">Find accommodation</a>
-    <a href="/list-your-property">List your property</a>
-  </section>
+  <Section className="mt-16 mb-28">
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="/business-nodes"
+        class="bg-secondary text-secondary-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+      >
+        Find Accommodation <ArrowRight className="size-4" aria-hidden="true" />
+      </a>
+      <a
+        href="/list-your-property"
+        class="border-secondary text-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+      >
+        List Your Property <ArrowRight className="size-4" aria-hidden="true" />
+      </a>
+    </div>
+  </Section>
 </Layout>
