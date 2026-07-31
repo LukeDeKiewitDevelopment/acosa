@@ -39,6 +39,13 @@ const logo: HeaderLogo | undefined = settings.data.logos
 
 export interface Props {
   title: string;
+  description?: string;
+  /** Resolved by the page (getImage → .src); relative paths are made
+   *  absolute here, since social crawlers reject relative og:image. */
+  ogImage?: string;
+  /** Pre-built schema.org object (or array, emitted as an @graph). */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
 }
 
 const navItems: NavItem[] = [
@@ -56,22 +63,88 @@ const navItems: NavItem[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-const { title } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  jsonLd,
+  noindex = false,
+} = Astro.props;
+
+const siteBase: string = import.meta.env.SITE || Astro.url.origin;
+const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
+// new URL() leaves an already-absolute ogImage untouched, so pages may pass
+// either a getImage() src or a full URL.
+const ogImageUrl = ogImage ? new URL(ogImage, siteBase).href : undefined;
+
+// Sitewide baseline — rendered on every page, independent of the jsonLd prop.
+const organisationSchema: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Acosa",
+  url: siteBase,
+  description:
+    "Vetted business accommodation across South Africa's key corporate nodes.",
+  email: settings.data.enquiryEmail,
+  sameAs: settings.data.socialLinks.map((s) => s.url).filter(Boolean),
+};
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    {description && <meta name="description" content={description} />}
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow"}
+    />
     <title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    {description && <meta property="og:description" content={description} />}
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Acosa" />
+
+    <meta
+      name="twitter:card"
+      content={ogImageUrl ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    <link rel="canonical" href={canonicalUrl} />
+
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Organisation schema: always present -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organisationSchema)}
+    />
+    <!-- Page-level schema: passed by individual pages -->
+    {
+      jsonLd && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(
+            Array.isArray(jsonLd)
+              ? { "@context": "https://schema.org", "@graph": jsonLd }
+              : jsonLd,
+          )}
+        />
+      )
+    }
     <script is:inline>
       const getThemePreference = () => {
         if (
