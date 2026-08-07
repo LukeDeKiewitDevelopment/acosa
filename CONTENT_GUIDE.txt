@@ -1,0 +1,84 @@
+ACOSA CONTENT GUIDE
+===================
+
+HOW SAVING WORKS
+-----------------
+When you save in Keystatic, the change goes live automatically within a few
+minutes. There is no separate publish-to-server step.
+
+The Published checkbox is your safety net. Leave it unticked while you are
+working on an entry. Tick it only when the entry is complete and ready to show
+on the site.
+
+
+BUSINESS NODES
+--------------
+Nodes are districts (Sandton, Menlyn, Umhlanga) — not individual properties.
+Create the node first before adding any properties in that area.
+
+Required before publishing: hero image, city, description, at least one
+published property in the node.
+
+WARNING: Do not change the slug (the URL identifier) after a node is published.
+It will break every property linked to it.
+
+
+PROPERTIES
+----------
+Every property must be linked to a Business Node. If the node does not exist
+yet, create it first.
+
+Required before publishing: hero image, short description, WhatsApp number,
+business node selected.
+
+WhatsApp number format: digits only, no spaces, no +. Example: 27721234567
+
+Vetting workflow:
+1. Fill in the property, leave Published unticked.
+2. Run the Acosa vetting assessment.
+3. If it passes, tick Acosa Approved and enter the score.
+4. Tick Published when ready.
+
+Gallery: add images in order — rooms first, then facilities, then location.
+Minimum 3 recommended.
+
+
+TESTIMONIALS
+------------
+Paste the review text verbatim. Do not edit the reviewer's words.
+Rating 0 = stars hidden, text only.
+Link to the property where possible — this is what makes it appear on that
+property's page.
+
+
+TAGS (Essentials, Facilities, Nearby Convenience, Perfect For)
+---------------------------------------------------------------
+These are shared labels reused across all properties. Before creating a new
+tag, check the existing list — avoid near-duplicates like "Parking" and
+"Secure Parking".
+
+Icon field: go to lucide.dev/icons, find an icon, paste its name in lowercase
+with hyphens. Example: wifi, car, coffee, map-pin.
+
+
+IMAGES
+------
+Hero images and gallery: landscape, minimum 1600x900px. JPG, PNG or WebP.
+Social share (OG) image: exactly 1200x630px.
+Always fill in the alt text field. Describe what is in the image in one plain
+sentence. Example: Reception area of Menlyn Boutique Hotel, Pretoria.
+
+
+DO'S AND DON'TS
+---------------
+Do:
+- Keep short descriptions under 160 characters.
+- Fill in alt text for every image.
+- Use the unpublished state while working.
+- Fill in all required fields before publishing.
+
+Don't:
+- Change a slug after an entry is published.
+- Publish a property without a hero image.
+- Tick Acosa Approved without a completed assessment.
+- Create near-duplicate tags.
