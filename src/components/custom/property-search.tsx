@@ -185,15 +185,17 @@ const PropertyCard = ({ item }: { item: PropertySearchItem }) => {
             alt={item.imageAlt}
             className="h-full w-full object-cover"
           />
-          <span className="bg-primary text-primary-foreground absolute top-3 left-3 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
-            {item.propertyTypeLabel}
-          </span>
-          {item.approved && (
-            <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
-              <BadgeCheck className="size-3.5" aria-hidden="true" />
-              Acosa Approved™
+          <div className="absolute top-3 left-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center">
+            <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
+              {item.propertyTypeLabel}
             </span>
-          )}
+            {item.approved && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
+                <BadgeCheck className="size-3.5" aria-hidden="true" />
+                Acosa Approved™
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex flex-1 flex-col gap-3 p-4 pt-1">
           <h3 className="text-primary text-lg font-bold">
