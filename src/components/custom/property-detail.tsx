@@ -29,8 +29,8 @@ import { resolveIcon } from "@/lib/lucide";
    - Testimonials: published testimonials where property === this id,
      with per-review star rating (rating 0 = hidden); no aggregate UI
    - Sidebar: contact.whatsapp (required; wa.me link), contact.phone
-     (omitted when empty), contact.email. "Send Enquiry" targets the
-     contact page until an enquiry form exists. */
+     (omitted when empty), contact.email ("Send Enquiry" mailto link,
+     omitted when empty). */
 export type PropertyDetailProperty = {
   name: string;
   propertyTypeLabel: string;
@@ -102,10 +102,7 @@ export const PropertyDetail = ({
             {/* shortDescription */}
             {property.shortDescription && (
               <span className="text-muted-foreground inline-flex items-center gap-1 text-sm">
-                <MapPin
-                  className="text-secondary size-4"
-                  aria-hidden="true"
-                />
+                <MapPin className="text-secondary size-4" aria-hidden="true" />
                 {property.shortDescription}
               </span>
             )}
@@ -138,7 +135,7 @@ export const PropertyDetail = ({
           <h2 className="text-primary text-xl font-bold">
             About This Property
           </h2>
-          <div className="prose prose-sm text-muted-foreground max-w-none md:prose-base">
+          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
             {children}
           </div>
         </div>
@@ -271,26 +268,26 @@ export const PropertyDetail = ({
       <aside className="flex h-fit flex-col gap-4 lg:sticky lg:top-24">
         <div className="bg-card text-card-foreground flex flex-col gap-4 rounded-2xl border p-6 shadow-sm">
           <div className="flex flex-col gap-1">
-            <h2 className="text-primary text-lg font-bold">
-              Make An Enquiry
-            </h2>
+            <h2 className="text-primary text-lg font-bold">Make An Enquiry</h2>
             <p className="text-muted-foreground text-sm">
               Send an enquiry directly to the property.
             </p>
           </div>
-          {/* enquiry form does not exist yet → contact page */}
-          <a
-            href="/contact"
-            className="bg-secondary text-secondary-foreground inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium"
-          >
-            Send Enquiry
-          </a>
+          {/* contact.email — omit when empty */}
+          {property.email && (
+            <a
+              href={`mailto:${property.email}`}
+              className="bg-secondary text-secondary-foreground inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+            >
+              Send Enquiry
+            </a>
+          )}
           {/* contact.whatsapp (required) → wa.me link */}
           <a
             href={`https://wa.me/${property.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
           >
             WhatsApp
           </a>
