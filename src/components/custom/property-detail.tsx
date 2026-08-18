@@ -298,7 +298,7 @@ export const PropertyDetail = ({
           {property.phone && (
             <a
               href={`tel:${property.phone.replace(/\s/g, "")}`}
-              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium"
+              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
             >
               <Phone className="size-4" aria-hidden="true" />
               {property.phone}
@@ -308,7 +308,7 @@ export const PropertyDetail = ({
           {property.email && (
             <a
               href={`mailto:${property.email}?subject=Acosa Enquiry`}
-              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium"
+              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
             >
               <Mail className="size-4" aria-hidden="true" />
               Email
