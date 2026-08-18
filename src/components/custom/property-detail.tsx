@@ -104,8 +104,8 @@ export const PropertyDetail = ({
             )}
             {/* shortDescription */}
             {property.shortDescription && (
-              <span className="text-muted-foreground inline-flex items-center gap-1 text-sm">
-                <MapPin className="text-secondary size-4" aria-hidden="true" />
+              <span className="text-foreground inline-flex items-center gap-1 text-sm">
+                <MapPin className="text-foreground size-4" aria-hidden="true" />
                 {property.shortDescription}
               </span>
             )}
