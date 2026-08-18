@@ -214,7 +214,7 @@ export const PropertyDetail = ({
               href={property.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-card text-card-foreground flex w-fit items-center gap-2 rounded-xl border p-4 text-sm font-medium shadow-sm"
+              className="bg-card text-card-foreground flex w-fit items-center gap-2 rounded-xl border p-4 text-sm font-medium no-underline shadow-sm"
             >
               <MapPin className="text-secondary size-5" aria-hidden="true" />
               View on Google Maps
