@@ -140,6 +140,7 @@ const slides: PropertyGallerySlide[] = await Promise.all(
         whatsapp: property.data.contact.whatsapp,
         phone: property.data.contact.phone,
         email: property.data.contact.email,
+        website: property.data.contact.website ?? undefined,
       }}
       essentials={essentials.map((tag) => ({
         name: tag.data.name,

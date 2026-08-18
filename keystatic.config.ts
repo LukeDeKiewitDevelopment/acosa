@@ -266,6 +266,11 @@ export default config({
                 "WhatsApp number in international format without spaces or +. E.g. 27721234567. This powers the WhatsApp enquiry button on the property page. Required.",
               validation: { isRequired: true },
             }),
+            website: fields.url({
+              label: "Website",
+              description:
+                "The property's own website URL. Shown as a direct link on the property page. Leave empty if they don't have one.",
+            }),
           },
           { label: "Contact Details" },
         ),

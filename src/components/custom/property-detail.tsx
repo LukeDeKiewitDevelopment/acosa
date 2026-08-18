@@ -4,6 +4,7 @@ import {
   BadgeCheck,
   CircleCheck,
   ExternalLink,
+  Mail,
   MapPin,
   Phone,
   Star,
@@ -29,8 +30,9 @@ import { resolveIcon } from "@/lib/lucide";
    - Testimonials: published testimonials where property === this id,
      with per-review star rating (rating 0 = hidden); no aggregate UI
    - Sidebar: contact.whatsapp (required; wa.me link), contact.phone
-     (omitted when empty), contact.email ("Send Enquiry" mailto link,
-     omitted when empty). */
+     (omitted when empty), contact.email ("Send Enquiry" mailto link
+     plus an "Email" mailto link, both omitted when empty),
+     contact.website ("Website" external link, omitted when empty). */
 export type PropertyDetailProperty = {
   name: string;
   propertyTypeLabel: string;
@@ -42,6 +44,7 @@ export type PropertyDetailProperty = {
   whatsapp: string;
   phone: string;
   email: string;
+  website?: string;
 };
 
 export type PropertyDetailTag = {
@@ -299,6 +302,28 @@ export const PropertyDetail = ({
             >
               <Phone className="size-4" aria-hidden="true" />
               {property.phone}
+            </a>
+          )}
+          {/* contact.email — omit when empty */}
+          {property.email && (
+            <a
+              href={`mailto:${property.email}?subject=Acosa Enquiry`}
+              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium"
+            >
+              <Mail className="size-4" aria-hidden="true" />
+              Email
+            </a>
+          )}
+          {/* contact.website — omit when empty */}
+          {property.website && (
+            <a
+              href={property.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium"
+            >
+              <ExternalLink className="size-4" aria-hidden="true" />
+              Website
             </a>
           )}
         </div>

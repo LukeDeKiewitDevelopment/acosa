@@ -90,6 +90,7 @@ const properties = defineCollection({
         email: z.string().optional().default(""),
         phone: z.string().optional().default(""),
         whatsapp: z.string(),
+        website: z.string().url().optional().nullable(),
       }),
       location: z
         .object({
