@@ -320,7 +320,7 @@ export const PropertyDetail = ({
               href={property.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium"
+              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
             >
               <ExternalLink className="size-4" aria-hidden="true" />
               Website
