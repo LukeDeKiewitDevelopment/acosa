@@ -12,6 +12,27 @@ hero:
     label: Need Help Finding a Stay?
     link: whatsapp
 
+founderStrip:
+  heading: Built around better business stays.
+  body: >-
+    ACOSA brings together independent accommodation selected for the practical
+    realities of travelling for work.
+
+whyAcosaPreview:
+  heading: Not every place to stay is a good place to stay for business.
+  body: >-
+    Reliable WiFi, a practical workspace, secure parking, backup power and a
+    quiet room after a long day matter when you're travelling for work.
+
+ownerCta:
+  heading: Reach the people you actually want to host.
+  body: >-
+    If you've built an independent accommodation experience that works
+    exceptionally well for business travellers, ACOSA gives you a more focused
+    way to be discovered.
+  buttonLabel: List Your Property
+  secondButtonLabel: See What's Included
+
 businessTravelSection:
   eyebrow: BUILT AROUND BUSINESS TRAVEL
   heading: Not every place to stay is a good place to stay for business.

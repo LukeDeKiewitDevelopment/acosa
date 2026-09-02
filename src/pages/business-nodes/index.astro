@@ -5,6 +5,7 @@ import {
   getNodes,
   getActiveProvinces,
   buildSearchNodes,
+  getSiteSettings,
   whatsappLink,
 } from "@/lib/content";
 import { Section } from "@/components/custom/section";
@@ -20,6 +21,7 @@ export const prerender = true;
 
 const nodes = await getNodes();
 const provinces = await getActiveProvinces();
+const settings = await getSiteSettings();
 const searchNodes = await buildSearchNodes();
 
 const sortedProvinces = [...provinces].sort(
@@ -94,9 +96,10 @@ const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
         <div class="rounded-lg border border-border bg-card p-6">
           <p class="mb-4 text-sm font-medium">Can't see the area you need?</p>
           <a
-            href={whatsappLink({
-              message: "Hi ACOSA, I'm looking for business accommodation in [AREA]. Can you assist?",
-            })}
+            href={whatsappLink(
+              settings.data.defaultWhatsapp,
+              "Hi ACOSA, I'm looking for business accommodation in [AREA]. Can you assist?",
+            )}
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center justify-center rounded-full bg-green-600 px-6 py-2.5 text-sm font-medium text-white no-underline hover:bg-green-700"

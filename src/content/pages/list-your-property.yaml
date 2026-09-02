@@ -3,13 +3,27 @@ hero:
   heading: Reach the people you actually want to host.
   body: >-
     Your property doesn't need more irrelevant visibility. It needs to be discovered by people whose accommodation needs match what you've built. ACOSA connects carefully selected independent accommodation providers with corporate travellers and the people who book for them.
-  image: ../../assets/images/pages/property-owner-pride/image.jpg
+  image: ../../assets/images/pages/list-your-property/hero.jpg
   primaryCta:
     label: Apply to List Your Property
     link: email
   secondaryCta:
     label: Ask Us on WhatsApp
     link: whatsapp
+
+whoWeWorkWith:
+  heading: Built for properties that take hospitality seriously.
+  body: >-
+    ACOSA is designed for independent establishments that care about the
+    quality of the guest experience, operate professionally and understand the
+    needs of working travellers.
+
+acosaStandards:
+  heading: Every property is reviewed before being accepted.
+  body: >-
+    Paying for a listing does not guarantee acceptance. ACOSA looks for
+    properties that offer a reliable, professional experience for corporate
+    guests.
 
 whoWeWorkWithSection:
   eyebrow: QUALITY INDEPENDENT HOSPITALITY
@@ -31,7 +45,7 @@ valueSection:
   heading: Become part of a corporate-travel visibility network.
   body: >-
     An ACOSA listing helps a more relevant audience discover your property and understand why it may suit their stay.
-  image: ../../assets/images/pages/property-visibility/image.jpg
+  image: ../../assets/images/pages/founderStrip/image.jpg
   includes:
     - title: Professionally Curated Property Profile
       detail: ACOSA structures and presents your property information for a corporate accommodation audience.
