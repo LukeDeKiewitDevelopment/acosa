@@ -1,45 +1,86 @@
 hero:
-  heading: Business accommodation you can rely on
-  subheading: >-
-    South Africa's curated platform for vetted guesthouses, boutique hotels and
-    executive stays — built around the way business travellers actually work.
+  eyebrow: CURATED BUSINESS ACCOMMODATION
+  heading: Find a stay that works as hard as you do.
+  body: >-
+    Business travel asks more of accommodation than a comfortable bed. ACOSA connects business travellers and corporate accommodation bookers with carefully selected independent properties in key South African business nodes — making it easier to find a stay suited to the realities of travelling for work.
   image: ../../assets/images/pages/hero/image.png
   overlayOpacity: 65
-founderStrip:
-  heading: Personally vetted, personally accountable
+  primaryCta:
+    label: Find Accommodation
+    link: /business-nodes
+  secondaryCta:
+    label: Need Help Finding a Stay?
+    link: whatsapp
+
+businessTravelSection:
+  eyebrow: BUILT AROUND BUSINESS TRAVEL
+  heading: Not every place to stay is a good place to stay for business.
   body: >-
-    Every property on Acosa has been assessed by our team against the Business
-    Traveller Essentials framework. If it's listed, it works — reliable WiFi,
-    backup power, secure parking and a proper place to work.
-  image: ../../assets/images/pages/founderStrip/image.jpg
-trustStrip:
-  - icon: briefcase-business
-    title: Curated for Business
-    detail: Every stay is chosen for business travellers.
-  - icon: shield
-    title: Quality You Can Trust
-    detail: We check for reliability, safety, amenities.
-  - icon: map-pin
-    title: Key Business Locations
-    detail: Stay close to where business happens.
-  - icon: life-buoy
-    title: Support Local
-    detail: Supporting Independent Hosts.
-whyAcosaPreview:
-  heading: Why Acosa?
+    Reliable WiFi. A practical workspace. Secure parking. Backup power. A good breakfast. A quiet room after a long day. When you're travelling for work, the practical details matter. ACOSA helps you discover independent accommodation selected with those realities in mind.
+  image: ../../assets/images/pages/business-traveller-workspace/image.jpg
+  cta:
+    label: Why ACOSA?
+    link: /why-acosa
+
+businessNodesSection:
+  eyebrow: LOCATION MATTERS
+  heading: Stay closer to where business takes you.
   body: >-
-    Generic booking sites optimise for holidays. Acosa optimises for
-    Monday-morning meetings, load-shedding schedules and six-week project stays.
-ownerCta:
-  heading: Own a guesthouse or executive stay?
+    When you're travelling for work, where you stay can be just as important as the room itself. ACOSA organises accommodation around key business nodes, helping you start your search where you actually need to be.
+  cta:
+    label: View All Business Nodes
+    link: /business-nodes
+
+featuredPropertiesSection:
+  eyebrow: ACOSA PROPERTIES
+  heading: Start your search.
   body: >-
-    List your property on Acosa and connect with South Africa's professional
-    corporate travellers.
-  buttonLabel: List Your Property
-  secondButtonLabel: Learn About Listing
+    Explore selected accommodation within ACOSA's growing network of properties suited to business travel.
+
+corporateBookersSection:
+  eyebrow: BOOKING FOR SOMEONE ELSE?
+  heading: The traveller isn't always the person doing the searching.
+  body: >-
+    ACOSA also helps the people responsible for arranging business accommodation — from executive assistants and HR teams to operations, procurement and project coordinators. Whether you're placing one colleague or arranging accommodation for a team, start with a more relevant shortlist.
+  image: ../../assets/images/pages/corporate-booker/image.jpg
+  primaryCta:
+    label: Accommodation for Your Team
+    link: /for-companies
+  secondaryCta:
+    label: Email Your Requirements
+    link: email
+
+humanAssistanceSection:
+  heading: Can't find quite what you need?
+  body: >-
+    Tell us where you need to be, who you're booking for and what matters for the stay. If the right option isn't immediately obvious, ACOSA can help you explore suitable accommodation within our network.
+  cta:
+    label: WhatsApp ACOSA
+    link: whatsapp
+
+propertyOwnersSection:
+  eyebrow: FOR ACCOMMODATION PROVIDERS
+  heading: Reach the people you actually want to host.
+  body: >-
+    If you've built an independent accommodation experience that works exceptionally well for business travellers, ACOSA gives you a more focused way to be discovered by them — and by the people responsible for placing them.
+  primaryCta:
+    label: List Your Property
+    link: /list-your-property
+  secondaryCta:
+    label: See What's Included
+    link: /list-your-property
+
+closingSection:
+  eyebrow: null
+  heading: A better business stay works beyond working hours.
+  body: >-
+    The right accommodation gives you somewhere practical to work, somewhere comfortable to return to, and one less thing to think about while you're away.
+  image: ../../assets/images/pages/end-of-workday/image.jpg
+  cta:
+    label: Find Your Stay
+    link: /business-nodes
+
 seo:
-  title: Acosa | Vetted Business Accommodation in South Africa
+  title: ACOSA | Curated Business Accommodation in South Africa
   description: >-
-    Find vetted business accommodation in South Africa's key business nodes.
-    Guesthouses, boutique hotels and executive stays that meet the Business
-    Traveller Essentials standard.
+    Find curated business accommodation in South Africa's key business nodes. ACOSA connects business travellers with carefully selected independent properties suited to the realities of travelling for work.

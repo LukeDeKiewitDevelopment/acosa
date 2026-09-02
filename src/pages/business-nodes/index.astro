@@ -5,8 +5,10 @@ import {
   getNodes,
   getActiveProvinces,
   buildSearchNodes,
+  whatsappLink,
 } from "@/lib/content";
 import { Section } from "@/components/custom/section";
+import { Hero } from "@/components/custom/hero";
 import {
   NodeDirectory,
   type DirectoryGroup,
@@ -57,39 +59,67 @@ const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
 ---
 
 <Layout
-  title="Business Nodes | Acosa"
-  description="Browse business accommodation across South Africa's key corporate nodes."
+  title="Business Nodes | ACOSA"
+  description="Find accommodation by location across South Africa's key business nodes."
 >
-  <Section className="mt-28">
-    <div class="flex flex-col gap-2 text-center">
-      <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
-        Business Nodes
-      </h1>
-      <p class="text-muted-foreground text-sm md:text-base">
-        Vetted accommodation, organised around where you actually work.
-      </p>
-    </div>
-  </Section>
+  <Hero
+    eyebrow="FIND ACCOMMODATION BY LOCATION"
+    heading="Where do you need to do business?"
+    body="Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays."
+    primaryCta={{
+      label: "Explore Business Nodes",
+      href: "#directory",
+    }}
+  />
 
-  <Section className="mt-16">
+  <Section id="directory" className="mt-28">
     <NodeDirectory groups={groups} />
   </Section>
 
-  <Section className="mt-16">
-    <BusinessNodeSearch client:load nodes={searchNodes} />
-  </Section>
+  <Section className="mt-28">
+    <div class="space-y-8">
+      <div class="flex flex-col gap-4 text-center">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Growing Network
+        </p>
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">
+          ACOSA is growing deliberately.
+        </h2>
+        <p class="mx-auto max-w-2xl text-sm text-muted-foreground md:text-base">
+          We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands.
+        </p>
+      </div>
 
-  <Section className="mt-16 mb-28">
-    <div class="flex flex-col items-center gap-6 text-center">
-      <h2 class="text-primary text-xl font-bold md:text-2xl">
-        Can't find your node?
-      </h2>
-      <a
-        href="/contact"
-        class="bg-secondary text-secondary-foreground rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-      >
-        Contact us
-      </a>
+      <div class="space-y-6">
+        <div class="rounded-lg border border-border bg-card p-6">
+          <p class="mb-4 text-sm font-medium">Can't see the area you need?</p>
+          <a
+            href={whatsappLink({
+              message: "Hi ACOSA, I'm looking for business accommodation in [AREA]. Can you assist?",
+            })}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-full bg-green-600 px-6 py-2.5 text-sm font-medium text-white no-underline hover:bg-green-700"
+          >
+            Ask ACOSA
+          </a>
+        </div>
+
+        <div class="rounded-lg border border-border bg-card p-6">
+          <p class="mb-4 text-sm font-medium">
+            Own a quality property in a business area?
+          </p>
+          <p class="mb-4 text-sm text-muted-foreground">
+            We're building a curated network of independent accommodation providers that understand the needs of corporate travellers.
+          </p>
+          <a
+            href="/list-your-property"
+            class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground no-underline hover:bg-primary/90"
+          >
+            List Your Property
+          </a>
+        </div>
+      </div>
     </div>
   </Section>
 </Layout>
