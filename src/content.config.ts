@@ -195,8 +195,38 @@ const whyAcosaPage = defineCollection({
   loader: glob({ pattern: "why-acosa.mdoc", base: "./src/content/pages" }),
   schema: (ctx) =>
     z.object({
-      heroHeading: z.string().optional().default(""),
-      heroImage: ctx.image().optional().nullable(),
+      hero: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      experienceSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+      }),
+      curationSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        factorsInclude: z.array(z.string()).default([]),
+        highlightStatement: z.string().optional().default(""),
+        note: z.string().optional().default(""),
+      }),
+      approvedSection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      outcomeSection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
       seo: seoFields(ctx).optional(),
     }),
 });
@@ -205,8 +235,41 @@ const forCompaniesPage = defineCollection({
   loader: glob({ pattern: "for-companies.mdoc", base: "./src/content/pages" }),
   schema: (ctx) =>
     z.object({
-      heroHeading: z.string().optional().default(""),
-      heroImage: ctx.image().optional().nullable(),
+      hero: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      whoWeHelpSection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        roles: z.array(z.string()).default([]),
+      }),
+      howAcosaHelpsSection: z.object({
+        heading: z.string(),
+        features: z.array(z.object({ title: z.string(), body: z.string() })).default([]),
+      }),
+      teamsAndProjectsSection: z.object({
+        heading: z.string(),
+        image: ctx.image().optional().nullable(),
+        body: z.string(),
+        requirementsList: z.array(z.string()).default([]),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      assistanceSection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      finalCta: z.object({
+        heading: z.string(),
+        body: z.string(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
       seo: seoFields(ctx).optional(),
     }),
 });

@@ -6,8 +6,19 @@ import type { CSSProperties } from "react";
 
 export type HeroProps = {
   heading: string;
-  subheading: string;
-  image?: ImageMetadata | null | undefined;
+  subheading?: string;
+  eyebrow?: string;
+  body?: string;
+  primaryCta?: {
+    label: string;
+    href: string;
+  };
+  secondaryCta?: {
+    label: string;
+    href: string;
+    external?: boolean;
+  };
+  image?: ImageMetadata | null;
   imageAlt?: string;
   imageWidths?: number[];
   imageSizes?: string;
@@ -27,6 +38,10 @@ export type HeroOverlay = {
 export const Hero = async ({
   heading,
   subheading,
+  eyebrow,
+  body,
+  primaryCta,
+  secondaryCta,
   image,
   imageAlt,
   imageWidths,
@@ -50,15 +65,26 @@ export const Hero = async ({
           contentClassName,
         )}
       >
+        {eyebrow && (
+          <p className="text-center text-xs font-semibold uppercase tracking-wider">
+            {eyebrow}
+          </p>
+        )}
         {heading && (
-          <h1 className="xl:text-5x1 font-heading text-center text-2xl md:text-3xl lg:text-4xl">
+          <h1 className="font-heading text-center text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
             {heading}
           </h1>
         )}
-        {subheading && <Separator className="bg-foreground not-dark:bg-background"/>}
-        {subheading && (
+        {(subheading || body) && <Separator className="bg-foreground not-dark:bg-background" />}
+        {(subheading || body) && (
           <div className="mx-auto max-w-prose text-center font-sans">
-            {subheading}
+            {body || subheading}
+          </div>
+        )}
+        {(primaryCta || secondaryCta) && (
+          <div className="mx-auto mt-2 flex flex-wrap justify-center gap-3">
+            {primaryCta && <a href={primaryCta.href} className="bg-primary text-primary-foreground inline-flex rounded-full px-6 py-3 text-sm font-medium no-underline">{primaryCta.label}</a>}
+            {secondaryCta && <a href={secondaryCta.href} target={secondaryCta.external ? "_blank" : undefined} rel={secondaryCta.external ? "noopener noreferrer" : undefined} className="border-background text-background inline-flex rounded-full border px-6 py-3 text-sm font-medium no-underline">{secondaryCta.label}</a>}
           </div>
         )}
       </div>

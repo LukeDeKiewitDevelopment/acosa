@@ -3,10 +3,9 @@ import Layout from '@/layouts/Layout.astro';
 import { getEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { getSiteSettings, whatsappLink } from '@/lib/content';
+import { getSiteSettings, whatsappLink, mailtoLink } from '@/lib/content';
 import { Section } from '@/components/custom/section';
-import { ContactForm } from '@/components/custom/contact-form';
-import { ExternalLink, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
 
 export const prerender = true;
 
@@ -27,7 +26,8 @@ const ogImageUrl = seo?.ogImage
     ).src
   : undefined;
 
-const hcaptchaSiteKey: string = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY ?? '';
+const email = settings.data.enquiryEmail;
+const whatsapp = (message: string) => whatsappLink(settings.data.defaultWhatsapp, message);
 ---
 
 <Layout
@@ -50,48 +50,22 @@ const hcaptchaSiteKey: string = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY ?? '';
   </Section>
 
   <Section className="mt-16 mb-28">
-    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_20rem]">
-      <div>
-        <ContactForm
-          client:load
-          enquiryEmail={settings.data.enquiryEmail}
-          hcaptchaSiteKey={hcaptchaSiteKey}
-        />
-      </div>
-
-      <aside class="bg-card flex h-fit flex-col gap-4 rounded-2xl border p-6 shadow-sm lg:sticky lg:top-24">
-        <h2 class="text-primary text-lg font-semibold">Other ways to reach us</h2>
-
-        <a
-          href={whatsappLink(settings.data.defaultWhatsapp, 'Hi Acosa!')}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
-        >
-          <MessageCircle className="size-4" aria-hidden="true" />
-          Message us on WhatsApp
-        </a>
-
-        {
-          page.data.showMap && page.data.mapUrl && (
-            <a
-              href={page.data.mapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="border-border hover:bg-muted/50 flex items-center justify-between gap-3 rounded-xl border p-4 text-sm font-medium no-underline transition-colors"
-            >
-              <span class="flex items-center gap-2">
-                <MapPin className="text-secondary size-4" aria-hidden="true" />
-                Find us on the map
-              </span>
-              <ExternalLink
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
-            </a>
-          )
-        }
-      </aside>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {[
+        ['I need accommodation.', 'Looking for a business stay for yourself?', 'WhatsApp ACOSA', whatsapp("Hi ACOSA, I'm looking for business accommodation in [AREA]."), true],
+        ["I'm booking for a company or team.", 'Tell us where, when, and for how many travellers.', 'Email Your Requirements', mailtoLink(email, 'Corporate Accommodation Request'), false],
+        ['I want to list my property.', "Interested in reaching ACOSA's corporate accommodation audience?", 'Email a Property Application', mailtoLink(email, 'ACOSA Property Listing Application'), false],
+        ['Something else?', 'For general enquiries:', 'Email ACOSA', mailtoLink(email, 'General ACOSA Enquiry'), false],
+      ].map(([heading, body, label, href, external]) => (
+        <article class="bg-card flex flex-col gap-4 rounded-2xl border p-6 shadow-sm">
+          <h2 class="text-primary text-lg font-semibold">{heading}</h2>
+          <p class="text-muted-foreground text-sm">{body}</p>
+          <a href={href as string} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline">
+            {external && <MessageCircle className="size-4" aria-hidden="true" />}{label}<ArrowRight className="size-4" aria-hidden="true" />
+          </a>
+          {heading === 'Something else?' && <p class="text-muted-foreground text-sm">{email}</p>}
+        </article>
+      ))}
     </div>
   </Section>
 </Layout>

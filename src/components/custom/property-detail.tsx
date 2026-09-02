@@ -10,6 +10,7 @@ import {
   Star,
 } from "lucide-react";
 import { resolveIcon } from "@/lib/lucide";
+import { mailtoLink, whatsappLink } from "@/lib/content";
 
 /* PROPERTY PAGE per ACOSA_BRIEF: Property Overview, Business Traveller
    Essentials™, Acosa Approved™, Facilities, Nearby Convenience, Map,
@@ -115,7 +116,6 @@ export const PropertyDetail = ({
         {/* ---- Business Traveller Essentials™: tag name + icon ---- */}
         {essentials.length > 0 && (
           <ul
-            role="list"
             className="border-y-border grid grid-cols-2 gap-4 border-y py-5 sm:grid-cols-4"
           >
             {essentials.map((tag) => {
@@ -147,7 +147,7 @@ export const PropertyDetail = ({
         {perfectFor.length > 0 && (
           <div className="flex flex-col gap-3">
             <h2 className="text-primary text-xl font-bold">Perfect For</h2>
-            <ul role="list" className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2">
               {perfectFor.map((name) => (
                 <li
                   key={name}
@@ -165,7 +165,6 @@ export const PropertyDetail = ({
           <div className="flex flex-col gap-3">
             <h2 className="text-primary text-xl font-bold">Facilities</h2>
             <ul
-              role="list"
               className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2"
             >
               {facilities.map((name) => (
@@ -190,7 +189,7 @@ export const PropertyDetail = ({
             <h2 className="text-primary text-xl font-bold">
               Nearby Convenience
             </h2>
-            <ul role="list" className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2">
               {nearby.map((name) => (
                 <li
                   key={name}
@@ -279,7 +278,7 @@ export const PropertyDetail = ({
           {/* contact.email — omit when empty */}
           {property.email && (
             <a
-              href={`mailto:${property.email}`}
+              href={mailtoLink(property.email, "Property Enquiry")}
               className="bg-secondary text-secondary-foreground inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
             >
               Send Enquiry
@@ -287,7 +286,7 @@ export const PropertyDetail = ({
           )}
           {/* contact.whatsapp (required) → wa.me link */}
           <a
-            href={`https://wa.me/${property.whatsapp}`}
+            href={whatsappLink(property.whatsapp, `Hi ACOSA, I'm interested in ${property.name} and would like some more information.`)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
@@ -307,7 +306,7 @@ export const PropertyDetail = ({
           {/* contact.email — omit when empty */}
           {property.email && (
             <a
-              href={`mailto:${property.email}?subject=Acosa Enquiry`}
+              href={mailtoLink(property.email, "Property Enquiry")}
               className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
             >
               <Mail className="size-4" aria-hidden="true" />
