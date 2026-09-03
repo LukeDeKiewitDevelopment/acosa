@@ -197,7 +197,7 @@ export const Footer = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={social.label}
-                        className="opacity-80 transition-opacity hover:opacity-100"
+                        className="text-primary-foreground inline-flex size-10 items-center justify-center rounded-full border border-current/60 opacity-90 transition-colors hover:border-current hover:bg-primary-foreground/10 hover:opacity-100 dark:text-card-foreground"
                       >
                         {icon ? (
                           <svg
