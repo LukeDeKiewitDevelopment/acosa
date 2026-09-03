@@ -7,15 +7,18 @@ import {
   siYoutube,
 } from "simple-icons";
 import { getCurrentYear } from "@/lib/get-current-year";
-import { Separator } from "../ui/separator";
 import type { NavItem } from "./header";
 import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
+import { Mail, MessageCircle } from "lucide-react";
 
 export type FooterProps = {
   logo?: HeaderLogo;
   description?: string;
   footerItems?: NavItem[];
   socials?: FooterSocial[];
+  email?: string;
+  emailHref?: string;
+  whatsappHref?: string;
 };
 
 export type HeaderLogo = {
@@ -69,6 +72,9 @@ export const Footer = ({
   description,
   footerItems,
   socials,
+  email,
+  emailHref,
+  whatsappHref,
 }: FooterProps) => {
   const currentYear = getCurrentYear();
   return (
@@ -95,7 +101,7 @@ export const Footer = ({
 
           {description && <p className="max-w-prose text-xs">{description}</p>}
           <small className="text-[0.6rem]">
-            &copy; {currentYear} ACOSA. Work in Progress.
+            &copy; {currentYear} ACOSA. All rights reserved.
           </small>
         </div>
         <div
@@ -115,7 +121,7 @@ export const Footer = ({
                 footerItems.map((footerItem, i) => {
                   if (!footerItem.subItems) {
                     return (
-                      <li key={i}>
+                      <li key={footerItem.href}>
                         <a
                           href={footerItem.href}
                           className="text-xs no-underline hover:underline"
@@ -129,9 +135,25 @@ export const Footer = ({
             </ul>
           </nav>
 
+          <nav>
+            <h5 className="my-4 text-sm">Contact</h5>
+            <ul className="flex flex-col gap-4 text-xs">
+              {email && emailHref && <li><a href={emailHref} className="inline-flex items-center gap-2 no-underline hover:underline"><Mail className="size-3" aria-hidden="true" />Email ACOSA</a></li>}
+              {whatsappHref && <li><a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 no-underline hover:underline"><MessageCircle className="size-3" aria-hidden="true" />WhatsApp ACOSA</a></li>}
+            </ul>
+          </nav>
+
+          <nav>
+            <h5 className="my-4 text-sm">Legal</h5>
+            <ul className="flex flex-col gap-4 text-xs">
+              <li><a href="/terms" className="no-underline hover:underline">Terms &amp; Conditions</a></li>
+              <li><a href="/privacy" className="no-underline hover:underline">Privacy Policy</a></li>
+            </ul>
+          </nav>
+
           {footerItems &&
             footerItems.length > 0 &&
-            footerItems.map((footerItem, i) => {
+            footerItems.map((footerItem) => {
               if (
                 footerItem.label === "Business Nodes" &&
                 footerItem.subItems &&
@@ -141,12 +163,12 @@ export const Footer = ({
                   <nav
                     data-slot="footer-links-nodes"
                     className="flex flex-col"
-                    key={i}
+                    key={footerItem.href}
                   >
                     <h5 className="my-4 text-sm">Business Nodes</h5>
                     <ul className="flex flex-col gap-4 text-xs">
-                      {footerItem.subItems.map((subItem, i) => (
-                        <li key={i}>
+                      {footerItem.subItems.map((subItem) => (
+                        <li key={subItem.href}>
                           <a
                             href={subItem.href}
                             className="no-underline hover:underline"

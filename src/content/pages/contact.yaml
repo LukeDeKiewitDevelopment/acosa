@@ -1,9 +1,83 @@
-heroHeading: Let's talk
-intro: Whether you're booking a stay, coordinating travel for a team, or listing a
-  property — send us a message and we'll respond within one business day.
-showMap: false
-mapUrl: null
+hero:
+  eyebrow: CONTACT ACOSA
+  heading: How can we help?
+  body: >-
+    Whether you're looking for business accommodation, arranging a stay for someone else, or interested in joining ACOSA as an accommodation provider, choose the quickest route below.
+
+contactRoutes:
+  - number: "1"
+    title: I need accommodation.
+    description: Looking for a business stay for yourself?
+    cta:
+      label: WhatsApp ACOSA
+      link: whatsapp
+      prefilledMessage: "Hi ACOSA, I'm looking for business accommodation in [AREA]."
+
+  - number: "2"
+    title: I'm booking for a company or team.
+    description: Tell us where, when, and for how many travellers.
+    cta:
+      label: Email Your Requirements
+      link: email
+      subject: "Corporate Accommodation Request"
+
+  - number: "3"
+    title: I want to list my property.
+    description: Interested in reaching ACOSA's corporate accommodation audience?
+    primaryCta:
+      label: Email a Property Application
+      link: email
+      subject: "ACOSA Property Listing Application"
+    secondaryCta:
+      label: WhatsApp ACOSA
+      link: whatsapp
+      prefilledMessage: "Hi ACOSA, I'm interested in listing my property and would like some more information."
+
+  - number: "4"
+    title: Something else?
+    description: For general enquiries.
+    cta:
+      label: Email ACOSA
+      link: email
+      subject: "General ACOSA Enquiry"
+
+footer:
+  business:
+    heading: ACOSA
+    tagline: Curated Business Accommodation
+    description: >-
+      ACOSA connects business travellers and corporate accommodation bookers with carefully selected independent properties in key South African business nodes.
+
+  sections:
+    - title: Explore
+      links:
+        - label: Home
+          link: /
+        - label: Business Nodes
+          link: /business-nodes
+        - label: Why ACOSA?
+          link: /why-acosa
+        - label: For Companies
+          link: /for-companies
+
+    - title: For Accommodation Providers
+      links:
+        - label: List Your Property
+          link: /list-your-property
+        - label: Contact Email
+          link: email
+        - label: WhatsApp ACOSA
+          link: whatsapp
+
+  legal:
+    - label: Terms & Conditions
+      link: /terms
+    - label: Privacy Policy
+      link: /privacy
+
+  copyright: "© 2026 ACOSA. All rights reserved."
+
 seo:
-  title: Contact Acosa
-  description: Contact Acosa for business accommodation enquiries, corporate bookings
-    or property listing applications.
+  title: Contact ACOSA
+  description: >-
+    Contact ACOSA for business accommodation enquiries, corporate bookings, or property listing applications. Reach us via WhatsApp or email.

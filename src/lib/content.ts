@@ -5,7 +5,8 @@ import { PROVINCES, PROPERTY_TYPES } from '../content.config';
 import { provinceLabel } from './provinces';
 import type { BusinessNodeSearchItem } from '@/components/custom/business-node-search';
 
-export { PROVINCES, PROPERTY_TYPES, provinceLabel };
+export { PROVINCES, PROPERTY_TYPES } from '../content.config';
+export { provinceLabel } from './provinces';
 export type Property = CollectionEntry<'properties'>;
 export type BusinessNode = CollectionEntry<'businessNodes'>;
 export type Testimonial = CollectionEntry<'testimonials'>;
@@ -185,3 +186,15 @@ export function whatsappLink(number: string, message?: string): string {
   const base = `https://wa.me/${digits}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
+
+export function mailtoLink(email: string, subject: string, body?: string): string {
+  const params = new URLSearchParams({ subject });
+  if (body) params.set('body', body);
+  return `mailto:${email}?${params.toString()}`;
+}
+
+export const DEFAULT_WHATSAPP_MESSAGE =
+  "Hi ACOSA, I'm looking for business accommodation and would appreciate some assistance.";
+
+export const LISTING_WHATSAPP_MESSAGE =
+  "Hi ACOSA, I'm interested in listing my property and would like some more information.";

@@ -1,28 +1,144 @@
 hero:
-  heading: Grow your corporate bookings
-  subheading: Join South Africa's curated business accommodation platform and connect
-    with professional travellers who value what you offer.
+  eyebrow: FOR ACCOMMODATION PROVIDERS
+  heading: Reach the people you actually want to host.
+  body: >-
+    Your property doesn't need more irrelevant visibility. It needs to be discovered by people whose accommodation needs match what you've built. ACOSA connects carefully selected independent accommodation providers with corporate travellers and the people who book for them.
   image: ../../assets/images/pages/list-your-property/hero.jpg
+  primaryCta:
+    label: Apply to List Your Property
+    link: email
+  secondaryCta:
+    label: Ask Us on WhatsApp
+    link: whatsapp
+
 whoWeWorkWith:
-  heading: Who we work with
-  body: Guesthouses, boutique hotels, executive stays and serviced apartments that
-    take the business traveller seriously.
-benefits:
-- title: Qualified corporate enquiries
-  detail: Reach travellers and booking decision makers actively searching your business
-    node.
-- title: The Acosa Approved™ badge
-  detail: Independent vetting that gives corporate bookers confidence to choose you.
-- title: Direct relationships
-  detail: Enquiries come straight to you via WhatsApp and email — no commission on
-    bookings.
+  heading: Built for properties that take hospitality seriously.
+  body: >-
+    ACOSA is designed for independent establishments that care about the
+    quality of the guest experience, operate professionally and understand the
+    needs of working travellers.
+
 acosaStandards:
-  heading: The Acosa standard
-  body: 'We assess every property in person against the Business Traveller Essentials
-    framework: connectivity, power resilience, security, workspace and service consistency.'
-formIntro: Tell us about your property and we'll be in touch to begin the vetting
-  conversation.
+  heading: Every property is reviewed before being accepted.
+  body: >-
+    Paying for a listing does not guarantee acceptance. ACOSA looks for
+    properties that offer a reliable, professional experience for corporate
+    guests.
+
+whoWeWorkWithSection:
+  eyebrow: QUALITY INDEPENDENT HOSPITALITY
+  heading: Built for properties that take hospitality seriously.
+  body: >-
+    ACOSA is designed for independent establishments that care about the quality of the guest experience, operate professionally, understand the needs of working travellers, value respectful corporate guests, are interested in repeat and longer-stay opportunities, and want more focused visibility within the corporate accommodation market.
+  properties:
+    - care about the quality of the guest experience
+    - operate professionally
+    - understand the needs of working travellers
+    - value respectful corporate guests
+    - are interested in repeat and longer-stay opportunities
+    - want more focused visibility within the corporate accommodation market
+  highlight: "Every property is reviewed before being accepted."
+  note: "Paying for a listing does not guarantee acceptance."
+
+valueSection:
+  eyebrow: MORE THAN A DIRECTORY LISTING
+  heading: Become part of a corporate-travel visibility network.
+  body: >-
+    An ACOSA listing helps a more relevant audience discover your property and understand why it may suit their stay.
+  image: ../../assets/images/pages/founderStrip/image.jpg
+  includes:
+    - title: Professionally Curated Property Profile
+      detail: ACOSA structures and presents your property information for a corporate accommodation audience.
+    - title: Property Gallery
+      detail: Showcase your accommodation and the practical facilities that matter.
+    - title: Business Node Visibility
+      detail: Be discovered where corporate travellers need accommodation.
+    - title: Search & Filter Visibility
+      detail: Surface according to relevant property information and traveller requirements.
+    - title: Nearby Convenience Information
+      detail: Help visitors understand the practicality of your location.
+    - title: Direct Enquiry Opportunities
+      detail: Give interested visitors a clear route to contact you.
+    - title: No ACOSA Booking Commission
+      detail: Under the current listing model, ACOSA does not take a percentage of bookings generated through the platform.
+    - title: Launch Exposure
+      detail: New approved properties receive introductory exposure through ACOSA's owned social channels.
+    - title: Ongoing Promotional Opportunities
+      detail: Approved properties may be included in relevant ACOSA business-node, property and corporate-travel content.
+    - title: Listed on ACOSA Asset
+      detail: Receive a branded digital asset you can share through your own channels.
+    - title: Performance Snapshot on Request
+      detail: Where technically available, ACOSA can provide a snapshot of relevant listing activity, such as property profile views and enquiry actions.
+
+promotionalVisibilitySection:
+  heading: Visibility beyond your property page.
+  body: >-
+    ACOSA's content is designed to build an audience around business accommodation, including business-node information, property discovery, practical corporate-travel content, accommodation features, and relevant partner stories. Approved properties can therefore benefit from opportunities to appear within relevant ACOSA content as the platform grows.
+  note: "Promotional inclusion does not constitute property-specific social-media management and does not guarantee reach, enquiries or bookings."
+
+pricingSection:
+  eyebrow: SIMPLE SUBSCRIPTION. NO BOOKING COMMISSION.
+  heading: Invest in more focused corporate visibility.
+  pricing:
+    - tier: Standard Listing
+      price: R499
+      period: /month
+      detail: Per physical establishment.
+    - tier: ACOSA Partner Rate
+      price: R389
+      period: /month
+      detail: Available through direct ACOSA onboarding.
+    - tier: Annual Partner Rate
+      price: R4,290
+      period: /year
+      detail: One annual payment. No setup fee.
+  cta:
+    label: Apply to List Your Property
+    link: email
+
+listingUpdatesSection:
+  heading: Keep your property information current.
+  body: >-
+    Essential factual corrections can be requested whenever necessary. Your subscription also allows for up to two substantial listing refresh requests during a 12-month period, should you need them. These may include replacing gallery images, updating descriptive copy, and adding significant new facilities. Additional extensive content changes may be quoted separately where required.
+  refreshIncludes:
+    - replacing gallery images
+    - updating descriptive copy
+    - adding significant new facilities
+
+howToJoinSection:
+  eyebrow: JOIN ACOSA
+  steps:
+    - number: "01"
+      title: Apply
+      detail: Email ACOSA with your property details.
+    - number: "02"
+      title: Review
+      detail: ACOSA reviews the property against its accommodation criteria.
+    - number: "03"
+      title: Approval
+      detail: If your property is a suitable fit, we'll confirm acceptance and onboarding.
+    - number: "04"
+      title: Supply Your Assets
+      detail: Provide your approved property information, current images, testimonials, and contact details.
+    - number: "05"
+      title: Go Live
+      detail: ACOSA prepares your property profile and introduces your establishment to the platform.
+  cta:
+    label: Start Your Application
+    link: email
+
+finalCta:
+  heading: Built a stay that works for business?
+  body: >-
+    Let's see whether it's right for ACOSA.
+  primaryCta:
+    label: Apply to List Your Property
+    link: email
+  secondaryCta:
+    label: Ask Us a Question
+    link: whatsapp
+
 seo:
-  title: List Your Property | Acosa
-  description: List your guesthouse, boutique hotel or executive stay on Acosa and
-    receive qualified corporate accommodation enquiries.
+  title: List Your Property | ACOSA
+  description: >-
+    List your guesthouse, boutique hotel or executive stay on ACOSA and connect with corporate travellers actively seeking business accommodation in your area.
