@@ -1,24 +1,56 @@
 ---
-import { getImage } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import Layout from '@/layouts/Layout.astro';
-import { getEntry } from 'astro:content';
-import { getSiteSettings, mailtoLink, whatsappLink, LISTING_WHATSAPP_MESSAGE } from '@/lib/content';
-import { Section } from '@/components/custom/section';
+import { getImage, Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Layout from "@/layouts/Layout.astro";
+import { getEntry } from "astro:content";
 import {
-  StaticAcosaImage,
-  type ResolvedAcosaImage,
-} from '@/components/custom/image';
-import { ArrowRight, MessageCircle } from 'lucide-react';
+  getSiteSettings,
+  resolveCtaLink,
+  LISTING_WHATSAPP_MESSAGE,
+} from "@/lib/content";
+import { Section } from "@/components/custom/section";
+import { Hero } from "@/components/custom/hero";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 export const prerender = true;
 
-const page = await getEntry('listYourPropertyPage', 'list-your-property');
-if (!page) throw new Error('List Your Property page content not found');
-const { hero, whoWeWorkWith, benefits, acosaStandards, formIntro, seo } = page.data;
+const page = await getEntry("listYourPropertyPage", "list-your-property");
+if (!page) throw new Error("List Your Property page content not found");
+const {
+  hero,
+  whoWeWorkWithSection,
+  valueSection,
+  promotionalVisibilitySection,
+  pricingSection,
+  listingUpdatesSection,
+  howToJoinSection,
+  finalCta,
+  seo,
+} = page.data;
 const settings = await getSiteSettings();
-const applicationLink = mailtoLink(settings.data.enquiryEmail, 'ACOSA Property Listing Application');
-const whatsapp = whatsappLink(settings.data.defaultWhatsapp, LISTING_WHATSAPP_MESSAGE);
+const ctaOptions = {
+  email: settings.data.enquiryEmail,
+  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappMessage: LISTING_WHATSAPP_MESSAGE,
+};
+const heroPrimaryHref = resolveCtaLink(hero.primaryCta.link, ctaOptions);
+const heroSecondaryHref = resolveCtaLink(hero.secondaryCta.link, ctaOptions);
+const listingApplicationHref = resolveCtaLink(pricingSection.cta.link, {
+  ...ctaOptions,
+  emailSubject: "ACOSA Property Listing Application",
+});
+const joinApplicationHref = resolveCtaLink(howToJoinSection.cta.link, {
+  ...ctaOptions,
+  emailSubject: "ACOSA Property Listing Application",
+});
+const finalPrimaryHref = resolveCtaLink(finalCta.primaryCta.link, {
+  ...ctaOptions,
+  emailSubject: "ACOSA Property Listing Application",
+});
+const finalSecondaryHref = resolveCtaLink(
+  finalCta.secondaryCta.link,
+  ctaOptions,
+);
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -31,115 +63,210 @@ const ogImageUrl = seo?.ogImage
       })
     ).src
   : undefined;
-
-
-let heroImage: ResolvedAcosaImage | null = null;
-if (hero.image) {
-  const img = await getImage({
-    src: hero.image,
-    widths: [640, 1024, 1600],
-    sizes: '100vw',
-  });
-  heroImage = {
-    src: img.src,
-    srcSet: img.srcSet.attribute || undefined,
-    sizes: img.attributes.sizes,
-    width: img.attributes.width,
-    height: img.attributes.height,
-  };
-}
-
-const showWhoWeWorkWith = Boolean(whoWeWorkWith.heading || whoWeWorkWith.body);
-const showAcosaStandards = Boolean(acosaStandards.heading || acosaStandards.body);
-const hasBenefits = benefits.length > 0;
 ---
 
 <Layout
-  title={seo?.title || 'List Your Property | Acosa'}
+  title={seo?.title || "List Your Property | Acosa"}
   description={seo?.description ||
-    'Apply to list your property with Acosa and reach vetted business travellers.'}
+    "Apply to list your property with Acosa and reach vetted business travellers."}
   ogImage={ogImageUrl}
   whatsappMessage={LISTING_WHATSAPP_MESSAGE}
 >
-  <Section className="mt-28">
-    <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
-      {hero.heading}
-    </h1>
-    {
-      hero.subheading && (
-        <p class="text-muted-foreground mt-2 text-sm md:text-base">
-          {hero.subheading}
-        </p>
-      )
-    }
-    {
-      heroImage && (
-        <div class="mt-6 overflow-hidden rounded-2xl">
-          <StaticAcosaImage
-            {...heroImage}
-            alt=""
-            className="aspect-21/9 w-full object-cover"
-          />
-        </div>
-      )
-    }
-  </Section>
+  <Hero
+    eyebrow={hero.eyebrow}
+    heading={hero.heading}
+    body={hero.body}
+    image={hero.image}
+    imageAlt="Independent accommodation provider"
+    primaryCta={{ label: hero.primaryCta.label, href: heroPrimaryHref }}
+    secondaryCta={{
+      label: hero.secondaryCta.label,
+      href: heroSecondaryHref,
+      external: hero.secondaryCta.link === "whatsapp",
+    }}
+  />
 
-  {
-    showWhoWeWorkWith && (
-      <Section className="mt-16">
-        {whoWeWorkWith.heading && (
-          <h2 class="text-primary text-xl font-bold md:text-2xl">
-            {whoWeWorkWith.heading}
-          </h2>
-        )}
-        {whoWeWorkWith.body && (
-          <p class="text-muted-foreground">{whoWeWorkWith.body}</p>
-        )}
-      </Section>
-    )
-  }
-
-  {
-    hasBenefits && (
-      <Section className="mt-16">
-        <h2 class="text-primary text-xl font-bold md:text-2xl">Benefits</h2>
-        <ul
-          role="list"
-          class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {benefits.map((b) => (
-            <li class="bg-card rounded-xl border p-5 shadow-sm">
-              <h3 class="text-primary font-semibold">{b.title}</h3>
-              {b.detail && (
-                <p class="text-muted-foreground mt-1 text-sm">{b.detail}</p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </Section>
-    )
-  }
-
-  {
-    showAcosaStandards && (
-      <Section className="mt-16">
-        {acosaStandards.heading && (
-          <h2 class="text-primary text-xl font-bold md:text-2xl">
-            {acosaStandards.heading}
-          </h2>
-        )}
-        {acosaStandards.body && (
-          <p class="text-muted-foreground">{acosaStandards.body}</p>
-        )}
-      </Section>
-    )
-  }
-
-  <Section className="mt-16 mb-28">
-    <div class="flex flex-wrap gap-3">
-      <a href={applicationLink} class="bg-secondary text-secondary-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline">Apply to List Your Property <ArrowRight className="size-4" aria-hidden="true" /></a>
-      <a href={whatsapp} target="_blank" rel="noopener noreferrer" class="border-secondary text-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"><MessageCircle className="size-4" aria-hidden="true" /> Ask Us on WhatsApp</a>
+  <Section className="mt-16">
+    <div class="mx-auto max-w-3xl text-center">
+      <p
+        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+      >
+        {whoWeWorkWithSection.eyebrow}
+      </p>
+      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+        {whoWeWorkWithSection.heading}
+      </h2>
+      <p class="text-muted-foreground mt-3">{whoWeWorkWithSection.body}</p>
+      <ul class="mt-8 grid gap-3 text-left sm:grid-cols-2">
+        {
+          whoWeWorkWithSection.properties.map((property) => (
+            <li class="bg-card rounded-lg border p-4 text-sm">{property}</li>
+          ))
+        }
+      </ul>
+      <p class="text-primary mt-6 font-semibold">
+        {whoWeWorkWithSection.highlight}
+      </p>
+      <p class="text-muted-foreground mt-2 text-sm">
+        {whoWeWorkWithSection.note}
+      </p>
     </div>
   </Section>
+
+  <Section id="listing-value" className="mt-16">
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      {
+        valueSection.image && (
+          <Image
+            src={valueSection.image}
+            alt="ACOSA property visibility"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
+          />
+        )
+      }
+      <div>
+        <p
+          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        >
+          {valueSection.eyebrow}
+        </p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {valueSection.heading}
+        </h2>
+        <p class="text-muted-foreground mt-3">{valueSection.body}</p>
+        <ul class="mt-6 space-y-3">
+          {
+            valueSection.includes.map((item) => (
+              <li>
+                <>
+                  <h3 class="text-primary font-semibold">{item.title}</h3>
+                  <p class="text-muted-foreground text-sm">{item.detail}</p>
+                </>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <Section className="mt-16">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">
+        {promotionalVisibilitySection.heading}
+      </h2><p class="text-muted-foreground mt-3">
+        {promotionalVisibilitySection.body}
+      </p><p class="text-muted-foreground mt-4 text-sm">
+        {promotionalVisibilitySection.note}
+      </p>
+    </div>
+  </Section>
+
+  <Section className="mt-16">
+    <div class="mx-auto max-w-4xl">
+      <p
+        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+      >
+        {pricingSection.eyebrow}
+      </p><h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+        {pricingSection.heading}
+      </h2><div class="mt-8 grid gap-4 md:grid-cols-3">
+        {
+          pricingSection.pricing.map((plan) => (
+            <article class="bg-card rounded-lg border p-5">
+              <>
+                <h3 class="text-primary font-semibold">{plan.tier}</h3>
+                <p class="text-primary mt-4 text-2xl font-bold">
+                  {plan.price}
+                  <span class="text-muted-foreground text-sm font-normal">
+                    {plan.period}
+                  </span>
+                </p>
+                <p class="text-muted-foreground mt-2 text-sm">{plan.detail}</p>
+              </>
+            </article>
+          ))
+        }
+      </div><a
+        href={listingApplicationHref}
+        class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+        >{pricingSection.cta.label}<ArrowRight
+          className="ml-2 size-4"
+          aria-hidden="true"
+        /></a>
+    </div>
+  </Section>
+
+  <Section className="mt-16"
+    ><div class="mx-auto max-w-3xl">
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">
+        {listingUpdatesSection.heading}
+      </h2><p class="text-muted-foreground mt-3">
+        {listingUpdatesSection.body}
+      </p><ul class="mt-5 list-disc space-y-2 pl-5 text-sm">
+        {listingUpdatesSection.refreshIncludes.map((item) => <li>{item}</li>)}
+      </ul>
+    </div></Section
+  >
+
+  <Section className="mt-16"
+    ><div class="mx-auto max-w-3xl">
+      <p
+        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+      >
+        {howToJoinSection.eyebrow}
+      </p><ol class="mt-6 space-y-4">
+        {
+          howToJoinSection.steps.map((step) => (
+            <li class="flex gap-4">
+              <>
+                <span class="text-secondary font-bold">{step.number}</span>
+                <div>
+                  <>
+                    <h3 class="text-primary font-semibold">{step.title}</h3>
+                    <p class="text-muted-foreground text-sm">{step.detail}</p>
+                  </>
+                </div>
+              </>
+            </li>
+          ))
+        }
+      </ol><a
+        href={joinApplicationHref}
+        class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+        >{howToJoinSection.cta.label}<ArrowRight
+          className="ml-2 size-4"
+          aria-hidden="true"
+        /></a>
+    </div></Section
+  >
+
+  <Section className="mt-16 mb-28"
+    ><div
+      class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-8 text-center md:p-12"
+    >
+      <h2 class="text-2xl font-bold md:text-3xl">{finalCta.heading}</h2><p
+        class="mt-3"
+      >
+        {finalCta.body}
+      </p><div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a
+          href={finalPrimaryHref}
+          class="bg-background text-foreground inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+          >{finalCta.primaryCta.label}</a
+        ><a
+          href={finalSecondaryHref}
+          target={finalCta.secondaryCta.link === "whatsapp"
+            ? "_blank"
+            : undefined}
+          rel={finalCta.secondaryCta.link === "whatsapp"
+            ? "noopener noreferrer"
+            : undefined}
+          class="border-background text-background inline-flex rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+          ><MessageCircle className="mr-2 size-4" aria-hidden="true" />{
+            finalCta.secondaryCta.label
+          }</a>
+      </div>
+    </div></Section
+  >
 </Layout>

@@ -5,13 +5,20 @@ import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
+import { resolveCtaLink } from "@/lib/content";
 import { ArrowRight, Check } from "lucide-react";
 
 export const prerender = true;
 
 const page = await getEntry("whyAcosaPage", "why-acosa");
 if (!page) throw new Error("Why Acosa page content not found");
-const { hero, experienceSection, curationSection, approvedSection, outcomeSection } = page.data;
+const {
+  hero,
+  experienceSection,
+  curationSection,
+  approvedSection,
+  outcomeSection,
+} = page.data;
 const seo = page.data.seo;
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
@@ -26,6 +33,7 @@ const ogImageUrl = seo?.ogImage
     ).src
   : undefined;
 
+const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
 ---
 
 <Layout
@@ -34,46 +42,127 @@ const ogImageUrl = seo?.ogImage
     "How Acosa vets every property, and what Acosa Approved™ means for business travellers."}
   ogImage={ogImageUrl}
 >
-  <Hero eyebrow={hero.eyebrow} heading={hero.heading} body={hero.body} image={hero.image} imageAlt="ACOSA hospitality assessment" primaryCta={{ label: hero.cta.label, href: hero.cta.link }} />
+  <Hero
+    eyebrow={hero.eyebrow}
+    heading={hero.heading}
+    body={hero.body}
+    image={hero.image}
+    imageAlt="ACOSA hospitality assessment"
+    primaryCta={{ label: hero.cta.label, href: heroHref }}
+  />
 
   <Section className="mt-16">
     <div class="mx-auto max-w-3xl text-center">
-      <p class="text-muted-foreground text-xs font-semibold uppercase tracking-wider">{experienceSection.eyebrow}</p>
-      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">{experienceSection.heading}</h2>
-      <p class="text-muted-foreground mt-4 whitespace-pre-line">{experienceSection.body}</p>
+      <p
+        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+      >
+        {experienceSection.eyebrow}
+      </p>
+      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+        {experienceSection.heading}
+      </h2>
+      <p class="text-muted-foreground mt-4 whitespace-pre-line">
+        {experienceSection.body}
+      </p>
     </div>
   </Section>
 
   <Section className="mt-16">
     <div class="grid items-center gap-8 lg:grid-cols-2">
-      {curationSection.image && <Image src={curationSection.image} alt="ACOSA reviewing an independent accommodation property" class="aspect-4/3 w-full rounded-2xl object-cover" />}
+      {
+        curationSection.image && (
+          <Image
+            src={curationSection.image}
+            alt="ACOSA reviewing an independent accommodation property"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
+          />
+        )
+      }
       <div>
-        <p class="text-muted-foreground text-xs font-semibold uppercase tracking-wider">{curationSection.eyebrow}</p>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">{curationSection.heading}</h2>
+        <p
+          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        >
+          {curationSection.eyebrow}
+        </p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {curationSection.heading}
+        </h2>
         <p class="text-muted-foreground mt-3">{curationSection.body}</p>
-        <ul class="mt-6 grid gap-2 sm:grid-cols-2">{curationSection.factorsInclude.map((factor) => <li class="flex items-start gap-2 text-sm"><Check className="text-secondary mt-0.5 size-4 shrink-0" aria-hidden="true" />{factor}</li>)}</ul>
-        {curationSection.highlightStatement && <p class="text-primary mt-6 text-lg font-semibold">{curationSection.highlightStatement}</p>}
-        {curationSection.note && <p class="text-muted-foreground mt-3 text-sm">{curationSection.note}</p>}
+        <ul class="mt-6 grid gap-2 sm:grid-cols-2">
+          {
+            curationSection.factorsInclude.map((factor) => (
+              <li class="flex items-start gap-2 text-sm">
+                <Check
+                  className="text-secondary mt-0.5 size-4 shrink-0"
+                  aria-hidden="true"
+                />
+                {factor}
+              </li>
+            ))
+          }
+        </ul>
+        {
+          curationSection.highlightStatement && (
+            <p class="text-primary mt-6 text-lg font-semibold">
+              {curationSection.highlightStatement}
+            </p>
+          )
+        }
+        {
+          curationSection.note && (
+            <p class="text-muted-foreground mt-3 text-sm">
+              {curationSection.note}
+            </p>
+          )
+        }
       </div>
     </div>
   </Section>
 
   <Section className="mt-16">
     <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">{approvedSection.heading}</h2>
-      <p class="text-muted-foreground mt-4 whitespace-pre-line">{approvedSection.body}</p>
-      <a href={approvedSection.cta.link} class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline">{approvedSection.cta.label}<ArrowRight className="size-4" aria-hidden="true" /></a>
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">
+        {approvedSection.heading}
+      </h2>
+      <p class="text-muted-foreground mt-4 whitespace-pre-line">
+        {approvedSection.body}
+      </p>
+      <a
+        href={approvedSection.cta.link}
+        class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+        >{approvedSection.cta.label}<ArrowRight
+          className="size-4"
+          aria-hidden="true"
+        /></a
+      >
     </div>
   </Section>
 
   <Section className="mt-16 mb-28">
     <div class="grid items-center gap-8 lg:grid-cols-2">
       <div>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">{outcomeSection.heading}</h2>
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">
+          {outcomeSection.heading}
+        </h2>
         <p class="text-muted-foreground mt-4">{outcomeSection.body}</p>
-        <a href={outcomeSection.cta.link} class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline">{outcomeSection.cta.label}<ArrowRight className="size-4" aria-hidden="true" /></a>
+        <a
+          href={outcomeSection.cta.link}
+          class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+          >{outcomeSection.cta.label}<ArrowRight
+            className="size-4"
+            aria-hidden="true"
+          /></a
+        >
       </div>
-      {outcomeSection.image && <Image src={outcomeSection.image} alt="A comfortable end to a business travel day" class="aspect-4/3 w-full rounded-2xl object-cover" />}
+      {
+        outcomeSection.image && (
+          <Image
+            src={outcomeSection.image}
+            alt="A comfortable end to a business travel day"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
+          />
+        )
+      }
     </div>
   </Section>
 </Layout>

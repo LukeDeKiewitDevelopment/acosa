@@ -158,25 +158,19 @@ const homePage = defineCollection({
   schema: (ctx) =>
     z.object({
       hero: z.object({
+        eyebrow: z.string().optional().default(""),
         heading: z.string(),
-        subheading: z.string().optional().default(""),
+        body: z.string().optional().default(""),
         image: ctx.image().optional().nullable(),
         overlayOpacity: z.number().min(0).max(100).optional().default(50),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
       founderStrip: z.object({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),
         image: ctx.image().optional().nullable(),
       }),
-      trustStrip: z
-        .array(
-          z.object({
-            icon: z.string().optional().default(""),
-            title: z.string(),
-            detail: z.string().optional().default(""),
-          }),
-        )
-        .default([]),
       whyAcosaPreview: z.object({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),
@@ -187,12 +181,57 @@ const homePage = defineCollection({
         buttonLabel: z.string().optional().default(""),
         secondButtonLabel: z.string().optional().default(""),
       }),
+      businessTravelSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      businessNodesSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      featuredPropertiesSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+      }),
+      corporateBookersSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      humanAssistanceSection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      propertyOwnersSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      closingSection: z.object({
+        eyebrow: z.string().nullable().optional(),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
       seo: seoFields(ctx).optional(),
     }),
 });
 
 const whyAcosaPage = defineCollection({
-  loader: glob({ pattern: "why-acosa.mdoc", base: "./src/content/pages" }),
+  loader: glob({ pattern: "why-acosa.yaml", base: "./src/content/pages" }),
   schema: (ctx) =>
     z.object({
       hero: z.object({
@@ -232,7 +271,7 @@ const whyAcosaPage = defineCollection({
 });
 
 const forCompaniesPage = defineCollection({
-  loader: glob({ pattern: "for-companies.mdoc", base: "./src/content/pages" }),
+  loader: glob({ pattern: "for-companies.yaml", base: "./src/content/pages" }),
   schema: (ctx) =>
     z.object({
       hero: z.object({
@@ -250,7 +289,9 @@ const forCompaniesPage = defineCollection({
       }),
       howAcosaHelpsSection: z.object({
         heading: z.string(),
-        features: z.array(z.object({ title: z.string(), body: z.string() })).default([]),
+        features: z
+          .array(z.object({ title: z.string(), body: z.string() }))
+          .default([]),
       }),
       teamsAndProjectsSection: z.object({
         heading: z.string(),
@@ -282,9 +323,12 @@ const listYourPropertyPage = defineCollection({
   schema: (ctx) =>
     z.object({
       hero: z.object({
+        eyebrow: z.string().optional().default(""),
         heading: z.string(),
-        subheading: z.string().optional().default(""),
+        body: z.string(),
         image: ctx.image().optional().nullable(),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
       whoWeWorkWith: z.object({
         heading: z.string().optional().default(""),
@@ -302,6 +346,67 @@ const listYourPropertyPage = defineCollection({
         heading: z.string().optional().default(""),
         body: z.string().optional().default(""),
       }),
+      whoWeWorkWithSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        properties: z.array(z.string()).default([]),
+        highlight: z.string().optional().default(""),
+        note: z.string().optional().default(""),
+      }),
+      valueSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        includes: z
+          .array(z.object({ title: z.string(), detail: z.string() }))
+          .default([]),
+      }),
+      promotionalVisibilitySection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        note: z.string().optional().default(""),
+      }),
+      pricingSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        pricing: z
+          .array(
+            z.object({
+              tier: z.string(),
+              price: z.string(),
+              period: z.string(),
+              detail: z.string(),
+            }),
+          )
+          .default([]),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      listingUpdatesSection: z.object({
+        heading: z.string(),
+        body: z.string(),
+        refreshIncludes: z.array(z.string()).default([]),
+      }),
+      howToJoinSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        steps: z
+          .array(
+            z.object({
+              number: z.string(),
+              title: z.string(),
+              detail: z.string(),
+            }),
+          )
+          .default([]),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
+      finalCta: z.object({
+        heading: z.string(),
+        body: z.string(),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
+      }),
       formIntro: z.string().optional().default(""),
       seo: seoFields(ctx).optional(),
     }),
@@ -311,10 +416,61 @@ const contactPage = defineCollection({
   loader: glob({ pattern: "contact.yaml", base: "./src/content/pages" }),
   schema: (ctx) =>
     z.object({
-      heroHeading: z.string().optional().default(""),
-      intro: z.string().optional().default(""),
-      showMap: z.boolean().default(false),
-      mapUrl: z.string().url().optional().nullable(),
+      hero: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+      }),
+      contactRoutes: z
+        .array(
+          z.object({
+            number: z.string(),
+            title: z.string(),
+            description: z.string(),
+            cta: z
+              .object({
+                label: z.string(),
+                link: z.string(),
+                prefilledMessage: z.string().optional(),
+                subject: z.string().optional(),
+              })
+              .optional(),
+            primaryCta: z
+              .object({
+                label: z.string(),
+                link: z.string(),
+                subject: z.string().optional(),
+              })
+              .optional(),
+            secondaryCta: z
+              .object({
+                label: z.string(),
+                link: z.string(),
+                prefilledMessage: z.string().optional(),
+              })
+              .optional(),
+          }),
+        )
+        .default([]),
+      footer: z.object({
+        business: z.object({
+          heading: z.string(),
+          tagline: z.string(),
+          description: z.string(),
+        }),
+        sections: z
+          .array(
+            z.object({
+              title: z.string(),
+              links: z.array(z.object({ label: z.string(), link: z.string() })),
+            }),
+          )
+          .default([]),
+        legal: z
+          .array(z.object({ label: z.string(), link: z.string() }))
+          .default([]),
+        copyright: z.string().optional().default(""),
+      }),
       seo: seoFields(ctx).optional(),
     }),
 });

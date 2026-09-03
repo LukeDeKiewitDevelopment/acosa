@@ -5,7 +5,7 @@ import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
-import { getSiteSettings, mailtoLink, whatsappLink } from "@/lib/content";
+import { getSiteSettings, resolveCtaLink } from "@/lib/content";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
 
 export const prerender = true;
@@ -36,16 +36,45 @@ const ogImageUrl = seo?.ogImage
   : undefined;
 
 const email = settings.data.enquiryEmail;
-const emailLink = mailtoLink(email, "Corporate Accommodation Requirements");
-const teamEmailLink = mailtoLink(
+const heroPrimaryHref = resolveCtaLink(hero.primaryCta.link, {
   email,
-  "Team or Project Accommodation Request",
+  emailSubject: "Corporate Accommodation Requirements",
+  whatsappNumber: settings.data.defaultWhatsapp,
+});
+const heroSecondaryHref = resolveCtaLink(hero.secondaryCta.link, {
+  email,
+  emailSubject: "Corporate Accommodation Requirements",
+  whatsappNumber: settings.data.defaultWhatsapp,
+});
+const teamPrimaryHref = resolveCtaLink(
+  teamsAndProjectsSection.primaryCta.link,
+  {
+    email,
+    emailSubject: "Team or Project Accommodation Request",
+    whatsappNumber: settings.data.defaultWhatsapp,
+  },
 );
-const generalEmailLink = mailtoLink(email, "Corporate Accommodation Enquiry");
-const whatsapp = whatsappLink(
-  settings.data.defaultWhatsapp,
-  "Hi ACOSA, I need assistance finding accommodation for a team or project.",
+const teamSecondaryHref = resolveCtaLink(
+  teamsAndProjectsSection.secondaryCta.link,
+  {
+    email,
+    emailSubject: "Team or Project Accommodation Request",
+    whatsappNumber: settings.data.defaultWhatsapp,
+    whatsappMessage:
+      "Hi ACOSA, I need assistance finding accommodation for a team or project.",
+  },
 );
+const assistanceHref = resolveCtaLink(assistanceSection.cta.link, {
+  email,
+  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappMessage:
+    "Hi ACOSA, I need assistance finding accommodation for a team or project.",
+});
+const finalHref = resolveCtaLink(finalCta.cta.link, {
+  email,
+  emailSubject: "Corporate Accommodation Enquiry",
+  whatsappNumber: settings.data.defaultWhatsapp,
+});
 ---
 
 <Layout
@@ -60,8 +89,8 @@ const whatsapp = whatsappLink(
     body={hero.body}
     image={hero.image}
     imageAlt="A corporate booker arranging business accommodation"
-    primaryCta={{ label: hero.primaryCta.label, href: "/business-nodes" }}
-    secondaryCta={{ label: hero.secondaryCta.label, href: emailLink }}
+    primaryCta={{ label: hero.primaryCta.label, href: heroPrimaryHref }}
+    secondaryCta={{ label: hero.secondaryCta.label, href: heroSecondaryHref }}
   />
 
   <Section className="mt-16">
@@ -74,7 +103,7 @@ const whatsapp = whatsappLink(
         {
           whoWeHelpSection.roles.map((role) => (
             <li class="bg-card flex items-center gap-3 rounded-lg border p-4 text-sm">
-              <Check class="text-secondary size-4" aria-hidden="true" />
+              <Check className="text-secondary size-4" aria-hidden="true" />
               {role}
             </li>
           ))
@@ -110,7 +139,7 @@ const whatsapp = whatsappLink(
           <Image
             src={teamsAndProjectsSection.image}
             alt="A project team staying in business accommodation"
-            class="aspect-[4/3] w-full rounded-2xl object-cover"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
           />
         )
       }
@@ -123,7 +152,7 @@ const whatsapp = whatsappLink(
           {
             teamsAndProjectsSection.requirementsList.map((item) => (
               <li class="flex items-center gap-3">
-                <Check class="text-secondary size-4" aria-hidden="true" />
+                <Check className="text-secondary size-4" aria-hidden="true" />
                 {item}
               </li>
             ))
@@ -131,7 +160,7 @@ const whatsapp = whatsappLink(
         </ul>
         <div class="mt-7 flex flex-wrap gap-3">
           <a
-            href={teamEmailLink}
+            href={teamPrimaryHref}
             class="bg-secondary text-secondary-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
             >{teamsAndProjectsSection.primaryCta.label}<ArrowRight
               className="size-4"
@@ -139,7 +168,7 @@ const whatsapp = whatsappLink(
             /></a
           >
           <a
-            href={whatsapp}
+            href={teamSecondaryHref}
             target="_blank"
             rel="noopener noreferrer"
             class="border-secondary text-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
@@ -157,13 +186,14 @@ const whatsapp = whatsappLink(
       <h2 class="text-primary text-2xl font-bold md:text-3xl">
         {assistanceSection.heading}
       </h2><p class="text-muted-foreground mt-3">{assistanceSection.body}</p><a
-        href={whatsapp}
+        href={assistanceHref}
         target="_blank"
         rel="noopener noreferrer"
         class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
         ><MessageCircle className="size-4" aria-hidden="true" />{
           assistanceSection.cta.label
-        }</a>
+        }</a
+      >
     </div>
   </Section>
 
@@ -176,12 +206,13 @@ const whatsapp = whatsappLink(
       >
         {finalCta.body}
       </p><a
-        href={generalEmailLink}
+        href={finalHref}
         class="bg-background text-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
         >{finalCta.cta.label}<ArrowRight
           className="size-4"
           aria-hidden="true"
-        /></a>
+        /></a
+      >
     </div>
   </Section>
 </Layout>
