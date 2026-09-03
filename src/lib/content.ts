@@ -193,6 +193,24 @@ export function mailtoLink(email: string, subject: string, body?: string): strin
   return `mailto:${email}?${params.toString()}`;
 }
 
+export function resolveCtaLink(
+  link: string,
+  options: {
+    email: string;
+    emailSubject?: string;
+    whatsappNumber?: string;
+    whatsappMessage?: string;
+  },
+): string {
+  if (link === 'email') {
+    return mailtoLink(options.email, options.emailSubject ?? 'General ACOSA Enquiry');
+  }
+  if (link === 'whatsapp' && options.whatsappNumber) {
+    return whatsappLink(options.whatsappNumber, options.whatsappMessage);
+  }
+  return link;
+}
+
 export const DEFAULT_WHATSAPP_MESSAGE =
   "Hi ACOSA, I'm looking for business accommodation and would appreciate some assistance.";
 

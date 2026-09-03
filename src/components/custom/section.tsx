@@ -1,7 +1,10 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-export type SectionProps = {
+export type SectionProps = Omit<
+  HTMLAttributes<HTMLElement>,
+  "children" | "className"
+> & {
   slotName?: string;
   children?: ReactNode;
   className?: string;
@@ -13,9 +16,11 @@ export const Section = ({
   children,
   className,
   fullWidth = false,
+  ...sectionProps
 }: SectionProps) => {
   return (
     <section
+      {...sectionProps}
       data-slot={slotName || "section"}
       className={cn(
         "my-12 flex flex-col gap-8",

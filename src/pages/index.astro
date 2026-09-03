@@ -5,6 +5,7 @@ import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import {
   getHomePage,
+  getNodes,
   getPopularNodes,
   getFeaturedProperties,
   getGeneralTestimonials,
@@ -12,6 +13,8 @@ import {
   getActiveProvinces,
   buildSearchNodes,
   whatsappLink,
+  mailtoLink,
+  resolveCtaLink,
   provinceLabel,
   propertyTypeLabel,
 } from "@/lib/content";
@@ -36,13 +39,20 @@ const page = await getHomePage();
 const {
   hero,
   founderStrip,
-  trustStrip,
   whyAcosaPreview,
   ownerCta,
+  businessTravelSection,
+  businessNodesSection,
+  featuredPropertiesSection,
+  corporateBookersSection,
+  humanAssistanceSection,
+  propertyOwnersSection,
+  closingSection,
   seo,
 } = page.data;
 
 const popularNodes = await getPopularNodes();
+const businessNodes = await getNodes();
 const featuredProperties = await getFeaturedProperties();
 const essentials = await getCollection("essentials");
 const testimonials = await getGeneralTestimonials();
@@ -50,6 +60,27 @@ const settings = await getSiteSettings();
 const provinces = await getActiveProvinces();
 
 const searchNodes = await buildSearchNodes();
+const ctaOptions = {
+  email: settings.data.enquiryEmail,
+  whatsappNumber: settings.data.defaultWhatsapp,
+};
+const corporateEmail = resolveCtaLink(
+  corporateBookersSection.secondaryCta.link,
+  { ...ctaOptions, emailSubject: "Corporate Accommodation Enquiry" },
+);
+const humanAssistanceLink = resolveCtaLink(humanAssistanceSection.cta.link, {
+  ...ctaOptions,
+  whatsappMessage: "Hi ACOSA, I need help finding business accommodation.",
+});
+const propertyOwnerPrimary = resolveCtaLink(
+  propertyOwnersSection.primaryCta.link,
+  ctaOptions,
+);
+const propertyOwnerSecondary = resolveCtaLink(
+  propertyOwnersSection.secondaryCta.link,
+  ctaOptions,
+);
+const closingLink = resolveCtaLink(closingSection.cta.link, ctaOptions);
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -142,14 +173,58 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
 >
   <Section fullWidth className="m-0">
     <Hero
+      eyebrow={hero.eyebrow}
       heading={hero.heading}
-      subheading={hero.subheading}
+      body={hero.body}
       image={hero.image}
       overlay={{
         opacity: hero.overlayOpacity,
       }}
       contentClassName="text-background"
+      primaryCta={{
+        label: hero.primaryCta.label,
+        href: resolveCtaLink(hero.primaryCta.link, ctaOptions),
+      }}
+      secondaryCta={{
+        label: hero.secondaryCta.label,
+        href: resolveCtaLink(hero.secondaryCta.link, {
+          ...ctaOptions,
+          whatsappMessage:
+            "Hi ACOSA, I'm looking for business accommodation and would appreciate some assistance.",
+        }),
+        external: hero.secondaryCta.link === "whatsapp",
+      }}
     />
+  </Section>
+
+  <Section className="mt-28">
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      <div>
+        <p
+          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        >
+          {businessTravelSection.eyebrow}
+        </p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {businessTravelSection.heading}
+        </h2>
+        <p class="text-muted-foreground mt-4">{businessTravelSection.body}</p>
+        <a
+          href={businessTravelSection.cta.link}
+          class="text-secondary mt-6 inline-flex items-center gap-2 text-sm font-medium no-underline hover:underline"
+          >{businessTravelSection.cta.label}<span aria-hidden="true">→</span></a
+        >
+      </div>
+      {
+        businessTravelSection.image && (
+          <Image
+            src={businessTravelSection.image}
+            alt="Business traveller working from a practical accommodation workspace"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
+          />
+        )
+      }
+    </div>
   </Section>
 
   <Section className="mt-28">
@@ -157,15 +232,92 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
   </Section>
 
   <Section className="mt-28">
-    <TrustIcons items={trustStrip} />
+    <div class="space-y-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <p
+          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        >
+          {businessNodesSection.eyebrow}
+        </p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {businessNodesSection.heading}
+        </h2>
+        <p class="text-muted-foreground mt-3">{businessNodesSection.body}</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          businessNodes.map((node) => (
+            <a
+              href={`/business-nodes/${node.data.province}/${node.id}`}
+              class="bg-card hover:border-secondary rounded-lg border p-5 no-underline transition-colors"
+            >
+              <>
+                <h3 class="text-primary font-semibold">{node.data.name}</h3>
+                <span class="text-secondary mt-3 inline-flex items-center gap-2 text-sm">
+                  Explore {node.data.name}
+                  <span aria-hidden="true">→</span>
+                </span>
+              </>
+            </a>
+          ))
+        }
+      </div>
+      <a
+        href={businessNodesSection.cta.link}
+        class="text-secondary mx-auto inline-flex items-center gap-2 text-sm font-medium no-underline hover:underline"
+        >{businessNodesSection.cta.label}<span aria-hidden="true">→</span></a
+      >
+    </div>
   </Section>
 
   <Section className="mt-28">
-    <PopularNodes items={popularNodeItems} />
+    <div class="space-y-5">
+      <p
+        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+      >
+        {featuredPropertiesSection.eyebrow}
+      </p>
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">
+        {featuredPropertiesSection.heading}
+      </h2>
+      <p class="text-muted-foreground">{featuredPropertiesSection.body}</p>
+      <FeaturedProperties items={featuredPropertyItems} />
+    </div>
   </Section>
 
   <Section className="mt-28">
-    <FeaturedProperties items={featuredPropertyItems} />
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      <div>
+        <p
+          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        >
+          {corporateBookersSection.eyebrow}
+        </p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {corporateBookersSection.heading}
+        </h2>
+        <p class="text-muted-foreground mt-4">{corporateBookersSection.body}</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href={corporateBookersSection.primaryCta.link}
+            class="bg-secondary text-secondary-foreground inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+            >{corporateBookersSection.primaryCta.label}</a
+          ><a
+            href={corporateEmail}
+            class="border-secondary text-secondary inline-flex rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+            >{corporateBookersSection.secondaryCta.label}</a>
+        </div>
+      </div>
+      {
+        corporateBookersSection.image && (
+          <Image
+            src={corporateBookersSection.image}
+            alt="Corporate booker arranging business accommodation"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
+          />
+        )
+      }
+    </div>
   </Section>
 
   <Section className="mt-28">
@@ -179,12 +331,52 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
     />
   </Section>
 
+  <Section className="mt-28">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">
+        {humanAssistanceSection.heading}
+      </h2><p class="text-muted-foreground mt-3">
+        {humanAssistanceSection.body}
+      </p><a
+        href={humanAssistanceLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+        >{humanAssistanceSection.cta.label}</a>
+    </div>
+  </Section>
+
   <Section fullWidth className="m-0">
     <OwnerCta
-      heading={ownerCta.heading}
-      body={ownerCta.body}
-      buttonLabel={ownerCta.buttonLabel}
-      secondButtonLabel={ownerCta.secondButtonLabel}
+      heading={propertyOwnersSection.heading || ownerCta.heading}
+      body={propertyOwnersSection.body || ownerCta.body}
+      buttonLabel={propertyOwnersSection.primaryCta.label ||
+        ownerCta.buttonLabel}
+      secondButtonLabel={propertyOwnersSection.secondaryCta.label ||
+        ownerCta.secondButtonLabel}
+      primaryHref={propertyOwnerPrimary}
+      secondaryHref={propertyOwnerSecondary}
     />
+  </Section>
+
+  <Section className="mt-28 mb-28">
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      <div>
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">
+          {closingSection.heading}
+        </h2><p class="text-muted-foreground mt-3">{closingSection.body}</p><a
+          href={closingLink}
+          class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+          >{closingSection.cta.label}</a>
+      </div>{
+        closingSection.image && (
+          <Image
+            src={closingSection.image}
+            alt="A comfortable end to a business travel day"
+            class="aspect-4/3 w-full rounded-2xl object-cover"
+          />
+        )
+      }
+    </div>
   </Section>
 </Layout>

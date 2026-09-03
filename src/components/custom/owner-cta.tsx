@@ -7,6 +7,8 @@ interface OwnerCtaProps {
   body: string;
   buttonLabel: string;
   secondButtonLabel: string;
+  primaryHref?: string;
+  secondaryHref?: string;
 }
 
 export const OwnerCta = ({
@@ -14,6 +16,8 @@ export const OwnerCta = ({
   body,
   buttonLabel,
   secondButtonLabel,
+  primaryHref = "/list-your-property",
+  secondaryHref = "/list-your-property#listing-value",
 }: OwnerCtaProps) => {
   if (!heading && !body && !buttonLabel) return null;
 
@@ -31,7 +35,7 @@ export const OwnerCta = ({
       <div className="flex flex-col items-center gap-3 sm:flex-row">
         {buttonLabel && (
           <Button asChild variant="secondary">
-            <a href="/list-your-property" className="no-underline">
+            <a href={primaryHref} className="no-underline">
               {buttonLabel} <ArrowRight aria-hidden="true" />
             </a>
           </Button>
@@ -39,8 +43,7 @@ export const OwnerCta = ({
 
         {secondButtonLabel && (
           <Button asChild variant="outline">
-            {/* TODO: destination not decided yet */}
-            <a href="#" className="no-underline">
+            <a href={secondaryHref} className="no-underline">
               {secondButtonLabel} <ArrowRight aria-hidden="true" />
             </a>
           </Button>
