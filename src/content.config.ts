@@ -161,6 +161,7 @@ const homePage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string().optional().default(""),
+        subheading: z.string().optional().default(""),
         image: ctx.image().optional().nullable(),
         overlayOpacity: z.number().min(0).max(100).optional().default(50),
         primaryCta: z.object({ label: z.string(), link: z.string() }),

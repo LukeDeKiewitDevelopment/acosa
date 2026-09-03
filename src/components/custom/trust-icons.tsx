@@ -9,10 +9,10 @@ export type TrustIconsItem = {
 };
 
 export type TrustIconsProps = {
-  items: TrustIconsItem[];
+  items?: TrustIconsItem[];
 };
 
-export const TrustIcons = ({ items }: TrustIconsProps) => {
+export const TrustIcons = ({ items = [] }: TrustIconsProps) => {
   if (items.length === 0) return null;
 
   return (

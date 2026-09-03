@@ -138,7 +138,7 @@ export const Footer = ({
           <nav>
             <h5 className="my-4 text-sm">Contact</h5>
             <ul className="flex flex-col gap-4 text-xs">
-              {email && emailHref && <li><a href={emailHref} className="inline-flex items-center gap-2 no-underline hover:underline"><Mail className="size-3" aria-hidden="true" />Email ACOSA</a></li>}
+              {emailHref && <li><a href={emailHref} className="inline-flex items-center gap-2 no-underline hover:underline"><Mail className="size-3" aria-hidden="true" />Email ACOSA</a></li>}
               {whatsappHref && <li><a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 no-underline hover:underline"><MessageCircle className="size-3" aria-hidden="true" />WhatsApp ACOSA</a></li>}
             </ul>
           </nav>

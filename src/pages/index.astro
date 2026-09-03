@@ -6,26 +6,15 @@ import Layout from "@/layouts/Layout.astro";
 import {
   getHomePage,
   getNodes,
-  getPopularNodes,
   getFeaturedProperties,
-  getGeneralTestimonials,
   getSiteSettings,
-  getActiveProvinces,
-  buildSearchNodes,
-  whatsappLink,
-  mailtoLink,
   resolveCtaLink,
-  provinceLabel,
   propertyTypeLabel,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
-import { BusinessNodeSearch } from "@/components/custom/business-node-search";
 import { TrustIcons } from "@/components/custom/trust-icons";
-import {
-  PopularNodes,
-  type PopularNodeItem,
-} from "@/components/custom/popular-nodes";
+import type { PopularNodeItem } from "@/components/custom/popular-nodes";
 import {
   FeaturedProperties,
   type FeaturedPropertyItem,
@@ -39,6 +28,7 @@ const page = await getHomePage();
 const {
   hero,
   founderStrip,
+  trustStrip,
   whyAcosaPreview,
   ownerCta,
   businessTravelSection,
@@ -51,15 +41,10 @@ const {
   seo,
 } = page.data;
 
-const popularNodes = await getPopularNodes();
 const businessNodes = await getNodes();
 const featuredProperties = await getFeaturedProperties();
 const essentials = await getCollection("essentials");
-const testimonials = await getGeneralTestimonials();
 const settings = await getSiteSettings();
-const provinces = await getActiveProvinces();
-
-const searchNodes = await buildSearchNodes();
 const ctaOptions = {
   email: settings.data.enquiryEmail,
   whatsappNumber: settings.data.defaultWhatsapp,
@@ -115,7 +100,7 @@ const websiteSchema: Record<string, unknown> = {
 };
 
 const popularNodeItems: PopularNodeItem[] = await Promise.all(
-  popularNodes.map(async (node) => {
+  businessNodes.map(async (node) => {
     const img = await getImage({
       src: node.data.heroImage,
       widths: [400, 800],
@@ -198,125 +183,53 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
   </Section>
 
   <Section className="mt-28">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {businessTravelSection.eyebrow}
-        </p>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {businessTravelSection.heading}
-        </h2>
-        <p class="text-muted-foreground mt-4">{businessTravelSection.body}</p>
-        <a
-          href={businessTravelSection.cta.link}
-          class="text-secondary mt-6 inline-flex items-center gap-2 text-sm font-medium no-underline hover:underline"
-          >{businessTravelSection.cta.label}<span aria-hidden="true">→</span></a
-        >
+    <div class="grid gap-8 md:grid-cols-2 md:items-center">
+      <div class="flex flex-col gap-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{businessTravelSection.eyebrow}</p>
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">{businessTravelSection.heading}</h2>
+        <p class="text-muted-foreground text-sm md:text-base">{businessTravelSection.body}</p>
+        <a href={businessTravelSection.cta.link} class="text-primary font-semibold no-underline">{businessTravelSection.cta.label} -&gt;</a>
       </div>
-      {
-        businessTravelSection.image && (
-          <Image
-            src={businessTravelSection.image}
-            alt="Business traveller working from a practical accommodation workspace"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
-          />
-        )
-      }
+      {businessTravelSection.image && <Image src={businessTravelSection.image} alt="Business traveller working from accommodation" class="aspect-[4/3] h-auto max-h-96 w-full rounded-2xl object-cover object-[65%_center] md:aspect-auto md:object-center" />}
     </div>
   </Section>
 
   <Section className="mt-28">
-    <BusinessNodeSearch nodes={searchNodes} client:load />
+    <TrustIcons items={trustStrip ?? []} />
   </Section>
 
   <Section className="mt-28">
-    <div class="space-y-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {businessNodesSection.eyebrow}
-        </p>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {businessNodesSection.heading}
-        </h2>
-        <p class="text-muted-foreground mt-3">{businessNodesSection.body}</p>
-      </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          businessNodes.map((node) => (
-            <a
-              href={`/business-nodes/${node.data.province}/${node.id}`}
-              class="bg-card hover:border-secondary rounded-lg border p-5 no-underline transition-colors"
-            >
-              <>
-                <h3 class="text-primary font-semibold">{node.data.name}</h3>
-                <span class="text-secondary mt-3 inline-flex items-center gap-2 text-sm">
-                  Explore {node.data.name}
-                  <span aria-hidden="true">→</span>
-                </span>
-              </>
-            </a>
-          ))
-        }
-      </div>
-      <a
-        href={businessNodesSection.cta.link}
-        class="text-secondary mx-auto inline-flex items-center gap-2 text-sm font-medium no-underline hover:underline"
-        >{businessNodesSection.cta.label}<span aria-hidden="true">→</span></a
-      >
+    <div class="flex flex-col gap-4">
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{businessNodesSection.eyebrow}</p>
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">{businessNodesSection.heading}</h2>
+      <p class="text-muted-foreground max-w-2xl text-sm md:text-base">{businessNodesSection.body}</p>
+      <ul role="list" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {popularNodeItems.map((node) => (
+          <li><a href={`/business-nodes/${node.province}/${node.id}`} class="border-border text-primary rounded-lg border p-4 font-semibold no-underline">Explore {node.name} -&gt;</a></li>
+        ))}
+      </ul>
+      <a href={businessNodesSection.cta.link} class="text-primary font-semibold no-underline">{businessNodesSection.cta.label} -&gt;</a>
     </div>
   </Section>
 
   <Section className="mt-28">
-    <div class="space-y-5">
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-      >
-        {featuredPropertiesSection.eyebrow}
-      </p>
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {featuredPropertiesSection.heading}
-      </h2>
-      <p class="text-muted-foreground">{featuredPropertiesSection.body}</p>
-      <FeaturedProperties items={featuredPropertyItems} />
+    <div class="flex flex-col gap-2">
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{featuredPropertiesSection.eyebrow}</p>
+      <h2 class="text-primary text-2xl font-bold md:text-3xl">{featuredPropertiesSection.heading}</h2>
+      <p class="text-muted-foreground text-sm md:text-base">{featuredPropertiesSection.body}</p>
     </div>
+    <FeaturedProperties items={featuredPropertyItems} />
   </Section>
 
   <Section className="mt-28">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {corporateBookersSection.eyebrow}
-        </p>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {corporateBookersSection.heading}
-        </h2>
-        <p class="text-muted-foreground mt-4">{corporateBookersSection.body}</p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a
-            href={corporateBookersSection.primaryCta.link}
-            class="bg-secondary text-secondary-foreground inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-            >{corporateBookersSection.primaryCta.label}</a
-          ><a
-            href={corporateEmail}
-            class="border-secondary text-secondary inline-flex rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-            >{corporateBookersSection.secondaryCta.label}</a>
-        </div>
+    <div class="grid gap-8 md:grid-cols-2 md:items-center">
+      {corporateBookersSection.image && <Image src={corporateBookersSection.image} alt="Corporate booker reviewing accommodation options" class="aspect-[4/3] h-auto max-h-96 w-full rounded-2xl object-cover object-[65%_center] md:aspect-auto md:object-center" />}
+      <div class="flex flex-col gap-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{corporateBookersSection.eyebrow}</p>
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">{corporateBookersSection.heading}</h2>
+        <p class="text-muted-foreground text-sm md:text-base">{corporateBookersSection.body}</p>
+        <div class="flex flex-wrap gap-3"><a href={resolveCtaLink(corporateBookersSection.primaryCta.link, ctaOptions)} class="bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-sm font-medium no-underline">{corporateBookersSection.primaryCta.label}</a><a href={corporateEmail} class="border-border text-primary rounded-full border px-5 py-2.5 text-sm font-medium no-underline">{corporateBookersSection.secondaryCta.label}</a></div>
       </div>
-      {
-        corporateBookersSection.image && (
-          <Image
-            src={corporateBookersSection.image}
-            alt="Corporate booker arranging business accommodation"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
-          />
-        )
-      }
     </div>
   </Section>
 
@@ -359,24 +272,5 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
     />
   </Section>
 
-  <Section className="mt-28 mb-28">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {closingSection.heading}
-        </h2><p class="text-muted-foreground mt-3">{closingSection.body}</p><a
-          href={closingLink}
-          class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-          >{closingSection.cta.label}</a>
-      </div>{
-        closingSection.image && (
-          <Image
-            src={closingSection.image}
-            alt="A comfortable end to a business travel day"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
-          />
-        )
-      }
-    </div>
-  </Section>
+  {closingSection.image && <Section fullWidth className="m-0"><div class="relative"><Image src={closingSection.image} alt="Traveller relaxing after a business day" class="aspect-[4/3] h-auto max-h-[32rem] w-full object-cover object-[65%_center] md:aspect-auto md:h-96 md:object-center" /><div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 p-6 text-center text-white"><h2 class="text-2xl font-bold md:text-3xl">{closingSection.heading}</h2><p class="max-w-2xl text-sm md:text-base">{closingSection.body}</p><a href={closingLink} class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black no-underline">{closingSection.cta.label}</a></div></div></Section>}
 </Layout>

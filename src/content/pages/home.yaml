@@ -38,7 +38,7 @@ businessTravelSection:
   heading: Not every place to stay is a good place to stay for business.
   body: >-
     Reliable WiFi. A practical workspace. Secure parking. Backup power. A good breakfast. A quiet room after a long day. When you're travelling for work, the practical details matter. ACOSA helps you discover independent accommodation selected with those realities in mind.
-  image: ../../assets/images/pages/founderStrip/image.jpg
+  image: ../../assets/images/pages/business-traveller-workspace/image.jpg
   cta:
     label: Why ACOSA?
     link: /why-acosa
@@ -63,7 +63,7 @@ corporateBookersSection:
   heading: The traveller isn't always the person doing the searching.
   body: >-
     ACOSA also helps the people responsible for arranging business accommodation — from executive assistants and HR teams to operations, procurement and project coordinators. Whether you're placing one colleague or arranging accommodation for a team, start with a more relevant shortlist.
-  image: ../../assets/images/pages/for-companies/heroImage.jpg
+  image: ../../assets/images/pages/corporate-booker/image.jpg
   primaryCta:
     label: Accommodation for Your Team
     link: /for-companies
@@ -96,7 +96,7 @@ closingSection:
   heading: A better business stay works beyond working hours.
   body: >-
     The right accommodation gives you somewhere practical to work, somewhere comfortable to return to, and one less thing to think about while you're away.
-  image: ../../assets/images/pages/heroImage.png
+  image: ../../assets/images/pages/end-of-workday/image.jpg
   cta:
     label: Find Your Stay
     link: /business-nodes
