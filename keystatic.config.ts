@@ -549,25 +549,66 @@ export default config({
       label: "Why Acosa Page",
       path: "src/content/pages/why-acosa",
       entryLayout: "form",
-      format: { contentField: "body" },
       schema: {
-        heroHeading: fields.text({ label: "Hero Heading" }),
-        heroImage: fields.image({
-          label: "Hero Image",
-          directory: "src/assets/images/pages",
-          publicPath: "../../assets/images/pages/",
-        }),
-        body: fields.markdoc({
-          label: "Page Content",
-          description:
-            "Founder story, the problem, our difference, Acosa Approved™, Essentials™.",
-          options: {
-            image: {
+        hero: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading", validation: { isRequired: true } }),
+            body: fields.text({ label: "Body", multiline: true, validation: { isRequired: true } }),
+            image: fields.image({
+              label: "Hero Image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
-            },
+            }),
+            cta: fields.object({
+              label: fields.text({ label: "Label" }),
+              link: fields.text({ label: "Link" }),
+            }, { label: "CTA" }),
           },
-        }),
+          { label: "Hero" },
+        ),
+        experienceSection: fields.object({
+          eyebrow: fields.text({ label: "Eyebrow" }),
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+        }, { label: "Experience" }),
+        curationSection: fields.object({
+          eyebrow: fields.text({ label: "Eyebrow" }),
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+          image: fields.image({
+            label: "Curation Image",
+            directory: "src/assets/images/pages",
+            publicPath: "../../assets/images/pages/",
+          }),
+          factorsInclude: fields.array(fields.text({ label: "Factor" }), {
+            label: "Assessment Factors",
+            itemLabel: (props) => props.value || "Factor",
+          }),
+          highlightStatement: fields.text({ label: "Highlight Statement" }),
+          note: fields.text({ label: "Note", multiline: true }),
+        }, { label: "Curation" }),
+        approvedSection: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+          cta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "CTA" }),
+        }, { label: "ACOSA Approved" }),
+        outcomeSection: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+          image: fields.image({
+            label: "Outcome Image",
+            directory: "src/assets/images/pages",
+            publicPath: "../../assets/images/pages/",
+          }),
+          cta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "CTA" }),
+        }, { label: "Outcome" }),
         seo: seoFields,
       },
     }),
@@ -576,23 +617,83 @@ export default config({
       label: "For Companies Page",
       path: "src/content/pages/for-companies",
       entryLayout: "form",
-      format: { contentField: "body" },
       schema: {
-        heroHeading: fields.text({ label: "Hero Heading" }),
-        heroImage: fields.image({
-          label: "Hero Image",
-          directory: "src/assets/images/pages",
-          publicPath: "../../assets/images/pages/",
-        }),
-        body: fields.markdoc({
-          label: "Page Content",
-          options: {
-            image: {
+        hero: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading", validation: { isRequired: true } }),
+            body: fields.text({ label: "Body", multiline: true, validation: { isRequired: true } }),
+            image: fields.image({
+              label: "Hero Image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
-            },
+            }),
+            primaryCta: fields.object({
+              label: fields.text({ label: "Label" }),
+              link: fields.text({ label: "Link" }),
+            }, { label: "Primary CTA" }),
+            secondaryCta: fields.object({
+              label: fields.text({ label: "Label" }),
+              link: fields.text({ label: "Link" }),
+            }, { label: "Secondary CTA" }),
           },
-        }),
+          { label: "Hero" },
+        ),
+        whoWeHelpSection: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body" }),
+          roles: fields.array(fields.text({ label: "Role" }), {
+            label: "Who We Help",
+            itemLabel: (props) => props.value || "Role",
+          }),
+        }, { label: "Who We Help" }),
+        howAcosaHelpsSection: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          features: fields.array(fields.object({
+            title: fields.text({ label: "Title" }),
+            body: fields.text({ label: "Body", multiline: true }),
+          }), {
+            label: "How ACOSA Helps",
+            itemLabel: (props) => props.fields.title.value || "Feature",
+          }),
+        }, { label: "How ACOSA Helps" }),
+        teamsAndProjectsSection: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          image: fields.image({
+            label: "Team Stay Image",
+            directory: "src/assets/images/pages",
+            publicPath: "../../assets/images/pages/",
+          }),
+          body: fields.text({ label: "Body", multiline: true }),
+          requirementsList: fields.array(fields.text({ label: "Requirement" }), {
+            label: "Requirements",
+            itemLabel: (props) => props.value || "Requirement",
+          }),
+          primaryCta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "Primary CTA" }),
+          secondaryCta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "Secondary CTA" }),
+        }, { label: "Teams & Projects" }),
+        assistanceSection: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+          cta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "CTA" }),
+        }, { label: "Assistance" }),
+        finalCta: fields.object({
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+          cta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "CTA" }),
+        }, { label: "Final CTA" }),
         seo: seoFields,
       },
     }),
