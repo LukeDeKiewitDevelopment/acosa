@@ -3,7 +3,7 @@ hero:
   heading: Business accommodation shouldn't be a guessing game.
   body: >-
     A beautiful room doesn't necessarily make a property practical for someone travelling for work. ACOSA looks beyond the photographs to help corporate travellers discover independent accommodation selected with the realities of business travel in mind.
-  image: ../../assets/images/pages/hero/image.png
+  image: ../../assets/images/pages/why-acosa/hero.png
   cta:
     label: Find Accommodation
     link: /business-nodes
@@ -25,7 +25,7 @@ curationSection:
   heading: Someone has looked beyond the photographs.
   body: >-
     ACOSA isn't trying to list every accommodation establishment. Properties are reviewed before acceptance, with attention to practical factors that can influence a business stay.
-  image: ../../assets/images/pages/founderStrip/image.jpg
+  image: ../../assets/images/pages/why-acosa/curation.png
   factorsInclude:
     - reliable high-speed WiFi
     - practical workspace
@@ -56,7 +56,7 @@ outcomeSection:
   heading: Accommodation that understands why you're travelling.
   body: >-
     The right business stay supports the whole trip — from getting work done and leaving early when necessary to returning somewhere comfortable at the end of the day.
-  image: ../../assets/images/pages/heroImage.png
+  image: ../../assets/images/pages/end-of-workday/image.jpg
   cta:
     label: Find Your Stay
     link: /business-nodes

@@ -1,10 +1,9 @@
 ---
-import { getImage } from "astro:assets";
+import businessNodesHero from "@/assets/images/pages/business-nodes/hero.png";
 import Layout from "@/layouts/Layout.astro";
 import {
   getNodes,
   getActiveProvinces,
-  buildSearchNodes,
   getSiteSettings,
   whatsappLink,
 } from "@/lib/content";
@@ -15,42 +14,20 @@ import {
   type DirectoryGroup,
   type DirectoryNode,
 } from "@/components/custom/node-directory";
-import { BusinessNodeSearch } from "@/components/custom/business-node-search";
 
 export const prerender = true;
 
 const nodes = await getNodes();
 const provinces = await getActiveProvinces();
 const settings = await getSiteSettings();
-const searchNodes = await buildSearchNodes();
 
-const sortedProvinces = [...provinces].sort(
-  (a, b) => b.nodeCount - a.nodeCount || a.label.localeCompare(b.label),
-);
+const sortedProvinces = provinces.filter((province) => province.slug === "gauteng");
 
-const directoryNodes: DirectoryNode[] = await Promise.all(
-  nodes.map(async (node) => {
-    const img = await getImage({
-      src: node.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
-    });
-    return {
-      id: node.id,
-      name: node.data.name,
-      city: node.data.city,
-      province: node.data.province,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: node.data.imageAlt || node.data.name,
-    };
-  }),
-);
+const directoryNodes: DirectoryNode[] = nodes.map((node) => ({
+  id: node.id,
+  name: node.data.name,
+  province: node.data.province,
+}));
 
 const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
   slug: province.slug,
@@ -72,6 +49,9 @@ const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
       label: "Explore Business Nodes",
       href: "#directory",
     }}
+    image={businessNodesHero}
+    imageAlt="Business traveller arriving at curated accommodation"
+    overlay={{ color: "#000", opacity: 35 }}
   />
 
   <Section id="directory" className="mt-28">

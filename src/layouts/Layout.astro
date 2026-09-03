@@ -3,15 +3,26 @@ import { Header, type HeaderLogo, type NavItem } from "@/components/custom/heade
 import { Footer } from "@/components/custom/footer";
 import { BackToTop } from "@/components/custom/back-to-top";
 import "@/styles/global.css";
-import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
-import { getSiteSettings } from "@/lib/content";
+import { getNodes, getSiteSettings, isConfiguredContactValue } from "@/lib/content";
 import type { ImageMetadata } from "astro";
 import { whatsappLink, mailtoLink, DEFAULT_WHATSAPP_MESSAGE } from "@/lib/content";
 import WhatsAppButton from "@/components/custom/whatsapp-button.astro";
 
-const nodes = await getCollection("businessNodes");
+const nodes = await getNodes();
 const settings = await getSiteSettings();
+const configuredEmail = isConfiguredContactValue(settings.data.enquiryEmail)
+  ? settings.data.enquiryEmail
+  : "";
+const configuredWhatsapp = isConfiguredContactValue(settings.data.defaultWhatsapp)
+  ? settings.data.defaultWhatsapp
+  : "";
+const emailHref = configuredEmail
+  ? mailtoLink(configuredEmail, "General ACOSA Enquiry")
+  : "/contact";
+const whatsappHref = configuredWhatsapp
+  ? whatsappLink(configuredWhatsapp, whatsappMessage)
+  : "/contact";
 
 // Resolved here (server-only) because Header hydrates on the client via
 // client:load — an async component like AcosaImage can't run in the
@@ -89,7 +100,7 @@ const organisationSchema: Record<string, unknown> = {
   url: siteBase,
   description:
     "Vetted business accommodation across South Africa's key corporate nodes.",
-  email: settings.data.enquiryEmail,
+  ...(configuredEmail ? { email: configuredEmail } : {}),
   sameAs: settings.data.socialLinks.map((s) => s.url).filter(Boolean),
 };
 ---
@@ -187,12 +198,12 @@ const organisationSchema: Record<string, unknown> = {
       logo={logo}
       description={settings.data.footerDescription}
       socials={settings.data.socialLinks}
-      email={settings.data.enquiryEmail}
-      emailHref={mailtoLink(settings.data.enquiryEmail, "General ACOSA Enquiry")}
-      whatsappHref={whatsappLink(settings.data.defaultWhatsapp, whatsappMessage)}
+      email={configuredEmail || "ACOSA contact email"}
+      emailHref={emailHref}
+      whatsappHref={whatsappHref}
       client:load
     />
     <BackToTop client:load />
-    <WhatsAppButton href={whatsappLink(settings.data.defaultWhatsapp, whatsappMessage)} />
+    <WhatsAppButton href={whatsappHref} />
   </body>
 </html>

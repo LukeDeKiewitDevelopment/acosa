@@ -1,13 +1,8 @@
 // src/components/custom/node-directory.tsx
-import { StaticAcosaImage, type ResolvedAcosaImage } from "./image";
-
 export type DirectoryNode = {
   id: string;
   name: string;
-  city: string;
   province: string;
-  image: ResolvedAcosaImage;
-  imageAlt: string;
 };
 
 export type DirectoryGroup = {
@@ -31,35 +26,16 @@ export const NodeDirectory = ({ groups }: { groups: DirectoryGroup[] }) => {
             >
               {group.label}
             </a>
-            <span className="text-muted-foreground text-sm font-normal">
-              {group.nodeCount} {group.nodeCount === 1 ? "node" : "nodes"}
-            </span>
           </h2>
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
-          >
+          <ul role="list" className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {group.nodes.map((node) => (
               <li key={node.id}>
                 <a
                   href={`/business-nodes/${node.province}/${node.id}`}
-                  className="group relative block aspect-3/4 overflow-hidden rounded-2xl"
+                  className="text-primary border-border flex items-center justify-between rounded-lg border p-4 font-semibold no-underline hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
-                  <StaticAcosaImage
-                    {...node.image}
-                    alt={node.imageAlt}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent"
-                  />
-                  <span className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-4 text-white">
-                    <span className="text-lg font-bold">{node.name}</span>
-                    {node.city && (
-                      <span className="text-sm text-white/80">{node.city}</span>
-                    )}
-                  </span>
+                  <span>Explore {node.name}</span>
+                  <span aria-hidden="true">-&gt;</span>
                 </a>
               </li>
             ))}

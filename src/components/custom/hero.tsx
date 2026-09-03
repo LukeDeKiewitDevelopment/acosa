@@ -51,11 +51,13 @@ export const Hero = async ({
   contentClassName,
   overlay,
 }: HeroProps) => {
+  const effectiveOverlay = overlay ?? (image ? { color: "#000", opacity: 35 } : undefined);
+
   return (
     <section
       data-slot="hero"
       className={cn(
-        "relative flex min-h-screen flex-1 flex-col items-center justify-center",
+        "relative flex min-h-screen flex-1 flex-col items-center justify-center overflow-hidden",
         className,
       )}
     >
@@ -83,19 +85,19 @@ export const Hero = async ({
         )}
         {(primaryCta || secondaryCta) && (
           <div className="mx-auto mt-2 flex flex-wrap justify-center gap-3">
-            {primaryCta && <a href={primaryCta.href} className="bg-primary text-primary-foreground inline-flex rounded-full px-6 py-3 text-sm font-medium no-underline">{primaryCta.label}</a>}
-            {secondaryCta && <a href={secondaryCta.href} target={secondaryCta.external ? "_blank" : undefined} rel={secondaryCta.external ? "noopener noreferrer" : undefined} className="border-background text-background inline-flex rounded-full border px-6 py-3 text-sm font-medium no-underline">{secondaryCta.label}</a>}
+            {primaryCta && <a href={primaryCta.href} className="bg-white text-[#121743] inline-flex rounded-full px-6 py-3 text-sm font-semibold no-underline shadow-sm hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">{primaryCta.label}</a>}
+            {secondaryCta && <a href={secondaryCta.href} target={secondaryCta.external ? "_blank" : undefined} rel={secondaryCta.external ? "noopener noreferrer" : undefined} className="border-white bg-black/25 text-white inline-flex rounded-full border px-6 py-3 text-sm font-semibold no-underline shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">{secondaryCta.label}</a>}
           </div>
         )}
       </div>
 
-      {overlay && (
+      {effectiveOverlay && (
         <div
-          className={cn("absolute z-10 size-full", overlay.className)}
+          className={cn("absolute z-10 size-full", effectiveOverlay.className)}
           style={{
-            backgroundColor: overlay.color || "oklch(0 0 0)",
-            opacity: `${overlay.opacity || 50}%`,
-            ...overlay.additonalCss,
+            backgroundColor: effectiveOverlay.color || "oklch(0 0 0)",
+            opacity: `${effectiveOverlay.opacity ?? 50}%`,
+            ...effectiveOverlay.additonalCss,
           }}
         ></div>
       )}
@@ -110,7 +112,7 @@ export const Hero = async ({
           decoding="sync"
           fetchPriority="high"
           className={cn(
-            "absolute z-5 h-full w-full object-cover",
+            "absolute z-5 h-full w-full object-cover object-[65%_center] md:object-center",
             imageClassName,
           )}
         />

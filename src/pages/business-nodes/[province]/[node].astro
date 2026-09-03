@@ -6,8 +6,10 @@ import Layout from "@/layouts/Layout.astro";
 import {
   getNodes,
   getPublishedProperties,
+  getSiteSettings,
   provinceLabel,
   propertyTypeLabel,
+  whatsappLink,
 } from "@/lib/content";
 import { Section } from "@/components/custom/section";
 import { NodeDetail } from "@/components/custom/node-detail";
@@ -24,6 +26,7 @@ export async function getStaticPaths() {
 }
 
 const { node } = Astro.props;
+const settings = await getSiteSettings();
 const { Content } = await render(node);
 const seo = node.data.seo;
 
@@ -135,6 +138,7 @@ const nearby = nearbyIds
       properties={propertyItems}
       highlights={node.data.businessHighlights}
       nearby={nearby}
+      whatsappHref={whatsappLink(settings.data.defaultWhatsapp)}
     >
       <Content />
     </NodeDetail>

@@ -3,7 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import { getEntry } from "astro:content";
 import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import { getSiteSettings, whatsappLink, mailtoLink } from "@/lib/content";
+import { getSiteSettings, whatsappLink, mailtoLink, isConfiguredContactValue } from "@/lib/content";
 import { Section } from "@/components/custom/section";
 import { ArrowRight, MessageCircle } from "lucide-react";
 
@@ -28,11 +28,15 @@ const ogImageUrl = seo?.ogImage
   : undefined;
 
 const email = settings.data.enquiryEmail;
+const configuredEmail = isConfiguredContactValue(email) ? email : "";
+const configuredWhatsapp = isConfiguredContactValue(settings.data.defaultWhatsapp)
+  ? settings.data.defaultWhatsapp
+  : "";
 const routeHref = (link: string, subject?: string, message?: string) =>
   link === "email"
-    ? mailtoLink(email, subject || "General ACOSA Enquiry")
+    ? configuredEmail ? mailtoLink(configuredEmail, subject || "General ACOSA Enquiry") : "/contact"
     : link === "whatsapp"
-      ? whatsappLink(settings.data.defaultWhatsapp, message)
+      ? configuredWhatsapp ? whatsappLink(configuredWhatsapp, message) : "/contact"
       : link;
 ---
 
@@ -110,8 +114,8 @@ const routeHref = (link: string, subject?: string, message?: string) =>
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               )}
-              {route.number === "4" && (
-                <p class="text-muted-foreground text-sm">{email}</p>
+              {route.number === "4" && configuredEmail && (
+                <p class="text-muted-foreground text-sm">{configuredEmail}</p>
               )}
             </article>
           );
