@@ -1,12 +1,24 @@
 ---
-import { Header, type HeaderLogo, type NavItem } from "@/components/custom/header";
+import {
+  Header,
+  type HeaderLogo,
+  type NavItem,
+} from "@/components/custom/header";
 import { Footer } from "@/components/custom/footer";
 import { BackToTop } from "@/components/custom/back-to-top";
 import "@/styles/global.css";
 import { getImage } from "astro:assets";
-import { getNodes, getSiteSettings, isConfiguredContactValue } from "@/lib/content";
+import {
+  getNodes,
+  getSiteSettings,
+  isConfiguredContactValue,
+} from "@/lib/content";
 import type { ImageMetadata } from "astro";
-import { whatsappLink, mailtoLink, DEFAULT_WHATSAPP_MESSAGE } from "@/lib/content";
+import {
+  whatsappLink,
+  mailtoLink,
+  DEFAULT_WHATSAPP_MESSAGE,
+} from "@/lib/content";
 import WhatsAppButton from "@/components/custom/whatsapp-button.astro";
 
 const nodes = await getNodes();
@@ -14,7 +26,9 @@ const settings = await getSiteSettings();
 const configuredEmail = isConfiguredContactValue(settings.data.enquiryEmail)
   ? settings.data.enquiryEmail
   : "";
-const configuredWhatsapp = isConfiguredContactValue(settings.data.defaultWhatsapp)
+const configuredWhatsapp = isConfiguredContactValue(
+  settings.data.defaultWhatsapp,
+)
   ? settings.data.defaultWhatsapp
   : "";
 const emailHref = configuredEmail
@@ -74,6 +88,7 @@ const navItems: NavItem[] = [
   { label: "Properties", href: "/properties" },
   { label: "Why Acosa?", href: "/why-acosa" },
   { label: "For Companies", href: "/for-companies" },
+  { label: "For Properties", href: "/list-your-property" },
   { label: "Contact", href: "/contact" },
 ];
 

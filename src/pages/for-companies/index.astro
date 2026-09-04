@@ -18,7 +18,6 @@ const {
   whoWeHelpSection,
   howAcosaHelpsSection,
   teamsAndProjectsSection,
-  assistanceSection,
   finalCta,
 } = page.data;
 const seo = page.data.seo;
@@ -64,15 +63,13 @@ const teamSecondaryHref = resolveCtaLink(
       "Hi ACOSA, I need assistance finding accommodation for a team or project.",
   },
 );
-const assistanceHref = resolveCtaLink(assistanceSection.cta.link, {
-  email,
-  whatsappNumber: settings.data.defaultWhatsapp,
-  whatsappMessage:
-    "Hi ACOSA, I need assistance finding accommodation for a team or project.",
-});
-const finalHref = resolveCtaLink(finalCta.cta.link, {
+const finalPrimaryHref = resolveCtaLink(finalCta.primaryCta.link, {
   email,
   emailSubject: "Corporate Accommodation Enquiry",
+  whatsappNumber: settings.data.defaultWhatsapp,
+});
+const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
+  email,
   whatsappNumber: settings.data.defaultWhatsapp,
 });
 ---
@@ -181,22 +178,6 @@ const finalHref = resolveCtaLink(finalCta.cta.link, {
     </div>
   </Section>
 
-  <Section className="mt-16">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {assistanceSection.heading}
-      </h2><p class="text-muted-foreground mt-3">{assistanceSection.body}</p><a
-        href={assistanceHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        ><MessageCircle className="size-4" aria-hidden="true" />{
-          assistanceSection.cta.label
-        }</a
-      >
-    </div>
-  </Section>
-
   <Section className="mt-16 mb-28">
     <div
       class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-8 text-center md:p-12"
@@ -206,12 +187,16 @@ const finalHref = resolveCtaLink(finalCta.cta.link, {
       >
         {finalCta.body}
       </p><a
-        href={finalHref}
+        href={finalPrimaryHref}
         class="bg-background text-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >{finalCta.cta.label}<ArrowRight
+        >{finalCta.primaryCta.label}<ArrowRight
           className="size-4"
           aria-hidden="true"
         /></a
+      ><a
+        href={finalSecondaryHref}
+        class="border-background text-background mt-6 ml-3 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+        >{finalCta.secondaryCta.label}</a
       >
     </div>
   </Section>

@@ -247,10 +247,11 @@ export function resolveCtaLink(
   },
 ): string {
   if (link === 'email') {
-    if (!isConfiguredContactValue(options.email)) return '';
+    if (!isConfiguredContactValue(options.email)) return '/contact';
     return mailtoLink(options.email, options.emailSubject ?? 'General ACOSA Enquiry');
   }
-  if (link === 'whatsapp' && isConfiguredContactValue(options.whatsappNumber ?? '')) {
+  if (link === 'whatsapp') {
+    if (!isConfiguredContactValue(options.whatsappNumber ?? '')) return '/contact';
     return whatsappLink(options.whatsappNumber, options.whatsappMessage);
   }
   return link;

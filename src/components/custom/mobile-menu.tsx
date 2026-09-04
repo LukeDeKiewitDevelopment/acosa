@@ -57,6 +57,13 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
         </SheetHeader>
         <ul className="mx-4 my-2 flex scrollbar-thin flex-col gap-2 overflow-y-auto pr-2">
           <li>
+            <Button variant="default" size="sm" asChild className="w-full">
+              <a href="/business-nodes" className="text-xs no-underline">
+                Find Accommodation
+              </a>
+            </Button>
+          </li>
+          <li>
             <Button variant="ghost" size="sm" asChild>
               <a href="/" className="text-xs no-underline">
                 Home

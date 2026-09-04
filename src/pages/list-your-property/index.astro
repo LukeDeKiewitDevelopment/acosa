@@ -20,6 +20,7 @@ const {
   hero,
   whoWeWorkWithSection,
   valueSection,
+  curationSection,
   promotionalVisibilitySection,
   pricingSection,
   listingUpdatesSection,
@@ -51,6 +52,9 @@ const finalSecondaryHref = resolveCtaLink(
   finalCta.secondaryCta.link,
   ctaOptions,
 );
+const promoHref = promotionalVisibilitySection.cta
+  ? resolveCtaLink(promotionalVisibilitySection.cta.link, ctaOptions)
+  : undefined;
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -86,8 +90,16 @@ const ogImageUrl = seo?.ogImage
     }}
   />
 
-  <Section className="mt-16">
-    <div class="mx-auto max-w-3xl text-center">
+  <Section id="why-list" className="mt-16">
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      {whoWeWorkWithSection.image && (
+        <Image
+          src={whoWeWorkWithSection.image}
+          alt="An independent accommodation owner caring for her property"
+          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+        />
+      )}
+      <div>
       <p
         class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
       >
@@ -110,10 +122,11 @@ const ogImageUrl = seo?.ogImage
       <p class="text-muted-foreground mt-2 text-sm">
         {whoWeWorkWithSection.note}
       </p>
+      </div>
     </div>
   </Section>
 
-  <Section id="listing-value" className="mt-16">
+  <Section id="whats-included" className="mt-16">
     <div class="grid items-center gap-8 lg:grid-cols-2">
       {
         valueSection.image && (
@@ -150,8 +163,34 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
+  <Section id="acosa-review" className="mt-16">
+    <div class="grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
+      {curationSection.image && (
+        <Image
+          src={curationSection.image}
+          alt="ACOSA reviewing a guesthouse room"
+          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+        />
+      )}
+      <div>
+        <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{curationSection.eyebrow}</p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">{curationSection.heading}</h2>
+        <p class="text-muted-foreground mt-3">{curationSection.body}</p>
+        <ul class="text-muted-foreground mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+          {curationSection.criteria.map((item) => <li>{item}</li>)}
+        </ul>
+        <div class="border-border mt-8 border-l-2 pl-4">
+          <h3 class="text-primary font-semibold">{curationSection.approvedHeading}</h3>
+          <p class="text-muted-foreground mt-2 text-sm">{curationSection.approvedBody}</p>
+        </div>
+        <a href={curationSection.cta.link} class="text-primary mt-6 inline-flex font-semibold no-underline">{curationSection.cta.label} <ArrowRight className="ml-2 size-4" aria-hidden="true" /></a>
+      </div>
+    </div>
+  </Section>
+
   <Section className="mt-16">
     <div class="mx-auto max-w-3xl text-center">
+      <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{promotionalVisibilitySection.eyebrow}</p>
       <h2 class="text-primary text-2xl font-bold md:text-3xl">
         {promotionalVisibilitySection.heading}
       </h2><p class="text-muted-foreground mt-3">
@@ -159,6 +198,17 @@ const ogImageUrl = seo?.ogImage
       </p><p class="text-muted-foreground mt-4 text-sm">
         {promotionalVisibilitySection.note}
       </p>
+      {
+        promotionalVisibilitySection.cta && promoHref && (
+          <a
+            href={promoHref}
+            class="text-primary mt-6 inline-flex font-semibold no-underline"
+          >
+            {promotionalVisibilitySection.cta.label}
+            <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+          </a>
+        )
+      }
     </div>
   </Section>
 
@@ -209,8 +259,16 @@ const ogImageUrl = seo?.ogImage
     </div></Section
   >
 
-  <Section className="mt-16"
-    ><div class="mx-auto max-w-3xl">
+  <Section id="apply" className="mt-16"
+    ><div class="grid items-center gap-8 lg:grid-cols-2">
+      {howToJoinSection.image && (
+        <Image
+          src={howToJoinSection.image}
+          alt="A business traveller being welcomed by a host"
+          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+        />
+      )}
+      <div>
       <p
         class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
       >
@@ -238,6 +296,7 @@ const ogImageUrl = seo?.ogImage
           className="ml-2 size-4"
           aria-hidden="true"
         /></a>
+      </div>
     </div></Section
   >
 

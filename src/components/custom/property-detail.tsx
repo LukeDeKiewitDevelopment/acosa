@@ -99,7 +99,7 @@ export const PropertyDetail = ({
             {property.approved && (
               <span className="bg-secondary text-secondary-foreground inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
                 <BadgeCheck className="size-3.5" aria-hidden="true" />
-                Acosa Approved™
+                ACOSA Approved
                 {property.score > 0 && ` ${property.score}%`}
               </span>
             )}

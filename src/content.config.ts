@@ -217,6 +217,7 @@ const homePage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
         primaryCta: z.object({ label: z.string(), link: z.string() }),
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
@@ -302,15 +303,11 @@ const forCompaniesPage = defineCollection({
         primaryCta: z.object({ label: z.string(), link: z.string() }),
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
-      assistanceSection: z.object({
-        heading: z.string(),
-        body: z.string(),
-        cta: z.object({ label: z.string(), link: z.string() }),
-      }),
       finalCta: z.object({
         heading: z.string(),
         body: z.string(),
-        cta: z.object({ label: z.string(), link: z.string() }),
+        primaryCta: z.object({ label: z.string(), link: z.string() }),
+        secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
       seo: seoFields(ctx).optional(),
     }),
@@ -351,6 +348,7 @@ const listYourPropertyPage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
         properties: z.array(z.string()).default([]),
         highlight: z.string().optional().default(""),
         note: z.string().optional().default(""),
@@ -364,10 +362,22 @@ const listYourPropertyPage = defineCollection({
           .array(z.object({ title: z.string(), detail: z.string() }))
           .default([]),
       }),
+      curationSection: z.object({
+        eyebrow: z.string().optional().default(""),
+        heading: z.string(),
+        body: z.string(),
+        image: ctx.image().optional().nullable(),
+        secondaryImage: ctx.image().optional().nullable(),
+        criteria: z.array(z.string()).default([]),
+        approvedHeading: z.string(),
+        approvedBody: z.string(),
+        cta: z.object({ label: z.string(), link: z.string() }),
+      }),
       promotionalVisibilitySection: z.object({
         heading: z.string(),
         body: z.string(),
         note: z.string().optional().default(""),
+        cta: z.object({ label: z.string(), link: z.string() }).optional(),
       }),
       pricingSection: z.object({
         eyebrow: z.string().optional().default(""),
@@ -391,6 +401,7 @@ const listYourPropertyPage = defineCollection({
       }),
       howToJoinSection: z.object({
         eyebrow: z.string().optional().default(""),
+        image: ctx.image().optional().nullable(),
         steps: z
           .array(
             z.object({
