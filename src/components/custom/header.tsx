@@ -111,7 +111,6 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
               Find Accommodation
             </a>
           </Button>
-          <ThemeToggle className="hidden lg:inline-flex" />
           <MobileMenu navItems={navItems} logo={logo} />
         </div>
       </div>

@@ -113,11 +113,10 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
               </li>
             ))}
         </ul>
-        <SheetFooter className="flex flex-row items-center justify-between">
+        <SheetFooter>
           <small className="text-[0.6rem]">
             &copy; {currentYear} ACOSA.
           </small>
-          <ThemeToggle />
         </SheetFooter>
       </SheetContent>
     </Sheet>
