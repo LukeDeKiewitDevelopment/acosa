@@ -83,7 +83,7 @@ const routeHref = (link: string, subject?: string, message?: string) =>
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline"
+                  class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline dark:text-foreground"
                 >
                   {primary.link === "whatsapp" && (
                     <MessageCircle className="size-4" aria-hidden="true" />
@@ -105,7 +105,7 @@ const routeHref = (link: string, subject?: string, message?: string) =>
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline"
+                  class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline dark:text-foreground"
                 >
                   {secondary.link === "whatsapp" && (
                     <MessageCircle className="size-4" aria-hidden="true" />
