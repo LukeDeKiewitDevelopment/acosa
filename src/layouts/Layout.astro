@@ -5,7 +5,7 @@ import {
   type NavItem,
 } from "@/components/custom/header";
 import { Footer } from "@/components/custom/footer";
-import { BackToTop } from "@/components/custom/back-to-top";
+import { FloatingActions } from "@/components/custom/floating-actions";
 import "@/styles/global.css";
 import { getImage } from "astro:assets";
 import {
@@ -19,7 +19,6 @@ import {
   mailtoLink,
   DEFAULT_WHATSAPP_MESSAGE,
 } from "@/lib/content";
-import WhatsAppButton from "@/components/custom/whatsapp-button.astro";
 
 const nodes = await getNodes();
 const settings = await getSiteSettings();
@@ -218,7 +217,10 @@ const organisationSchema: Record<string, unknown> = {
       whatsappHref={whatsappHref}
       client:load
     />
-    <BackToTop client:load />
-    <WhatsAppButton href={whatsappHref} />
+    <FloatingActions
+      whatsappHref={whatsappHref}
+      whatsappLabel={"WhatsApp ACOSA"}
+      client:load
+    />
   </body>
 </html>
