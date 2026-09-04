@@ -67,7 +67,7 @@ export const FeaturedProperties = ({
                 <h3 className="text-primary text-lg font-bold">
                   <a
                     href={`/properties/${item.id}`}
-                    className="after:absolute after:inset-0"
+                    className="no-underline after:absolute after:inset-0"
                   >
                     {item.name}
                   </a>
