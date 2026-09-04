@@ -70,9 +70,7 @@ function resolveSocialSlug(label: string, url: string): string | null {
 export const Footer = ({
   logo,
   description,
-  footerItems,
   socials,
-  email,
   emailHref,
   whatsappHref,
 }: FooterProps) => {
@@ -82,14 +80,10 @@ export const Footer = ({
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           data-slot="footer-info"
-          className="flex w-full flex-col gap-8 md:w-[35%]"
+          className="flex w-full flex-col gap-8 md:w-[30%]"
         >
           {logo ? (
             <a href="/" className="w-fit">
-              {/* <StaticAcosaImage
-                {...logo.light}
-                className="h-22 w-auto"
-              /> */}
               <StaticAcosaImage
                 {...logo.dark}
                 className="h-12 w-auto object-contain md:h-16 lg:h-20"
@@ -100,125 +94,162 @@ export const Footer = ({
           )}
 
           {description && <p className="max-w-prose text-xs">{description}</p>}
+
+          {socials && socials.length > 0 && (
+            <ul className="flex flex-row flex-wrap gap-4">
+              {socials.map((social) => {
+                const slug = resolveSocialSlug(social.label, social.url);
+                const icon = slug ? SIMPLE_ICONS[slug] : null;
+                return (
+                  <li key={social.url}>
+                    <a
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="opacity-80 transition-opacity hover:opacity-100"
+                    >
+                      {icon ? (
+                        <svg
+                          role="img"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          className="size-5 fill-current"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d={icon.path} />
+                        </svg>
+                      ) : (
+                        <span className="text-xs">{social.label}</span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
           <small className="text-[0.6rem]">
             &copy; {currentYear} ACOSA. All rights reserved.
           </small>
         </div>
         <div
           data-slot="footer-links"
-          className="grid w-full grid-cols-1 gap-4 md:w-[65%] md:grid-cols-3"
+          className="grid w-full grid-cols-2 gap-8 md:w-[70%] sm:grid-cols-3 lg:grid-cols-5"
         >
-          <nav data-slot="footer-links-platform">
-            <h5 className="my-4 text-sm">Platform</h5>
+          <nav data-slot="footer-links-explore">
+            <h5 className="my-4 text-sm">Explore</h5>
             <ul className="flex flex-col gap-4 text-xs">
               <li>
-                <a href="/" className="no-underline">
-                  Home
+                <a href="/business-nodes" className="no-underline hover:underline">
+                  Business Nodes
                 </a>
               </li>
-              {footerItems &&
-                footerItems.length > 0 &&
-                footerItems.map((footerItem, i) => {
-                  if (!footerItem.subItems) {
-                    return (
-                      <li key={footerItem.href}>
-                        <a
-                          href={footerItem.href}
-                          className="text-xs no-underline hover:underline"
-                        >
-                          {footerItem.label}
-                        </a>
-                      </li>
-                    );
-                  }
-                })}
+              <li>
+                <a href="/properties" className="no-underline hover:underline">
+                  Properties
+                </a>
+              </li>
+              <li>
+                <a href="/why-acosa" className="no-underline hover:underline">
+                  Why ACOSA?
+                </a>
+              </li>
             </ul>
           </nav>
 
-          <nav>
+          <nav data-slot="footer-links-for-companies">
+            <h5 className="my-4 text-sm">For Companies</h5>
+            <ul className="flex flex-col gap-4 text-xs">
+              <li>
+                <a href="/for-companies" className="no-underline hover:underline">
+                  Corporate Accommodation
+                </a>
+              </li>
+              <li>
+                <a href="/business-nodes" className="no-underline hover:underline">
+                  Find Accommodation
+                </a>
+              </li>
+              <li>
+                <a href="/contact" className="no-underline hover:underline">
+                  Contact ACOSA
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <nav data-slot="footer-links-for-properties">
+            <h5 className="my-4 text-sm">For Properties</h5>
+            <ul className="flex flex-col gap-4 text-xs">
+              <li>
+                <a href="/list-your-property#why-list" className="no-underline hover:underline">
+                  Why List with ACOSA?
+                </a>
+              </li>
+              <li>
+                <a href="/list-your-property#whats-included" className="no-underline hover:underline">
+                  What's Included
+                </a>
+              </li>
+              <li>
+                <a href="/list-your-property#pricing" className="no-underline hover:underline">
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a href="/list-your-property#apply" className="no-underline hover:underline">
+                  Apply to List
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <nav data-slot="footer-links-contact">
             <h5 className="my-4 text-sm">Contact</h5>
             <ul className="flex flex-col gap-4 text-xs">
-              {emailHref && <li><a href={emailHref} className="inline-flex items-center gap-2 no-underline hover:underline"><Mail className="size-3" aria-hidden="true" />Email ACOSA</a></li>}
-              {whatsappHref && <li><a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 no-underline hover:underline"><MessageCircle className="size-3" aria-hidden="true" />WhatsApp ACOSA</a></li>}
+              {emailHref && (
+                <li>
+                  <a
+                    href={emailHref}
+                    className="inline-flex items-center gap-2 no-underline hover:underline"
+                  >
+                    <Mail className="size-3" aria-hidden="true" />
+                    Email ACOSA
+                  </a>
+                </li>
+              )}
+              {whatsappHref && (
+                <li>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 no-underline hover:underline"
+                  >
+                    <MessageCircle className="size-3" aria-hidden="true" />
+                    WhatsApp ACOSA
+                  </a>
+                </li>
+              )}
             </ul>
           </nav>
 
-          <nav>
+          <nav data-slot="footer-links-legal">
             <h5 className="my-4 text-sm">Legal</h5>
             <ul className="flex flex-col gap-4 text-xs">
-              <li><a href="/terms" className="no-underline hover:underline">Terms &amp; Conditions</a></li>
-              <li><a href="/privacy" className="no-underline hover:underline">Privacy Policy</a></li>
+              <li>
+                <a href="/terms" className="no-underline hover:underline">
+                  Terms &amp; Conditions
+                </a>
+              </li>
+              <li>
+                <a href="/privacy" className="no-underline hover:underline">
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
           </nav>
-
-          {footerItems &&
-            footerItems.length > 0 &&
-            footerItems.map((footerItem) => {
-              if (
-                footerItem.label === "Business Nodes" &&
-                footerItem.subItems &&
-                footerItem.subItems.length > 0
-              ) {
-                return (
-                  <nav
-                    data-slot="footer-links-nodes"
-                    className="flex flex-col"
-                    key={footerItem.href}
-                  >
-                    <h5 className="my-4 text-sm">Business Nodes</h5>
-                    <ul className="flex flex-col gap-4 text-xs">
-                      {footerItem.subItems.map((subItem) => (
-                        <li key={subItem.href}>
-                          <a
-                            href={subItem.href}
-                            className="no-underline hover:underline"
-                          >
-                            {subItem.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </nav>
-                );
-              }
-            })}
-
-          {socials && socials.length > 0 && (
-            <nav data-slot="footer-links-socials" className="flex flex-col">
-              <h5 className="my-4 text-sm">Socials</h5>
-              <ul className="flex flex-row flex-wrap gap-4">
-                {socials.map((social) => {
-                  const slug = resolveSocialSlug(social.label, social.url);
-                  const icon = slug ? SIMPLE_ICONS[slug] : null;
-                  return (
-                    <li key={social.url}>
-                      <a
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.label}
-                        className="opacity-80 transition-opacity hover:opacity-100"
-                      >
-                        {icon ? (
-                          <svg
-                            role="img"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            className="size-5 fill-current"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d={icon.path} />
-                          </svg>
-                        ) : (
-                          <span className="text-xs">{social.label}</span>
-                        )}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          )}
         </div>
       </div>
     </footer>

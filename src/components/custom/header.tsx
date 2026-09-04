@@ -106,6 +106,11 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
           </ul>
         </nav>
         <div data-slot="header-actions" className="flex items-center gap-2">
+          <Button variant="default" size="sm" asChild className="hidden lg:inline-flex">
+            <a href="/business-nodes" className="text-xs no-underline">
+              Find Accommodation
+            </a>
+          </Button>
           <ThemeToggle className="hidden lg:inline-flex" />
           <MobileMenu navItems={navItems} logo={logo} />
         </div>

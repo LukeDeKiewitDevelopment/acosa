@@ -80,6 +80,11 @@ export const NodeDetail = ({
         <h2 className="text-primary text-xl font-bold md:text-2xl">
           Find your stay in {node.name}.
         </h2>
+        {properties.length === 0 && (
+          <div className="text-muted-foreground rounded-xl border border-dashed p-10 text-center">
+            <p>Our first ACOSA properties are coming soon.</p>
+          </div>
+        )}
         <ul
           role="list"
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -100,7 +105,7 @@ export const NodeDetail = ({
                     {item.approved && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
                         <BadgeCheck className="size-3.5" aria-hidden="true" />
-                        Acosa Approved™
+                        ACOSA Approved
                       </span>
                     )}
                   </div>

@@ -3,7 +3,7 @@ hero:
   heading: Find a stay that works as hard as you do.
   body: >-
     Business travel asks more of accommodation than a comfortable bed. ACOSA connects business travellers and corporate accommodation bookers with carefully selected independent properties in key South African business nodes — making it easier to find a stay suited to the realities of travelling for work.
-  image: ../../assets/images/pages/hero/image.png
+  image: ../../assets/images/pages/acosa-library/ACOSA_01_Home_Hero.png
   overlayOpacity: 65
   primaryCta:
     label: Find Accommodation
@@ -84,12 +84,13 @@ propertyOwnersSection:
   heading: Reach the people you actually want to host.
   body: >-
     If you've built an independent accommodation experience that works exceptionally well for business travellers, ACOSA gives you a more focused way to be discovered by them — and by the people responsible for placing them.
+  image: ../../assets/images/pages/acosa-library/ACOSA_14_The_Right_Guest.png
   primaryCta:
     label: List Your Property
     link: /list-your-property
   secondaryCta:
     label: See What's Included
-    link: /list-your-property
+    link: /list-your-property#whats-included
 
 closingSection:
   eyebrow: null

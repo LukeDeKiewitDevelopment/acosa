@@ -162,7 +162,11 @@ export const PropertySearch = ({ items }: PropertySearchProps) => {
           </ul>
         ) : (
           <div className="text-muted-foreground flex flex-col items-center gap-3 rounded-xl border border-dashed p-10 text-center">
-            <p>No properties match your search.</p>
+            <p>
+              {items.length === 0
+                ? "Our first ACOSA properties are coming soon."
+                : "No properties match your search."}
+            </p>
             {hasActiveFilters && (
               <Button variant="outline" size="sm" onClick={clearFilters}>
                 Clear filters
@@ -192,7 +196,7 @@ const PropertyCard = ({ item }: { item: PropertySearchItem }) => {
             {item.approved && (
               <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
                 <BadgeCheck className="size-3.5" aria-hidden="true" />
-                Acosa Approved™
+                    ACOSA Approved
               </span>
             )}
           </div>

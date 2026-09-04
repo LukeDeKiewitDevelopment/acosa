@@ -3,13 +3,13 @@ hero:
   heading: Reach the people you actually want to host.
   body: >-
     Your property doesn't need more irrelevant visibility. It needs to be discovered by people whose accommodation needs match what you've built. ACOSA connects carefully selected independent accommodation providers with corporate travellers and the people who book for them.
-  image: ../../assets/images/pages/list-your-property/hero.jpg
+  image: ../../assets/images/pages/acosa-library/ACOSA_14_The_Right_Guest.png
   primaryCta:
     label: Apply to List Your Property
-    link: email
+    link: /list-your-property#apply
   secondaryCta:
-    label: Ask Us on WhatsApp
-    link: whatsapp
+    label: See What's Included
+    link: /list-your-property#whats-included
 
 whoWeWorkWith:
   heading: Built for properties that take hospitality seriously.
@@ -30,6 +30,7 @@ whoWeWorkWithSection:
   heading: Built for properties that take hospitality seriously.
   body: >-
     ACOSA is designed for independent establishments that care about the quality of the guest experience, operate professionally, understand the needs of working travellers, value respectful corporate guests, are interested in repeat and longer-stay opportunities, and want more focused visibility within the corporate accommodation market.
+  image: ../../assets/images/pages/acosa-library/ACOSA_07_Property_Owner_Pride.png
   properties:
     - care about the quality of the guest experience
     - operate professionally
@@ -45,7 +46,7 @@ valueSection:
   heading: Become part of a corporate-travel visibility network.
   body: >-
     An ACOSA listing helps a more relevant audience discover your property and understand why it may suit their stay.
-  image: ../../assets/images/pages/property-visibility/image.jpg
+  image: ../../assets/images/pages/acosa-library/ACOSA_08_Property_Visibility.png
   includes:
     - title: Professionally Curated Property Profile
       detail: ACOSA structures and presents your property information for a corporate accommodation audience.
@@ -70,11 +71,40 @@ valueSection:
     - title: Performance Snapshot on Request
       detail: Where technically available, ACOSA can provide a snapshot of relevant listing activity, such as property profile views and enquiry actions.
 
+curationSection:
+  eyebrow: CURATED, NOT CROWDED
+  heading: The standard matters because the network matters.
+  body: >-
+    Every property is reviewed before being accepted onto ACOSA. We look beyond attractive photographs to consider the practical details that can influence a business stay.
+  image: ../../assets/images/pages/acosa-library/ACOSA_04_Hospitality_Assessment.png
+  secondaryImage: ../../assets/images/pages/acosa-library/ACOSA_15_Professional_Hospitality_Team.png
+  criteria:
+    - Reliable WiFi
+    - Workspace
+    - Secure Parking
+    - Backup Power
+    - Cleanliness
+    - Breakfast
+    - Room Comfort
+    - Security
+    - Professional Service
+    - Business Usability
+  approvedHeading: What does ACOSA Approved mean?
+  approvedBody: >-
+    ACOSA Approved indicates that a property has been reviewed by ACOSA and considered suitable for business travellers according to ACOSA's accommodation criteria. It is a curated suitability designation, not a formal industry certification. Approval remains at ACOSA's discretion.
+  cta:
+    label: Think Your Property Fits?
+    link: /list-your-property#apply
+
 promotionalVisibilitySection:
-  heading: Visibility beyond your property page.
+  eyebrow: BEYOND YOUR PROPERTY PAGE
+  heading: Give the right audience more ways to discover you.
   body: >-
     ACOSA's content is designed to build an audience around business accommodation, including business-node information, property discovery, practical corporate-travel content, accommodation features, and relevant partner stories. Approved properties can therefore benefit from opportunities to appear within relevant ACOSA content as the platform grows.
   note: "Promotional inclusion does not constitute property-specific social-media management and does not guarantee reach, enquiries or bookings."
+  cta:
+    label: View Pricing
+    link: /list-your-property#pricing
 
 pricingSection:
   eyebrow: SIMPLE SUBSCRIPTION. NO BOOKING COMMISSION.
@@ -94,7 +124,7 @@ pricingSection:
       detail: One annual payment. No setup fee.
   cta:
     label: Apply to List Your Property
-    link: email
+    link: /list-your-property#apply
 
 listingUpdatesSection:
   heading: Keep your property information current.
@@ -107,6 +137,7 @@ listingUpdatesSection:
 
 howToJoinSection:
   eyebrow: JOIN ACOSA
+  image: ../../assets/images/pages/acosa-library/ACOSA_16_Returning_Guest.png
   steps:
     - number: "01"
       title: Apply
