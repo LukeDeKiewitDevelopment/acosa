@@ -13,7 +13,7 @@ import { resolveIcon } from "@/lib/lucide";
 import { mailtoLink, whatsappLink } from "@/lib/content";
 
 /* PROPERTY PAGE per ACOSA_BRIEF: Property Overview, Business Traveller
-   Essentials™, Acosa Approved™, Facilities, Nearby Convenience, Map,
+  Essentials, Acosa Approved, Facilities, Nearby Convenience, Map,
    Testimonials, plus the mock's enquiry sidebar.
    (Gallery is the separate PropertyGallery island, mounted above this
    in the page. CTA/footer are page-level.)

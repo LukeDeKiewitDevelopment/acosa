@@ -308,6 +308,9 @@ const forCompaniesPage = defineCollection({
         body: z.string(),
         primaryCta: z.object({ label: z.string(), link: z.string() }),
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
+        whatsappCta: z
+          .object({ label: z.string(), link: z.string() })
+          .optional(),
       }),
       seo: seoFields(ctx).optional(),
     }),
@@ -374,6 +377,7 @@ const listYourPropertyPage = defineCollection({
         cta: z.object({ label: z.string(), link: z.string() }),
       }),
       promotionalVisibilitySection: z.object({
+        eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
         note: z.string().optional().default(""),

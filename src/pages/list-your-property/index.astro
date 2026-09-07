@@ -147,10 +147,10 @@ const ogImageUrl = seo?.ogImage
           {valueSection.heading}
         </h2>
         <p class="text-muted-foreground mt-3">{valueSection.body}</p>
-        <ul class="mt-6 space-y-3">
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
           {
             valueSection.includes.map((item) => (
-              <li>
+              <li class="bg-card rounded-lg border p-4">
                 <>
                   <h3 class="text-primary font-semibold">{item.title}</h3>
                   <p class="text-muted-foreground text-sm">{item.detail}</p>
@@ -165,13 +165,22 @@ const ogImageUrl = seo?.ogImage
 
   <Section id="acosa-review" className="mt-16">
     <div class="grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
-      {curationSection.image && (
-        <Image
-          src={curationSection.image}
-          alt="ACOSA reviewing a guesthouse room"
-          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
-        />
-      )}
+      <div class="grid gap-3 sm:grid-cols-[1.5fr_1fr] lg:grid-cols-1">
+        {curationSection.image && (
+          <Image
+            src={curationSection.image}
+            alt="ACOSA reviewing a guesthouse room"
+            class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+          />
+        )}
+        {curationSection.secondaryImage && (
+          <Image
+            src={curationSection.secondaryImage}
+            alt="A professional hospitality team preparing a property"
+            class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+          />
+        )}
+      </div>
       <div>
         <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{curationSection.eyebrow}</p>
         <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">{curationSection.heading}</h2>
@@ -223,7 +232,7 @@ const ogImageUrl = seo?.ogImage
       </h2><div class="mt-8 grid gap-4 md:grid-cols-3">
         {
           pricingSection.pricing.map((plan) => (
-            <article class="bg-card rounded-lg border p-5">
+            <article class:list={["bg-card rounded-lg border p-5", plan.price === "R389" && "border-secondary ring-secondary/30 ring-2"]}>
               <>
                 <h3 class="text-primary font-semibold">{plan.tier}</h3>
                 <p class="text-primary mt-4 text-2xl font-bold">

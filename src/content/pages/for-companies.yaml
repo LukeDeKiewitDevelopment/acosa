@@ -39,13 +39,13 @@ teamsAndProjectsSection:
   heading: Need accommodation for more than one traveller?
   image: ../../assets/images/pages/acosa-library/ACOSA_06_Project_Team_Stay.png
   body: >-
-    Tell us where your team needs to be, number of travellers, anticipated dates, expected length of stay, and important accommodation requirements. We'll help identify suitable options within the ACOSA network where possible.
+    Arranging accommodation for a project team, travelling employees or colleagues staying for an extended period can involve more than simply finding available rooms. Tell ACOSA where your team needs to be, how many people are travelling and what matters for the stay. We'll help identify suitable options within the ACOSA network where possible.
   requirementsList:
-    - where your team needs to be
-    - number of travellers
-    - anticipated dates
-    - expected length of stay
-    - important accommodation requirements
+    - "Location: Where does the team need to be based?"
+    - "Number of travellers: How many people require accommodation?"
+    - "Dates: When will the stay begin and end?"
+    - "Length of stay: Is this a short visit or an extended project placement?"
+    - "Key requirements: Anything particularly important for the team or assignment?"
   primaryCta:
     label: Email Your Requirements
     link: email
@@ -63,6 +63,9 @@ finalCta:
   secondaryCta:
     label: Find Accommodation
     link: /business-nodes
+  whatsappCta:
+    label: Prefer WhatsApp? Talk to ACOSA
+    link: whatsapp
 
 seo:
   title: Corporate Accommodation | ACOSA
