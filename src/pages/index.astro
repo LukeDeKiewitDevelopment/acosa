@@ -18,6 +18,7 @@ import {
   type FeaturedPropertyItem,
 } from "@/components/custom/featured-properties";
 import { OwnerCta } from "@/components/custom/owner-cta";
+import { ArrowRight } from "lucide-react";
 
 export const prerender = true;
 
@@ -191,16 +192,16 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
         </p>
         <a
           href={businessTravelSection.cta.link}
-          class="text-primary font-semibold no-underline"
-          >{businessTravelSection.cta.label} -&gt;</a
+          class="text-primary inline-flex items-center gap-2 font-semibold no-underline"
+          >{businessTravelSection.cta.label}<ArrowRight className="size-4" aria-hidden="true" /></a
         >
       </div>
       {businessTravelSection.image && <Image src={businessTravelSection.image} alt="Business traveller working from accommodation" class="aspect-4/3 h-auto max-h-96 w-full rounded-2xl object-cover object-[65%_center] md:aspect-auto md:object-center" />}
     </div>
   </Section>
 
-  <Section className="mt-28">
-    <div class="flex flex-col gap-4">
+  <Section className="mt-32">
+    <div class="flex flex-col gap-6">
       <p
         class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
       >
@@ -214,16 +215,17 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
       </p>
       <ul
         role="list"
-        class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
+        class="flex max-w-3xl flex-col gap-4"
       >
         {
           popularNodeItems.map((node) => (
             <li>
               <a
                 href={`/business-nodes/${node.province}/${node.id}`}
-                class="border-border text-primary rounded-lg border p-4 font-semibold no-underline"
+                class="border-border text-primary hover:border-primary flex w-full items-center justify-between rounded-lg border px-5 py-4 font-semibold no-underline transition-colors"
               >
-                Explore {node.name} -&gt;
+                <span>Explore {node.name}</span>
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </a>
             </li>
           ))
@@ -231,8 +233,8 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
       </ul>
       <a
         href={businessNodesSection.cta.link}
-        class="text-primary font-semibold no-underline"
-        >{businessNodesSection.cta.label} -&gt;</a
+        class="text-primary inline-flex items-center gap-2 font-semibold no-underline"
+        >{businessNodesSection.cta.label}<ArrowRight className="size-4" aria-hidden="true" /></a
       >
     </div>
   </Section>
