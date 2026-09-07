@@ -1,4 +1,6 @@
 // src/components/custom/node-directory.tsx
+import { ArrowRight } from "lucide-react";
+
 export type DirectoryNode = {
   id: string;
   name: string;
@@ -35,7 +37,7 @@ export const NodeDirectory = ({ groups }: { groups: DirectoryGroup[] }) => {
                   className="text-primary border-border flex items-center justify-between rounded-lg border p-4 font-semibold no-underline hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   <span>Explore {node.name}</span>
-                  <span aria-hidden="true">-&gt;</span>
+                  <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
                 </a>
               </li>
             ))}

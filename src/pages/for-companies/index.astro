@@ -72,6 +72,14 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
   email,
   whatsappNumber: settings.data.defaultWhatsapp,
 });
+const finalWhatsappHref = finalCta.whatsappCta
+  ? resolveCtaLink(finalCta.whatsappCta.link, {
+      email,
+      whatsappNumber: settings.data.defaultWhatsapp,
+      whatsappMessage:
+        "Hi ACOSA, I'm arranging business accommodation and would appreciate some assistance.",
+    })
+  : undefined;
 ---
 
 <Layout
@@ -141,6 +149,9 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
         )
       }
       <div>
+        <p class="text-muted-foreground text-sm font-semibold">
+          To help us understand what you need, please include:
+        </p>
         <h2 class="text-primary text-2xl font-bold md:text-3xl">
           {teamsAndProjectsSection.heading}
         </h2>
@@ -198,6 +209,17 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
         class="border-background text-background mt-6 ml-3 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
         >{finalCta.secondaryCta.label}</a
       >
+      {finalCta.whatsappCta && finalWhatsappHref && (
+        <a
+          href={finalWhatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-background mt-4 inline-flex items-center gap-2 text-sm font-semibold no-underline"
+        >
+          <MessageCircle className="size-4" aria-hidden="true" />
+          {finalCta.whatsappCta.label} <ArrowRight className="size-4" aria-hidden="true" />
+        </a>
+      )}
     </div>
   </Section>
 </Layout>
