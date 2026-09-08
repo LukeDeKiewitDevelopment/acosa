@@ -20,6 +20,15 @@ import {
   DEFAULT_WHATSAPP_MESSAGE,
 } from "@/lib/content";
 
+const {
+  title,
+  description,
+  ogImage,
+  jsonLd,
+  noindex = false,
+  whatsappMessage = DEFAULT_WHATSAPP_MESSAGE,
+} = Astro.props;
+
 const nodes = await getNodes();
 const settings = await getSiteSettings();
 const configuredEmail = isConfiguredContactValue(settings.data.enquiryEmail)
@@ -90,15 +99,6 @@ const navItems: NavItem[] = [
   { label: "For Properties", href: "/list-your-property" },
   { label: "Contact", href: "/contact" },
 ];
-
-const {
-  title,
-  description,
-  ogImage,
-  jsonLd,
-  noindex = false,
-  whatsappMessage = DEFAULT_WHATSAPP_MESSAGE,
-} = Astro.props;
 
 const siteBase: string = import.meta.env.SITE || Astro.url.origin;
 const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
