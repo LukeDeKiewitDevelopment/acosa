@@ -25,15 +25,15 @@ export const FeaturedProperties = ({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex flex-col gap-2">
           <h2 className="text-primary text-xl font-bold md:text-2xl lg:text-3xl">
-            Featured Properties
+            Featured stays
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">
-            Handpicked for business travellers across key South African nodes
+            Curated options for business travellers in the locations that matter most.
           </p>
         </div>
         <Button asChild>
-          <a href="/business-nodes" className="no-underline">
-            View All Nodes <ArrowRight aria-hidden="true" />
+          <a href="/properties" className="no-underline">
+            View all properties <ArrowRight aria-hidden="true" />
           </a>
         </Button>
       </div>
@@ -80,7 +80,7 @@ export const FeaturedProperties = ({
                   <span className="line-clamp-2">{item.shortDescription}</span>
                 </p>
                 <span className="border-secondary text-secondary mt-auto inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-sm font-medium">
-                  View Details{" "}
+                  View property{" "}
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </span>
               </div>

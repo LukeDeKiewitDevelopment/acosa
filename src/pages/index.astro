@@ -4,20 +4,20 @@ import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import {
   getHomePage,
-  getNodes,
   getFeaturedProperties,
   getSiteSettings,
   resolveCtaLink,
   propertyTypeLabel,
+  buildSearchNodes,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
-import type { PopularNodeItem } from "@/components/custom/popular-nodes";
 import {
   FeaturedProperties,
   type FeaturedPropertyItem,
 } from "@/components/custom/featured-properties";
 import { OwnerCta } from "@/components/custom/owner-cta";
+import { BusinessNodeSearch } from "@/components/custom/business-node-search";
 import { ArrowRight } from "lucide-react";
 
 export const prerender = true;
@@ -36,7 +36,7 @@ const {
   seo,
 } = page.data;
 
-const businessNodes = await getNodes();
+const businessNodeSearchItems = await buildSearchNodes();
 const featuredProperties = await getFeaturedProperties();
 const settings = await getSiteSettings();
 const ctaOptions = {
@@ -92,30 +92,6 @@ const websiteSchema: Record<string, unknown> = {
     "query-input": "required name=search_term_string",
   },
 };
-
-const popularNodeItems: PopularNodeItem[] = await Promise.all(
-  businessNodes.map(async (node) => {
-    const img = await getImage({
-      src: node.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
-    });
-    return {
-      id: node.id,
-      name: node.data.name,
-      city: node.data.city,
-      province: node.data.province,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: node.data.imageAlt || node.data.name,
-    };
-  }),
-);
 
 const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
   featuredProperties.map(async (property) => {
@@ -214,24 +190,7 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
       <p class="text-muted-foreground max-w-2xl text-sm md:text-base">
         {businessNodesSection.body}
       </p>
-      <ul
-        role="list"
-        class="flex max-w-3xl flex-col gap-4"
-      >
-        {
-          popularNodeItems.map((node) => (
-            <li>
-              <a
-                href={`/business-nodes/${node.province}/${node.id}`}
-                class="border-border text-primary hover:border-primary flex w-full items-center justify-between rounded-lg border px-5 py-4 font-semibold no-underline transition-colors"
-              >
-                <span>Explore {node.name}</span>
-                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <BusinessNodeSearch nodes={businessNodeSearchItems} showHeader={false} client:load />
       <a
         href={businessNodesSection.cta.link}
         class="text-primary inline-flex items-center gap-2 font-semibold no-underline"
