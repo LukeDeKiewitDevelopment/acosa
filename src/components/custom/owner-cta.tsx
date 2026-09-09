@@ -24,7 +24,7 @@ export const OwnerCta = ({
   return (
     <div
       data-slot="owner-cta"
-      className="flex flex-col items-center gap-6 rounded-none px-6 py-16 text-center"
+      className="flex flex-col items-center gap-6 rounded-none px-6 py-16 text-center md:px-10 lg:px-12 lg:py-20"
     >
       <div className="flex max-w-2xl flex-col gap-3">
         <h2 className="text-2xl font-bold md:text-3xl lg:text-4xl">
