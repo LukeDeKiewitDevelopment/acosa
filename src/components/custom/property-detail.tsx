@@ -21,7 +21,7 @@ import { mailtoLink, whatsappLink } from "@/lib/content";
    - Overview: name, propertyType (label), acosaApproved (approved +
      score; score shown only when > 0), shortDescription,
      longDescription (markdoc — page renders <Content /> as children)
-   - Essentials™: essentials tags (name + lucide icon, resolveIcon w/
+  - Essentials: essentials tags (name + lucide icon, resolveIcon w/
      CircleCheck fallback)
    - Perfect For: perfectFor tag names
    - Facilities: facilities tag names (check icons per the mock)
@@ -113,7 +113,7 @@ export const PropertyDetail = ({
           </div>
         </div>
 
-        {/* ---- Business Traveller Essentials™: tag name + icon ---- */}
+        {/* ---- Business Traveller Essentials: tag name + icon ---- */}
         {essentials.length > 0 && (
           <ul
             className="border-y-border grid grid-cols-2 gap-4 border-y py-5 sm:grid-cols-4"

@@ -331,22 +331,6 @@ const listYourPropertyPage = defineCollection({
         primaryCta: z.object({ label: z.string(), link: z.string() }),
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
-      whoWeWorkWith: z.object({
-        heading: z.string().optional().default(""),
-        body: z.string().optional().default(""),
-      }),
-      benefits: z
-        .array(
-          z.object({
-            title: z.string(),
-            detail: z.string().optional().default(""),
-          }),
-        )
-        .default([]),
-      acosaStandards: z.object({
-        heading: z.string().optional().default(""),
-        body: z.string().optional().default(""),
-      }),
       whoWeWorkWithSection: z.object({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),

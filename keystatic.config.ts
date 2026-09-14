@@ -832,33 +832,6 @@ export default config({
           },
           { label: "Hero" },
         ),
-        whoWeWorkWith: fields.object(
-          {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
-          },
-          { label: "Who We Work With" },
-        ),
-        benefits: fields.array(
-          fields.object({
-            title: fields.text({
-              label: "Benefit",
-              validation: { isRequired: true },
-            }),
-            detail: fields.text({ label: "Detail", multiline: true }),
-          }),
-          {
-            label: "Benefits",
-            itemLabel: (props) => props.fields.title.value || "Benefit",
-          },
-        ),
-        acosaStandards: fields.object(
-          {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
-          },
-          { label: "Acosa Standards" },
-        ),
         whoWeWorkWithSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
