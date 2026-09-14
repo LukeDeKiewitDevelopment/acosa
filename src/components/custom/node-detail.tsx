@@ -141,18 +141,6 @@ export const NodeDetail = ({
         </ul>
       </div>
 
-      {/* ---- Assistance ---- */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-primary text-xl font-bold md:text-2xl">
-          Have a specific requirement?
-        </h2>
-        <p className="text-muted-foreground text-sm md:text-base">
-          If you're arranging a longer stay, placing a team or need something specific from your accommodation, contact ACOSA and we'll help where possible.
-        </p>
-        <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground inline-flex w-fit rounded-full px-5 py-2.5 text-sm font-medium no-underline">
-          WhatsApp ACOSA
-        </a>
-      </div>
     </div>
   );
 };

@@ -194,33 +194,30 @@ const finalWhatsappHref = finalCta.whatsappCta
     <div
       class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-8 text-center md:p-12"
     >
-      <h2 class="text-2xl font-bold md:text-3xl">{finalCta.heading}</h2><p
-        class="mt-3 opacity-90"
-      >
-        {finalCta.body}
-      </p><a
-        href={finalPrimaryHref}
-        class="bg-background text-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >{finalCta.primaryCta.label}<ArrowRight
-          className="size-4"
-          aria-hidden="true"
-        /></a
-      ><a
-        href={finalSecondaryHref}
-        class="border-background text-background mt-6 ml-3 inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-        >{finalCta.secondaryCta.label}</a
-      >
-      {finalCta.whatsappCta && finalWhatsappHref && (
+      <h2 class="text-2xl font-bold md:text-3xl">{finalCta.heading}</h2>
+      <p class="mt-3 opacity-90">{finalCta.body}</p>
+
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
         <a
-          href={finalWhatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-background mt-4 inline-flex items-center gap-2 text-sm font-semibold no-underline"
+          href={finalPrimaryHref}
+          class="bg-background text-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
         >
-          <MessageCircle className="size-4" aria-hidden="true" />
-          {finalCta.whatsappCta.label} <ArrowRight className="size-4" aria-hidden="true" />
+          {finalCta.primaryCta.label}
+          <ArrowRight className="size-4" aria-hidden="true" />
         </a>
-      )}
+
+        {finalCta.whatsappCta && finalWhatsappHref && (
+          <a
+            href={finalWhatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-background inline-flex items-center gap-2 text-sm font-semibold no-underline"
+          >
+            <MessageCircle className="size-4" aria-hidden="true" />
+            {finalCta.whatsappCta.label}
+          </a>
+        )}
+      </div>
     </div>
   </Section>
 </Layout>

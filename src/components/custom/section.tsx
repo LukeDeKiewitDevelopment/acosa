@@ -23,8 +23,8 @@ export const Section = ({
       {...sectionProps}
       data-slot={slotName || "section"}
       className={cn(
-        "my-12 flex flex-col gap-8",
-        fullWidth ? "w-full" : "mx-4 md:mx-6 lg:mx-8",
+        "my-6 flex flex-col gap-6 md:my-8 md:gap-8",
+        fullWidth ? "w-full" : "mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8",
         className,
       )}
     >

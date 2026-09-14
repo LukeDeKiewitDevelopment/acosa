@@ -11,6 +11,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://www.acosa.co.za",
   output: "server",
   adapter: vercel(),
   integrations: [

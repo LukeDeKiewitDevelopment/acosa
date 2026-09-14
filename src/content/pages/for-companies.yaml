@@ -5,11 +5,11 @@ hero:
     When you're arranging accommodation for someone else, the responsibility looks different. You need confidence that the location works, the practical requirements are covered, and the person you're sending will be comfortable, secure, and able to get on with the reason they're traveling. ACOSA helps make that search more manageable.
   image: ../../assets/images/pages/corporate-booker/image.jpg
   primaryCta:
-    label: Find Accommodation
-    link: /business-nodes
-  secondaryCta:
     label: Email Your Requirements
     link: email
+  secondaryCta:
+    label: Find Accommodation
+    link: /business-nodes
 
 whoWeHelpSection:
   heading: Built for the people behind the booking.
@@ -61,8 +61,8 @@ finalCta:
     label: Email ACOSA
     link: email
   secondaryCta:
-    label: Explore Business Nodes
-    link: /business-nodes
+    label: Prefer WhatsApp? Talk to ACOSA
+    link: whatsapp
   whatsappCta:
     label: Prefer WhatsApp? Talk to ACOSA
     link: whatsapp

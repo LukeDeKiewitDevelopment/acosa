@@ -104,19 +104,19 @@ export default config({
         acosaApproved: fields.object(
           {
             approved: fields.checkbox({
-              label: "Acosa Approved",
+              label: "ACOSA Approved",
               description:
-                "Tick only after the property has completed the Acosa vetting assessment. This shows the Acosa Approved badge on all cards and the property page.",
+                "Tick only after the property has completed the ACOSA vetting assessment. This shows the ACOSA Approved badge on all cards and the property page.",
               defaultValue: false,
             }),
             score: fields.integer({
               label: "Approval Score (%)",
               description:
-                "Overall score from the vetting assessment, 0–100. Only shown on the property page when Acosa Approved is ticked. Leave at 0 if not yet assessed.",
+                "Overall score from the vetting assessment, 0–100. Only shown on the property page when ACOSA Approved is ticked. Leave at 0 if not yet assessed.",
               validation: { min: 0, max: 100 },
             }),
           },
-          { label: "Acosa Approved" },
+          { label: "ACOSA Approved" },
         ),
         province: fields.select({
           label: "Province",
@@ -187,7 +187,7 @@ export default config({
         longDescription: fields.markdoc({
           label: "Long Description",
           description:
-            "Full property description shown on the property page. Cover: the property's character, room types, who it suits, what makes it stand out for business travellers, and the Acosa Approved assessment if applicable. Aim for 150–300 words.",
+            "Full property description shown on the property page. Cover: the property's character, room types, who it suits, what makes it stand out for business travellers, and the ACOSA Approved assessment if applicable. Aim for 150–300 words.",
           options: {
             image: {
               directory: "src/assets/images/properties",
@@ -201,9 +201,9 @@ export default config({
             collection: "essentials",
           }),
           {
-            label: "Business Traveller Essentials™",
+            label: "Business Traveller Essentials",
             description:
-              "Select every Business Traveller Essential™ this property genuinely offers. Only tick what is reliably available — these are verified claims shown prominently to guests.",
+              "Select every Business Traveller Essential this property genuinely offers. Only tick what is reliably available — these are verified claims shown prominently to guests.",
             itemLabel: (props) => props.value ?? "Select…",
           },
         ),
@@ -421,7 +421,7 @@ export default config({
         property: fields.relationship({
           label: "Property",
           description:
-            "The property this review is about. Leave empty for a general Acosa platform testimonial.",
+            "The property this review is about. Leave empty for a general ACOSA platform testimonial.",
           collection: "properties",
         }),
         reviewType: fields.select({
@@ -449,7 +449,7 @@ export default config({
     // Tag taxonomies (reusable across properties)
     // -----------------------------------------------------------------------
     essentials: tagCollection(
-      "Business Traveller Essentials™",
+      "Business Traveller Essentials",
       "tags/essentials",
     ),
     facilities: tagCollection("Facilities", "tags/facilities"),
