@@ -19,6 +19,8 @@ export type PropertySearchItem = {
   id: string;
   name: string;
   province: string;
+  businessNode: string;
+  businessNodeLabel: string;
   propertyType: string;
   propertyTypeLabel: string;
   approved: boolean;
@@ -78,7 +80,9 @@ export const PropertySearch = ({ items }: PropertySearchProps) => {
         return (
           item.name.toLowerCase().includes(q) ||
           item.propertyTypeLabel.toLowerCase().includes(q) ||
-          provinceLabel(item.province).toLowerCase().includes(q)
+          provinceLabel(item.province).toLowerCase().includes(q) ||
+          item.businessNodeLabel.toLowerCase().includes(q) ||
+          item.businessNode.toLowerCase().includes(q)
         );
       })
       .sort((a, b) => {
@@ -206,6 +210,9 @@ const PropertyCard = ({ item }: { item: PropertySearchItem }) => {
             <a
               href={`/properties/${item.id}`}
               className="after:absolute after:inset-0"
+              data-acosa-track="property_card_click"
+              data-property-id={item.id}
+              data-property-name={item.name}
             >
               {item.name}
             </a>

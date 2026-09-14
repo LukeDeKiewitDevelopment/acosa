@@ -90,7 +90,7 @@ export const Footer = ({
               />
             </a>
           ) : (
-            <a href="/">Acosa</a>
+            <a href="/">ACOSA</a>
           )}
 
           {description && <p className="max-w-prose text-xs">{description}</p>}

@@ -11,7 +11,7 @@ import { ArrowRight, Check } from "lucide-react";
 export const prerender = true;
 
 const page = await getEntry("whyAcosaPage", "why-acosa");
-if (!page) throw new Error("Why Acosa page content not found");
+if (!page) throw new Error("Why ACOSA page content not found");
 const {
   hero,
   experienceSection,
@@ -37,7 +37,7 @@ const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
 ---
 
 <Layout
-  title={seo?.title || "Why Acosa"}
+  title={seo?.title || "Why ACOSA"}
   description={seo?.description ||
     "How ACOSA vets every property, and what ACOSA Approved means for business travellers."}
   ogImage={ogImageUrl}

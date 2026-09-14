@@ -1,5 +1,6 @@
 ---
 import { getImage } from "astro:assets";
+import { getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { getPublishedProperties, propertyTypeLabel } from "@/lib/content";
@@ -19,10 +20,13 @@ const items: PropertySearchItem[] = await Promise.all(
       widths: [400, 800],
       sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
     });
+    const businessNode = await getEntry(property.data.businessNode);
     return {
       id: property.id,
       name: property.data.name,
       province: property.data.province,
+      businessNode: property.data.businessNode.id,
+      businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
       propertyType: property.data.propertyType,
       propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
       approved: property.data.acosaApproved.approved,
@@ -41,7 +45,7 @@ const items: PropertySearchItem[] = await Promise.all(
 ---
 
 <Layout
-  title="All Properties | Acosa"
+  title="All Properties | ACOSA"
   description="Browse vetted business accommodation properties across South Africa."
 >
   <Section className="mt-28">

@@ -286,10 +286,13 @@ export const PropertyDetail = ({
           )}
           {/* contact.whatsapp (required) → wa.me link */}
           <a
-            href={whatsappLink(property.whatsapp, `Hi ACOSA, I'm interested in ${property.name} and would like some more information.`)}
+            href={whatsappLink(property.whatsapp, `Hi, I found ${property.name} on ACOSA and would like to enquire about accommodation.`)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
+            data-acosa-track="property_whatsapp_click"
+            data-property-id={property.name.toLowerCase().replace(/\s+/g, "-")}
+            data-property-name={property.name}
           >
             WhatsApp
           </a>

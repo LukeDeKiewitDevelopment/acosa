@@ -94,7 +94,7 @@ const navItems: NavItem[] = [
     })),
   },
   { label: "Properties", href: "/properties" },
-  { label: "Why Acosa?", href: "/why-acosa" },
+  { label: "Why ACOSA?", href: "/why-acosa" },
   { label: "For Companies", href: "/for-companies" },
   { label: "For Properties", href: "/list-your-property" },
   { label: "Contact", href: "/contact" },
@@ -110,7 +110,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, siteBase).href : undefined;
 const organisationSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Acosa",
+  name: "ACOSA",
   url: siteBase,
   description:
     "Vetted business accommodation across South Africa's key corporate nodes.",
@@ -137,7 +137,7 @@ const organisationSchema: Record<string, unknown> = {
     {description && <meta property="og:description" content={description} />}
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content="Acosa" />
+    <meta property="og:site_name" content="ACOSA" />
 
     <meta
       name="twitter:card"
@@ -188,6 +188,36 @@ const organisationSchema: Record<string, unknown> = {
       };
       const isDark = getThemePreference() === "dark";
       document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+
+      window.acosaTrack = function(eventName, payload = {}) {
+        const event = {
+          event: eventName,
+          page: window.location.pathname,
+          ...payload,
+          timestamp: new Date().toISOString(),
+        };
+        if (window.dataLayer) {
+          window.dataLayer.push(event);
+        }
+        if (window.gtag) {
+          window.gtag("event", eventName, payload);
+        }
+        return event;
+      };
+
+      document.addEventListener("click", (event) => {
+        const target = event.target instanceof Element
+          ? event.target.closest("[data-acosa-track]")
+          : null;
+        if (!target) return;
+        const payload = {
+          propertyName: target.getAttribute("data-property-name") || undefined,
+          propertyId: target.getAttribute("data-property-id") || undefined,
+          link: target.getAttribute("href") || undefined,
+          label: target.getAttribute("data-acosa-track") || undefined,
+        };
+        window.acosaTrack(target.getAttribute("data-acosa-track") || "link_click", payload);
+      });
 
       if (typeof localStorage !== "undefined") {
         const observer = new MutationObserver(() => {

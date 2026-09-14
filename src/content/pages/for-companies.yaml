@@ -61,7 +61,7 @@ finalCta:
     label: Email ACOSA
     link: email
   secondaryCta:
-    label: Find Accommodation
+    label: Explore Business Nodes
     link: /business-nodes
   whatsappCta:
     label: Prefer WhatsApp? Talk to ACOSA

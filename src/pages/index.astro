@@ -78,7 +78,7 @@ const siteBase: string = import.meta.env.SITE || Astro.url.origin;
 const websiteSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Acosa",
+  name: "ACOSA",
   url: siteBase,
   description:
     seo?.description ||
@@ -120,7 +120,7 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
 ---
 
 <Layout
-  title={seo?.title || "Acosa | Vetted Business Accommodation in South Africa"}
+  title={seo?.title || "ACOSA | Vetted Business Accommodation in South Africa"}
   description={seo?.description ||
     "Vetted business accommodation across South Africa's key corporate nodes."}
   ogImage={ogImageUrl}

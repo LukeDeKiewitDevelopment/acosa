@@ -57,7 +57,7 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
             />
           </a>
         ) : (
-          <a href="/">Acosa</a>
+          <a href="/">ACOSA</a>
         )}
         <nav data-slot="header-navigation">
           <ul className="hidden items-center gap-2 lg:flex">

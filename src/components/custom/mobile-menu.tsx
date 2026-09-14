@@ -51,7 +51,7 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
                 />
               </>
             ) : (
-              <span>Acosa</span>
+              <span>ACOSA</span>
             )}
           </SheetTitle>
         </SheetHeader>
