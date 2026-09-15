@@ -14,6 +14,7 @@ import {
 } from "../ui/combobox";
 import { StaticAcosaImage } from "./image";
 import { PROVINCES, provinceLabel, type ProvinceSlug } from "@/lib/provinces";
+import { matchesPropertySearchQuery } from "@/lib/property-search";
 
 export type PropertySearchItem = {
   id: string;
@@ -21,6 +22,7 @@ export type PropertySearchItem = {
   province: string;
   businessNode: string;
   businessNodeLabel: string;
+  locationAddress: string;
   propertyType: string;
   propertyTypeLabel: string;
   approved: boolean;
@@ -76,13 +78,12 @@ export const PropertySearch = ({ items }: PropertySearchProps) => {
         if (selectedType && item.propertyType !== selectedType) {
           return false;
         }
-        if (!q) return true;
-        return (
-          item.name.toLowerCase().includes(q) ||
-          item.propertyTypeLabel.toLowerCase().includes(q) ||
-          provinceLabel(item.province).toLowerCase().includes(q) ||
-          item.businessNodeLabel.toLowerCase().includes(q) ||
-          item.businessNode.toLowerCase().includes(q)
+        return matchesPropertySearchQuery(
+          {
+            ...item,
+            provinceLabel: provinceLabel(item.province),
+          },
+          q,
         );
       })
       .sort((a, b) => {

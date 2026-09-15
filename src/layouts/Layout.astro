@@ -101,6 +101,7 @@ const navItems: NavItem[] = [
 ];
 
 const siteBase: string = import.meta.env.SITE || Astro.url.origin;
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
 // new URL() leaves an already-absolute ogImage untouched, so pages may pass
 // either a getImage() src or a full URL.
@@ -149,6 +150,21 @@ const organisationSchema: Record<string, unknown> = {
 
     <link rel="canonical" href={canonicalUrl} />
 
+    {gaMeasurementId && (
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+      />
+    )}
+    {gaMeasurementId && (
+      <script is:inline define:vars={{ gaMeasurementId }}>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function() { window.dataLayer.push(arguments); };
+        window.gtag("js", new Date());
+        window.gtag("config", gaMeasurementId, { send_page_view: false });
+      </script>
+    )}
+
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -190,9 +206,14 @@ const organisationSchema: Record<string, unknown> = {
       document.documentElement.classList[isDark ? "add" : "remove"]("dark");
 
       window.acosaTrack = function(eventName, payload = {}) {
+        const queryParams = new URLSearchParams(window.location.search);
         const event = {
           event: eventName,
           page: window.location.pathname,
+          referrer: document.referrer || undefined,
+          utm_source: queryParams.get("utm_source") || undefined,
+          utm_medium: queryParams.get("utm_medium") || undefined,
+          utm_campaign: queryParams.get("utm_campaign") || undefined,
           ...payload,
           timestamp: new Date().toISOString(),
         };
@@ -211,13 +232,21 @@ const organisationSchema: Record<string, unknown> = {
           : null;
         if (!target) return;
         const payload = {
-          propertyName: target.getAttribute("data-property-name") || undefined,
-          propertyId: target.getAttribute("data-property-id") || undefined,
+          property_name: target.getAttribute("data-property-name") || undefined,
+          property_id: target.getAttribute("data-property-id") || undefined,
           link: target.getAttribute("href") || undefined,
           label: target.getAttribute("data-acosa-track") || undefined,
         };
         window.acosaTrack(target.getAttribute("data-acosa-track") || "link_click", payload);
       });
+
+      const propertyDetail = document.querySelector("[data-property-id]");
+      if (propertyDetail?.getAttribute("data-property-page") === "true") {
+        window.acosaTrack("property_view", {
+          property_id: propertyDetail.getAttribute("data-property-id") || undefined,
+          property_name: propertyDetail.getAttribute("data-property-name") || undefined,
+        });
+      }
 
       if (typeof localStorage !== "undefined") {
         const observer = new MutationObserver(() => {

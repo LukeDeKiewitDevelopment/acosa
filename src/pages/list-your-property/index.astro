@@ -91,13 +91,13 @@ const ogImageUrl = seo?.ogImage
     }}
   />
 
-  <Section id="why-list" className="mt-8 md:mt-12">
-    <div class="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
+  <Section id="why-list" className="mt-20 md:mt-28">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       {whoWeWorkWithSection.image && (
         <Image
           src={whoWeWorkWithSection.image}
           alt="An independent accommodation owner caring for her property"
-          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+          class="aspect-4/3 h-auto w-full rounded-2xl object-cover"
         />
       )}
       <div>
@@ -109,7 +109,9 @@ const ogImageUrl = seo?.ogImage
       <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
         {whoWeWorkWithSection.heading}
       </h2>
-      <p class="text-muted-foreground mt-3">{whoWeWorkWithSection.body}</p>
+      {whoWeWorkWithSection.body && (
+        <p class="text-muted-foreground mt-3">{whoWeWorkWithSection.body}</p>
+      )}
       <ul class="mt-6 grid gap-3 text-left sm:grid-cols-2">
         {
           whoWeWorkWithSection.properties.map((property) => (
@@ -127,8 +129,8 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  <Section id="whats-included" className="mt-8 md:mt-12">
-    <div class="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
+  <Section id="whats-included" className="mt-20 bg-muted/35 py-16 md:mt-28 md:py-20">
+    <div class="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 md:gap-16 md:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
       {
         valueSection.image && (
           <Image
@@ -164,21 +166,21 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  <Section id="acosa-review" className="mt-8 md:mt-12">
-    <div class="grid items-center gap-6 lg:grid-cols-[1.3fr_1fr] lg:gap-10">
-      <div class="grid gap-3 sm:grid-cols-[1.5fr_1fr] lg:grid-cols-1">
+  <Section id="acosa-review" className="mt-20 md:mt-32">
+    <div class="grid items-center gap-10 lg:grid-cols-[1.25fr_0.9fr] lg:gap-16">
+      <div class="grid gap-4 sm:grid-cols-[1.5fr_1fr] lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
         {curationSection.image && (
           <Image
             src={curationSection.image}
             alt="ACOSA reviewing a guesthouse room"
-            class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+            class="aspect-4/3 h-auto w-full rounded-2xl object-cover lg:aspect-5/4"
           />
         )}
         {curationSection.secondaryImage && (
           <Image
             src={curationSection.secondaryImage}
             alt="A professional hospitality team preparing a property"
-            class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+            class="aspect-4/3 h-auto w-full rounded-2xl object-cover lg:mb-10 lg:aspect-4/5"
           />
         )}
       </div>
@@ -198,8 +200,8 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  <Section className="mt-8 md:mt-12">
-    <div class="mx-auto max-w-3xl text-center">
+  <Section className="mt-20 md:mt-32">
+    <div class="mx-auto max-w-3xl border-y border-border py-16 text-center md:py-20">
       <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{promotionalVisibilitySection.eyebrow}</p>
       <h2 class="text-primary text-2xl font-bold md:text-3xl">
         {promotionalVisibilitySection.heading}
@@ -222,34 +224,32 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  <Section id="pricing" className="mt-8 md:mt-12">
-    <div class="mx-auto max-w-4xl">
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-      >
+  <Section id="pricing" className="mt-20 md:mt-28">
+    <div class="mx-auto w-full max-w-5xl rounded-2xl bg-primary p-8 text-primary-foreground md:p-12">
+        <p class="text-primary-foreground/70 text-xs font-semibold tracking-wider uppercase">
         {pricingSection.eyebrow}
-      </p><h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+      </p><h2 class="mt-2 text-2xl font-bold md:text-3xl">
         {pricingSection.heading}
       </h2><div class="mt-6 grid gap-4 md:grid-cols-3 md:mt-8">
         {
           pricingSection.pricing.map((plan) => (
-            <article class:list={["bg-card rounded-lg border p-5", plan.price === "R389" && "border-secondary ring-secondary/30 ring-2"]}>
+            <article class:list={["rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-5", plan.price === "R389" && "border-secondary ring-secondary/30 bg-primary-foreground/20 ring-2"]}>
               <>
-                <h3 class="text-primary font-semibold">{plan.tier}</h3>
-                <p class="text-primary mt-4 text-2xl font-bold">
+                <h3 class="font-semibold">{plan.tier}</h3>
+                <p class="mt-4 text-2xl font-bold">
                   {plan.price}
-                  <span class="text-muted-foreground text-sm font-normal">
+                  <span class="text-primary-foreground/70 text-sm font-normal">
                     {plan.period}
                   </span>
                 </p>
-                <p class="text-muted-foreground mt-2 text-sm">{plan.detail}</p>
+                <p class="text-primary-foreground/75 mt-2 text-sm">{plan.detail}</p>
               </>
             </article>
           ))
         }
       </div><a
         href={listingApplicationHref}
-        class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+        class="bg-secondary text-secondary-foreground mt-8 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
         >{pricingSection.cta.label}<ArrowRight
           className="ml-2 size-4"
           aria-hidden="true"
@@ -257,8 +257,8 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  <Section className="mt-8 md:mt-12"
-    ><div class="mx-auto max-w-3xl">
+  <Section className="mt-16 md:mt-20"
+    ><div class="mx-auto max-w-3xl border-l-2 border-secondary pl-6 md:pl-8">
       <h2 class="text-primary text-2xl font-bold md:text-3xl">
         {listingUpdatesSection.heading}
       </h2><p class="text-muted-foreground mt-3">
@@ -269,13 +269,13 @@ const ogImageUrl = seo?.ogImage
     </div></Section
   >
 
-  <Section id="apply" className="mt-8 md:mt-12"
-    ><div class="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
+  <Section id="apply" className="mt-20 md:mt-28"
+    ><div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       {howToJoinSection.image && (
         <Image
           src={howToJoinSection.image}
           alt="A business traveller being welcomed by a host"
-          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover"
+          class="aspect-4/3 h-auto w-full rounded-2xl object-cover"
         />
       )}
       <div>
@@ -310,7 +310,7 @@ const ogImageUrl = seo?.ogImage
     </div></Section
   >
 
-  <Section className="mt-16 mb-28"
+  <Section className="mt-20 mb-28 md:mt-28"
     ><div
       class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-8 text-center md:p-12"
     >

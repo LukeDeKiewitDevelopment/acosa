@@ -27,6 +27,7 @@ const items: PropertySearchItem[] = await Promise.all(
       province: property.data.province,
       businessNode: property.data.businessNode.id,
       businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
+      locationAddress: property.data.location.address,
       propertyType: property.data.propertyType,
       propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
       approved: property.data.acosaApproved.approved,

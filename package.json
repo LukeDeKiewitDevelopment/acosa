@@ -40,6 +40,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "test:property-search": "node --experimental-strip-types --test src/lib/property-search.test.ts",
     "preview": "astro preview",
     "astro": "astro"
   },

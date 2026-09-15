@@ -35,6 +35,7 @@ import { mailtoLink, whatsappLink } from "@/lib/content";
      plus an "Email" mailto link, both omitted when empty),
      contact.website ("Website" external link, omitted when empty). */
 export type PropertyDetailProperty = {
+  id: string;
   name: string;
   propertyTypeLabel: string;
   approved: boolean;
@@ -81,6 +82,9 @@ export const PropertyDetail = ({
   return (
     <div
       data-slot="property-detail"
+      data-property-page="true"
+      data-property-id={property.id}
+      data-property-name={property.name}
       className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_22rem]"
     >
       {/* ==================== main column ==================== */}
@@ -214,6 +218,9 @@ export const PropertyDetail = ({
               target="_blank"
               rel="noopener noreferrer"
               className="bg-card text-card-foreground flex w-fit items-center gap-2 rounded-xl border p-4 text-sm font-medium no-underline shadow-sm"
+              data-acosa-track="property_maps_click"
+              data-property-id={property.id}
+              data-property-name={property.name}
             >
               <MapPin className="text-secondary size-5" aria-hidden="true" />
               View on Google Maps
@@ -280,6 +287,9 @@ export const PropertyDetail = ({
             <a
               href={mailtoLink(property.email, "Property Enquiry")}
               className="bg-secondary text-secondary-foreground inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+              data-acosa-track="property_email_click"
+              data-property-id={property.id}
+              data-property-name={property.name}
             >
               Send Enquiry
             </a>
@@ -291,7 +301,7 @@ export const PropertyDetail = ({
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
             data-acosa-track="property_whatsapp_click"
-            data-property-id={property.name.toLowerCase().replace(/\s+/g, "-")}
+            data-property-id={property.id}
             data-property-name={property.name}
           >
             WhatsApp
@@ -301,6 +311,9 @@ export const PropertyDetail = ({
             <a
               href={`tel:${property.phone.replace(/\s/g, "")}`}
               className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+              data-acosa-track="property_phone_click"
+              data-property-id={property.id}
+              data-property-name={property.name}
             >
               <Phone className="size-4" aria-hidden="true" />
               {property.phone}
@@ -311,6 +324,9 @@ export const PropertyDetail = ({
             <a
               href={mailtoLink(property.email, "Property Enquiry")}
               className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+              data-acosa-track="property_email_click"
+              data-property-id={property.id}
+              data-property-name={property.name}
             >
               <Mail className="size-4" aria-hidden="true" />
               Email
@@ -323,6 +339,9 @@ export const PropertyDetail = ({
               target="_blank"
               rel="noopener noreferrer"
               className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+              data-acosa-track="property_website_click"
+              data-property-id={property.id}
+              data-property-name={property.name}
             >
               <ExternalLink className="size-4" aria-hidden="true" />
               Website

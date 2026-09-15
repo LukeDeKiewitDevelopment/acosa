@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface OwnerCtaProps {
+  eyebrow?: string;
   heading: string;
   body: string;
   buttonLabel: string;
@@ -12,6 +13,7 @@ interface OwnerCtaProps {
 }
 
 export const OwnerCta = ({
+  eyebrow,
   heading,
   body,
   buttonLabel,
@@ -27,6 +29,11 @@ export const OwnerCta = ({
       className="flex flex-col items-center gap-6 rounded-none px-6 py-16 text-center md:px-10 lg:px-12 lg:py-20"
     >
       <div className="flex max-w-2xl flex-col gap-3">
+        {eyebrow && (
+          <p className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            {eyebrow}
+          </p>
+        )}
         <h2 className="text-2xl font-bold md:text-3xl lg:text-4xl">
           {heading}
         </h2>

@@ -14,8 +14,7 @@ hero:
 whoWeWorkWithSection:
   eyebrow: QUALITY INDEPENDENT HOSPITALITY
   heading: Built for properties that take hospitality seriously.
-  body: >-
-    ACOSA is designed for independent establishments that care about the quality of the guest experience, operate professionally, understand the needs of working travellers, value respectful corporate guests, are interested in repeat and longer-stay opportunities, and want more focused visibility within the corporate accommodation market.
+  body: ""
   image: ../../assets/images/pages/acosa-library/ACOSA_07_Property_Owner_Pride.png
   properties:
     - care about the quality of the guest experience

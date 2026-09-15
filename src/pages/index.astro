@@ -270,10 +270,11 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
         <Image
           src={propertyOwnersSection.image}
           alt="An independent accommodation host welcoming a business traveller"
-          class="aspect-[4/3] h-auto w-full rounded-2xl object-cover object-[22%_center] sm:object-[28%_center] md:object-[35%_center] lg:object-[28%_center]"
+          class="aspect-4/3 h-auto w-full rounded-2xl object-cover object-[22%_center] sm:object-[28%_center] md:object-[35%_center] lg:aspect-auto lg:h-136 lg:object-[28%_center]"
         />
       )}
       <OwnerCta
+        eyebrow={propertyOwnersSection.eyebrow}
         heading={propertyOwnersSection.heading || ownerCta.heading}
         body={propertyOwnersSection.body || ownerCta.body}
         buttonLabel={propertyOwnersSection.primaryCta.label ||

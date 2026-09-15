@@ -36,15 +36,23 @@ const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
   nodes: directoryNodes.filter((node) => node.province === province.slug),
 }));
 
-const mapNodes = [
-  { id: "bryanston", name: "Bryanston", x: 70, y: 18 },
-  { id: "sandton", name: "Sandton", x: 82, y: 16 },
-  { id: "midrand", name: "Midrand", x: 62, y: 28 },
-  { id: "centurion", name: "Centurion", x: 58, y: 38 },
-  { id: "pretoria-east", name: "Pretoria East", x: 70, y: 42 },
-  { id: "rosslyn", name: "Rosslyn", x: 78, y: 50 },
-  { id: "edenvale", name: "Edenvale", x: 92, y: 32 },
-];
+const mapPositions: Record<string, { x: number; y: number; labelDy?: number }> = {
+  bryanston: { x: 39, y: 18 },
+  sandton: { x: 52, y: 24 },
+  edenvale: { x: 70, y: 29 },
+  midrand: { x: 30, y: 34, labelDy: -4 },
+  "pretoria-east": { x: 54, y: 43 },
+  centurion: { x: 28, y: 51 },
+  rosslyn: { x: 18, y: 38, labelDy: 4 },
+};
+const mapNodes = nodes
+  .filter((node) => node.data.province === "gauteng")
+  .filter((node) => mapPositions[node.id])
+  .map((node) => ({
+    id: node.id,
+    name: node.data.name,
+    ...mapPositions[node.id],
+  }));
 ---
 
 <Layout
@@ -78,23 +86,31 @@ const mapNodes = [
 
       <div class="rounded-3xl border border-border bg-card p-4 shadow-sm md:p-6">
         <div class="relative overflow-hidden rounded-2xl border border-border bg-[#f7f5f2] p-3 md:p-5">
-          <svg viewBox="0 0 100 60" class="block h-[280px] w-full" role="img" aria-label="Gauteng business nodes map">
-            <path d="M18 12 L34 16 L40 24 L36 38 L20 44 L12 31 Z" fill="#e7e1d5" stroke="#d8cab2" stroke-width="0.8"/>
-            <path d="M36 12 L57 18 L65 13 L84 20 L90 33 L82 48 L64 52 L46 46 L34 34 Z" fill="#efe9df" stroke="#d8cab2" stroke-width="0.8"/>
-            <path d="M25 18 L64 20 L82 35 L60 54 L28 50 Z" fill="none" stroke="#c9bda3" stroke-width="0.6" stroke-dasharray="2 2"/>
-            <g fill="#0e2a5a">
+          <svg viewBox="0 0 100 66" class="block h-auto min-h-80 w-full" role="img" aria-label="Gauteng business nodes map">
+            <path d="M13 11 L31 7 L48 12 L67 8 L88 18 L94 39 L84 57 L60 62 L39 55 L20 59 L8 43 Z" fill="#e7e1d5" stroke="#d8cab2" stroke-width="0.8" />
+            <path d="M17 49 C30 43 38 37 50 32 S72 21 88 20" fill="none" stroke="#c9bda3" stroke-width="1.2" stroke-dasharray="2 1.5" />
+            <path d="M29 10 C34 23 34 34 39 55 M66 9 C63 23 65 42 60 61" fill="none" stroke="#d8cab2" stroke-width="0.7" />
+            <text x="7" y="64" fill="#7d7468" font-size="2.8" font-weight="600">Gauteng business footprint</text>
+            <text x="8" y="8" fill="#7d7468" font-size="2.8" font-weight="600">NORTH</text>
+            <path d="M11 14 L11 9 M11 9 L9.5 11 M11 9 L12.5 11" fill="none" stroke="#7d7468" stroke-width="0.55" />
+            <g>
               {mapNodes.map((node) => (
-                <g>
-                  <circle cx={node.x} cy={node.y} r="2.3" fill="#0e2a5a" />
-                  <circle cx={node.x} cy={node.y} r="4.2" fill="none" stroke="#0e2a5a" stroke-opacity="0.25" stroke-width="0.7" />
-                  <a href={`/business-nodes/gauteng/${node.id}`}>
-                    <text x={node.x + 3.2} y={node.y - 1.8} fill="#0e2a5a" font-size="3.1" font-weight="700">{node.name}</text>
-                  </a>
-                </g>
+                <a
+                  href={`/business-nodes/gauteng/${node.id}`}
+                  class="group"
+                  aria-label={`View ${node.name} business node`}
+                >
+                  <circle cx={node.x} cy={node.y} r="4.8" fill="transparent" />
+                  <circle cx={node.x} cy={node.y} r="2.5" fill="#0e2a5a" stroke="#ffffff" stroke-width="0.8" class="transition-colors group-hover:fill-[#1f7a6b]" />
+                  <text x={node.x + 3.8} y={node.y + (node.labelDy ?? -2)} fill="#0e2a5a" font-size="3.1" font-weight="700">{node.name}</text>
+                </a>
               ))}
             </g>
           </svg>
         </div>
+        <p class="text-muted-foreground mt-4 text-center text-xs md:text-sm">
+          Select a node to view the accommodation available in that area.
+        </p>
       </div>
     </div>
   </Section>
