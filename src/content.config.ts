@@ -440,6 +440,7 @@ const contactPage = defineCollection({
               .object({
                 label: z.string(),
                 link: z.string(),
+                prefilledMessage: z.string().optional(),
                 subject: z.string().optional(),
               })
               .optional(),

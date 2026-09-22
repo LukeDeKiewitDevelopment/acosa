@@ -512,25 +512,6 @@ export default config({
           },
           { label: "Founder Trust Strip" },
         ),
-        trustStrip: fields.array(
-          fields.object({
-            icon: fields.text({
-              label: "Icon",
-              description:
-                'Lucide icon name, e.g. "briefcase-business", "shield". See lucide.dev/icons',
-            }),
-            title: fields.text({
-              label: "Title",
-              validation: { isRequired: true },
-            }),
-            detail: fields.text({ label: "Detail", multiline: true }),
-          }),
-          {
-            label: "Trust Strip",
-            description: "The icon strip under the hero (4 items recommended).",
-            itemLabel: (props) => props.fields.title.value || "Item",
-          },
-        ),
         whyAcosaPreview: fields.object(
           {
             heading: fields.text({ label: "Heading" }),
@@ -732,21 +713,18 @@ export default config({
             link: fields.text({ label: "Link" }),
           }, { label: "Secondary CTA" }),
         }, { label: "Teams & Projects" }),
-        assistanceSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          cta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "CTA" }),
-        }, { label: "Assistance" }),
         finalCta: fields.object({
+          eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
-          cta: fields.object({
+          primaryCta: fields.object({
             label: fields.text({ label: "Label" }),
             link: fields.text({ label: "Link" }),
-          }, { label: "CTA" }),
+          }, { label: "Primary CTA" }),
+          secondaryCta: fields.object({
+            label: fields.text({ label: "Label" }),
+            link: fields.text({ label: "Link" }),
+          }, { label: "Secondary CTA" }),
         }, { label: "Final CTA" }),
         seo: seoFields,
       },
@@ -775,6 +753,7 @@ export default config({
           primaryCta: fields.object({
             label: fields.text({ label: "Label" }),
             link: fields.text({ label: "Link" }),
+            prefilledMessage: fields.text({ label: "WhatsApp Message" }),
             subject: fields.text({ label: "Email Subject" }),
           }, { label: "Primary CTA" }),
           secondaryCta: fields.object({
@@ -847,10 +826,23 @@ export default config({
           image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
           includes: fields.array(fields.object({ title: fields.text({ label: "Title" }), detail: fields.text({ label: "Detail", multiline: true }) }), { label: "What's Included", itemLabel: (props) => props.fields.title.value || "Feature" }),
         }, { label: "Listing Value" }),
+        curationSection: fields.object({
+          eyebrow: fields.text({ label: "Eyebrow" }),
+          heading: fields.text({ label: "Heading" }),
+          body: fields.text({ label: "Body", multiline: true }),
+          image: fields.image({ label: "Curation Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
+          secondaryImage: fields.image({ label: "Supporting Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
+          criteria: fields.array(fields.text({ label: "Criterion" }), { label: "Assessment Criteria", itemLabel: (props) => props.value || "Criterion" }),
+          approvedHeading: fields.text({ label: "Approved Heading" }),
+          approvedBody: fields.text({ label: "Approved Explanation", multiline: true }),
+          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
+        }, { label: "Curation" }),
         promotionalVisibilitySection: fields.object({
+          eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           note: fields.text({ label: "Note", multiline: true }),
+          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
         }, { label: "Promotional Visibility" }),
         pricingSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
@@ -865,6 +857,7 @@ export default config({
         }, { label: "Listing Updates" }),
         howToJoinSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
+          image: fields.image({ label: "How to Join Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
           steps: fields.array(fields.object({ number: fields.text({ label: "Number" }), title: fields.text({ label: "Title" }), detail: fields.text({ label: "Detail", multiline: true }) }), { label: "Steps", itemLabel: (props) => props.fields.title.value || "Step" }),
           cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
         }, { label: "How to Join" }),
@@ -899,7 +892,7 @@ export default config({
                   publicPath: "../../assets/images/brand/",
                   validation: { isRequired: true },
                 }),
-                alt: fields.text({ label: "Alt Text", defaultValue: "Acosa" }),
+                alt: fields.text({ label: "Alt Text", defaultValue: "ACOSA" }),
               },
               { label: "Light Mode Logo" },
             ),
@@ -913,7 +906,7 @@ export default config({
                   publicPath: "../../assets/images/brand/",
                   validation: { isRequired: true },
                 }),
-                alt: fields.text({ label: "Alt Text", defaultValue: "Acosa" }),
+                alt: fields.text({ label: "Alt Text", defaultValue: "ACOSA" }),
               },
               { label: "Dark Mode Logo" },
             ),
@@ -937,6 +930,11 @@ export default config({
           description:
             "All contact form and listing application submissions are sent to this address. Keep it up to date.",
           validation: { isRequired: true },
+        }),
+        phone: fields.text({
+          label: "Main Phone Number",
+          description:
+            "The main ACOSA phone number used for telephone contact links.",
         }),
         socialLinks: fields.array(
           fields.object({
