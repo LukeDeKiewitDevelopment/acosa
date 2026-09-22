@@ -76,7 +76,7 @@ export const Footer = ({
 }: FooterProps) => {
   const currentYear = getCurrentYear();
   return (
-    <footer className="not-dark:bg-primary not-dark:text-primary-foreground dark:bg-card dark:text-card-foreground w-full max-w-screen px-8 py-12">
+    <footer className="w-full max-w-screen border-t-4 border-secondary bg-primary px-8 py-12 text-primary-foreground">
       <div className="flex flex-col gap-8 md:flex-row">
         <div
           data-slot="footer-info"
