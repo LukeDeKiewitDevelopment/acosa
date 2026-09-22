@@ -497,11 +497,11 @@ const siteSettings = defineCollection({
         .object({
           light: z.object({
             image: ctx.image(),
-            alt: z.string().optional().default("Acosa"),
+            alt: z.string().optional().default("ACOSA"),
           }),
           dark: z.object({
             image: ctx.image(),
-            alt: z.string().optional().default("Acosa"),
+            alt: z.string().optional().default("ACOSA"),
           }),
         })
         .optional()

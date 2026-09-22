@@ -55,7 +55,7 @@ export default config({
   },
 
   ui: {
-    brand: { name: "Acosa" },
+    brand: { name: "ACOSA" },
     navigation: {
       Content: ["properties", "businessNodes", "testimonials"],
       Tags: ["essentials", "facilities", "nearbyConvenience", "perfectFor"],
@@ -248,7 +248,7 @@ export default config({
             contactName: fields.text({
               label: "Contact Person",
               description:
-                "Full name of the main contact person at the property. This is who Acosa will contact for operational matters.",
+                "Full name of the main contact person at the property. This is who ACOSA will contact for operational matters.",
             }),
             email: fields.text({
               label: "Email Address",
@@ -517,7 +517,7 @@ export default config({
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
           },
-          { label: "Why Acosa Preview" },
+          { label: "Why ACOSA Preview" },
         ),
         ownerCta: fields.object(
           {
@@ -566,6 +566,7 @@ export default config({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
+          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
           primaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Primary CTA" }),
           secondaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Secondary CTA" }),
         }, { label: "Property Owners" }),
@@ -581,7 +582,7 @@ export default config({
     }),
 
     whyAcosa: singleton({
-      label: "Why Acosa Page",
+      label: "Why ACOSA Page",
       path: "src/content/pages/why-acosa",
       entryLayout: "form",
       schema: {
@@ -815,6 +816,7 @@ export default config({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
+          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
           properties: fields.array(fields.text({ label: "Property" }), { label: "Who We Work With", itemLabel: (props) => props.value || "Property" }),
           highlight: fields.text({ label: "Highlight" }),
           note: fields.text({ label: "Note" }),
@@ -916,13 +918,13 @@ export default config({
         footerDescription: fields.text({
           label: "Footer Description",
           description:
-            "Short tagline shown under the Acosa logo in the site footer. Keep under 200 characters.",
+            "Short tagline shown under the ACOSA logo in the site footer. Keep under 200 characters.",
           multiline: true,
         }),
         defaultWhatsapp: fields.text({
           label: "Default WhatsApp Number",
           description:
-            "The main Acosa WhatsApp number shown on the homepage and contact page. International format, no spaces, no +. E.g. 27721234567.",
+            "The main ACOSA WhatsApp number shown on the homepage and contact page. International format, no spaces, no +. E.g. 27721234567.",
           validation: { isRequired: true },
         }),
         enquiryEmail: fields.text({
@@ -952,7 +954,7 @@ export default config({
           {
             label: "Social Links",
             description:
-              "Links to Acosa's social media profiles. Each entry shows as a platform icon in the footer. Supported platforms: LinkedIn, Instagram, Facebook, X, YouTube, TikTok, Pinterest.",
+              "Links to ACOSA's social media profiles. Each entry shows as a platform icon in the footer. Supported platforms: LinkedIn, Instagram, Facebook, X, YouTube, TikTok, Pinterest.",
             itemLabel: (props) => props.fields.label.value || "Link",
           },
         ),

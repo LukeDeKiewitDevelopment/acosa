@@ -1,6 +1,6 @@
 // src/components/custom/node-detail.tsx
 import type { ReactNode } from "react";
-import { ArrowRight, BadgeCheck, MapPin } from "lucide-react";
+import { ArrowRight, BadgeCheck, ExternalLink, MapPin } from "lucide-react";
 import { StaticAcosaImage, type ResolvedAcosaImage } from "./image";
 import type { FeaturedPropertyItem } from "./featured-properties";
 
@@ -73,6 +73,21 @@ export const NodeDetail = ({
         <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
           {children}
         </div>
+        {node.mapUrl && (
+          <a
+            href={node.mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-secondary text-secondary inline-flex w-fit items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+            data-acosa-track="business_node_maps_click"
+            data-node-id={node.id}
+            data-node-name={node.name}
+          >
+            <MapPin className="size-4" aria-hidden="true" />
+            View on Google Maps
+            <ExternalLink className="size-4" aria-hidden="true" />
+          </a>
+        )}
       </div>
 
       {/* ---- Properties ---- */}
@@ -85,14 +100,11 @@ export const NodeDetail = ({
             <p>Our first ACOSA properties are coming soon.</p>
           </div>
         )}
-        <ul
-          role="list"
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {properties.map((item) => (
             <li key={item.id}>
               <article className="bg-card text-card-foreground relative flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition-shadow hover:shadow-md">
-                <div className="relative m-3 aspect-[16/11] overflow-hidden rounded-xl">
+                <div className="relative m-3 aspect-16/11 overflow-hidden rounded-xl">
                   <StaticAcosaImage
                     {...item.image}
                     alt={item.imageAlt}
