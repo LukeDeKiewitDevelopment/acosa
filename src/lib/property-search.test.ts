@@ -15,6 +15,26 @@ test("matches a property through its business node label", () => {
   assert.equal(matchesPropertySearchQuery(wildOlive, "Centurion"), true);
 });
 
+test("matches a property through its name", () => {
+  assert.equal(matchesPropertySearchQuery(wildOlive, "Wild Olive"), true);
+});
+
+test("matches a property name regardless of case or extra spaces", () => {
+  assert.equal(matchesPropertySearchQuery(wildOlive, "  wILD   oLIVE  "), true);
+});
+
+test("matches a property through its business node slug", () => {
+  assert.equal(matchesPropertySearchQuery(wildOlive, "centurion"), true);
+});
+
+test("matches a property through its province label", () => {
+  assert.equal(matchesPropertySearchQuery(wildOlive, "Gauteng"), true);
+});
+
+test("matches a property through its province slug", () => {
+  assert.equal(matchesPropertySearchQuery(wildOlive, "gauteng"), true);
+});
+
 test("matches a property through its stored address", () => {
   assert.equal(matchesPropertySearchQuery(wildOlive, "Clubview"), true);
 });

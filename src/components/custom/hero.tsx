@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import { AcosaImage } from "./image";
+import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import type { CSSProperties } from "react";
 
@@ -19,6 +20,8 @@ export type HeroProps = {
     external?: boolean;
   };
   image?: ImageMetadata | null;
+  mobileImage?: ImageMetadata | null;
+  tabletImage?: ImageMetadata | null;
   imageAlt?: string;
   imageWidths?: number[];
   imageSizes?: string;
@@ -43,6 +46,8 @@ export const Hero = async ({
   primaryCta,
   secondaryCta,
   image,
+  mobileImage,
+  tabletImage,
   imageAlt,
   imageWidths,
   imageSizes,
@@ -52,6 +57,25 @@ export const Hero = async ({
   overlay,
 }: HeroProps) => {
   const hasImage = Boolean(image);
+  const responsiveImages = await Promise.all(
+    [
+      mobileImage && { image: mobileImage, media: "(max-width: 639px)" },
+      tabletImage && { image: tabletImage, media: "(min-width: 640px) and (max-width: 1023px)" },
+    ]
+      .filter(Boolean)
+      .map(async (source) => {
+        if (!source) return null;
+        const optimized = await getImage({
+          src: source.image,
+          widths: imageWidths || [320, 480, 640, 960, 1280, 1920],
+          sizes: imageSizes || "100vw",
+        });
+        return {
+          media: source.media,
+          srcSet: optimized.srcSet.attribute || optimized.src,
+        };
+      }),
+  );
   const effectiveOverlay = hasImage
     ? {
         color: overlay?.color || "#000",
@@ -65,13 +89,13 @@ export const Hero = async ({
     <section
       data-slot="hero"
       className={cn(
-        "relative flex min-h-152 flex-1 flex-col items-center justify-center overflow-hidden md:min-h-screen",
+        "relative flex min-h-[32rem] flex-1 flex-col items-center justify-center overflow-hidden sm:min-h-[34rem] md:min-h-[42rem] lg:min-h-screen",
         className,
       )}
     >
       <div
         className={cn(
-          "relative z-20 mx-auto my-24 flex w-4/5 flex-col gap-4",
+          "relative z-20 mx-auto mb-24 flex w-4/5 flex-col gap-4",
           contentClassName,
           hasImage ? "text-white" : "text-foreground",
         )}
@@ -112,19 +136,25 @@ export const Hero = async ({
       )}
 
       {image && (
-        <AcosaImage
-          src={image}
-          alt={imageAlt || ""}
-          widths={imageWidths || [320, 480, 640, 960, 1280, 1920]}
-          sizes={imageSizes || "100vw"}
-          loading="eager"
-          decoding="sync"
-          fetchPriority="high"
-          className={cn(
-            "pointer-events-none absolute z-5 h-full w-full object-cover object-[65%_center] md:object-center",
-            imageClassName,
+        <picture className="pointer-events-none absolute z-5 size-full">
+          {responsiveImages.map(
+            (source) =>
+              source && <source key={source.media} media={source.media} srcSet={source.srcSet} sizes={imageSizes || "100vw"} />,
           )}
-        />
+          <AcosaImage
+            src={image}
+            alt={imageAlt || ""}
+            widths={imageWidths || [320, 480, 640, 960, 1280, 1920]}
+            sizes={imageSizes || "100vw"}
+            loading="eager"
+            decoding="sync"
+            fetchPriority="high"
+            className={cn(
+              "pointer-events-none absolute z-5 size-full object-cover object-[65%_center] md:object-center",
+              imageClassName,
+            )}
+          />
+        </picture>
       )}
     </section>
   );

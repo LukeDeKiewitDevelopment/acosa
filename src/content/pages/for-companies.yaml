@@ -54,16 +54,14 @@ teamsAndProjectsSection:
     link: whatsapp
 
 finalCta:
+  eyebrow: NEED HELP FINDING THE RIGHT STAY?
   heading: Tell us what your travellers need.
   body: >-
-    Whether you're placing one employee or coordinating accommodation for a project team, we'll help you start with more relevant options.
+    Whether you're placing one employee or coordinating accommodation for a team, we'll help you start with more relevant options.
   primaryCta:
     label: Email ACOSA
     link: email
   secondaryCta:
-    label: Prefer WhatsApp? Talk to ACOSA
-    link: whatsapp
-  whatsappCta:
     label: Prefer WhatsApp? Talk to ACOSA
     link: whatsapp
 

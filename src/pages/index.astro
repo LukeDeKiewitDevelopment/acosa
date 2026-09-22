@@ -1,14 +1,16 @@
 ---
 import { Image, getImage } from "astro:assets";
+import { getEntry } from "astro:content";
 import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import {
   getHomePage,
   getFeaturedProperties,
+  getNodes,
+  getPublishedProperties,
   getSiteSettings,
   resolveCtaLink,
   propertyTypeLabel,
-  buildSearchNodes,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
@@ -17,7 +19,10 @@ import {
   type FeaturedPropertyItem,
 } from "@/components/custom/featured-properties";
 import { OwnerCta } from "@/components/custom/owner-cta";
-import { BusinessNodeSearch } from "@/components/custom/business-node-search";
+import {
+  PropertySearch,
+  type PropertySearchItem,
+} from "@/components/custom/property-search";
 import { ArrowRight } from "lucide-react";
 
 export const prerender = true;
@@ -36,8 +41,12 @@ const {
   seo,
 } = page.data;
 
-const businessNodeSearchItems = await buildSearchNodes();
 const featuredProperties = await getFeaturedProperties();
+const publishedProperties = await getPublishedProperties();
+const businessNodes = (await getNodes()).map((node) => ({
+  id: node.id,
+  name: node.data.name,
+}));
 const settings = await getSiteSettings();
 const ctaOptions = {
   email: settings.data.enquiryEmail,
@@ -60,6 +69,37 @@ const propertyOwnerSecondary = resolveCtaLink(
   ctaOptions,
 );
 const closingLink = resolveCtaLink(closingSection.cta.link, ctaOptions);
+
+const propertySearchItems: PropertySearchItem[] = await Promise.all(
+  publishedProperties.map(async (property) => {
+    const img = await getImage({
+      src: property.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+    });
+    const businessNode = await getEntry(property.data.businessNode);
+    return {
+      id: property.id,
+      name: property.data.name,
+      province: property.data.province,
+      businessNode: property.data.businessNode.id,
+      businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
+      locationAddress: property.data.location.address,
+      propertyType: property.data.propertyType,
+      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+      approved: property.data.acosaApproved.approved,
+      shortDescription: property.data.shortDescription,
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: property.data.imageAlt || property.data.name,
+    };
+  }),
+);
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -126,7 +166,7 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
   ogImage={ogImageUrl}
   jsonLd={websiteSchema}
 >
-  <Section fullWidth className="m-0">
+  <Section fullWidth className="!m-0">
     <Hero
       eyebrow={hero.eyebrow}
       heading={hero.heading}
@@ -190,7 +230,11 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
       <p class="text-muted-foreground max-w-2xl text-sm md:text-base">
         {businessNodesSection.body}
       </p>
-      <BusinessNodeSearch nodes={businessNodeSearchItems} showHeader={false} client:load />
+      <PropertySearch
+        client:load
+        items={propertySearchItems}
+        businessNodes={businessNodes}
+      />
       <a
         href={businessNodesSection.cta.link}
         class="text-primary inline-flex items-center gap-2 font-semibold no-underline"

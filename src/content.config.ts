@@ -304,6 +304,7 @@ const forCompaniesPage = defineCollection({
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
       finalCta: z.object({
+        eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
         primaryCta: z.object({ label: z.string(), link: z.string() }),
@@ -482,6 +483,7 @@ const siteSettings = defineCollection({
       footerDescription: z.string().optional().default(""),
       defaultWhatsapp: z.string(),
       enquiryEmail: z.string(),
+      phone: z.string().optional().default(""),
       socialLinks: z
         .array(
           z.object({

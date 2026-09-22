@@ -248,6 +248,13 @@ const organisationSchema: Record<string, unknown> = {
         });
       }
 
+      if (window.gtag) {
+        window.acosaTrack("page_view", {
+          page_title: document.title,
+          page_location: window.location.href,
+        });
+      }
+
       if (typeof localStorage !== "undefined") {
         const observer = new MutationObserver(() => {
           const isDark = document.documentElement.classList.contains("dark");

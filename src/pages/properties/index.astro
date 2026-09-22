@@ -3,7 +3,7 @@ import { getImage } from "astro:assets";
 import { getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
-import { getPublishedProperties, propertyTypeLabel } from "@/lib/content";
+import { getNodes, getPublishedProperties, propertyTypeLabel } from "@/lib/content";
 import {
   PropertySearch,
   type PropertySearchItem,
@@ -12,6 +12,10 @@ import {
 export const prerender = true;
 
 const properties = await getPublishedProperties();
+const businessNodes = (await getNodes()).map((node) => ({
+  id: node.id,
+  name: node.data.name,
+}));
 
 const items: PropertySearchItem[] = await Promise.all(
   properties.map(async (property) => {
@@ -58,6 +62,6 @@ const items: PropertySearchItem[] = await Promise.all(
     </p>
   </Section>
   <Section className="mt-16 mb-28">
-    <PropertySearch client:load items={items} />
+    <PropertySearch client:load items={items} businessNodes={businessNodes} />
   </Section>
 </Layout>

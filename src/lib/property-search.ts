@@ -7,11 +7,15 @@ export type PropertySearchFields = {
   locationAddress: string;
 };
 
+function normalizeSearchText(value: string): string {
+  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+}
+
 export function matchesPropertySearchQuery(
   item: PropertySearchFields,
   query: string,
 ): boolean {
-  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const normalizedQuery = normalizeSearchText(query);
   if (!normalizedQuery) return true;
 
   return [
@@ -21,5 +25,5 @@ export function matchesPropertySearchQuery(
     item.businessNode,
     item.businessNodeLabel,
     item.locationAddress,
-  ].some((value) => value.toLocaleLowerCase().includes(normalizedQuery));
+  ].some((value) => normalizeSearchText(value).includes(normalizedQuery));
 }

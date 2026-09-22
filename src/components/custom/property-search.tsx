@@ -37,16 +37,49 @@ export type PropertySearchItem = {
   imageAlt: string;
 };
 
-export type PropertySearchProps = { items: PropertySearchItem[] };
+export type PropertySearchBusinessNode = {
+  id: string;
+  name: string;
+};
+
+export type PropertySearchProps = {
+  items: PropertySearchItem[];
+  businessNodes?: PropertySearchBusinessNode[];
+};
 
 const PROVINCE_SLUGS = Object.keys(PROVINCES) as ProvinceSlug[];
 
-export const PropertySearch = ({ items }: PropertySearchProps) => {
+export const PropertySearch = ({
+  items,
+  businessNodes = [],
+}: PropertySearchProps) => {
   const [query, setQuery] = useState("");
   const [selectedProvince, setSelectedProvince] = useState<ProvinceSlug | null>(
     null,
   );
+  const [selectedBusinessNode, setSelectedBusinessNode] = useState<string | null>(
+    null,
+  );
   const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  const { businessNodeSlugs, businessNodeLabels } = useMemo(() => {
+    const labels = new Map<string, string>();
+    for (const node of businessNodes) {
+      labels.set(node.id, node.name);
+    }
+    for (const item of items) {
+      if (!labels.has(item.businessNode)) {
+        labels.set(item.businessNode, item.businessNodeLabel);
+      }
+    }
+    const entries = [...labels.entries()].sort((a, b) =>
+      a[1].localeCompare(b[1]),
+    );
+    return {
+      businessNodeSlugs: entries.map(([slug]) => slug),
+      businessNodeLabels: Object.fromEntries(entries) as Record<string, string>,
+    };
+  }, [businessNodes, items]);
 
   // The canonical PROPERTY_TYPES map lives in content.config.ts, which imports
   // the server-only `astro:content` module and so cannot be pulled into a
@@ -75,6 +108,9 @@ export const PropertySearch = ({ items }: PropertySearchProps) => {
         if (selectedProvince && item.province !== selectedProvince) {
           return false;
         }
+        if (selectedBusinessNode && item.businessNode !== selectedBusinessNode) {
+          return false;
+        }
         if (selectedType && item.propertyType !== selectedType) {
           return false;
         }
@@ -90,30 +126,34 @@ export const PropertySearch = ({ items }: PropertySearchProps) => {
         if (a.approved !== b.approved) return a.approved ? -1 : 1;
         return a.name.localeCompare(b.name);
       });
-  }, [items, query, selectedProvince, selectedType]);
+  }, [items, query, selectedProvince, selectedBusinessNode, selectedType]);
 
   const hasActiveFilters =
-    query.trim() !== "" || selectedProvince !== null || selectedType !== null;
+    query.trim() !== "" ||
+    selectedProvince !== null ||
+    selectedBusinessNode !== null ||
+    selectedType !== null;
 
   const clearFilters = () => {
     setQuery("");
     setSelectedProvince(null);
+    setSelectedBusinessNode(null);
     setSelectedType(null);
   };
 
   return (
     <div data-slot="property-search" className="flex flex-col gap-8">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 lg:flex-row">
-        <Field className="w-full min-w-0 lg:flex-2">
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+        <Field className="w-full min-w-0">
           <Input
             id="property-search-input"
             type="search"
-            placeholder="Search by property, province or type..."
+            placeholder="Search by property, business node, province or type..."
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
         </Field>
-        <div className="min-w-0 lg:flex-1">
+        <div className="min-w-0">
           <Combobox
             items={PROVINCE_SLUGS}
             value={selectedProvince}
@@ -133,7 +173,27 @@ export const PropertySearch = ({ items }: PropertySearchProps) => {
             </ComboboxContent>
           </Combobox>
         </div>
-        <div className="min-w-0 lg:flex-1">
+        <div className="min-w-0">
+          <Combobox
+            items={businessNodeSlugs}
+            value={selectedBusinessNode}
+            onValueChange={(value) => setSelectedBusinessNode(value)}
+            itemToStringLabel={(slug) => businessNodeLabels[slug]}
+          >
+            <ComboboxInput placeholder="All Business Nodes" />
+            <ComboboxContent>
+              <ComboboxEmpty>No items found.</ComboboxEmpty>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem key={item} value={item}>
+                    {businessNodeLabels[item]}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+        </div>
+        <div className="min-w-0">
           <Combobox
             items={typeSlugs}
             value={selectedType}

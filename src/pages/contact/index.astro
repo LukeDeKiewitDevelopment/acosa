@@ -76,6 +76,7 @@ const routeHref = (link: string, subject?: string, message?: string) =>
                   href={routeHref(
                     primary.link,
                     primary.subject,
+                    primary.prefilledMessage,
                   )}
                   target={primary.link === "whatsapp" ? "_blank" : undefined}
                   rel={

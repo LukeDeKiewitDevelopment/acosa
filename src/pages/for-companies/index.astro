@@ -71,15 +71,9 @@ const finalPrimaryHref = resolveCtaLink(finalCta.primaryCta.link, {
 const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
   email,
   whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappMessage:
+    "Hi ACOSA, I'm arranging business accommodation and would appreciate some assistance.",
 });
-const finalWhatsappHref = finalCta.whatsappCta
-  ? resolveCtaLink(finalCta.whatsappCta.link, {
-      email,
-      whatsappNumber: settings.data.defaultWhatsapp,
-      whatsappMessage:
-        "Hi ACOSA, I'm arranging business accommodation and would appreciate some assistance.",
-    })
-  : undefined;
 ---
 
 <Layout
@@ -194,6 +188,11 @@ const finalWhatsappHref = finalCta.whatsappCta
     <div
       class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-8 text-center md:p-12"
     >
+      {finalCta.eyebrow && (
+        <p class="text-primary-foreground/70 text-xs font-semibold tracking-wider uppercase">
+          {finalCta.eyebrow}
+        </p>
+      )}
       <h2 class="text-2xl font-bold md:text-3xl">{finalCta.heading}</h2>
       <p class="mt-3 opacity-90">{finalCta.body}</p>
 
@@ -206,17 +205,15 @@ const finalWhatsappHref = finalCta.whatsappCta
           <ArrowRight className="size-4" aria-hidden="true" />
         </a>
 
-        {finalCta.whatsappCta && finalWhatsappHref && (
-          <a
-            href={finalWhatsappHref}
+        <a
+            href={finalSecondaryHref}
             target="_blank"
             rel="noopener noreferrer"
             class="text-background inline-flex items-center gap-2 text-sm font-semibold no-underline"
           >
             <MessageCircle className="size-4" aria-hidden="true" />
-            {finalCta.whatsappCta.label}
-          </a>
-        )}
+            {finalCta.secondaryCta.label} →
+        </a>
       </div>
     </div>
   </Section>

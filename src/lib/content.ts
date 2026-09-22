@@ -41,6 +41,7 @@ export async function getPublishedProperties(): Promise<Property[]> {
     'properties',
     ({ data }) =>
       data.published &&
+      data.acosaApproved.approved &&
       isPublicBusinessNode(data.businessNode.id),
   );
 }
@@ -48,7 +49,11 @@ export async function getPublishedProperties(): Promise<Property[]> {
 export async function getFeaturedProperties(): Promise<Property[]> {
   return getCollection(
     'properties',
-    ({ data }) => data.published && data.featured && isPublicBusinessNode(data.businessNode.id),
+    ({ data }) =>
+      data.published &&
+      data.acosaApproved.approved &&
+      data.featured &&
+      isPublicBusinessNode(data.businessNode.id),
   );
 }
 
@@ -57,6 +62,7 @@ export async function getPropertiesByNode(nodeId: string): Promise<Property[]> {
     'properties',
     ({ data }) =>
       data.published &&
+      data.acosaApproved.approved &&
       isPublicBusinessNode(data.businessNode.id) &&
       data.businessNode.id === nodeId,
   );
@@ -69,6 +75,7 @@ export async function getPropertiesByProvince(
     'properties',
     ({ data }) =>
       data.published &&
+      data.acosaApproved.approved &&
       isPublicBusinessNode(data.businessNode.id) &&
       data.province === province,
   );
@@ -251,8 +258,9 @@ export function resolveCtaLink(
     return mailtoLink(options.email, options.emailSubject ?? 'General ACOSA Enquiry');
   }
   if (link === 'whatsapp') {
-    if (!isConfiguredContactValue(options.whatsappNumber ?? '')) return '/contact';
-    return whatsappLink(options.whatsappNumber, options.whatsappMessage);
+    const whatsappNumber = options.whatsappNumber ?? '';
+    if (!isConfiguredContactValue(whatsappNumber)) return '/contact';
+    return whatsappLink(whatsappNumber, options.whatsappMessage);
   }
   return link;
 }
