@@ -7,7 +7,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
-import { ThemeToggle } from "./theme-toggle";
 import { MobileMenu } from "./mobile-menu";
 
 export type HeaderLogo = {
@@ -45,15 +44,8 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
               fetchPriority="high"
               loading="eager"
               decoding="sync"
-              className="h-10 w-auto object-contain dark:hidden"
+              className="h-10 w-auto object-contain"
               {...logo.light}
-            />
-            <StaticAcosaImage
-              fetchPriority="high"
-              loading="eager"
-              decoding="sync"
-              className="hidden h-10 w-auto object-contain dark:block"
-              {...logo.dark}
             />
           </a>
         ) : (

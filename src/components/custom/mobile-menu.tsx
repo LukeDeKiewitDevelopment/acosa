@@ -10,7 +10,6 @@ import {
 import { Button } from "../ui/button";
 import { StaticAcosaImage } from "./image";
 import type { HeaderLogo, NavItem } from "./header";
-import { ThemeToggle } from "./theme-toggle";
 import {
   Accordion,
   AccordionContent,
@@ -34,22 +33,13 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
         <SheetHeader>
           <SheetTitle>
             {logo ? (
-              <>
-                <StaticAcosaImage
-                  fetchPriority="high"
-                  loading="eager"
-                  decoding="sync"
-                  {...logo.light}
-                  className="h-10 w-auto dark:hidden"
-                />
-                <StaticAcosaImage
-                  fetchPriority="high"
-                  loading="eager"
-                  decoding="sync"
-                  {...logo.dark}
-                  className="hidden h-10 w-auto dark:block"
-                />
-              </>
+              <StaticAcosaImage
+                fetchPriority="high"
+                loading="eager"
+                decoding="sync"
+                {...logo.light}
+                className="h-10 w-auto"
+              />
             ) : (
               <span>ACOSA</span>
             )}
