@@ -8,23 +8,39 @@ import { PROVINCE_OPTIONS } from "./src/lib/provinces";
 const seoFields = fields.object(
   {
     title: fields.text({
-      label: "SEO Title",
-      description: "Overrides the page <title>. Aim for under 60 characters.",
+      label: "Page title",
+      description: "Overrides the browser tab title. Keep it short and specific.",
     }),
     description: fields.text({
-      label: "SEO Description",
-      description: "Meta description. Aim for 120–160 characters.",
+      label: "Meta description",
+      description: "Used in search results and social previews. Aim for 120–160 characters.",
       multiline: true,
     }),
     ogImage: fields.image({
-      label: "Social Share Image (Open Graph)",
-      description: "Recommended 1200×630. Falls back to hero image if empty.",
+      label: "Social share image",
+      description: "Recommended size: 1200×630. This is used for link previews when shared online.",
       directory: "src/assets/images/og",
       publicPath: "../../assets/images/og/",
     }),
   },
   { label: "SEO" },
 );
+
+const ctaFields = (label: string) =>
+  fields.object(
+    {
+      label: fields.text({
+        label: "Button text",
+        description: "Visible text shown to visitors.",
+      }),
+      link: fields.text({
+        label: "Destination",
+        description:
+          "Use a page path such as /contact, /business-nodes, or a special value like email or whatsapp.",
+      }),
+    },
+    { label },
+  );
 
 // A simple reusable "tag" collection factory: label + slug (+ optional icon).
 const tagCollection = (label: string, path: string) =>
@@ -82,23 +98,23 @@ export default config({
       format: { contentField: "longDescription" },
       schema: {
         name: fields.slug({
-          name: { label: "Property Name" },
+          name: { label: "Property name" },
           slug: {
-            label: "Slug",
+            label: "URL slug",
             description:
-              "URL-safe identifier. Auto-generated from the property name. DO NOT change after the property goes live — all links will break.",
+              "Automatically generated from the property name. Avoid changing this after the listing goes live, or links may break.",
           },
         }),
         published: fields.checkbox({
-          label: "Published",
+          label: "Published live",
           description:
-            "Tick to make this property visible on the site. Leave unticked while you are still filling in details. Only publish when the property is complete, has a hero image, and has been vetted.",
+            "Turn this on only when the listing is complete, has a hero image, and is ready to be shown publicly.",
           defaultValue: false,
         }),
         featured: fields.checkbox({
-          label: "Featured Property",
+          label: "Feature on homepage",
           description:
-            "Tick to feature this property on the homepage Featured Properties section. Limit to 3–4 properties at a time for best results.",
+            "Highlights this property in the homepage featured section. Keep this limited to the strongest listings.",
           defaultValue: false,
         }),
         acosaApproved: fields.object(
@@ -121,20 +137,20 @@ export default config({
         province: fields.select({
           label: "Province",
           description:
-            "The South African province where the property is located. Used for filtering and for building the page URL.",
+            "The province where the property is based. This also helps with location filtering and page routing.",
           options: PROVINCE_OPTIONS,
           defaultValue: "gauteng",
         }),
         businessNode: fields.relationship({
-          label: "Business Node",
+          label: "Business node",
           description:
-            "The business node (commercial district) this property belongs to. Every property must belong to a node. If the node doesn't exist yet, create it first in the Business Nodes collection.",
+            "The commercial area this property belongs to. Create the node first if it is missing from the Business Nodes collection.",
           collection: "businessNodes",
         }),
         propertyType: fields.select({
-          label: "Property Type",
+          label: "Property type",
           description:
-            "The category of accommodation. Used for the badge on property cards and for filtering on the properties directory.",
+            "This is shown on cards and used for filtering in the directory.",
           options: [
             { label: "Guesthouse", value: "guesthouse" },
             { label: "Boutique Hotel", value: "boutique-hotel" },
@@ -144,17 +160,17 @@ export default config({
           defaultValue: "guesthouse",
         }),
         heroImage: fields.image({
-          label: "Hero Image",
+          label: "Main hero image",
           description:
-            "Main image shown on property cards and at the top of the property page. Upload landscape images at 1600×900px minimum. This field is required — the property will not display correctly without it.",
+            "Primary image for the property card and property page. Use a landscape image at around 1600×900px or larger.",
           directory: "src/assets/images/properties",
           publicPath: "../../assets/images/properties/",
           validation: { isRequired: true },
         }),
         imageAlt: fields.text({
-          label: "Hero Image Alt Text",
+          label: "Hero image alt text",
           description:
-            "Describe the hero image in one sentence for screen readers and search engines. E.g. 'Reception area of Menlyn Boutique Hotel, Pretoria.' Required for accessibility.",
+            "Describe the image clearly for accessibility and SEO. Example: 'Reception area of Menlyn Boutique Hotel in Pretoria.'",
         }),
         gallery: fields.array(
           fields.object({
@@ -178,16 +194,16 @@ export default config({
           },
         ),
         shortDescription: fields.text({
-          label: "Short Description",
+          label: "Short summary",
           description:
-            "One or two sentences shown on property cards and in search results. Include the key selling point and the distance to the nearest landmark. Keep under 160 characters. Required.",
+            "One or two sentences for cards and search results. Highlight the key benefit and location context.",
           multiline: true,
           validation: { isRequired: true },
         }),
         longDescription: fields.markdoc({
-          label: "Long Description",
+          label: "Full property description",
           description:
-            "Full property description shown on the property page. Cover: the property's character, room types, who it suits, what makes it stand out for business travellers, and the ACOSA Approved assessment if applicable. Aim for 150–300 words.",
+            "This appears on the full property page. Include room type, guest experience, business usefulness, and any ACOSA Approved details.",
           options: {
             image: {
               directory: "src/assets/images/properties",
@@ -505,12 +521,12 @@ export default config({
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
             image: fields.image({
-              label: "Founder Photo",
+              label: "Founder photo",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
           },
-          { label: "Founder Trust Strip" },
+          { label: "Founder trust strip" },
         ),
         whyAcosaPreview: fields.object(
           {
@@ -523,60 +539,63 @@ export default config({
           {
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
-            buttonLabel: fields.text({ label: "Button Label" }),
+            buttonLabel: fields.text({
+              label: "Primary button label",
+              description: "Main call-to-action button text for property owners.",
+            }),
             secondButtonLabel: fields.text({
-              label: "Second Button Label",
-              description: "Optional outlined button. Leave empty to hide it.",
+              label: "Secondary button label",
+              description: "Optional second button. Leave blank to hide it.",
             }),
           },
-          { label: "Property Owner CTA" },
+          { label: "Property owner CTA" },
         ),
         businessTravelSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Business Travel" }),
+          cta: ctaFields("CTA"),
+        }, { label: "Business travel" }),
         businessNodesSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Business Nodes" }),
+          cta: ctaFields("CTA"),
+        }, { label: "Business nodes" }),
         featuredPropertiesSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
-        }, { label: "Featured Properties" }),
+        }, { label: "Featured properties" }),
         corporateBookersSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          primaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Primary CTA" }),
-          secondaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Secondary CTA" }),
-        }, { label: "Corporate Bookers" }),
+          primaryCta: ctaFields("Primary CTA"),
+          secondaryCta: ctaFields("Secondary CTA"),
+        }, { label: "Corporate bookers" }),
         humanAssistanceSection: fields.object({
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Human Assistance" }),
+          cta: ctaFields("CTA"),
+        }, { label: "Human assistance" }),
         propertyOwnersSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          primaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Primary CTA" }),
-          secondaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Secondary CTA" }),
-        }, { label: "Property Owners" }),
+          primaryCta: ctaFields("Primary CTA"),
+          secondaryCta: ctaFields("Secondary CTA"),
+        }, { label: "Property owners" }),
         closingSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Closing Section" }),
+          cta: ctaFields("CTA"),
+        }, { label: "Closing section" }),
         seo: seoFields,
       },
     }),
@@ -778,12 +797,12 @@ export default config({
               label: fields.text({ label: "Label" }),
               link: fields.text({ label: "Link" }),
             }), { label: "Links", itemLabel: (props) => props.fields.label.value || "Link" }),
-          }), { label: "Footer Sections", itemLabel: (props) => props.fields.title.value || "Section" }),
+          }), { label: "Footer sections", itemLabel: (props) => props.fields.title.value || "Section" }),
           legal: fields.array(fields.object({
             label: fields.text({ label: "Label" }),
             link: fields.text({ label: "Link" }),
-          }), { label: "Legal Links", itemLabel: (props) => props.fields.label.value || "Legal Link" }),
-          copyright: fields.text({ label: "Copyright" }),
+          }), { label: "Legal links", itemLabel: (props) => props.fields.label.value || "Legal link" }),
+          copyright: fields.text({ label: "Copyright text" }),
         }, { label: "Footer" }),
         seo: seoFields,
       },
@@ -941,20 +960,20 @@ export default config({
         socialLinks: fields.array(
           fields.object({
             label: fields.text({
-              label: "Label",
+              label: "Platform name",
               description:
-                "Platform name exactly as shown. E.g. 'LinkedIn', 'Instagram', 'Facebook'. Used to match the correct icon.",
+                "Use the platform name exactly as it should appear, for example LinkedIn, Instagram or Facebook.",
             }),
             url: fields.url({
-              label: "URL",
+              label: "Profile URL",
               description:
-                "Full URL to the profile page. E.g. 'https://www.linkedin.com/company/acosa'.",
+                "Full profile URL, for example https://www.linkedin.com/company/acosa",
             }),
           }),
           {
-            label: "Social Links",
+            label: "Social links",
             description:
-              "Links to ACOSA's social media profiles. Each entry shows as a platform icon in the footer. Supported platforms: LinkedIn, Instagram, Facebook, X, YouTube, TikTok, Pinterest.",
+              "Add the public profiles that should show in the footer. Supported platforms include LinkedIn, Instagram, Facebook, X, YouTube, TikTok and Pinterest.",
             itemLabel: (props) => props.fields.label.value || "Link",
           },
         ),
