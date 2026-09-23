@@ -1,7 +1,7 @@
 import { getCollection, getEntry, getEntries } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
-import { PROVINCES, PROPERTY_TYPES } from '../content.config';
+import { PROPERTY_TYPES } from '../content.config';
 import { provinceLabel } from './provinces';
 import type { BusinessNodeSearchItem } from '@/components/custom/business-node-search';
 

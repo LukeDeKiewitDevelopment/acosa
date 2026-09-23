@@ -152,6 +152,7 @@ const organisationSchema: Record<string, unknown> = {
 
     {gaMeasurementId && (
       <script
+        is:inline
         async
         src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
       />

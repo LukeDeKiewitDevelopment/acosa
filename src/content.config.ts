@@ -8,6 +8,19 @@ import { PROVINCES, type ProvinceSlug } from "@/lib/provinces";
 // ---------------------------------------------------------------------------
 type ImageCtx = { image: () => z.ZodTypeAny };
 
+const validUrlString = z.string().refine(
+  (value) => {
+    if (!value) return true;
+    try {
+      new URL(value);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  { message: "Must be a valid URL string" },
+);
+
 function seoFields({ image }: ImageCtx) {
   return z.object({
     title: z.string().optional().default(""),
@@ -90,12 +103,12 @@ const properties = defineCollection({
         email: z.string().optional().default(""),
         phone: z.string().optional().default(""),
         whatsapp: z.string(),
-        website: z.string().url().optional().nullable(),
+        website: validUrlString.optional().nullable(),
       }),
       location: z
         .object({
           address: z.string().optional().default(""),
-          mapUrl: z.string().url().optional().nullable(),
+          mapUrl: validUrlString.optional().nullable(),
         })
         .default({ address: "", mapUrl: null }),
       seo: seoFields(ctx).optional(),
@@ -126,7 +139,7 @@ const businessNodes = defineCollection({
           }),
         )
         .default([]),
-      mapUrl: z.string().url().optional().nullable(),
+      mapUrl: validUrlString.optional().nullable(),
       seo: seoFields(ctx).optional(),
     }),
 });
@@ -489,7 +502,7 @@ const siteSettings = defineCollection({
         .array(
           z.object({
             label: z.string(),
-            url: z.string().url(),
+            url: validUrlString,
           }),
         )
         .default([]),
