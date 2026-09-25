@@ -32,17 +32,19 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
       <SheetContent side="left">
         <SheetHeader>
           <SheetTitle>
-            {logo ? (
-              <StaticAcosaImage
-                fetchPriority="high"
-                loading="eager"
-                decoding="sync"
-                {...logo.light}
-                className="h-10 w-auto"
-              />
-            ) : (
-              <span>ACOSA</span>
-            )}
+            <a href="/" aria-label="Go to homepage" className="inline-flex">
+              {logo ? (
+                <StaticAcosaImage
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="sync"
+                  {...logo.light}
+                  className="h-10 w-auto"
+                />
+              ) : (
+                <span>ACOSA</span>
+              )}
+            </a>
           </SheetTitle>
         </SheetHeader>
         <ul className="mx-4 my-2 flex scrollbar-thin flex-col gap-2 overflow-y-auto pr-2">
@@ -50,13 +52,6 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
             <Button variant="default" size="sm" asChild className="w-full">
               <a href="/business-nodes" className="text-xs no-underline">
                 Find Accommodation
-              </a>
-            </Button>
-          </li>
-          <li>
-            <Button variant="ghost" size="sm" asChild>
-              <a href="/" className="text-xs no-underline">
-                Home
               </a>
             </Button>
           </li>
@@ -79,6 +74,11 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
                       </AccordionTrigger>
                       <AccordionContent className="px-0 py-1 [&_a]:no-underline">
                         <ul className="flex flex-col gap-2 ps-3">
+                          <li>
+                            <a href={navItem.href} className="text-xs hover:underline">
+                              View all {navItem.label}
+                            </a>
+                          </li>
                           {navItem.subItems.map((subItem, i) => (
                             <li key={i}>
                               <a

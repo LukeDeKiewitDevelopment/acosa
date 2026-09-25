@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -53,39 +54,59 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
         )}
         <nav data-slot="header-navigation">
           <ul className="hidden items-center gap-2 lg:flex">
-            <li>
-              <Button variant="ghost" size="sm" asChild>
-                <a href="/" className="text-xs no-underline">
-                  Home
-                </a>
-              </Button>
-            </li>
             {navItems &&
               navItems.length > 0 &&
               navItems?.map((navItem, i) => (
                 <li key={i}>
                   {navItem.subItems && navItem.subItems.length > 0 ? (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="text-xs">
+                    <div className="border-border/70 flex items-center overflow-hidden rounded-full border bg-transparent">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        type="button"
+                        className="hover:bg-muted/80 rounded-none border-0 px-3 text-xs"
+                      >
+                        <a href={navItem.href} className="text-xs no-underline">
                           {navItem.label}
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-40" align="start">
-                        <DropdownMenuGroup>
-                          {navItem.subItems.map((subItem) => (
-                            <DropdownMenuItem key={subItem.href}>
+                        </a>
+                      </Button>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            type="button"
+                            className="border-border/70 hover:bg-muted/80 h-8 rounded-none border-0 border-l px-2 text-xs"
+                            aria-label={`Open ${navItem.label} submenu`}
+                          >
+                            <ChevronDown className="size-3.5" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56" align="start">
+                          <DropdownMenuGroup>
+                            <DropdownMenuItem key={`${navItem.href}-all`}>
                               <a
-                                href={subItem.href}
+                                href={navItem.href}
                                 className="w-full text-sm no-underline"
                               >
-                                {subItem.label}
+                                View all {navItem.label}
                               </a>
                             </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                            {navItem.subItems.map((subItem) => (
+                              <DropdownMenuItem key={subItem.href}>
+                                <a
+                                  href={subItem.href}
+                                  className="w-full text-sm no-underline"
+                                >
+                                  {subItem.label}
+                                </a>
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   ) : (
                     <Button variant="ghost" size="sm" asChild>
                       <a href={navItem.href} className="text-xs no-underline">
@@ -98,7 +119,12 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
           </ul>
         </nav>
         <div data-slot="header-actions" className="flex items-center gap-2">
-          <Button variant="default" size="sm" asChild className="hidden lg:inline-flex">
+          <Button
+            variant="default"
+            size="sm"
+            asChild
+            className="hidden lg:inline-flex"
+          >
             <a href="/business-nodes" className="text-xs no-underline">
               Find Accommodation
             </a>

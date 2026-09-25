@@ -90,60 +90,6 @@ export const NodeDetail = ({
         )}
       </div>
 
-      {/* ---- Assistance: highlight cards + nearby convenience + WhatsApp CTA ---- */}
-      {(highlights.length > 0 || nearby.length > 0 || whatsappHref) && (
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="flex flex-col gap-4">
-            {highlights.length > 0 && (
-              <>
-                <h2 className="text-primary text-xl font-bold md:text-2xl">
-                  Why travellers choose {node.name}
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {highlights.map((highlight) => (
-                    <div key={highlight.title} className="bg-card rounded-2xl border p-4">
-                      <p className="text-primary text-sm font-semibold">{highlight.title}</p>
-                      {highlight.detail && (
-                        <p className="text-muted-foreground mt-1 text-sm">{highlight.detail}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-4 rounded-2xl border bg-card p-6">
-            {nearby.length > 0 && (
-              <>
-                <h3 className="text-primary text-lg font-bold">Nearby convenience</h3>
-                <div className="flex flex-wrap gap-2">
-                  {nearby.map((item) => (
-                    <span
-                      key={item}
-                      className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-xs font-medium"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-            {whatsappHref && (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-medium text-secondary-foreground no-underline"
-              >
-                <BadgeCheck className="size-4" aria-hidden="true" />
-                Need assistance? Message ACOSA
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* ---- Properties ---- */}
       <div id="properties" className="flex flex-col gap-6">
         <h2 className="text-primary text-xl font-bold md:text-2xl">
@@ -206,6 +152,60 @@ export const NodeDetail = ({
           ))}
         </ul>
       </div>
+
+      {/* ---- Assistance: highlight cards + nearby convenience + WhatsApp CTA ---- */}
+      {(highlights.length > 0 || nearby.length > 0 || whatsappHref) && (
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="flex flex-col gap-4">
+            {highlights.length > 0 && (
+              <>
+                <h2 className="text-primary text-xl font-bold md:text-2xl">
+                  Why travellers choose {node.name}
+                </h2>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {highlights.map((highlight) => (
+                    <div key={highlight.title} className="bg-card rounded-2xl border p-4">
+                      <p className="text-primary text-sm font-semibold">{highlight.title}</p>
+                      {highlight.detail && (
+                        <p className="text-muted-foreground mt-1 text-sm">{highlight.detail}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-4 rounded-2xl border bg-card p-6">
+            {nearby.length > 0 && (
+              <>
+                <h3 className="text-primary text-lg font-bold">Nearby convenience</h3>
+                <div className="flex flex-wrap gap-2">
+                  {nearby.map((item) => (
+                    <span
+                      key={item}
+                      className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-xs font-medium"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
+            {whatsappHref && (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-medium text-secondary-foreground no-underline"
+              >
+                <BadgeCheck className="size-4" aria-hidden="true" />
+                Need assistance? Message ACOSA
+              </a>
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   );

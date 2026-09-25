@@ -1,5 +1,6 @@
 ---
 import businessNodesHero from "@/assets/images/pages/business-nodes/hero.png";
+import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import {
   getNodes,
@@ -27,11 +28,30 @@ const settings = await getSiteSettings();
 
 const sortedProvinces = provinces.filter((province) => province.slug === "gauteng");
 
-const directoryNodes: DirectoryNode[] = nodes.map((node) => ({
-  id: node.id,
-  name: node.data.name,
-  province: node.data.province,
-}));
+const directoryNodes: DirectoryNode[] = await Promise.all(
+  nodes.map(async (node) => {
+    const img = await getImage({
+      src: node.data.heroImage,
+      widths: [400, 800],
+      sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
+    });
+
+    return {
+      id: node.id,
+      name: node.data.name,
+      province: node.data.province,
+      city: node.data.city || "",
+      image: {
+        src: img.src,
+        srcSet: img.srcSet.attribute || undefined,
+        sizes: img.attributes.sizes,
+        width: img.attributes.width,
+        height: img.attributes.height,
+      },
+      imageAlt: node.data.imageAlt || `${node.data.name} business district`,
+    };
+  }),
+);
 
 const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
   slug: province.slug,

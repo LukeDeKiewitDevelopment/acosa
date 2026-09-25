@@ -95,7 +95,7 @@ export const Hero = async ({
     >
       <div
         className={cn(
-          "relative z-20 mx-auto mb-24 flex w-4/5 flex-col gap-4",
+          "relative z-20 mx-auto mt-6 mb-12 flex w-4/5 flex-col gap-4 sm:mt-8 sm:mb-16",
           contentClassName,
           hasImage ? "text-white" : "text-foreground",
         )}
@@ -150,7 +150,7 @@ export const Hero = async ({
             decoding="sync"
             fetchPriority="high"
             className={cn(
-              "pointer-events-none absolute z-5 size-full object-cover object-[65%_center] md:object-center",
+              "pointer-events-none absolute z-5 size-full object-cover object-[52%_center] sm:object-[50%_center] md:object-center",
               imageClassName,
             )}
           />
