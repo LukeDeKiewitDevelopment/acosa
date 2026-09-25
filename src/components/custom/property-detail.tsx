@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { resolveIcon } from "@/lib/lucide";
 import { mailtoLink, whatsappLink } from "@/lib/content";
+import { propertyEnquiryWhatsappMessage } from "@/lib/property-search";
 
 /* PROPERTY PAGE per ACOSA_BRIEF: Property Overview, Business Traveller
   Essentials, ACOSA Approved, Facilities, Nearby Convenience, Map,
@@ -296,7 +297,10 @@ export const PropertyDetail = ({
           )}
           {/* contact.whatsapp (required) → wa.me link */}
           <a
-            href={whatsappLink(property.whatsapp, `Hi, I found ${property.name} on ACOSA and would like to enquire about accommodation.`)}
+            href={whatsappLink(
+              property.whatsapp,
+              propertyEnquiryWhatsappMessage(property.name),
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"

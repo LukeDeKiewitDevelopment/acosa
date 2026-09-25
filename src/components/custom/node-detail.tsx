@@ -65,31 +65,6 @@ export const NodeDetail = ({
         </div>
       </div>
 
-      {/* ---- Business Location ---- */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-primary text-xl font-bold md:text-2xl">
-          Working in {node.name}?
-        </h2>
-        <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
-          {children}
-        </div>
-        {node.mapUrl && (
-          <a
-            href={node.mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border-secondary text-secondary inline-flex w-fit items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-            data-acosa-track="business_node_maps_click"
-            data-node-id={node.id}
-            data-node-name={node.name}
-          >
-            <MapPin className="size-4" aria-hidden="true" />
-            View on Google Maps
-            <ExternalLink className="size-4" aria-hidden="true" />
-          </a>
-        )}
-      </div>
-
       {/* ---- Properties ---- */}
       <div id="properties" className="flex flex-col gap-6">
         <h2 className="text-primary text-xl font-bold md:text-2xl">
@@ -151,6 +126,31 @@ export const NodeDetail = ({
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* ---- Business Location ---- */}
+      <div className="flex flex-col gap-4">
+        <h2 className="text-primary text-xl font-bold md:text-2xl">
+          Working in {node.name}?
+        </h2>
+        <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
+          {children}
+        </div>
+        {node.mapUrl && (
+          <a
+            href={node.mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-secondary text-secondary inline-flex w-fit items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
+            data-acosa-track="business_node_maps_click"
+            data-node-id={node.id}
+            data-node-name={node.name}
+          >
+            <MapPin className="size-4" aria-hidden="true" />
+            View on Google Maps
+            <ExternalLink className="size-4" aria-hidden="true" />
+          </a>
+        )}
       </div>
 
       {/* ---- Assistance: highlight cards + nearby convenience + WhatsApp CTA ---- */}

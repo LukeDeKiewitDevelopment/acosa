@@ -7,6 +7,13 @@ export type PropertySearchFields = {
   locationAddress: string;
 };
 
+export function propertyEnquiryWhatsappMessage(propertyName: string): string {
+  const cleanedName = propertyName.trim();
+  return cleanedName
+    ? `Hi, I found ${cleanedName} on ACOSA and would like to enquire about accommodation.`
+    : "Hi, I found this property on ACOSA and would like to enquire about accommodation.";
+}
+
 function normalizeSearchText(value: string): string {
   return value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
 }

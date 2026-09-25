@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { matchesPropertySearchQuery } from "./property-search.ts";
+import {
+  matchesPropertySearchQuery,
+  propertyEnquiryWhatsappMessage,
+} from "./property-search.ts";
 
 const wildOlive = {
   name: "The Wild Olive Guesthouse",
@@ -37,6 +40,18 @@ test("matches a property through its province slug", () => {
 
 test("matches a property through its stored address", () => {
   assert.equal(matchesPropertySearchQuery(wildOlive, "Clubview"), true);
+});
+
+test("builds property-specific enquiry messages for any property", () => {
+  assert.equal(
+    propertyEnquiryWhatsappMessage("The Wild Olive Guesthouse"),
+    "Hi, I found The Wild Olive Guesthouse on ACOSA and would like to enquire about accommodation.",
+  );
+
+  assert.equal(
+    propertyEnquiryWhatsappMessage("Die Eike Gastehuis"),
+    "Hi, I found Die Eike Gastehuis on ACOSA and would like to enquire about accommodation.",
+  );
 });
 
 test("does not match unrelated location queries", () => {
