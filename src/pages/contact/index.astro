@@ -5,7 +5,7 @@ import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { getSiteSettings, whatsappLink, mailtoLink, isConfiguredContactValue } from "@/lib/content";
 import { Section } from "@/components/custom/section";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight, Building2, Check, Mail, MessageCircle } from "lucide-react";
 
 export const prerender = true;
 
@@ -47,81 +47,169 @@ const routeHref = (link: string, subject?: string, message?: string) =>
   ogImage={ogImageUrl}
 >
   <Section className="mt-28">
-    <p
-      class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-    >
-      {hero.eyebrow}
-    </p>
-    <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
-      {hero.heading}
-    </h1>
-    <p class="text-muted-foreground mt-2 text-sm md:text-base">{hero.body}</p>
+    <div class="mx-auto max-w-6xl rounded-[28px] border border-border bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm md:p-10">
+      <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+        <div>
+          <p class="text-muted-foreground text-xs font-semibold tracking-[0.2em] uppercase">
+            {hero.eyebrow}
+          </p>
+          <h1 class="text-primary mt-3 text-3xl font-bold md:text-4xl lg:text-5xl">
+            {hero.heading}
+          </h1>
+          <p class="text-muted-foreground mt-4 max-w-xl text-sm md:text-base">
+            {hero.body}
+          </p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+          <div class="rounded-2xl border border-border bg-background/80 p-4">
+            <div class="flex items-center gap-2 text-primary">
+              <MessageCircle className="size-4" aria-hidden="true" />
+              <span class="text-xs font-semibold uppercase tracking-[0.18em]">Fastest</span>
+            </div>
+            <p class="mt-2 text-sm font-medium text-foreground">WhatsApp response</p>
+          </div>
+          <div class="rounded-2xl border border-border bg-background/80 p-4">
+            <div class="flex items-center gap-2 text-primary">
+              <Mail className="size-4" aria-hidden="true" />
+              <span class="text-xs font-semibold uppercase tracking-[0.18em]">Best for</span>
+            </div>
+            <p class="mt-2 text-sm font-medium text-foreground">Detailed requirements</p>
+          </div>
+          <div class="rounded-2xl border border-border bg-background/80 p-4">
+            <div class="flex items-center gap-2 text-primary">
+              <Building2 className="size-4" aria-hidden="true" />
+              <span class="text-xs font-semibold uppercase tracking-[0.18em]">For hosts</span>
+            </div>
+            <p class="mt-2 text-sm font-medium text-foreground">Property listings</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </Section>
 
-  <Section className="mt-16 mb-28">
+  <Section className="mt-16">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="text-muted-foreground text-xs font-semibold uppercase tracking-[0.2em]">
+        Choose the right route
+      </p>
+      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+        We’ll help you get to the right next step quickly.
+      </h2>
+    </div>
+  </Section>
+
+  <Section className="mt-8 mb-28">
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {
         contactRoutes.map((route) => {
           const primary = route.primaryCta || route.cta;
           const secondary = route.secondaryCta;
           return (
-            <article class="bg-card flex flex-col gap-4 rounded-2xl border p-6 shadow-sm">
-              <p class="text-muted-foreground text-xs font-semibold">
-                {route.number}
-              </p>
-              <h2 class="text-primary text-lg font-semibold">{route.title}</h2>
-              <p class="text-muted-foreground text-sm">{route.description}</p>
-              {primary && (
-                <a
-                  href={routeHref(
-                    primary.link,
-                    primary.subject,
-                    primary.prefilledMessage,
-                  )}
-                  target={primary.link === "whatsapp" ? "_blank" : undefined}
-                  rel={
-                    primary.link === "whatsapp"
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
-                  class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline dark:text-foreground"
-                >
-                  {primary.link === "whatsapp" && (
-                    <MessageCircle className="size-4" aria-hidden="true" />
-                  )}
-                  {primary.label}
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </a>
-              )}
-              {secondary && (
-                <a
-                  href={routeHref(
-                    secondary.link,
-                    undefined,
-                    secondary.prefilledMessage,
-                  )}
-                  target={secondary.link === "whatsapp" ? "_blank" : undefined}
-                  rel={
-                    secondary.link === "whatsapp"
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
-                  class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline hover:underline dark:text-foreground"
-                >
-                  {secondary.link === "whatsapp" && (
-                    <MessageCircle className="size-4" aria-hidden="true" />
-                  )}
-                  {secondary.label}
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </a>
-              )}
+            <article class="group bg-card flex flex-col gap-5 rounded-2xl border p-6 shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-secondary inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary/10 text-sm font-bold">
+                  {route.number}
+                </p>
+                <span class="rounded-full border border-border bg-background px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  ACOSA
+                </span>
+              </div>
+
+              <div>
+                <h2 class="text-primary text-xl font-semibold">{route.title}</h2>
+                <p class="text-muted-foreground mt-3 text-sm">{route.description}</p>
+              </div>
+
+              <div class="mt-auto flex flex-col gap-3">
+                {primary && (
+                  <a
+                    href={routeHref(
+                      primary.link,
+                      primary.subject,
+                      primary.prefilledMessage,
+                    )}
+                    target={primary.link === "whatsapp" ? "_blank" : undefined}
+                    rel={
+                      primary.link === "whatsapp"
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    class="bg-secondary text-secondary-foreground inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+                  >
+                    {primary.link === "whatsapp" && (
+                      <MessageCircle className="size-4" aria-hidden="true" />
+                    )}
+                    {primary.label}
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </a>
+                )}
+                {secondary && (
+                  <a
+                    href={routeHref(
+                      secondary.link,
+                      undefined,
+                      secondary.prefilledMessage,
+                    )}
+                    target={secondary.link === "whatsapp" ? "_blank" : undefined}
+                    rel={
+                      secondary.link === "whatsapp"
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline"
+                  >
+                    {secondary.link === "whatsapp" && (
+                      <MessageCircle className="size-4" aria-hidden="true" />
+                    )}
+                    {secondary.label}
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+
               {route.number === "4" && configuredEmail && (
-                <p class="text-muted-foreground text-sm">{configuredEmail}</p>
+                <div class="border-t border-border pt-3">
+                  <p class="text-muted-foreground text-sm font-medium">Direct email</p>
+                  <p class="mt-1 text-sm text-foreground">{configuredEmail}</p>
+                </div>
               )}
             </article>
           );
         })
       }
+    </div>
+  </Section>
+
+  <Section className="mb-28">
+    <div class="mx-auto max-w-4xl rounded-2xl bg-primary p-8 text-primary-foreground md:p-12">
+      <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div class="max-w-xl">
+          <p class="text-primary-foreground/70 text-xs font-semibold uppercase tracking-[0.2em]">
+            Need a fast answer?
+          </p>
+          <h2 class="mt-2 text-2xl font-bold md:text-3xl">We’re happy to point you in the right direction.</h2>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={configuredWhatsapp ? whatsappLink(configuredWhatsapp, "Hi ACOSA, I’d like to ask a question about accommodation and/or listing opportunities.") : "/contact"}
+            target={configuredWhatsapp ? "_blank" : undefined}
+            rel={configuredWhatsapp ? "noopener noreferrer" : undefined}
+            class="bg-background text-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+          >
+            <MessageCircle className="size-4" aria-hidden="true" />
+            WhatsApp ACOSA
+          </a>
+          <a
+            href={configuredEmail ? mailtoLink(configuredEmail, "General ACOSA Enquiry") : "/contact"}
+            class="border border-primary-foreground/40 text-primary-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
+          >
+            <Mail className="size-4" aria-hidden="true" />
+            Email us
+          </a>
+        </div>
+      </div>
     </div>
   </Section>
 </Layout>

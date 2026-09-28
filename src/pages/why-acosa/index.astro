@@ -53,18 +53,25 @@ const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
   />
 
   <Section className="mt-16">
-    <div class="mx-auto max-w-3xl text-center">
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-      >
-        {experienceSection.eyebrow}
-      </p>
-      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-        {experienceSection.heading}
-      </h2>
-      <p class="text-muted-foreground mt-4 whitespace-pre-line">
-        {experienceSection.body}
-      </p>
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      <div>
+        <p
+          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        >
+          {experienceSection.eyebrow}
+        </p>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {experienceSection.heading}
+        </h2>
+        <p class="text-muted-foreground mt-4 whitespace-pre-line">
+          {experienceSection.body}
+        </p>
+      </div>
+      <div class="bg-muted/30 flex items-center justify-center rounded-2xl p-8">
+        <p class="text-muted-foreground text-center text-sm italic">
+          "Two decades of hands-on hospitality experience across guesthouses, lodges, and corporate accommodation."
+        </p>
+      </div>
     </div>
   </Section>
 

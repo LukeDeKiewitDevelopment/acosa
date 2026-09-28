@@ -49,11 +49,11 @@ export const PropertyGallery = ({ slides }: PropertyGalleryProps) => {
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.image.src} className="basis-full">
-              <div className="overflow-hidden rounded-2xl">
+              <div className="overflow-hidden rounded-2xl bg-muted">
                 <StaticAcosaImage
                   {...slide.image}
                   alt={slide.alt}
-                  className="aspect-[16/9] w-full object-cover"
+                  className="h-auto max-h-[70vh] w-full rounded-2xl object-contain"
                 />
               </div>
             </CarouselItem>

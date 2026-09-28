@@ -258,6 +258,10 @@ const PropertyCard = ({ item }: { item: PropertySearchItem }) => {
             <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
               {item.propertyTypeLabel}
             </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-foreground uppercase backdrop-blur">
+              <MapPin className="size-3" aria-hidden="true" />
+              {item.businessNodeLabel}
+            </span>
             {item.approved && (
               <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
                 <BadgeCheck className="size-3.5" aria-hidden="true" />
