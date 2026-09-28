@@ -23,6 +23,7 @@ import {
   PropertySearch,
   type PropertySearchItem,
 } from "@/components/custom/property-search";
+import { toFeaturedPropertyCard } from "@/lib/featured-property-card";
 import { ArrowRight } from "lucide-react";
 
 export const prerender = true;
@@ -140,12 +141,9 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
       widths: [400, 800],
       sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
     });
-    return {
-      id: property.id,
-      name: property.data.name,
-      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
-      approved: property.data.acosaApproved.approved,
-      shortDescription: property.data.shortDescription,
+    const businessNode = await getEntry(property.data.businessNode);
+    return toFeaturedPropertyCard({
+      property,
       image: {
         src: img.src,
         srcSet: img.srcSet.attribute || undefined,
@@ -153,8 +151,9 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
         width: img.attributes.width,
         height: img.attributes.height,
       },
-      imageAlt: property.data.imageAlt || property.data.name,
-    };
+      businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
+      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+    });
   }),
 );
 ---

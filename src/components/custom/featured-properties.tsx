@@ -7,6 +7,7 @@ export type FeaturedPropertyItem = {
   id: string;
   name: string;
   propertyTypeLabel: string;
+  businessNodeLabel: string;
   approved: boolean;
   shortDescription: string;
   image: ResolvedAcosaImage;
@@ -54,6 +55,10 @@ export const FeaturedProperties = ({
                 <div className="absolute top-3 left-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center">
                   <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
                     {item.propertyTypeLabel}
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-foreground uppercase backdrop-blur">
+                    <MapPin className="size-3" aria-hidden="true" />
+                    {item.businessNodeLabel}
                   </span>
                   {item.approved && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
