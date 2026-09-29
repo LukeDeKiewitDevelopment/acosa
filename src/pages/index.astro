@@ -24,7 +24,8 @@ import {
   type PropertySearchItem,
 } from "@/components/custom/property-search";
 import { toFeaturedPropertyCard } from "@/lib/featured-property-card";
-import { ArrowRight } from "lucide-react";
+import { CtaLink } from "@/components/custom/cta-link";
+import { TextLink } from "@/components/custom/text-link";
 
 export const prerender = true;
 
@@ -206,17 +207,16 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
         <p class="text-muted-foreground text-sm md:text-base">
           {businessTravelSection.body}
         </p>
-        <a
+        <TextLink
+          label={businessTravelSection.cta.label}
           href={businessTravelSection.cta.link}
-          class="text-primary inline-flex items-center gap-2 font-semibold no-underline"
-          >{businessTravelSection.cta.label}<ArrowRight className="size-4" aria-hidden="true" /></a
-        >
+        />
       </div>
       {businessTravelSection.image && <Image src={businessTravelSection.image} alt="Business traveller working from accommodation" class="aspect-4/3 h-auto max-h-96 w-full rounded-2xl object-cover object-[65%_center] md:aspect-auto md:object-center" />}
     </div>
   </Section>
 
-  <Section className="mt-32">
+  <Section className="mt-24">
     <div class="flex flex-col gap-6">
       <p
         class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
@@ -234,11 +234,10 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
         items={propertySearchItems}
         businessNodes={businessNodes}
       />
-      <a
+      <TextLink
+        label={businessNodesSection.cta.label}
         href={businessNodesSection.cta.link}
-        class="text-primary inline-flex items-center gap-2 font-semibold no-underline"
-        >{businessNodesSection.cta.label}<ArrowRight className="size-4" aria-hidden="true" /></a
-      >
+      />
     </div>
   </Section>
 
@@ -275,17 +274,22 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
           {corporateBookersSection.body}
         </p>
         <div class="flex flex-wrap gap-3">
-          <a
+          <CtaLink
+            label={corporateBookersSection.primaryCta.label}
             href={resolveCtaLink(
               corporateBookersSection.primaryCta.link,
               ctaOptions,
             )}
-            class="bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-            >{corporateBookersSection.primaryCta.label}</a
-          ><a
+            variant="primary"
+            size="md"
+            icon="arrow"
+          />
+          <CtaLink
+            label={corporateBookersSection.secondaryCta.label}
             href={corporateEmail}
-            class="border-border text-primary rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-            >{corporateBookersSection.secondaryCta.label}</a>
+            variant="outline"
+            size="md"
+          />
         </div>
       </div>
     </div>
@@ -297,13 +301,15 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
         {humanAssistanceSection.heading}
       </h2><p class="text-muted-foreground mt-3">
         {humanAssistanceSection.body}
-      </p><a
+      </p><CtaLink
+        label={humanAssistanceSection.cta.label}
         href={humanAssistanceLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >{humanAssistanceSection.cta.label}</a
-      >
+        variant="secondary"
+        size="md"
+        icon="whatsapp"
+        external
+        className="mt-6"
+      />
     </div>
   </Section>
 
@@ -330,5 +336,5 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
     </div>
   </Section>
 
-  {closingSection.image && <Section fullWidth className="m-0 mt-20 md:mt-28"><div class="relative"><Image src={closingSection.image} alt="Traveller relaxing after a business day" class="aspect-4/3 h-auto max-h-128 w-full object-cover object-[65%_center] md:aspect-auto md:h-96 md:object-center" /><div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 p-6 text-center text-white md:p-10"><h2 class="text-2xl font-bold md:text-3xl">{closingSection.heading}</h2><p class="max-w-2xl text-sm md:text-base">{closingSection.body}</p><a href={closingLink} class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black no-underline">{closingSection.cta.label}</a></div></div></Section>}
+  {closingSection.image && <Section fullWidth className="m-0 mt-20 md:mt-28"><div class="relative"><Image src={closingSection.image} alt="Traveller relaxing after a business day" class="aspect-4/3 h-auto max-h-128 w-full object-cover object-[65%_center] md:aspect-auto md:h-96 md:object-center" /><div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 p-6 text-center text-white md:p-10"><h2 class="text-2xl font-bold md:text-3xl">{closingSection.heading}</h2><p class="max-w-2xl text-sm md:text-base">{closingSection.body}</p><CtaLink label={closingSection.cta.label} href={closingLink} variant="inverted" size="md" icon="arrow" /></div></div></Section>}
 </Layout>

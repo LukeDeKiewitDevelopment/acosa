@@ -61,7 +61,7 @@ export const FloatingActions = ({
         aria-label={whatsappLabel}
         title={whatsappLabel}
         className={clsx(
-          "animate-in fade-in zoom-in border-none bg-[#25D366] fill-white shadow-md shadow-black/40 transition-all duration-200 hover:bg-[#1eb957]",
+          "animate-in fade-in zoom-in border-none bg-secondary fill-white shadow-md shadow-black/40 transition-all duration-200 hover:bg-secondary/90",
         )}
         asChild
       >

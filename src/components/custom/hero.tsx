@@ -4,6 +4,7 @@ import { AcosaImage } from "./image";
 import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import type { CSSProperties } from "react";
+import { CtaLink } from "./cta-link";
 
 export type HeroProps = {
   heading: string;
@@ -118,8 +119,25 @@ export const Hero = async ({
         )}
         {(primaryCta || secondaryCta) && (
           <div className="mx-auto mt-2 flex w-full max-w-md flex-col justify-center gap-3 sm:w-auto sm:max-w-none sm:flex-row">
-            {primaryCta && <a href={primaryCta.href} className="bg-white text-[#121743] inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-center text-sm font-semibold no-underline shadow-sm hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">{primaryCta.label}</a>}
-            {secondaryCta && <a href={secondaryCta.href} target={secondaryCta.external ? "_blank" : undefined} rel={secondaryCta.external ? "noopener noreferrer" : undefined} className="border-white bg-black/25 text-white inline-flex min-h-12 items-center justify-center rounded-full border px-6 py-3 text-center text-sm font-semibold no-underline shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">{secondaryCta.label}</a>}
+            {primaryCta && (
+              <CtaLink
+                label={primaryCta.label}
+                href={primaryCta.href}
+                variant="inverted"
+                size="lg"
+                icon="arrow"
+              />
+            )}
+            {secondaryCta && (
+              <CtaLink
+                label={secondaryCta.label}
+                href={secondaryCta.href}
+                variant="outline"
+                size="lg"
+                external={secondaryCta.external}
+                className="border-white/60 bg-black/25 text-white hover:bg-black/40 hover:text-white"
+              />
+            )}
           </div>
         )}
       </div>

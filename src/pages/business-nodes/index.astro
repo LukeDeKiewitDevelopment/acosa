@@ -10,6 +10,7 @@ import {
 } from "@/lib/content";
 import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
+import { CtaLink } from "@/components/custom/cta-link";
 import {
   NodeDirectory,
   type DirectoryGroup,
@@ -139,17 +140,17 @@ const mapNodes: BusinessNodeMapItem[] = nodes
       <div class="space-y-6">
         <div class="rounded-lg border border-border bg-card p-6">
           <p class="mb-4 text-sm font-medium">Can't see the area you need?</p>
-          <a
+          <CtaLink
+            label="Ask ACOSA"
             href={whatsappLink(
               settings.data.defaultWhatsapp,
               "Hi ACOSA, I'm looking for business accommodation in [AREA]. Can you assist?",
             )}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center rounded-full bg-green-600 px-6 py-2.5 text-sm font-medium text-white no-underline hover:bg-green-700"
-          >
-            Ask ACOSA
-          </a>
+            variant="secondary"
+            size="md"
+            icon="whatsapp"
+            external
+          />
         </div>
 
         <div class="rounded-lg border border-border bg-card p-6">
@@ -159,12 +160,13 @@ const mapNodes: BusinessNodeMapItem[] = nodes
           <p class="mb-4 text-sm text-muted-foreground">
             We're building a curated network of independent accommodation providers that understand the needs of corporate travellers.
           </p>
-          <a
+          <CtaLink
+            label="List Your Property"
             href="/list-your-property"
-            class="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground no-underline hover:bg-primary/90"
-          >
-            List Your Property
-          </a>
+            variant="primary"
+            size="md"
+            icon="arrow"
+          />
         </div>
       </div>
     </div>

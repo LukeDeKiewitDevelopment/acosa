@@ -10,7 +10,11 @@ import {
 } from "@/lib/content";
 import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
-import { ArrowRight, MessageCircle } from "lucide-react";
+
+import { CtaLink } from "@/components/custom/cta-link";
+import { FeatureList } from "@/components/custom/feature-list";
+import { SectionIcon } from "@/components/custom/section-icon";
+import { BadgeCheck, Home, ClipboardCheck, Tag, RefreshCw, UserPlus } from "lucide-react";
 
 export const prerender = true;
 
@@ -111,7 +115,7 @@ const ogImageUrl = seo?.ogImage
     </div>
   </div>
 
-  <Section id="why-list" className="mt-12 md:mt-16">
+  <Section id="why-list" className="mt-16">
     <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       {whoWeWorkWithSection.image && (
         <Image
@@ -121,30 +125,28 @@ const ogImageUrl = seo?.ogImage
         />
       )}
       <div>
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-      >
-        {whoWeWorkWithSection.eyebrow}
-      </p>
-      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-        {whoWeWorkWithSection.heading}
-      </h2>
-      {whoWeWorkWithSection.body && (
-        <p class="text-muted-foreground mt-3">{whoWeWorkWithSection.body}</p>
-      )}
-      <ul class="mt-6 grid gap-3 text-left sm:grid-cols-2">
-        {
-          whoWeWorkWithSection.properties.map((property) => (
-            <li class="bg-card rounded-lg border p-4 text-sm">{property}</li>
-          ))
-        }
-      </ul>
-      <p class="text-primary mt-6 font-semibold">
-        {whoWeWorkWithSection.highlight}
-      </p>
-      <p class="text-muted-foreground mt-2 text-sm">
-        {whoWeWorkWithSection.note}
-      </p>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={Home} />
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            {whoWeWorkWithSection.eyebrow}
+          </p>
+        </div>
+        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
+          {whoWeWorkWithSection.heading}
+        </h2>
+        {whoWeWorkWithSection.body && (
+          <p class="text-muted-foreground mt-3">{whoWeWorkWithSection.body}</p>
+        )}
+        <FeatureList
+          className="mt-6"
+          items={whoWeWorkWithSection.properties.map((property) => ({ text: property }))}
+        />
+        <p class="text-primary mt-6 font-semibold">
+          {whoWeWorkWithSection.highlight}
+        </p>
+        <p class="text-muted-foreground mt-2 text-sm">
+          {whoWeWorkWithSection.note}
+        </p>
       </div>
     </div>
   </Section>
@@ -161,27 +163,24 @@ const ogImageUrl = seo?.ogImage
         )
       }
       <div>
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {valueSection.eyebrow}
-        </p>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={BadgeCheck} />
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            {valueSection.eyebrow}
+          </p>
+        </div>
         <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
           {valueSection.heading}
         </h2>
         <p class="text-muted-foreground mt-3">{valueSection.body}</p>
-        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-          {
-            valueSection.includes.map((item) => (
-              <li class="bg-card rounded-lg border p-4">
-                <>
-                  <h3 class="text-primary font-semibold">{item.title}</h3>
-                  <p class="text-muted-foreground text-sm">{item.detail}</p>
-                </>
-              </li>
-            ))
-          }
-        </ul>
+        <FeatureList
+          className="mt-6"
+          items={valueSection.includes.map((item) => ({
+            title: item.title,
+            detail: item.detail,
+            text: item.title,
+          }))}
+        />
       </div>
     </div>
   </Section>
@@ -205,17 +204,28 @@ const ogImageUrl = seo?.ogImage
         )}
       </div>
       <div>
-        <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{curationSection.eyebrow}</p>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={ClipboardCheck} />
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{curationSection.eyebrow}</p>
+        </div>
         <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">{curationSection.heading}</h2>
         <p class="text-muted-foreground mt-3">{curationSection.body}</p>
-        <ul class="text-muted-foreground mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-          {curationSection.criteria.map((item) => <li>{item}</li>)}
-        </ul>
+        <FeatureList
+          className="mt-5"
+          items={curationSection.criteria.map((item) => ({ text: item }))}
+        />
         <div class="border-border mt-8 border-l-2 pl-4">
           <h3 class="text-primary font-semibold">{curationSection.approvedHeading}</h3>
           <p class="text-muted-foreground mt-2 text-sm">{curationSection.approvedBody}</p>
         </div>
-        <a href={resolveCtaLink(curationSection.cta.link, ctaOptions)} class="text-primary mt-6 inline-flex font-semibold no-underline">{curationSection.cta.label} <ArrowRight className="ml-2 size-4" aria-hidden="true" /></a>
+        <CtaLink
+          label={curationSection.cta.label}
+          href={resolveCtaLink(curationSection.cta.link, ctaOptions)}
+          variant="link"
+          size="md"
+          icon="arrow"
+          className="mt-6"
+        />
       </div>
     </div>
   </Section>
@@ -232,13 +242,14 @@ const ogImageUrl = seo?.ogImage
       </p>
       {
         promotionalVisibilitySection.cta && promoHref && (
-          <a
+          <CtaLink
+            label={promotionalVisibilitySection.cta.label}
             href={promoHref}
-            class="text-primary mt-6 inline-flex font-semibold no-underline"
-          >
-            {promotionalVisibilitySection.cta.label}
-            <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-          </a>
+            variant="link"
+            size="md"
+            icon="arrow"
+            className="mt-6"
+          />
         )
       }
     </div>
@@ -246,11 +257,15 @@ const ogImageUrl = seo?.ogImage
 
   <Section id="pricing" className="mt-16 md:mt-24">
     <div class="mx-auto w-full max-w-5xl rounded-2xl bg-primary p-8 text-primary-foreground md:p-12">
-        <p class="text-primary-foreground/70 text-xs font-semibold tracking-wider uppercase">
-        {pricingSection.eyebrow}
-      </p><h2 class="mt-2 text-2xl font-bold md:text-3xl">
-        {pricingSection.heading}
-      </h2><div class="mt-6 grid gap-4 md:grid-cols-3 md:mt-8">
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={Tag} className="bg-secondary/20 text-secondary" />
+          <p class="text-primary-foreground/70 text-xs font-semibold tracking-wider uppercase">
+            {pricingSection.eyebrow}
+          </p>
+        </div>
+        <h2 class="mt-2 text-2xl font-bold md:text-3xl">
+          {pricingSection.heading}
+        </h2><div class="mt-6 grid gap-4 md:grid-cols-3 md:mt-8">
         {
           pricingSection.pricing.map((plan) => (
             <article class:list={["rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-5", plan.price === "R389" && "border-secondary ring-secondary/30 bg-primary-foreground/20 ring-2"]}>
@@ -267,30 +282,37 @@ const ogImageUrl = seo?.ogImage
             </article>
           ))
         }
-      </div><a
+      </div><CtaLink
+        label={pricingSection.cta.label}
         href={listingApplicationHref}
-        class="bg-secondary text-secondary-foreground mt-8 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >{pricingSection.cta.label}<ArrowRight
-          className="ml-2 size-4"
-          aria-hidden="true"
-        /></a>
+        variant="secondary"
+        size="md"
+        icon="arrow"
+        className="mt-8"
+      />
     </div>
   </Section>
 
-  <Section className="mt-12 md:mt-16"
-    ><div class="mx-auto max-w-3xl border-l-2 border-secondary pl-6 md:pl-8">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {listingUpdatesSection.heading}
-      </h2><p class="text-muted-foreground mt-3">
+  <Section className="mt-16">
+    <div class="mx-auto max-w-3xl border-l-2 border-secondary pl-6 md:pl-8">
+      <div class="flex items-center gap-3">
+        <SectionIcon icon={RefreshCw} />
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">
+          {listingUpdatesSection.heading}
+        </h2>
+      </div>
+      <p class="text-muted-foreground mt-3">
         {listingUpdatesSection.body}
-      </p><ul class="mt-5 list-disc space-y-2 pl-5 text-sm">
-        {listingUpdatesSection.refreshIncludes.map((item) => <li>{item}</li>)}
-      </ul>
-    </div></Section
-  >
+      </p>
+      <FeatureList
+        className="mt-5"
+        items={listingUpdatesSection.refreshIncludes.map((item) => ({ text: item }))}
+      />
+    </div>
+  </Section>
 
-  <Section id="apply" className="mt-16 md:mt-24"
-    ><div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+  <Section id="apply" className="mt-16 md:mt-24">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
       {howToJoinSection.image && (
         <Image
           src={howToJoinSection.image}
@@ -299,11 +321,12 @@ const ogImageUrl = seo?.ogImage
         />
       )}
       <div>
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-      >
-        {howToJoinSection.eyebrow}
-      </p><ol class="mt-6 space-y-4">
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={UserPlus} />
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            {howToJoinSection.eyebrow}
+          </p>
+        </div><ol class="mt-6 space-y-4">
         {
           howToJoinSection.steps.map((step) => (
             <li class="flex gap-4">
@@ -319,13 +342,14 @@ const ogImageUrl = seo?.ogImage
             </li>
           ))
         }
-      </ol><a
+      </ol><CtaLink
+        label={howToJoinSection.cta.label}
         href={joinApplicationHref}
-        class="bg-secondary text-secondary-foreground mt-6 inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >{howToJoinSection.cta.label}<ArrowRight
-          className="ml-2 size-4"
-          aria-hidden="true"
-        /></a>
+        variant="secondary"
+        size="md"
+        icon="arrow"
+        className="mt-6"
+      />
       </div>
     </div></Section
   >
@@ -339,22 +363,21 @@ const ogImageUrl = seo?.ogImage
       >
         {finalCta.body}
       </p><div class="mt-6 flex flex-wrap justify-center gap-3">
-        <a
+        <CtaLink
+          label={finalCta.primaryCta.label}
           href={finalPrimaryHref}
-          class="bg-background text-foreground inline-flex rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-          >{finalCta.primaryCta.label}</a
-        ><a
+          variant="inverted"
+          size="md"
+          icon="arrow"
+        /><CtaLink
+          label={finalCta.secondaryCta.label}
           href={finalSecondaryHref}
-          target={finalCta.secondaryCta.link === "whatsapp"
-            ? "_blank"
-            : undefined}
-          rel={finalCta.secondaryCta.link === "whatsapp"
-            ? "noopener noreferrer"
-            : undefined}
-          class="border-background text-background inline-flex rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-          ><MessageCircle className="mr-2 size-4" aria-hidden="true" />{
-            finalCta.secondaryCta.label
-          }</a>
+          variant="inverted"
+          size="md"
+          icon="whatsapp"
+          external={finalCta.secondaryCta.link === "whatsapp"}
+          className="border border-background/30 bg-transparent text-background hover:bg-background/10"
+        />
       </div>
     </div></Section
   >

@@ -4,14 +4,13 @@ import {
   BadgeCheck,
   CircleCheck,
   ExternalLink,
-  Mail,
   MapPin,
-  Phone,
   Star,
 } from "lucide-react";
 import { resolveIcon } from "@/lib/lucide";
 import { mailtoLink, whatsappLink } from "@/lib/content";
 import { propertyEnquiryWhatsappMessage } from "@/lib/property-search";
+import { CtaLink } from "./cta-link";
 
 /* PROPERTY PAGE per ACOSA_BRIEF: Property Overview, Business Traveller
   Essentials, ACOSA Approved, Facilities, Nearby Convenience, Map,
@@ -285,71 +284,64 @@ export const PropertyDetail = ({
           </div>
           {/* contact.email — omit when empty */}
           {property.email && (
-            <a
+            <CtaLink
+              label="Send Enquiry"
               href={mailtoLink(property.email, "Property Enquiry")}
-              className="bg-secondary text-secondary-foreground inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-              data-acosa-track="property_email_click"
-              data-property-id={property.id}
-              data-property-name={property.name}
-            >
-              Send Enquiry
-            </a>
+              variant="secondary"
+              size="md"
+              icon="none"
+              trackingKey="property_email_click"
+            />
           )}
           {/* contact.whatsapp (required) → wa.me link */}
-          <a
+          <CtaLink
+            label="WhatsApp"
             href={whatsappLink(
               property.whatsapp,
               propertyEnquiryWhatsappMessage(property.name),
             )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white no-underline"
-            data-acosa-track="property_whatsapp_click"
-            data-property-id={property.id}
-            data-property-name={property.name}
-          >
-            WhatsApp
-          </a>
+            variant="secondary"
+            size="md"
+            icon="whatsapp"
+            external
+            trackingKey="property_whatsapp_click"
+          />
           {/* contact.phone — omit when empty */}
           {property.phone && (
-            <a
+            <CtaLink
+              label={property.phone}
               href={`tel:${property.phone.replace(/\s/g, "")}`}
-              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-              data-acosa-track="property_phone_click"
-              data-property-id={property.id}
-              data-property-name={property.name}
-            >
-              <Phone className="size-4" aria-hidden="true" />
-              {property.phone}
-            </a>
+              variant="outline"
+              size="md"
+              icon="none"
+              className="text-secondary"
+              trackingKey="property_phone_click"
+            />
           )}
           {/* contact.email — omit when empty */}
           {property.email && (
-            <a
+            <CtaLink
+              label="Email"
               href={mailtoLink(property.email, "Property Enquiry")}
-              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-              data-acosa-track="property_email_click"
-              data-property-id={property.id}
-              data-property-name={property.name}
-            >
-              <Mail className="size-4" aria-hidden="true" />
-              Email
-            </a>
+              variant="outline"
+              size="md"
+              icon="none"
+              className="text-secondary"
+              trackingKey="property_email_click"
+            />
           )}
           {/* contact.website — omit when empty */}
           {property.website && (
-            <a
+            <CtaLink
+              label="Website"
               href={property.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-secondary text-secondary inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-              data-acosa-track="property_website_click"
-              data-property-id={property.id}
-              data-property-name={property.name}
-            >
-              <ExternalLink className="size-4" aria-hidden="true" />
-              Website
-            </a>
+              variant="outline"
+              size="md"
+              icon="none"
+              external
+              className="text-secondary"
+              trackingKey="property_website_click"
+            />
           )}
         </div>
       </aside>

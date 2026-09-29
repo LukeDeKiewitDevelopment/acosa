@@ -82,6 +82,7 @@ const propertyItems: FeaturedPropertyItem[] = await Promise.all(
       id: property.id,
       name: property.data.name,
       propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+      businessNodeLabel: node.data.name,
       approved: property.data.acosaApproved.approved,
       shortDescription: property.data.shortDescription,
       image: {

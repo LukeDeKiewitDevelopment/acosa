@@ -6,7 +6,10 @@ import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
 import { getSiteSettings, resolveCtaLink } from "@/lib/content";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { CtaLink } from "@/components/custom/cta-link";
+import { FeatureList } from "@/components/custom/feature-list";
+import { SectionIcon } from "@/components/custom/section-icon";
+import { Users, Handshake, ClipboardList } from "lucide-react";
 
 export const prerender = true;
 
@@ -95,28 +98,28 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
 
   <Section className="mt-16">
     <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {whoWeHelpSection.heading}
-      </h2>
+      <div class="flex items-center justify-center gap-3">
+        <SectionIcon icon={Users} />
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">
+          {whoWeHelpSection.heading}
+        </h2>
+      </div>
       <p class="text-muted-foreground mt-3">{whoWeHelpSection.body}</p>
-      <ul class="mt-8 grid grid-cols-1 gap-3 text-left sm:grid-cols-2">
-        {
-          whoWeHelpSection.roles.map((role) => (
-            <li class="bg-card flex items-center gap-3 rounded-lg border p-4 text-sm">
-              <Check className="text-secondary size-4" aria-hidden="true" />
-              {role}
-            </li>
-          ))
-        }
-      </ul>
+      <FeatureList
+        className="mt-8"
+        items={whoWeHelpSection.roles.map((role) => ({ text: role }))}
+      />
     </div>
   </Section>
 
   <Section className="mt-16">
     <div class="mx-auto max-w-4xl">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {howAcosaHelpsSection.heading}
-      </h2>
+      <div class="flex items-center gap-3">
+        <SectionIcon icon={Handshake} />
+        <h2 class="text-primary text-2xl font-bold md:text-3xl">
+          {howAcosaHelpsSection.heading}
+        </h2>
+      </div>
       <div class="mt-8 grid gap-4 md:grid-cols-2">
         {
           howAcosaHelpsSection.features.map((feature) => (
@@ -147,38 +150,33 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
         <p class="text-muted-foreground text-sm font-semibold">
           To help us understand what you need, please include:
         </p>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {teamsAndProjectsSection.heading}
-        </h2>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={ClipboardList} />
+          <h2 class="text-primary text-2xl font-bold md:text-3xl">
+            {teamsAndProjectsSection.heading}
+          </h2>
+        </div>
         <p class="text-muted-foreground mt-3">{teamsAndProjectsSection.body}</p>
-        <ul class="mt-5 space-y-2 text-sm">
-          {
-            teamsAndProjectsSection.requirementsList.map((item) => (
-              <li class="flex items-center gap-3">
-                <Check className="text-secondary size-4" aria-hidden="true" />
-                {item}
-              </li>
-            ))
-          }
-        </ul>
+        <FeatureList
+          className="mt-5"
+          items={teamsAndProjectsSection.requirementsList.map((item) => ({ text: item }))}
+        />
         <div class="mt-7 flex flex-wrap gap-3">
-          <a
+          <CtaLink
+            label={teamsAndProjectsSection.primaryCta.label}
             href={teamPrimaryHref}
-            class="bg-secondary text-secondary-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-            >{teamsAndProjectsSection.primaryCta.label}<ArrowRight
-              className="size-4"
-              aria-hidden="true"
-            /></a
-          >
-          <a
+            variant="secondary"
+            size="md"
+            icon="arrow"
+          />
+          <CtaLink
+            label={teamsAndProjectsSection.secondaryCta.label}
             href={teamSecondaryHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="border-secondary text-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-            ><MessageCircle className="size-4" aria-hidden="true" />{
-              teamsAndProjectsSection.secondaryCta.label
-            }</a
-          >
+            variant="outline"
+            size="md"
+            icon="whatsapp"
+            external
+          />
         </div>
       </div>
     </div>
@@ -197,23 +195,23 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
       <p class="mt-3 opacity-90">{finalCta.body}</p>
 
       <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-        <a
+        <CtaLink
+          label={finalCta.primaryCta.label}
           href={finalPrimaryHref}
-          class="bg-background text-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >
-          {finalCta.primaryCta.label}
-          <ArrowRight className="size-4" aria-hidden="true" />
-        </a>
+          variant="inverted"
+          size="md"
+          icon="arrow"
+        />
 
-        <a
-            href={finalSecondaryHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-background inline-flex items-center gap-2 text-sm font-semibold no-underline"
-          >
-            <MessageCircle className="size-4" aria-hidden="true" />
-            {finalCta.secondaryCta.label} →
-        </a>
+        <CtaLink
+          label={finalCta.secondaryCta.label}
+          href={finalSecondaryHref}
+          variant="inverted"
+          size="md"
+          icon="whatsapp"
+          external
+          className="border border-background/30 bg-transparent text-background hover:bg-background/10"
+        />
       </div>
     </div>
   </Section>

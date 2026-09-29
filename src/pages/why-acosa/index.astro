@@ -6,7 +6,10 @@ import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
 import { resolveCtaLink } from "@/lib/content";
-import { ArrowRight, Check } from "lucide-react";
+import { CtaLink } from "@/components/custom/cta-link";
+import { FeatureList } from "@/components/custom/feature-list";
+import { SectionIcon } from "@/components/custom/section-icon";
+import { Award, ClipboardCheck, Sparkles } from "lucide-react";
 
 export const prerender = true;
 
@@ -55,11 +58,12 @@ const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
   <Section className="mt-16">
     <div class="grid items-center gap-8 lg:grid-cols-2">
       <div>
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {experienceSection.eyebrow}
-        </p>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={Award} />
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            {experienceSection.eyebrow}
+          </p>
+        </div>
         <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
           {experienceSection.heading}
         </h2>
@@ -87,28 +91,20 @@ const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
         )
       }
       <div>
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {curationSection.eyebrow}
-        </p>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={ClipboardCheck} />
+          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            {curationSection.eyebrow}
+          </p>
+        </div>
         <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
           {curationSection.heading}
         </h2>
         <p class="text-muted-foreground mt-3">{curationSection.body}</p>
-        <ul class="mt-6 grid gap-2 sm:grid-cols-2">
-          {
-            curationSection.factorsInclude.map((factor) => (
-              <li class="flex items-start gap-2 text-sm">
-                <Check
-                  className="text-secondary mt-0.5 size-4 shrink-0"
-                  aria-hidden="true"
-                />
-                {factor}
-              </li>
-            ))
-          }
-        </ul>
+        <FeatureList
+          className="mt-6"
+          items={curationSection.factorsInclude.map((factor) => ({ text: factor }))}
+        />
         {
           curationSection.highlightStatement && (
             <p class="text-primary mt-6 text-lg font-semibold">
@@ -135,32 +131,35 @@ const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
       <p class="text-muted-foreground mt-4 whitespace-pre-line">
         {approvedSection.body}
       </p>
-      <a
+      <CtaLink
+        label={approvedSection.cta.label}
         href={approvedSection.cta.link}
-        class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >{approvedSection.cta.label}<ArrowRight
-          className="size-4"
-          aria-hidden="true"
-        /></a
-      >
+        variant="secondary"
+        size="md"
+        icon="arrow"
+        className="mt-6"
+      />
     </div>
   </Section>
 
   <Section className="mt-16 mb-28">
     <div class="grid items-center gap-8 lg:grid-cols-2">
       <div>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {outcomeSection.heading}
-        </h2>
+        <div class="flex items-center gap-3">
+          <SectionIcon icon={Sparkles} />
+          <h2 class="text-primary text-2xl font-bold md:text-3xl">
+            {outcomeSection.heading}
+          </h2>
+        </div>
         <p class="text-muted-foreground mt-4">{outcomeSection.body}</p>
-        <a
+        <CtaLink
+          label={outcomeSection.cta.label}
           href={outcomeSection.cta.link}
-          class="bg-secondary text-secondary-foreground mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-          >{outcomeSection.cta.label}<ArrowRight
-            className="size-4"
-            aria-hidden="true"
-          /></a
-        >
+          variant="secondary"
+          size="md"
+          icon="arrow"
+          className="mt-6"
+        />
       </div>
       {
         outcomeSection.image && (

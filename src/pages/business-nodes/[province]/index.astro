@@ -10,7 +10,8 @@ import {
 } from '@/lib/content';
 import { Section } from '@/components/custom/section';
 import { StaticAcosaImage, type ResolvedAcosaImage } from '@/components/custom/image';
-import { ArrowRight, BadgeCheck, MapPin } from 'lucide-react';
+import { BadgeCheck, MapPin } from 'lucide-react';
+import { CtaLink } from '@/components/custom/cta-link';
 
 export const prerender = true;
 
@@ -154,9 +155,14 @@ const hasProperties = properties.length > 0;
                     <span class="line-clamp-2">{property.data.shortDescription}</span>
                   </p>
                 )}
-                <span class="border-secondary text-secondary mt-auto inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-sm font-medium">
-                  View Details <ArrowRight className="size-4" aria-hidden="true" />
-                </span>
+                <CtaLink
+                  label="View Details"
+                  href={`/properties/${property.id}`}
+                  variant="outline"
+                  size="sm"
+                  icon="arrow"
+                  className="mt-auto w-fit text-secondary"
+                />
               </div>
             </article>
           </li>
@@ -171,12 +177,13 @@ const hasProperties = properties.length > 0;
         <p class="text-muted-foreground">
           No listings in {label} yet.
         </p>
-        <a
+        <CtaLink
+          label="Back to Business Nodes"
           href="/business-nodes"
-          class="bg-secondary text-secondary-foreground rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-        >
-          Back to Business Nodes
-        </a>
+          variant="secondary"
+          size="md"
+          icon="arrow"
+        />
       </div>
     </Section>
   )}

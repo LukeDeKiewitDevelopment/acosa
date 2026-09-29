@@ -5,7 +5,8 @@ import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { getSiteSettings, whatsappLink, mailtoLink, isConfiguredContactValue } from "@/lib/content";
 import { Section } from "@/components/custom/section";
-import { ArrowRight, Building2, Check, Mail, MessageCircle } from "lucide-react";
+import { Building2, Mail, MessageCircle } from "lucide-react";
+import { CtaLink } from "@/components/custom/cta-link";
 
 export const prerender = true;
 
@@ -47,7 +48,7 @@ const routeHref = (link: string, subject?: string, message?: string) =>
   ogImage={ogImageUrl}
 >
   <Section className="mt-28">
-    <div class="mx-auto max-w-6xl rounded-[28px] border border-border bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm md:p-10">
+    <div class="mx-auto max-w-6xl rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm md:p-10">
       <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
         <div>
           <p class="text-muted-foreground text-xs font-semibold tracking-[0.2em] uppercase">
@@ -94,12 +95,12 @@ const routeHref = (link: string, subject?: string, message?: string) =>
         Choose the right route
       </p>
       <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-        We’ll help you get to the right next step quickly.
+        We'll help you get to the right next step quickly.
       </h2>
     </div>
   </Section>
 
-  <Section className="mt-8 mb-28">
+  <Section className="mt-16 mb-28">
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {
         contactRoutes.map((route) => {
@@ -123,48 +124,34 @@ const routeHref = (link: string, subject?: string, message?: string) =>
 
               <div class="mt-auto flex flex-col gap-3">
                 {primary && (
-                  <a
+                  <CtaLink
+                    label={primary.label}
                     href={routeHref(
                       primary.link,
                       primary.subject,
                       primary.prefilledMessage,
                     )}
-                    target={primary.link === "whatsapp" ? "_blank" : undefined}
-                    rel={
-                      primary.link === "whatsapp"
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    class="bg-secondary text-secondary-foreground inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-                  >
-                    {primary.link === "whatsapp" && (
-                      <MessageCircle className="size-4" aria-hidden="true" />
-                    )}
-                    {primary.label}
-                    <ArrowRight className="size-4" aria-hidden="true" />
-                  </a>
+                    variant="secondary"
+                    size="md"
+                    icon={primary.link === "whatsapp" ? "whatsapp" : "arrow"}
+                    external={primary.link === "whatsapp"}
+                    className="w-fit"
+                  />
                 )}
                 {secondary && (
-                  <a
+                  <CtaLink
+                    label={secondary.label}
                     href={routeHref(
                       secondary.link,
                       undefined,
                       secondary.prefilledMessage,
                     )}
-                    target={secondary.link === "whatsapp" ? "_blank" : undefined}
-                    rel={
-                      secondary.link === "whatsapp"
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    class="text-secondary inline-flex w-fit items-center gap-2 text-sm font-medium no-underline"
-                  >
-                    {secondary.link === "whatsapp" && (
-                      <MessageCircle className="size-4" aria-hidden="true" />
-                    )}
-                    {secondary.label}
-                    <ArrowRight className="size-4" aria-hidden="true" />
-                  </a>
+                    variant="outline"
+                    size="sm"
+                    icon={secondary.link === "whatsapp" ? "whatsapp" : "arrow"}
+                    external={secondary.link === "whatsapp"}
+                    className="w-fit text-secondary"
+                  />
                 )}
               </div>
 
@@ -188,26 +175,26 @@ const routeHref = (link: string, subject?: string, message?: string) =>
           <p class="text-primary-foreground/70 text-xs font-semibold uppercase tracking-[0.2em]">
             Need a fast answer?
           </p>
-          <h2 class="mt-2 text-2xl font-bold md:text-3xl">We’re happy to point you in the right direction.</h2>
+          <h2 class="mt-2 text-2xl font-bold md:text-3xl">We're happy to point you in the right direction.</h2>
         </div>
 
         <div class="flex flex-wrap gap-3">
-          <a
-            href={configuredWhatsapp ? whatsappLink(configuredWhatsapp, "Hi ACOSA, I’d like to ask a question about accommodation and/or listing opportunities.") : "/contact"}
-            target={configuredWhatsapp ? "_blank" : undefined}
-            rel={configuredWhatsapp ? "noopener noreferrer" : undefined}
-            class="bg-background text-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-          >
-            <MessageCircle className="size-4" aria-hidden="true" />
-            WhatsApp ACOSA
-          </a>
-          <a
+          <CtaLink
+            label="WhatsApp ACOSA"
+            href={configuredWhatsapp ? whatsappLink(configuredWhatsapp, "Hi ACOSA, I'd like to ask a question about accommodation and/or listing opportunities.") : "/contact"}
+            variant="inverted"
+            size="md"
+            icon="whatsapp"
+            external={configuredWhatsapp ? true : undefined}
+          />
+          <CtaLink
+            label="Email us"
             href={configuredEmail ? mailtoLink(configuredEmail, "General ACOSA Enquiry") : "/contact"}
-            class="border border-primary-foreground/40 text-primary-foreground inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline"
-          >
-            <Mail className="size-4" aria-hidden="true" />
-            Email us
-          </a>
+            variant="inverted"
+            size="md"
+            icon="none"
+            className="border border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10"
+          />
         </div>
       </div>
     </div>

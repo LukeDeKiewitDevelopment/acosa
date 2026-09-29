@@ -32,3 +32,10 @@ export const Section = ({
     </section>
   );
 };
+
+export const sectionSpacing = {
+  first: "mt-28",
+  default: "mt-16",
+  major: "mt-24",
+  tight: "mt-8",
+} as const;

@@ -1,8 +1,9 @@
 // src/components/custom/node-detail.tsx
 import type { ReactNode } from "react";
-import { ArrowRight, BadgeCheck, ExternalLink, MapPin } from "lucide-react";
+import { BadgeCheck, MapPin } from "lucide-react";
 import { StaticAcosaImage, type ResolvedAcosaImage } from "./image";
 import type { FeaturedPropertyItem } from "./featured-properties";
+import { CtaLink } from "./cta-link";
 
 /* Business node detail intentionally has only the four public sections in the
    copy master: Hero, Business Location, Properties, and Assistance. */
@@ -42,7 +43,7 @@ export const NodeDetail = ({
   return (
     <div data-slot="node-detail" className="flex flex-col gap-12">
       {/* ---- Hero ---- */}
-      <div className="relative overflow-hidden rounded-3xl">
+      <div className="relative overflow-hidden rounded-2xl">
         <StaticAcosaImage
           {...node.image}
           alt={node.imageAlt}
@@ -59,9 +60,14 @@ export const NodeDetail = ({
           <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
             {node.name}
           </h1>
-          <a href="#properties" className="mt-3 inline-flex w-fit rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black no-underline">
-            View Accommodation
-          </a>
+          <CtaLink
+            label="View Accommodation"
+            href="#properties"
+            variant="inverted"
+            size="md"
+            icon="arrow"
+            className="mt-3"
+          />
         </div>
       </div>
 
@@ -117,10 +123,14 @@ export const NodeDetail = ({
                       </span>
                     </p>
                   )}
-                  <span className="border-secondary text-secondary mt-auto inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-sm font-medium">
-                    View Details{" "}
-                    <ArrowRight className="size-4" aria-hidden="true" />
-                  </span>
+                  <CtaLink
+                    label="View Details"
+                    href={`/properties/${item.id}`}
+                    variant="outline"
+                    size="sm"
+                    icon="arrow"
+                    className="mt-auto w-fit text-secondary"
+                  />
                 </div>
               </article>
             </li>
@@ -137,19 +147,16 @@ export const NodeDetail = ({
           {children}
         </div>
         {node.mapUrl && (
-          <a
+          <CtaLink
+            label="View on Google Maps"
             href={node.mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border-secondary text-secondary inline-flex w-fit items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline"
-            data-acosa-track="business_node_maps_click"
-            data-node-id={node.id}
-            data-node-name={node.name}
-          >
-            <MapPin className="size-4" aria-hidden="true" />
-            View on Google Maps
-            <ExternalLink className="size-4" aria-hidden="true" />
-          </a>
+            variant="outline"
+            size="md"
+            icon="none"
+            external
+            className="w-fit text-secondary"
+            trackingKey="business_node_maps_click"
+          />
         )}
       </div>
 
@@ -193,15 +200,15 @@ export const NodeDetail = ({
               </>
             )}
             {whatsappHref && (
-              <a
+              <CtaLink
+                label="Need assistance? Message ACOSA"
                 href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-medium text-secondary-foreground no-underline"
-              >
-                <BadgeCheck className="size-4" aria-hidden="true" />
-                Need assistance? Message ACOSA
-              </a>
+                variant="secondary"
+                size="md"
+                icon="whatsapp"
+                external
+                className="mt-2 w-fit"
+              />
             )}
           </div>
         </div>

@@ -69,7 +69,7 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
                       value={navItem.label}
                       className="border-b-0 data-open:bg-transparent"
                     >
-                      <AccordionTrigger className="hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-8 w-full items-center justify-between gap-1 rounded-4xl p-0 px-3 py-0 font-sans text-xs font-medium! whitespace-nowrap transition-all outline-none hover:no-underline">
+                      <AccordionTrigger className="hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-8 w-full items-center justify-between gap-1 rounded-full p-0 px-3 py-0 font-sans text-xs font-medium! whitespace-nowrap transition-all outline-none hover:no-underline">
                         {navItem.label}
                       </AccordionTrigger>
                       <AccordionContent className="px-0 py-1 [&_a]:no-underline">
