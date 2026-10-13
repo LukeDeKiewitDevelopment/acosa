@@ -9,8 +9,8 @@ hero:
     label: Find Accommodation
     link: /business-nodes
   secondaryCta:
-    label: Need Help Finding a Stay?
-    link: whatsapp
+    label: List Your Property
+    link: /list-your-property
 
 founderStrip:
   heading: Built around better business stays.
