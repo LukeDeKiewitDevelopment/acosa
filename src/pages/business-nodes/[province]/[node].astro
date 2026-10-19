@@ -8,12 +8,11 @@ import {
   getPublishedProperties,
   getSiteSettings,
   provinceLabel,
-  propertyTypeLabel,
-  whatsappLink,
+  resolveCtaLink,
+  buildPropertyListingItems,
 } from "@/lib/content";
-import { Section } from "@/components/custom/section";
+import { Hero } from "@/components/custom/hero";
 import { NodeDetail } from "@/components/custom/node-detail";
-import type { FeaturedPropertyItem } from "@/components/custom/featured-properties";
 
 export const prerender = true;
 
@@ -29,12 +28,6 @@ const { node } = Astro.props;
 const settings = await getSiteSettings();
 const { Content } = await render(node);
 const seo = node.data.seo;
-
-const heroImg = await getImage({
-  src: node.data.heroImage,
-  widths: [800, 1200, 1600],
-  sizes: "100vw",
-});
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -70,32 +63,7 @@ const nodeSchema: Record<string, unknown> = {
 const nodeProperties = (await getPublishedProperties()).filter(
   (property) => property.data.businessNode.id === node.id,
 );
-
-const propertyItems: FeaturedPropertyItem[] = await Promise.all(
-  nodeProperties.map(async (property) => {
-    const img = await getImage({
-      src: property.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-    });
-    return {
-      id: property.id,
-      name: property.data.name,
-      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
-      businessNodeLabel: node.data.name,
-      approved: property.data.acosaApproved.approved,
-      shortDescription: property.data.shortDescription,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: property.data.imageAlt || property.data.name,
-    };
-  }),
-);
+const propertyItems = await buildPropertyListingItems(nodeProperties);
 
 // Nearby Convenience is derived: unique tag ids across this node's
 // properties, in first-seen order, resolved to names.
@@ -107,8 +75,9 @@ for (const property of nodeProperties) {
 }
 const nearbyTags = await getCollection("nearbyConvenience");
 const nearby = nearbyIds
-  .map((id) => nearbyTags.find((tag) => tag.id === id)?.data.name)
-  .filter((name): name is string => Boolean(name));
+  .map((id) => nearbyTags.find((tag) => tag.id === id)?.data)
+  .filter((tag) => Boolean(tag))
+  .map((tag) => ({ name: tag!.name, icon: tag!.icon }));
 ---
 
 <Layout
@@ -118,30 +87,35 @@ const nearby = nearbyIds
   ogImage={ogImageUrl}
   jsonLd={nodeSchema}
 >
-  <Section className="mt-28 mb-28">
-    <NodeDetail
-      node={{
-        id: node.id,
-        name: node.data.name,
-        city: node.data.city,
-        province: node.data.province,
-        provinceLabel: provinceLabel(node.data.province),
-        mapUrl: node.data.mapUrl ?? "",
-        image: {
-          src: heroImg.src,
-          srcSet: heroImg.srcSet.attribute || undefined,
-          sizes: heroImg.attributes.sizes,
-          width: heroImg.attributes.width,
-          height: heroImg.attributes.height,
-        },
-        imageAlt: node.data.imageAlt || node.data.name,
-      }}
-      properties={propertyItems}
-      highlights={node.data.businessHighlights}
-      nearby={nearby}
-      whatsappHref={whatsappLink(settings.data.defaultWhatsapp)}
-    >
-      <Content />
-    </NodeDetail>
-  </Section>
+  <Hero
+    eyebrow="Business accommodation in"
+    heading={node.data.name}
+    body={[node.data.city, provinceLabel(node.data.province)]
+      .filter((part, i, all) => part && all.indexOf(part) === i)
+      .join(", ")}
+    image={node.data.heroImage}
+    imageAlt={node.data.imageAlt || node.data.name}
+    imageClassName="object-[60%_center] lg:object-center"
+    primaryCta={{ label: "View Accommodation", href: "#properties" }}
+  />
+  <NodeDetail
+    node={{
+      id: node.id,
+      name: node.data.name,
+      city: node.data.city,
+      province: node.data.province,
+      provinceLabel: provinceLabel(node.data.province),
+      mapUrl: node.data.mapUrl ?? "",
+    }}
+    properties={propertyItems}
+    highlights={node.data.businessHighlights}
+    nearby={nearby}
+    whatsappHref={resolveCtaLink("whatsapp", {
+      email: settings.data.enquiryEmail,
+      whatsappNumber: settings.data.defaultWhatsapp,
+      whatsappMessage: `Hi ACOSA, I'm looking for business accommodation in ${node.data.name}. Can you assist?`,
+    })}
+  >
+    <Content />
+  </NodeDetail>
 </Layout>

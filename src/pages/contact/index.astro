@@ -3,10 +3,31 @@ import Layout from "@/layouts/Layout.astro";
 import { getEntry } from "astro:content";
 import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import { getSiteSettings, whatsappLink, mailtoLink, isConfiguredContactValue } from "@/lib/content";
+import {
+  getSiteSettings,
+  whatsappLink,
+  mailtoLink,
+  isConfiguredContactValue,
+} from "@/lib/content";
 import { Section } from "@/components/custom/section";
-import { Building2, Mail, MessageCircle } from "lucide-react";
+import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
+import { IconMark } from "@/components/custom/icon-mark";
+import { BedDouble, Building2, CircleHelp, House } from "lucide-react";
+
+// Each route's icon identifies the enquiry type, matched on its CMS title.
+const routeIcon = (title: string) =>
+  /list|property/i.test(title)
+    ? House
+    : /company|team/i.test(title)
+      ? Building2
+      : /accommodation/i.test(title)
+        ? BedDouble
+        : CircleHelp;
+
+/* Contact — Creative Direction Blueprint, Page 08. The most restrained page:
+   a concise heading, four clearly differentiated enquiry routes and one
+   consistent contact treatment. No hero, no decorative tiles. */
 
 export const prerender = true;
 
@@ -30,14 +51,20 @@ const ogImageUrl = seo?.ogImage
 
 const email = settings.data.enquiryEmail;
 const configuredEmail = isConfiguredContactValue(email) ? email : "";
-const configuredWhatsapp = isConfiguredContactValue(settings.data.defaultWhatsapp)
+const configuredWhatsapp = isConfiguredContactValue(
+  settings.data.defaultWhatsapp,
+)
   ? settings.data.defaultWhatsapp
   : "";
 const routeHref = (link: string, subject?: string, message?: string) =>
   link === "email"
-    ? configuredEmail ? mailtoLink(configuredEmail, subject || "General ACOSA Enquiry") : "/contact"
+    ? configuredEmail
+      ? mailtoLink(configuredEmail, subject || "General ACOSA Enquiry")
+      : "/contact"
     : link === "whatsapp"
-      ? configuredWhatsapp ? whatsappLink(configuredWhatsapp, message) : "/contact"
+      ? configuredWhatsapp
+        ? whatsappLink(configuredWhatsapp, message)
+        : "/contact"
       : link;
 ---
 
@@ -47,156 +74,90 @@ const routeHref = (link: string, subject?: string, message?: string) =>
     "Get in touch with ACOSA about business accommodation in South Africa."}
   ogImage={ogImageUrl}
 >
-  <Section className="mt-28">
-    <div class="mx-auto max-w-6xl rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm md:p-10">
-      <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-        <div>
-          <p class="text-muted-foreground text-xs font-semibold tracking-[0.2em] uppercase">
-            {hero.eyebrow}
-          </p>
-          <h1 class="text-primary mt-3 text-3xl font-bold md:text-4xl lg:text-5xl">
-            {hero.heading}
-          </h1>
-          <p class="text-muted-foreground mt-4 max-w-xl text-sm md:text-base">
-            {hero.body}
-          </p>
-        </div>
+  <Section
+    spacing="none"
+    className="pt-12 pb-16 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
+  >
+    <div class="flex flex-col gap-12 md:gap-14">
+      <SectionHeader
+        as="h1"
+        eyebrow={hero.eyebrow}
+        title={hero.heading}
+        lead={hero.body}
+      />
 
-        <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-          <div class="rounded-2xl border border-border bg-background/80 p-4">
-            <div class="flex items-center gap-2 text-primary">
-              <MessageCircle className="size-4" aria-hidden="true" />
-              <span class="text-xs font-semibold uppercase tracking-[0.18em]">Fastest</span>
-            </div>
-            <p class="mt-2 text-sm font-medium text-foreground">WhatsApp response</p>
-          </div>
-          <div class="rounded-2xl border border-border bg-background/80 p-4">
-            <div class="flex items-center gap-2 text-primary">
-              <Mail className="size-4" aria-hidden="true" />
-              <span class="text-xs font-semibold uppercase tracking-[0.18em]">Best for</span>
-            </div>
-            <p class="mt-2 text-sm font-medium text-foreground">Detailed requirements</p>
-          </div>
-          <div class="rounded-2xl border border-border bg-background/80 p-4">
-            <div class="flex items-center gap-2 text-primary">
-              <Building2 className="size-4" aria-hidden="true" />
-              <span class="text-xs font-semibold uppercase tracking-[0.18em]">For hosts</span>
-            </div>
-            <p class="mt-2 text-sm font-medium text-foreground">Property listings</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </Section>
-
-  <Section className="mt-16">
-    <div class="mx-auto max-w-3xl text-center">
-      <p class="text-muted-foreground text-xs font-semibold uppercase tracking-[0.2em]">
-        Choose the right route
-      </p>
-      <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-        We'll help you get to the right next step quickly.
-      </h2>
-    </div>
-  </Section>
-
-  <Section className="mt-16 mb-28">
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-      {
-        contactRoutes.map((route) => {
-          const primary = route.primaryCta || route.cta;
-          const secondary = route.secondaryCta;
-          return (
-            <article class="group bg-card flex flex-col gap-5 rounded-2xl border p-6 shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
-              <div class="flex items-start justify-between gap-4">
-                <p class="text-secondary inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary/10 text-sm font-bold">
-                  {route.number}
-                </p>
-                <span class="rounded-full border border-border bg-background px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  ACOSA
-                </span>
-              </div>
-
-              <div>
-                <h2 class="text-primary text-xl font-semibold">{route.title}</h2>
-                <p class="text-muted-foreground mt-3 text-sm">{route.description}</p>
-              </div>
-
-              <div class="mt-auto flex flex-col gap-3">
-                {primary && (
-                  <CtaLink
-                    label={primary.label}
-                    href={routeHref(
-                      primary.link,
-                      primary.subject,
-                      primary.prefilledMessage,
-                    )}
-                    variant="secondary"
-                    size="md"
-                    icon={primary.link === "whatsapp" ? "whatsapp" : "arrow"}
-                    external={primary.link === "whatsapp"}
-                    className="w-fit"
-                  />
-                )}
-                {secondary && (
-                  <CtaLink
-                    label={secondary.label}
-                    href={routeHref(
-                      secondary.link,
-                      undefined,
-                      secondary.prefilledMessage,
-                    )}
-                    variant="outline"
-                    size="sm"
-                    icon={secondary.link === "whatsapp" ? "whatsapp" : "arrow"}
-                    external={secondary.link === "whatsapp"}
-                    className="w-fit text-secondary"
-                  />
-                )}
-              </div>
-
-              {route.number === "4" && configuredEmail && (
-                <div class="border-t border-border pt-3">
-                  <p class="text-muted-foreground text-sm font-medium">Direct email</p>
-                  <p class="mt-1 text-sm text-foreground">{configuredEmail}</p>
+      <ol class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+        {
+          contactRoutes.map((route) => {
+            const primary = route.primaryCta || route.cta;
+            const secondary = route.secondaryCta;
+            const icon = (link: string) =>
+              link === "whatsapp"
+                ? "whatsapp"
+                : link === "email"
+                  ? "email"
+                  : "arrow";
+            return (
+              <li class="bg-card border-border flex flex-col gap-6 rounded-xl border p-6 md:p-8">
+                <div class="flex flex-col gap-2">
+                  <IconMark icon={routeIcon(route.title)} className="mb-2" />
+                  <h2 class="type-h3">{route.title}</h2>
+                  <p class="type-body">{route.description}</p>
                 </div>
-              )}
-            </article>
-          );
-        })
-      }
-    </div>
-  </Section>
-
-  <Section className="mb-28">
-    <div class="mx-auto max-w-4xl rounded-2xl bg-primary p-8 text-primary-foreground md:p-12">
-      <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div class="max-w-xl">
-          <p class="text-primary-foreground/70 text-xs font-semibold uppercase tracking-[0.2em]">
-            Need a fast answer?
-          </p>
-          <h2 class="mt-2 text-2xl font-bold md:text-3xl">We're happy to point you in the right direction.</h2>
-        </div>
-
-        <div class="flex flex-wrap gap-3">
-          <CtaLink
-            label="WhatsApp ACOSA"
-            href={configuredWhatsapp ? whatsappLink(configuredWhatsapp, "Hi ACOSA, I'd like to ask a question about accommodation and/or listing opportunities.") : "/contact"}
-            variant="inverted"
-            size="md"
-            icon="whatsapp"
-            external={configuredWhatsapp ? true : undefined}
-          />
-          <CtaLink
-            label="Email us"
-            href={configuredEmail ? mailtoLink(configuredEmail, "General ACOSA Enquiry") : "/contact"}
-            variant="inverted"
-            size="md"
-            icon="none"
-            className="border border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10"
-          />
-        </div>
-      </div>
+                <div class="mt-auto flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
+                  {primary && (
+                    <CtaLink
+                      label={primary.label}
+                      href={routeHref(
+                        primary.link,
+                        primary.subject,
+                        primary.prefilledMessage,
+                      )}
+                      variant="secondary"
+                      icon={icon(primary.link)}
+                      external={
+                        primary.link === "whatsapp" &&
+                        Boolean(configuredWhatsapp)
+                      }
+                      trackingKey={`contact_route_${route.number}_click`}
+                      className="w-full sm:w-auto"
+                    />
+                  )}
+                  {secondary && (
+                    <CtaLink
+                      label={secondary.label}
+                      href={routeHref(
+                        secondary.link,
+                        undefined,
+                        secondary.prefilledMessage,
+                      )}
+                      variant="link"
+                      icon={icon(secondary.link)}
+                      external={
+                        secondary.link === "whatsapp" &&
+                        Boolean(configuredWhatsapp)
+                      }
+                      trackingKey={`contact_route_${route.number}_secondary_click`}
+                      className="text-sm"
+                    />
+                  )}
+                </div>
+                {route.number === "4" && configuredEmail && (
+                  <p class="type-small border-border border-t pt-4">
+                    Direct email:{" "}
+                    <a
+                      href={`mailto:${configuredEmail}`}
+                      class="text-foreground font-medium"
+                    >
+                      {configuredEmail}
+                    </a>
+                  </p>
+                )}
+              </li>
+            );
+          })
+        }
+      </ol>
     </div>
   </Section>
 </Layout>

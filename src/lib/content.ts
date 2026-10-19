@@ -1,24 +1,24 @@
-import { getCollection, getEntry, getEntries } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import { getImage } from 'astro:assets';
-import { PROPERTY_TYPES } from '../content.config';
-import { provinceLabel } from './provinces';
-import type { BusinessNodeSearchItem } from '@/components/custom/business-node-search';
+import { getCollection, getEntry, getEntries } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { getImage } from "astro:assets";
+import { PROPERTY_TYPES } from "../content.config";
+import { provinceLabel } from "./provinces";
+import type { PropertyCardItem } from "@/components/custom/property-card";
 
-export { PROVINCES, PROPERTY_TYPES } from '../content.config';
-export { provinceLabel } from './provinces';
-export type Property = CollectionEntry<'properties'>;
-export type BusinessNode = CollectionEntry<'businessNodes'>;
-export type Testimonial = CollectionEntry<'testimonials'>;
+export { PROVINCES, PROPERTY_TYPES } from "../content.config";
+export { provinceLabel } from "./provinces";
+export type Property = CollectionEntry<"properties">;
+export type BusinessNode = CollectionEntry<"businessNodes">;
+export type Testimonial = CollectionEntry<"testimonials">;
 
 export const PUBLIC_BUSINESS_NODE_IDS = [
-  'centurion',
-  'pretoria-east',
-  'rosslyn',
-  'sandton',
-  'bryanston',
-  'midrand',
-  'edenvale',
+  "centurion",
+  "pretoria-east",
+  "rosslyn",
+  "sandton",
+  "bryanston",
+  "midrand",
+  "edenvale",
 ] as const;
 
 export function isPublicBusinessNode(nodeId: string): boolean {
@@ -38,7 +38,7 @@ export function propertyTypeLabel(slug: string): string {
 /** All published properties (drafts excluded). Use this everywhere on the public site. */
 export async function getPublishedProperties(): Promise<Property[]> {
   return getCollection(
-    'properties',
+    "properties",
     ({ data }) =>
       data.published &&
       data.acosaApproved.approved &&
@@ -48,7 +48,7 @@ export async function getPublishedProperties(): Promise<Property[]> {
 
 export async function getFeaturedProperties(): Promise<Property[]> {
   return getCollection(
-    'properties',
+    "properties",
     ({ data }) =>
       data.published &&
       data.acosaApproved.approved &&
@@ -59,7 +59,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
 
 export async function getPropertiesByNode(nodeId: string): Promise<Property[]> {
   return getCollection(
-    'properties',
+    "properties",
     ({ data }) =>
       data.published &&
       data.acosaApproved.approved &&
@@ -69,10 +69,10 @@ export async function getPropertiesByNode(nodeId: string): Promise<Property[]> {
 }
 
 export async function getPropertiesByProvince(
-  province: string
+  province: string,
 ): Promise<Property[]> {
   return getCollection(
-    'properties',
+    "properties",
     ({ data }) =>
       data.published &&
       data.acosaApproved.approved &&
@@ -93,13 +93,66 @@ export async function resolvePropertyTags(property: Property) {
   return { essentials, facilities, nearbyConvenience, perfectFor };
 }
 
+export type PropertyListingItem = PropertyCardItem & {
+  province: string;
+  businessNode: string;
+  propertyType: string;
+  locationAddress: string;
+};
+
+/** Server-side payload for PropertyCard / PropertySearch: resolves the hero
+ *  image, business node label and essentials once, for every listing page. */
+export async function buildPropertyListingItems(
+  properties: Property[],
+): Promise<PropertyListingItem[]> {
+  return Promise.all(
+    properties.map(async (property) => {
+      const [img, businessNode, essentials] = await Promise.all([
+        getImage({
+          src: property.data.heroImage,
+          widths: [480, 800, 1200],
+          sizes: "(min-width: 768px) 50vw, 100vw",
+        }),
+        getEntry(property.data.businessNode),
+        getEntries(property.data.essentials),
+      ]);
+      return {
+        id: property.id,
+        name: property.data.name,
+        province: property.data.province,
+        provinceLabel: provinceLabel(property.data.province),
+        businessNode: property.data.businessNode.id,
+        businessNodeLabel:
+          businessNode?.data.name ?? property.data.businessNode.id,
+        locationAddress: property.data.location.address,
+        propertyType: property.data.propertyType,
+        propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+        approved: property.data.acosaApproved.approved,
+        shortDescription: property.data.shortDescription,
+        essentials: essentials.map((tag) => ({
+          name: tag.data.name,
+          icon: tag.data.icon,
+        })),
+        image: {
+          src: img.src,
+          srcSet: img.srcSet.attribute || undefined,
+          sizes: img.attributes.sizes,
+          width: img.attributes.width,
+          height: img.attributes.height,
+        },
+        imageAlt: property.data.imageAlt || property.data.name,
+      };
+    }),
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Business nodes
 // ---------------------------------------------------------------------------
 
 export async function getNodes(): Promise<BusinessNode[]> {
   return getCollection(
-    'businessNodes',
+    "businessNodes",
     (entry) =>
       entry.data.published &&
       PUBLIC_BUSINESS_NODE_IDS.includes(
@@ -110,7 +163,7 @@ export async function getNodes(): Promise<BusinessNode[]> {
 
 export async function getPopularNodes(): Promise<BusinessNode[]> {
   return getCollection(
-    'businessNodes',
+    "businessNodes",
     (entry) =>
       entry.data.published &&
       entry.data.featured &&
@@ -119,10 +172,10 @@ export async function getPopularNodes(): Promise<BusinessNode[]> {
 }
 
 export async function getNodesByProvince(
-  province: string
+  province: string,
 ): Promise<BusinessNode[]> {
   return getCollection(
-    'businessNodes',
+    "businessNodes",
     (entry) =>
       entry.data.published &&
       isPublicBusinessNode(entry.id) &&
@@ -130,25 +183,63 @@ export async function getNodesByProvince(
   );
 }
 
-/** Payload for the BusinessNodeSearch island: every published node with a
- *  pre-resolved hero image plus the names of its published properties. */
-export async function buildSearchNodes(): Promise<BusinessNodeSearchItem[]> {
+/** Marker positions for the Gauteng node map (longitude, latitude). */
+export const NODE_MAP_COORDINATES: Record<string, [number, number]> = {
+  bryanston: [28.0227, -26.0575],
+  sandton: [28.0567, -26.1076],
+  edenvale: [28.1525, -26.1438],
+  midrand: [28.1284, -25.9895],
+  "pretoria-east": [28.327, -25.776],
+  centurion: [28.1894, -25.8603],
+  rosslyn: [28.1, -25.633],
+};
+
+export type NodeSummary = {
+  id: string;
+  name: string;
+  city: string;
+  province: string;
+  href: string;
+  propertyCount: number;
+  longitude?: number;
+  latitude?: number;
+  image: {
+    src: string;
+    srcSet?: string;
+    sizes?: string;
+    width?: number;
+    height?: number;
+  };
+  imageAlt: string;
+};
+
+/** Published nodes with their live-property counts, for node choosers. */
+export async function buildNodeSummaries(
+  province = "gauteng",
+): Promise<NodeSummary[]> {
   const [nodes, properties] = await Promise.all([
-    getNodes(),
+    getNodesByProvince(province),
     getPublishedProperties(),
   ]);
-  return Promise.all(
+  const summaries = await Promise.all(
     nodes.map(async (node) => {
       const img = await getImage({
         src: node.data.heroImage,
-        widths: [400, 800, 1200],
-        sizes: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+        widths: [160, 400, 800],
+        sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
       });
+      const coordinates = NODE_MAP_COORDINATES[node.id];
       return {
         id: node.id,
         name: node.data.name,
+        city: node.data.city || "",
         province: node.data.province,
-        featured: node.data.featured,
+        href: `/business-nodes/${node.data.province}/${node.id}`,
+        propertyCount: properties.filter(
+          (property) => property.data.businessNode.id === node.id,
+        ).length,
+        longitude: coordinates?.[0],
+        latitude: coordinates?.[1],
         image: {
           src: img.src,
           srcSet: img.srcSet.attribute || undefined,
@@ -156,17 +247,18 @@ export async function buildSearchNodes(): Promise<BusinessNodeSearchItem[]> {
           width: img.attributes.width,
           height: img.attributes.height,
         },
-        imageAlt: node.data.imageAlt || node.data.name,
-        highlights: node.data.businessHighlights.map((h) => h.title),
-        propertyNames: properties
-          .filter((p) => p.data.businessNode.id === node.id)
-          .map((p) => p.data.name),
+        imageAlt: node.data.imageAlt || `${node.data.name} business district`,
       };
-    })
+    }),
+  );
+  // Nodes with live accommodation first, then alphabetical.
+  return summaries.sort(
+    (a, b) =>
+      Number(b.propertyCount > 0) - Number(a.propertyCount > 0) ||
+      a.name.localeCompare(b.name),
   );
 }
 
-/** Provinces that actually have at least one business node, for the province selector. */
 export async function getActiveProvinces(): Promise<
   { slug: string; label: string; nodeCount: number }[]
 > {
@@ -187,23 +279,23 @@ export async function getActiveProvinces(): Promise<
 // ---------------------------------------------------------------------------
 
 export async function getPublishedTestimonials(): Promise<Testimonial[]> {
-  return getCollection('testimonials', ({ data }) => data.published);
+  return getCollection("testimonials", ({ data }) => data.published);
 }
 
 export async function getTestimonialsForProperty(
-  propertyId: string
+  propertyId: string,
 ): Promise<Testimonial[]> {
   return getCollection(
-    'testimonials',
-    ({ data }) => data.published && data.property?.id === propertyId
+    "testimonials",
+    ({ data }) => data.published && data.property?.id === propertyId,
   );
 }
 
 /** Testimonials not linked to any property (general / property-owner reviews). */
 export async function getGeneralTestimonials(): Promise<Testimonial[]> {
   return getCollection(
-    'testimonials',
-    ({ data }) => data.published && !data.property
+    "testimonials",
+    ({ data }) => data.published && !data.property,
   );
 }
 
@@ -212,14 +304,15 @@ export async function getGeneralTestimonials(): Promise<Testimonial[]> {
 // ---------------------------------------------------------------------------
 
 export async function getSiteSettings() {
-  const settings = await getEntry('siteSettings', 'site');
-  if (!settings) throw new Error('Site settings not found: src/content/settings/site.yaml');
+  const settings = await getEntry("siteSettings", "site");
+  if (!settings)
+    throw new Error("Site settings not found: src/content/settings/site.yaml");
   return settings;
 }
 
 export async function getHomePage() {
-  const page = await getEntry('homePage', 'home');
-  if (!page) throw new Error('Home page content not found');
+  const page = await getEntry("homePage", "home");
+  if (!page) throw new Error("Home page content not found");
   return page;
 }
 
@@ -229,19 +322,23 @@ export async function getHomePage() {
 
 /** Build a wa.me link. Number must be international format digits only, e.g. 27125550181. */
 export function whatsappLink(number: string, message?: string): string {
-  const digits = number.replace(/\D/g, '');
+  const digits = number.replace(/\D/g, "");
   const base = `https://wa.me/${digits}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
-export function mailtoLink(email: string, subject: string, body?: string): string {
+export function mailtoLink(
+  email: string,
+  subject: string,
+  body?: string,
+): string {
   const params = new URLSearchParams({ subject });
-  if (body) params.set('body', body);
+  if (body) params.set("body", body);
   return `mailto:${email}?${params.toString()}`;
 }
 
 export function isConfiguredContactValue(value: string): boolean {
-  return value.trim().length > 0 && !value.includes('[INSERT');
+  return value.trim().length > 0 && !value.includes("[INSERT");
 }
 
 export function resolveCtaLink(
@@ -253,13 +350,16 @@ export function resolveCtaLink(
     whatsappMessage?: string;
   },
 ): string {
-  if (link === 'email') {
-    if (!isConfiguredContactValue(options.email)) return '/contact';
-    return mailtoLink(options.email, options.emailSubject ?? 'General ACOSA Enquiry');
+  if (link === "email") {
+    if (!isConfiguredContactValue(options.email)) return "/contact";
+    return mailtoLink(
+      options.email,
+      options.emailSubject ?? "General ACOSA Enquiry",
+    );
   }
-  if (link === 'whatsapp') {
-    const whatsappNumber = options.whatsappNumber ?? '';
-    if (!isConfiguredContactValue(whatsappNumber)) return '/contact';
+  if (link === "whatsapp") {
+    const whatsappNumber = options.whatsappNumber ?? "";
+    if (!isConfiguredContactValue(whatsappNumber)) return "/contact";
     return whatsappLink(whatsappNumber, options.whatsappMessage);
   }
   return link;

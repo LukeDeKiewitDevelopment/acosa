@@ -1,45 +1,27 @@
 // src/components/custom/property-detail.tsx
 import type { ReactNode } from "react";
-import {
-  BadgeCheck,
-  CircleCheck,
-  ExternalLink,
-  MapPin,
-  Star,
-} from "lucide-react";
-import { resolveIcon } from "@/lib/lucide";
+import { ArrowDown, MapPin, Star } from "lucide-react";
+import { tagIcon } from "@/lib/tag-icons";
 import { mailtoLink, whatsappLink } from "@/lib/content";
 import { propertyEnquiryWhatsappMessage } from "@/lib/property-search";
 import { CtaLink } from "./cta-link";
+import { ApprovedBadge } from "./property-card";
 
-/* PROPERTY PAGE per ACOSA_BRIEF: Property Overview, Business Traveller
-  Essentials, ACOSA Approved, Facilities, Nearby Convenience, Map,
-   Testimonials, plus the mock's enquiry sidebar.
-   (Gallery is the separate PropertyGallery island, mounted above this
-   in the page. CTA/footer are page-level.)
-   Data per section:
-   - Overview: name, propertyType (label), acosaApproved (approved +
-     score; score shown only when > 0), shortDescription,
-     longDescription (markdoc — page renders <Content /> as children)
-  - Essentials: essentials tags (name + lucide icon, resolveIcon w/
-     CircleCheck fallback)
-   - Perfect For: perfectFor tag names
-   - Facilities: facilities tag names (check icons per the mock)
-   - Nearby Convenience: nearbyConvenience tag names
-   - Map: location.address + location.mapUrl → external link card,
-     each omitted when empty
-   - Testimonials: published testimonials where property === this id,
-     with per-review star rating (rating 0 = hidden); no aggregate UI
-   - Sidebar: contact.whatsapp (required; wa.me link), contact.phone
-     (omitted when empty), contact.email ("Send Enquiry" mailto link
-     plus an "Email" mailto link, both omitted when empty),
-     contact.website ("Website" external link, omitted when empty). */
+/* Individual property profile, Creative Direction Blueprint Page 04:
+   1. Photography (PropertyGallery, mounted above this by the page)
+   2. Identity and suitability: name, location, ACOSA Approved, key attributes
+   3. Practical proof: facilities, workspace, convenience, map
+   4. Enquiry: direct property contact, clearly identified and kept
+      separate from contacting ACOSA.
+   ACOSA Approved is shown without a numerical score; no public scoring
+   model has been approved. */
 export type PropertyDetailProperty = {
   id: string;
   name: string;
   propertyTypeLabel: string;
+  businessNodeLabel: string;
+  provinceLabel: string;
   approved: boolean;
-  score: number;
   shortDescription: string;
   address: string;
   mapUrl: string;
@@ -63,11 +45,36 @@ export type PropertyDetailTestimonial = {
 export type PropertyDetailProps = {
   property: PropertyDetailProperty;
   essentials: PropertyDetailTag[];
-  perfectFor: string[];
-  facilities: string[];
-  nearby: string[];
+  perfectFor: PropertyDetailTag[];
+  facilities: PropertyDetailTag[];
+  nearby: PropertyDetailTag[];
   testimonials: PropertyDetailTestimonial[];
   children?: ReactNode;
+};
+
+const DetailBlock = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) => (
+  <section className="border-border grid gap-5 border-t pt-8 md:grid-cols-[11rem_1fr] md:gap-10">
+    <h2 className="font-heading text-foreground text-lg font-semibold">
+      {title}
+    </h2>
+    <div className="min-w-0">{children}</div>
+  </section>
+);
+
+const Chip = ({ tag }: { tag: PropertyDetailTag }) => {
+  const Icon = tagIcon(tag.icon);
+  return (
+    <li className="bg-card text-foreground/85 border-border inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
+      <Icon className="text-gold-ink size-4 shrink-0" aria-hidden="true" />
+      {tag.name}
+    </li>
+  );
 };
 
 export const PropertyDetail = ({
@@ -79,57 +86,76 @@ export const PropertyDetail = ({
   testimonials,
   children,
 }: PropertyDetailProps) => {
+  const location = [property.businessNodeLabel, property.provinceLabel]
+    .filter(Boolean)
+    .join(", ");
+  const whatsappHref = property.whatsapp
+    ? whatsappLink(
+        property.whatsapp,
+        propertyEnquiryWhatsappMessage(property.name),
+      )
+    : "";
+  const emailHref = property.email
+    ? mailtoLink(property.email, `Enquiry via ACOSA: ${property.name}`)
+    : "";
+  const tracking = { propertyId: property.id, propertyName: property.name };
+
   return (
     <div
       data-slot="property-detail"
       data-property-page="true"
       data-property-id={property.id}
       data-property-name={property.name}
-      className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_22rem]"
+      className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_23rem] lg:gap-16"
     >
       {/* ==================== main column ==================== */}
       <div className="flex flex-col gap-10">
-        {/* ---- Overview header ---- */}
-        <div className="flex flex-col gap-4">
-          <h1 className="text-primary text-2xl font-bold md:text-3xl">
-            {property.name}
-          </h1>
-          <div className="flex flex-wrap items-center gap-2">
-            {/* propertyType label */}
-            <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
-              {property.propertyTypeLabel}
-            </span>
-            {/* acosaApproved: approved + score — omit both when false */}
-            {property.approved && (
-              <span className="bg-secondary text-secondary-foreground inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
-                <BadgeCheck className="size-3.5" aria-hidden="true" />
-                ACOSA Approved
-                {property.score > 0 && ` ${property.score}%`}
-              </span>
+        {/* ---- 2. Identity and suitability ---- */}
+        <header className="flex flex-col gap-5">
+          <p className="eyebrow">{property.propertyTypeLabel}</p>
+          <h1 className="type-h1">{property.name}</h1>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            {location && (
+              <p className="text-foreground/85 inline-flex items-center gap-1.5 text-[0.9375rem]">
+                <MapPin className="size-4" aria-hidden="true" />
+                {location}
+              </p>
             )}
-            {/* shortDescription */}
-            {property.shortDescription && (
-              <span className="text-foreground inline-flex items-center gap-1 text-sm">
-                <MapPin className="text-foreground size-4" aria-hidden="true" />
-                {property.shortDescription}
-              </span>
+            {property.approved && (
+              <ApprovedBadge href="/why-acosa#acosa-approved" />
             )}
           </div>
-        </div>
+          {property.shortDescription && (
+            <p className="type-lead max-w-2xl">{property.shortDescription}</p>
+          )}
+          <a
+            href="#enquire"
+            className="text-foreground inline-flex w-fit items-center gap-2 text-sm font-semibold no-underline lg:hidden"
+          >
+            <span className="decoration-gold underline decoration-2 underline-offset-[6px]">
+              Enquire directly with the property
+            </span>
+            <ArrowDown className="size-4" aria-hidden="true" />
+          </a>
+        </header>
 
-        {/* ---- Business Traveller Essentials: tag name + icon ---- */}
+        {/* ---- Key business attributes ---- */}
         {essentials.length > 0 && (
           <ul
-            className="border-y-border grid grid-cols-2 gap-4 border-y py-5 sm:grid-cols-4"
+            aria-label="Business traveller essentials"
+            className="bg-card border-border grid grid-cols-2 gap-px overflow-hidden rounded-xl border sm:grid-cols-3"
           >
             {essentials.map((tag) => {
-              const Icon = resolveIcon(tag.icon, CircleCheck);
+              const Icon = tagIcon(tag.icon);
               return (
                 <li
                   key={tag.name}
-                  className="text-muted-foreground flex flex-col items-center gap-1.5 text-center text-xs font-medium"
+                  className="outline-border text-foreground flex items-center gap-3 px-4 py-4 text-sm font-medium outline-1"
                 >
-                  <Icon className="text-primary size-5" aria-hidden="true" />
+                  <Icon
+                    className="text-gold-ink size-5 shrink-0"
+                    aria-hidden="true"
+                  />
                   {tag.name}
                 </li>
               );
@@ -137,119 +163,94 @@ export const PropertyDetail = ({
           </ul>
         )}
 
-        {/* ---- About: longDescription markdoc children ---- */}
-        <div className="flex flex-col gap-3">
-          <h2 className="text-primary text-xl font-bold">
-            About This Property
-          </h2>
-          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
+        {/* ---- About ---- */}
+        <DetailBlock title="About this property">
+          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_p]:mb-4 [&_p]:leading-relaxed">
             {children}
           </div>
-        </div>
+        </DetailBlock>
 
-        {/* ---- Perfect For: tag names ---- */}
-        {perfectFor.length > 0 && (
-          <div className="flex flex-col gap-3">
-            <h2 className="text-primary text-xl font-bold">Perfect For</h2>
-            <ul className="flex flex-wrap gap-2">
-              {perfectFor.map((name) => (
-                <li
-                  key={name}
-                  className="bg-card text-card-foreground rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wide uppercase"
-                >
-                  {name}
-                </li>
-              ))}
+        {/* ---- 3. Practical proof ---- */}
+        {facilities.length > 0 && (
+          <DetailBlock title="Facilities">
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+              {facilities.map((tag) => {
+                const Icon = tagIcon(tag.icon);
+                return (
+                  <li
+                    key={tag.name}
+                    className="text-foreground/90 flex items-center gap-3 text-[0.9375rem]"
+                  >
+                    <Icon
+                      className="text-gold-ink size-5 shrink-0"
+                      aria-hidden="true"
+                    />
+                    {tag.name}
+                  </li>
+                );
+              })}
             </ul>
-          </div>
+          </DetailBlock>
         )}
 
-        {/* ---- Facilities: tag names, check icons ---- */}
-        {facilities.length > 0 && (
-          <div className="flex flex-col gap-3">
-            <h2 className="text-primary text-xl font-bold">Facilities</h2>
-            <ul
-              className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2"
-            >
-              {facilities.map((name) => (
-                <li
-                  key={name}
-                  className="text-muted-foreground flex items-center gap-2 text-sm"
-                >
-                  <CircleCheck
-                    className="text-secondary size-4.5 shrink-0"
+        {perfectFor.length > 0 && (
+          <DetailBlock title="Perfect for">
+            <ul className="flex flex-wrap gap-2">
+              {perfectFor.map((tag) => (
+                <Chip key={tag.name} tag={tag} />
+              ))}
+            </ul>
+          </DetailBlock>
+        )}
+
+        {nearby.length > 0 && (
+          <DetailBlock title="Nearby convenience">
+            <ul className="flex flex-wrap gap-2">
+              {nearby.map((tag) => (
+                <Chip key={tag.name} tag={tag} />
+              ))}
+            </ul>
+          </DetailBlock>
+        )}
+
+        {(property.address || property.mapUrl) && (
+          <DetailBlock title="Location">
+            <div className="flex flex-col gap-4">
+              {property.address && (
+                <p className="text-foreground/90 flex items-start gap-2 text-[0.9375rem]">
+                  <MapPin
+                    className="mt-0.5 size-4 shrink-0"
                     aria-hidden="true"
                   />
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
+                  {property.address}
+                </p>
+              )}
+              {property.mapUrl && (
+                <CtaLink
+                  label="View on Google Maps"
+                  href={property.mapUrl}
+                  variant="link"
+                  icon="external"
+                  external
+                  trackingKey="property_maps_click"
+                  {...tracking}
+                />
+              )}
+            </div>
+          </DetailBlock>
         )}
 
-        {/* ---- Nearby Convenience: tag names ---- */}
-        {nearby.length > 0 && (
-          <div className="flex flex-col gap-3">
-            <h2 className="text-primary text-xl font-bold">
-              Nearby Convenience
-            </h2>
-            <ul className="flex flex-wrap gap-2">
-              {nearby.map((name) => (
-                <li
-                  key={name}
-                  className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-sm"
-                >
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* ---- Location: address + mapUrl link card ---- */}
-        <div className="flex flex-col gap-3">
-          <h2 className="text-primary text-xl font-bold">Location</h2>
-          {property.address && (
-            <p className="text-muted-foreground text-sm">{property.address}</p>
-          )}
-          {property.mapUrl && (
-            <a
-              href={property.mapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-card text-card-foreground flex w-fit items-center gap-2 rounded-xl border p-4 text-sm font-medium no-underline shadow-sm"
-              data-acosa-track="property_maps_click"
-              data-property-id={property.id}
-              data-property-name={property.name}
-            >
-              <MapPin className="text-secondary size-5" aria-hidden="true" />
-              View on Google Maps
-              <ExternalLink
-                className="text-muted-foreground size-4"
-                aria-hidden="true"
-              />
-            </a>
-          )}
-        </div>
-
-        {/* ---- Testimonials: property-linked, published ---- */}
         {testimonials.length > 0 && (
-          <div className="flex flex-col gap-4">
-            <h2 className="text-primary text-xl font-bold">Reviews</h2>
-            {testimonials.map((testimonial, index) => (
-              <article
-                key={`${testimonial.reviewer}-${index}`}
-                className="bg-card text-card-foreground flex flex-col gap-3 rounded-2xl border p-5 shadow-sm"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  {/* reviewer */}
-                  <h3 className="text-primary text-sm font-semibold">
-                    {testimonial.reviewer}
-                  </h3>
-                  {/* rating (1–5); omit the row when rating is 0 */}
+          <DetailBlock title="Guest reviews">
+            <div className="flex flex-col gap-4">
+              {testimonials.map((testimonial, index) => (
+                <figure
+                  key={`${testimonial.reviewer}-${index}`}
+                  className="bg-card border-border flex flex-col gap-3 rounded-xl border p-6"
+                >
                   {testimonial.rating > 0 && (
                     <span
-                      className="text-secondary flex items-center gap-0.5"
+                      className="text-gold flex items-center gap-0.5"
                       role="img"
                       aria-label={`Rated ${testimonial.rating} out of 5`}
                     >
@@ -262,87 +263,97 @@ export const PropertyDetail = ({
                       ))}
                     </span>
                   )}
-                </div>
-                {/* review */}
-                <p className="text-muted-foreground text-sm">
-                  {testimonial.review}
-                </p>
-              </article>
-            ))}
-          </div>
+                  <blockquote className="text-foreground/90 text-[0.9375rem] leading-relaxed">
+                    {testimonial.review}
+                  </blockquote>
+                  <figcaption className="text-muted-foreground text-sm font-semibold">
+                    {testimonial.reviewer}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </DetailBlock>
         )}
       </div>
 
-      {/* ==================== enquiry sidebar ==================== */}
-      <aside className="flex h-fit flex-col gap-4 lg:sticky lg:top-24">
-        <div className="bg-card text-card-foreground flex flex-col gap-4 rounded-2xl border p-6 shadow-sm">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-primary text-lg font-bold">Make An Enquiry</h2>
-            <p className="text-muted-foreground text-sm">
-              Send an enquiry directly to the property.
+      {/* ==================== 4. Enquiry ==================== */}
+      <aside
+        id="enquire"
+        className="flex h-fit flex-col gap-4 lg:sticky lg:top-24"
+      >
+        <div className="bg-card border-border flex flex-col gap-6 rounded-xl border p-6 shadow-[0_24px_50px_-34px_rgb(5_10_60/0.45)] md:p-7">
+          <div className="flex flex-col gap-2">
+            <p className="eyebrow">Direct enquiry</p>
+            <h2 className="type-h3">Enquire with {property.name}</h2>
+            <p className="type-small">
+              Your enquiry goes directly to the property, not to ACOSA.
             </p>
           </div>
-          {/* contact.email — omit when empty */}
-          {property.email && (
-            <CtaLink
-              label="Send Enquiry"
-              href={mailtoLink(property.email, "Property Enquiry")}
-              variant="secondary"
-              size="md"
-              icon="none"
-              trackingKey="property_email_click"
-            />
-          )}
-          {/* contact.whatsapp (required) → wa.me link */}
-          <CtaLink
-            label="WhatsApp"
-            href={whatsappLink(
-              property.whatsapp,
-              propertyEnquiryWhatsappMessage(property.name),
+          <div className="flex flex-col gap-3">
+            {emailHref && (
+              <CtaLink
+                label="Email the property"
+                href={emailHref}
+                variant="primary"
+                icon="email"
+                trackingKey="property_email_click"
+                className="w-full"
+                {...tracking}
+              />
             )}
-            variant="secondary"
-            size="md"
-            icon="whatsapp"
-            external
-            trackingKey="property_whatsapp_click"
-          />
-          {/* contact.phone — omit when empty */}
-          {property.phone && (
-            <CtaLink
-              label={property.phone}
-              href={`tel:${property.phone.replace(/\s/g, "")}`}
-              variant="outline"
-              size="md"
-              icon="none"
-              className="text-secondary"
-              trackingKey="property_phone_click"
-            />
-          )}
-          {/* contact.email — omit when empty */}
-          {property.email && (
-            <CtaLink
-              label="Email"
-              href={mailtoLink(property.email, "Property Enquiry")}
-              variant="outline"
-              size="md"
-              icon="none"
-              className="text-secondary"
-              trackingKey="property_email_click"
-            />
-          )}
-          {/* contact.website — omit when empty */}
+            {whatsappHref && (
+              <CtaLink
+                label="WhatsApp the property"
+                href={whatsappHref}
+                variant={emailHref ? "secondary" : "primary"}
+                icon="whatsapp"
+                external
+                trackingKey="property_whatsapp_click"
+                className="w-full"
+                {...tracking}
+              />
+            )}
+            {property.phone && (
+              <CtaLink
+                label={`Call ${property.phone}`}
+                href={`tel:${property.phone.replace(/\s/g, "")}`}
+                variant="secondary"
+                icon="phone"
+                trackingKey="property_phone_click"
+                className="w-full"
+                {...tracking}
+              />
+            )}
+          </div>
           {property.website && (
             <CtaLink
-              label="Website"
+              label="Visit the property website"
               href={property.website}
-              variant="outline"
-              size="md"
-              icon="none"
+              variant="link"
+              icon="external"
               external
-              className="text-secondary"
               trackingKey="property_website_click"
+              {...tracking}
             />
           )}
+        </div>
+
+        {/* Contacting ACOSA, kept visually separate from the property. */}
+        <div className="border-border flex flex-col gap-2 rounded-xl border border-dashed p-5">
+          <p className="text-foreground text-sm font-semibold">
+            Not sure this is the right fit?
+          </p>
+          <p className="type-small">
+            ACOSA can help you compare suitable options.
+          </p>
+          <CtaLink
+            label="Ask ACOSA"
+            href="/contact"
+            variant="link"
+            trackingKey="property_ask_acosa_click"
+            className="mt-1 text-sm"
+            {...tracking}
+          />
         </div>
       </aside>
     </div>

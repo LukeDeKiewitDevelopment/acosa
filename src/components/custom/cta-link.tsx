@@ -1,11 +1,20 @@
-import { ArrowRight, MessageCircle } from "lucide-react";
-import { Button, type buttonVariants } from "../ui/button";
-import { cn } from "@/lib/utils";
-import type { VariantProps } from "class-variance-authority";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Mail,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
+import { Button } from "../ui/button";
+import { TextLink } from "./text-link";
 
-type CtaVariant = "primary" | "secondary" | "outline" | "inverted" | "link";
+/* CTA hierarchy (Creative Direction Blueprint §2 and §4):
+   - primary   → gold. One per visual grouping.
+   - secondary → outline; adapts to light, warm and navy surfaces.
+   - link      → tertiary text link with a gold underline. */
+type CtaVariant = "primary" | "secondary" | "link";
 type CtaSize = "sm" | "md" | "lg";
-type CtaIcon = "arrow" | "whatsapp" | "none";
+type CtaIcon = "arrow" | "whatsapp" | "email" | "phone" | "external" | "none";
 
 export type CtaLinkProps = {
   label: string;
@@ -16,26 +25,31 @@ export type CtaLinkProps = {
   external?: boolean;
   className?: string;
   trackingKey?: string;
+  propertyId?: string;
+  propertyName?: string;
 };
 
-const variantMap: Record<CtaVariant, VariantProps<typeof buttonVariants>["variant"]> = {
-  primary: "default",
-  secondary: "secondary",
-  outline: "outline",
-  inverted: "default",
-  link: "link",
-};
-
-const sizeMap: Record<CtaSize, VariantProps<typeof buttonVariants>["size"]> = {
+const sizeMap = {
   sm: "sm",
   md: "default",
   lg: "lg",
+} as const;
+
+/* Contact-channel icons lead the label; directional icons trail it. */
+const leadingIcons: Partial<Record<CtaIcon, React.ReactNode>> = {
+  whatsapp: <MessageCircle aria-hidden="true" />,
+  email: <Mail aria-hidden="true" />,
+  phone: <Phone aria-hidden="true" />,
 };
 
-const iconMap: Record<CtaIcon, React.ReactNode> = {
-  arrow: <ArrowRight className="size-4" aria-hidden="true" />,
-  whatsapp: <MessageCircle className="size-4" aria-hidden="true" />,
-  none: null,
+const trailingIcons: Partial<Record<CtaIcon, React.ReactNode>> = {
+  arrow: (
+    <ArrowRight
+      aria-hidden="true"
+      className="transition-transform duration-200 group-hover/button:translate-x-0.5"
+    />
+  ),
+  external: <ArrowUpRight aria-hidden="true" />,
 };
 
 export function CtaLink({
@@ -47,32 +61,42 @@ export function CtaLink({
   external = false,
   className,
   trackingKey,
+  propertyId,
+  propertyName,
 }: CtaLinkProps) {
-  const isDarkContext = variant === "inverted";
-  const isLink = variant === "link";
+  if (variant === "link") {
+    return (
+      <TextLink
+        label={label}
+        href={href}
+        external={external}
+        className={className}
+        trackingKey={trackingKey || "cta_click"}
+        propertyId={propertyId}
+        propertyName={propertyName}
+        icon={icon === "none" ? "arrow" : icon}
+      />
+    );
+  }
 
   return (
     <Button
-      variant={variantMap[variant]}
+      variant={variant === "primary" ? "default" : "outline"}
       size={sizeMap[size]}
       asChild
-      className={cn(
-        !isLink && "rounded-full no-underline",
-        isDarkContext && "bg-background text-foreground hover:bg-background/90",
-        className,
-      )}
+      className={className}
     >
       <a
         href={href}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
         data-acosa-track={trackingKey || "cta_click"}
-        data-property-name={label}
-        className="no-underline"
+        data-property-id={propertyId}
+        data-property-name={propertyName || label}
       >
-        {icon === "whatsapp" && iconMap.whatsapp}
+        {leadingIcons[icon]}
         {label}
-        {icon === "arrow" && iconMap.arrow}
+        {trailingIcons[icon]}
       </a>
     </Button>
   );

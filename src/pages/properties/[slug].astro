@@ -10,6 +10,7 @@ import {
   propertyTypeLabel,
   provinceLabel,
 } from "@/lib/content";
+import { getEntry } from "astro:content";
 import { Section } from "@/components/custom/section";
 import {
   PropertyGallery,
@@ -33,6 +34,7 @@ const { essentials, facilities, nearbyConvenience, perfectFor } =
   await resolvePropertyTags(property);
 const testimonials = await getTestimonialsForProperty(property.id);
 const seo = property.data.seo;
+const businessNode = await getEntry(property.data.businessNode);
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -62,15 +64,8 @@ const propertySchema: Record<string, unknown> = {
     addressRegion: provinceLabel(property.data.province),
     addressCountry: "ZA",
   },
-  ...(property.data.acosaApproved.approved
-    ? {
-        award: `ACOSA Approved ${
-          property.data.acosaApproved.score > 0
-            ? property.data.acosaApproved.score + "%"
-            : ""
-        }`.trim(),
-      }
-    : {}),
+  // No numerical score is published (Creative Direction Blueprint, Page 04).
+  ...(property.data.acosaApproved.approved ? { award: "ACOSA Approved" } : {}),
   ...(property.data.contact.email
     ? { email: property.data.contact.email }
     : {}),
@@ -98,8 +93,8 @@ const slides: PropertyGallerySlide[] = await Promise.all(
   slideSources.map(async (slide) => {
     const img = await getImage({
       src: slide.image,
-      widths: [800, 1200, 1600],
-      sizes: "(min-width: 1024px) 66vw, 100vw",
+      widths: [480, 800, 1200, 1600],
+      sizes: "(min-width: 1024px) 50vw, 100vw",
     });
     return {
       image: {
@@ -123,18 +118,38 @@ const slides: PropertyGallerySlide[] = await Promise.all(
   ogImage={ogImageUrl}
   jsonLd={propertySchema}
 >
-  <Section className="mt-28">
-    <PropertyGallery client:load slides={slides} />
+  <Section spacing="none" className="pt-6 md:pt-8 lg:pt-10">
+    <nav
+      aria-label="Breadcrumb"
+      class="type-small mb-5 flex flex-wrap items-center gap-2 text-xs"
+    >
+      <a
+        href="/properties"
+        class="text-muted-foreground hover:text-foreground no-underline"
+        >Properties</a
+      >
+      <span aria-hidden="true">/</span>
+      <span class="text-foreground">{property.data.name}</span>
+    </nav>
+    <PropertyGallery
+      client:load
+      slides={slides}
+      propertyName={property.data.name}
+    />
   </Section>
 
-  <Section className="mt-16 mb-28">
+  <Section
+    spacing="none"
+    className="pt-10 pb-16 md:pt-14 md:pb-24 lg:pt-16 lg:pb-28"
+  >
     <PropertyDetail
       property={{
         id: property.id,
         name: property.data.name,
         propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
+        businessNodeLabel: businessNode?.data.name ?? "",
+        provinceLabel: provinceLabel(property.data.province),
         approved: property.data.acosaApproved.approved,
-        score: property.data.acosaApproved.score,
         shortDescription: property.data.shortDescription,
         address: property.data.location.address,
         mapUrl: property.data.location.mapUrl ?? "",
@@ -147,9 +162,18 @@ const slides: PropertyGallerySlide[] = await Promise.all(
         name: tag.data.name,
         icon: tag.data.icon,
       }))}
-      perfectFor={perfectFor.map((tag) => tag.data.name)}
-      facilities={facilities.map((tag) => tag.data.name)}
-      nearby={nearbyConvenience.map((tag) => tag.data.name)}
+      perfectFor={perfectFor.map((tag) => ({
+        name: tag.data.name,
+        icon: tag.data.icon,
+      }))}
+      facilities={facilities.map((tag) => ({
+        name: tag.data.name,
+        icon: tag.data.icon,
+      }))}
+      nearby={nearbyConvenience.map((tag) => ({
+        name: tag.data.name,
+        icon: tag.data.icon,
+      }))}
       testimonials={testimonials.map((testimonial) => ({
         reviewer: testimonial.data.reviewer,
         review: testimonial.data.review,

@@ -9,37 +9,47 @@ import {
 } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { StaticAcosaImage } from "./image";
-import type { HeaderLogo, NavItem } from "./header";
+import { isActivePath, type HeaderLogo, type NavItem } from "./header";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
 import { getCurrentYear } from "@/lib/get-current-year";
 
-export type MobileMenuProps = { logo?: HeaderLogo; navItems?: NavItem[] };
+export type MobileMenuProps = {
+  logo?: HeaderLogo;
+  navItems?: NavItem[];
+  currentPath?: string;
+};
 
-export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
+const itemClassName =
+  "flex h-12 w-full items-center border-b border-border text-base font-medium text-foreground no-underline";
+
+export const MobileMenu = ({
+  logo,
+  navItems,
+  currentPath,
+}: MobileMenuProps) => {
   const currentYear = getCurrentYear();
   return (
     <Sheet>
-      <SheetTrigger asChild className="flex lg:hidden">
-        <Button variant="ghost" size="icon-sm">
-          <Menu />
+      <SheetTrigger asChild className="flex xl:hidden">
+        <Button variant="ghost" size="icon" aria-label="Open menu">
+          <Menu className="size-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left">
-        <SheetHeader>
+      <SheetContent side="right" className="bg-background w-[min(22rem,88vw)]">
+        <SheetHeader className="px-5">
           <SheetTitle>
-            <a href="/" aria-label="Go to homepage" className="inline-flex">
+            <a href="/" aria-label="ACOSA home" className="inline-flex">
               {logo ? (
                 <StaticAcosaImage
-                  fetchPriority="high"
-                  loading="eager"
-                  decoding="sync"
+                  loading="lazy"
                   {...logo.light}
-                  className="h-10 w-auto"
+                  className="h-9 w-auto"
                 />
               ) : (
                 <span>ACOSA</span>
@@ -47,64 +57,73 @@ export const MobileMenu = ({ logo, navItems }: MobileMenuProps) => {
             </a>
           </SheetTitle>
         </SheetHeader>
-        <ul className="mx-4 my-2 flex scrollbar-thin flex-col gap-2 overflow-y-auto pr-2">
-          <li>
-            <Button variant="default" size="sm" asChild className="w-full">
-              <a href="/business-nodes" className="text-xs no-underline">
-                Find Accommodation
-              </a>
-            </Button>
-          </li>
-          {navItems &&
-            navItems.length > 0 &&
-            navItems?.map((navItem, i) => (
-              <li key={i}>
-                {navItem.subItems && navItem.subItems.length > 0 ? (
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="w-full border-0"
-                  >
-                    <AccordionItem
-                      value={navItem.label}
-                      className="border-b-0 data-open:bg-transparent"
+        <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-5">
+          <ul className="flex flex-col">
+            {navItems?.map((navItem) => {
+              const active = isActivePath(navItem.href, currentPath);
+              return (
+                <li key={navItem.href}>
+                  {navItem.subItems && navItem.subItems.length > 0 ? (
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="w-full rounded-none border-0"
                     >
-                      <AccordionTrigger className="hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50 h-8 w-full items-center justify-between gap-1 rounded-full p-0 px-3 py-0 font-sans text-xs font-medium! whitespace-nowrap transition-all outline-none hover:no-underline">
-                        {navItem.label}
-                      </AccordionTrigger>
-                      <AccordionContent className="px-0 py-1 [&_a]:no-underline">
-                        <ul className="flex flex-col gap-2 ps-3">
-                          <li>
-                            <a href={navItem.href} className="text-xs hover:underline">
-                              View all {navItem.label}
-                            </a>
-                          </li>
-                          {navItem.subItems.map((subItem, i) => (
-                            <li key={i}>
+                      <AccordionItem
+                        value={navItem.label}
+                        className="border-border border-b"
+                      >
+                        <AccordionTrigger className="h-12 items-center py-0 font-sans text-base font-medium hover:no-underline">
+                          {navItem.label}
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-3 [&_a]:no-underline">
+                          <ul className="flex flex-col gap-3 ps-3">
+                            <li>
                               <a
-                                href={subItem.href}
-                                className="text-xs hover:underline"
+                                href={navItem.href}
+                                className="text-sm font-medium"
                               >
-                                {subItem.label}
+                                View all {navItem.label}
                               </a>
                             </li>
-                          ))}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                ) : (
-                  <Button variant="ghost" size="sm" asChild>
-                    <a href={navItem.href} className="text-xs no-underline">
+                            {navItem.subItems.map((subItem) => (
+                              <li key={subItem.href}>
+                                <a
+                                  href={subItem.href}
+                                  className="text-muted-foreground text-sm"
+                                >
+                                  {subItem.label}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  ) : (
+                    <a
+                      href={navItem.href}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(itemClassName, active && "text-gold-ink")}
+                    >
                       {navItem.label}
                     </a>
-                  </Button>
-                )}
-              </li>
-            ))}
-        </ul>
-        <SheetFooter>
-          <small className="text-[0.6rem]">
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        <SheetFooter className="gap-4 px-5 pb-6">
+          <Button variant="default" size="lg" asChild className="w-full">
+            <a
+              href="/business-nodes"
+              data-acosa-track="menu_find_accommodation"
+            >
+              Find Accommodation
+            </a>
+          </Button>
+          <small className="text-muted-foreground text-xs">
             &copy; {currentYear} ACOSA.
           </small>
         </SheetFooter>

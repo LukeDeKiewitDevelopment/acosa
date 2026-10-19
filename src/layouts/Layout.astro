@@ -84,8 +84,9 @@ export interface Props {
   whatsappMessage?: string;
 }
 
+// Final navigation per the pre-launch addendum:
+// Business Nodes | Properties | Why ACOSA? | For Companies | For Properties | Contact
 const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
   {
     label: "Business Nodes",
     href: "/business-nodes",
@@ -126,7 +127,8 @@ const organisationSchema: Record<string, unknown> = {
   <head>
     <meta charset="UTF-8" />
     {description && <meta name="description" content={description} />}
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050a3c" />
     <meta name="generator" content={Astro.generator} />
     <meta
       name="robots"
@@ -259,8 +261,13 @@ const organisationSchema: Record<string, unknown> = {
   </head>
 
   <body class="flex min-h-screen flex-col overflow-x-hidden antialiased">
-    <Header navItems={navItems} logo={logo} client:load />
-    <main class="size-full flex-1 pt-0">
+    <Header
+      navItems={navItems}
+      logo={logo}
+      currentPath={Astro.url.pathname.replace(/\/$/, "") || "/"}
+      client:load
+    />
+    <main id="main" class="w-full flex-1">
       <slot />
     </main>
     <Footer

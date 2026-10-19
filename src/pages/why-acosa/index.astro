@@ -4,14 +4,32 @@ import { getImage, Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
+import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
 import { resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
-import { FeatureList } from "@/components/custom/feature-list";
-import { SectionIcon } from "@/components/custom/section-icon";
-import { Award, ClipboardCheck, Sparkles } from "lucide-react";
+import {
+  BadgeCheck,
+  BedDouble,
+  Briefcase,
+  Car,
+  Check,
+  ConciergeBell,
+  Coffee,
+  Laptop,
+  ShieldCheck,
+  Sparkles,
+  Wifi,
+  Zap,
+} from "lucide-react";
 
 export const prerender = true;
+
+/* Why ACOSA? — Creative Direction Blueprint, Page 05.
+   The most editorial trust page: the experience claim, the selection
+   criteria and the ACOSA Approved explanation each carry distinct visual
+   weight. The criteria use a restrained icon list, not a wall of equal cards.
+   Explore ACOSA Properties follows the trust-building content. */
 
 const page = await getEntry("whyAcosaPage", "why-acosa");
 if (!page) throw new Error("Why ACOSA page content not found");
@@ -37,6 +55,30 @@ const ogImageUrl = seo?.ogImage
   : undefined;
 
 const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
+
+// One icon family; criteria map to an icon by keyword, falling back to a check.
+const criterionIcons: [RegExp, typeof Check][] = [
+  [/wifi/i, Wifi],
+  [/workspace/i, Laptop],
+  [/parking/i, Car],
+  [/power/i, Zap],
+  [/clean/i, Sparkles],
+  [/breakfast/i, Coffee],
+  [/comfort/i, BedDouble],
+  [/service/i, ConciergeBell],
+  [/security/i, ShieldCheck],
+  [/usability/i, Briefcase],
+];
+const iconFor = (criterion: string) =>
+  criterionIcons.find(([pattern]) => pattern.test(criterion))?.[1] ?? Check;
+
+// "More than 20 years of …" → "20+" for the experience figure.
+const yearsMatch = experienceSection.heading.match(/(\d+)\s+years/i);
+const yearsFigure = yearsMatch ? `${yearsMatch[1]}+` : null;
+const [experienceLead, ...experienceBody] = experienceSection.body
+  .split(/\n+/)
+  .map((paragraph) => paragraph.trim())
+  .filter(Boolean);
 ---
 
 <Layout
@@ -46,127 +88,158 @@ const heroHref = resolveCtaLink(hero.cta.link, { email: "" });
   ogImage={ogImageUrl}
 >
   <Hero
+    align="right"
     eyebrow={hero.eyebrow}
     heading={hero.heading}
     body={hero.body}
     image={hero.image}
-    imageAlt="ACOSA hospitality assessment"
-    imageClassName="scale-105 object-[42%_center] md:scale-105 md:object-[46%_center] lg:object-center"
+    imageAlt="A business traveller checking in at an independent guesthouse"
+    imageClassName="object-[32%_center] sm:object-[30%_center] lg:object-[24%_center]"
     primaryCta={{ label: hero.cta.label, href: heroHref }}
   />
 
-  <Section className="mt-16">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={Award} />
-          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-            {experienceSection.eyebrow}
-          </p>
-        </div>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {experienceSection.heading}
-        </h2>
-        <p class="text-muted-foreground mt-4 whitespace-pre-line">
-          {experienceSection.body}
-        </p>
+  {/* Experience claim: a figure, then editorial prose. */}
+  <Section>
+    <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+      <div class="flex flex-col gap-6">
+        <p class="eyebrow">{experienceSection.eyebrow}</p>
+        {
+          yearsFigure && (
+            <p class="font-heading text-foreground text-[5.5rem] leading-none font-semibold tracking-[-0.04em] md:text-[7.5rem]">
+              {yearsFigure}
+              <span class="text-muted-foreground mt-3 block font-sans text-sm font-medium tracking-normal">
+                years of hands-on hospitality experience
+              </span>
+            </p>
+          )
+        }
       </div>
-      <div class="bg-muted/30 flex items-center justify-center rounded-2xl p-8">
-        <p class="text-muted-foreground text-center text-sm italic">
-          "Two decades of hands-on hospitality experience across guesthouses, lodges, and corporate accommodation."
-        </p>
+      <div class="flex flex-col gap-6">
+        <h2 class="type-h2">{experienceSection.heading}</h2>
+        {
+          experienceLead && (
+            <p class="type-lead text-foreground/85">{experienceLead}</p>
+          )
+        }
+        {
+          experienceBody.map((paragraph) => (
+            <p class="type-body">{paragraph}</p>
+          ))
+        }
       </div>
     </div>
   </Section>
 
-  <Section className="mt-16">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      {
-        curationSection.image && (
-          <Image
-            src={curationSection.image}
-            alt="ACOSA reviewing an independent accommodation property"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
-          />
-        )
-      }
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={ClipboardCheck} />
-          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-            {curationSection.eyebrow}
-          </p>
-        </div>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {curationSection.heading}
-        </h2>
-        <p class="text-muted-foreground mt-3">{curationSection.body}</p>
-        <FeatureList
-          className="mt-6"
-          items={curationSection.factorsInclude.map((factor) => ({ text: factor }))}
-        />
+  {/* Selection criteria */}
+  <Section tone="warm">
+    <div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-20">
+      <div class="flex flex-col gap-8 lg:sticky lg:top-28">
+        {
+          curationSection.image && (
+            <Image
+              src={curationSection.image}
+              alt="ACOSA assessing a guesthouse room with the owner"
+              widths={[480, 800, 1200, 1408]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="aspect-4/3 w-full rounded-xl object-cover object-[60%_center]"
+            />
+          )
+        }
         {
           curationSection.highlightStatement && (
-            <p class="text-primary mt-6 text-lg font-semibold">
+            <p class="font-heading text-foreground border-gold border-l-2 pl-5 text-2xl leading-snug font-semibold md:text-[1.75rem]">
               {curationSection.highlightStatement}
             </p>
           )
         }
+      </div>
+      <div class="flex flex-col gap-8">
+        <SectionHeader
+          eyebrow={curationSection.eyebrow}
+          title={curationSection.heading}
+          lead={curationSection.body}
+        />
+        <ul
+          class="border-sage divide-sage grid border-t sm:grid-cols-2 sm:gap-x-8"
+        >
+          {
+            curationSection.factorsInclude.map((factor) => {
+              const Icon = iconFor(factor);
+              return (
+                <li class="border-sage flex items-center gap-3.5 border-b py-4">
+                  <Icon
+                    className="text-gold-ink size-5 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span class="text-foreground text-[0.9375rem] first-letter:uppercase">
+                    {factor}
+                  </span>
+                </li>
+              );
+            })
+          }
+        </ul>
         {
           curationSection.note && (
-            <p class="text-muted-foreground mt-3 text-sm">
-              {curationSection.note}
-            </p>
+            <p class="type-small text-xs">{curationSection.note}</p>
           )
         }
       </div>
     </div>
   </Section>
 
-  <Section className="mt-16">
-    <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {approvedSection.heading}
-      </h2>
-      <p class="text-muted-foreground mt-4 whitespace-pre-line">
-        {approvedSection.body}
-      </p>
+  {/* ACOSA Approved: the explanation gets its own authority band. */}
+  <Section id="acosa-approved" tone="navy">
+    <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+      <span
+        class="border-gold/50 flex size-16 items-center justify-center rounded-xl border"
+      >
+        <BadgeCheck className="text-gold size-8" aria-hidden="true" />
+      </span>
+      <h2 class="type-h2">{approvedSection.heading}</h2>
+      {
+        approvedSection.body
+          .split(/\n+/)
+          .map((paragraph) => paragraph.trim())
+          .filter(Boolean)
+          .map((paragraph, index) => (
+            <p class={index === 0 ? "type-lead" : "type-small"}>{paragraph}</p>
+          ))
+      }
       <CtaLink
         label={approvedSection.cta.label}
         href={approvedSection.cta.link}
-        variant="secondary"
-        size="md"
+        variant="primary"
+        size="lg"
         icon="arrow"
-        className="mt-6"
+        className="mt-3"
+        trackingKey="why_explore_properties_click"
       />
     </div>
   </Section>
 
-  <Section className="mt-16 mb-28">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={Sparkles} />
-          <h2 class="text-primary text-2xl font-bold md:text-3xl">
-            {outcomeSection.heading}
-          </h2>
-        </div>
-        <p class="text-muted-foreground mt-4">{outcomeSection.body}</p>
+  {/* Outcome */}
+  <Section>
+    <div
+      class="grid items-center gap-10 md:grid-cols-2 lg:grid-cols-[1fr_1.15fr] lg:gap-20"
+    >
+      <SectionHeader title={outcomeSection.heading} lead={outcomeSection.body}>
         <CtaLink
           label={outcomeSection.cta.label}
           href={outcomeSection.cta.link}
           variant="secondary"
-          size="md"
           icon="arrow"
-          className="mt-6"
+          className="mt-3 w-fit"
         />
-      </div>
+      </SectionHeader>
       {
         outcomeSection.image && (
           <Image
             src={outcomeSection.image}
-            alt="A comfortable end to a business travel day"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
+            alt="A traveller relaxing at her guesthouse at the end of a work day"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 768px) 55vw, 100vw"
+            class="aspect-4/3 w-full rounded-xl object-cover object-[72%_center]"
           />
         )
       }

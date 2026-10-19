@@ -1,6 +1,5 @@
 ---
 import { Image, getImage } from "astro:assets";
-import { getEntry } from "astro:content";
 import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import {
@@ -10,24 +9,25 @@ import {
   getPublishedProperties,
   getSiteSettings,
   resolveCtaLink,
-  propertyTypeLabel,
+  buildPropertyListingItems,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
-import {
-  FeaturedProperties,
-  type FeaturedPropertyItem,
-} from "@/components/custom/featured-properties";
-import { OwnerCta } from "@/components/custom/owner-cta";
-import {
-  PropertySearch,
-  type PropertySearchItem,
-} from "@/components/custom/property-search";
-import { toFeaturedPropertyCard } from "@/lib/featured-property-card";
+import { SectionHeader } from "@/components/custom/section-header";
+import { PropertyGrid } from "@/components/custom/property-card";
+import { PropertySearch } from "@/components/custom/property-search";
 import { CtaLink } from "@/components/custom/cta-link";
 import { TextLink } from "@/components/custom/text-link";
+import { getCollection } from "astro:content";
+import { tagIcon } from "@/lib/tag-icons";
 
 export const prerender = true;
+
+/* Home — the approved section order, restyled to the Creative Direction
+   Blueprint (Page 01). Layout changes are limited to what the brief asks
+   for: the hero gives Find Accommodation clear priority over the owner
+   route, the corporate pathway is a distinct editorial moment, and the
+   property-owner section is a deliberate shift to a new audience. */
 
 const page = await getHomePage();
 const {
@@ -43,13 +43,33 @@ const {
   seo,
 } = page.data;
 
-const featuredProperties = await getFeaturedProperties();
-const publishedProperties = await getPublishedProperties();
-const businessNodes = (await getNodes()).map((node) => ({
+const [featuredItems, searchItems, nodes, settings] = await Promise.all([
+  getFeaturedProperties().then(buildPropertyListingItems),
+  getPublishedProperties().then(buildPropertyListingItems),
+  getNodes(),
+  getSiteSettings(),
+]);
+// Business Traveller Essentials named in the section copy, in copy order,
+// with their CMS icons.
+const ESSENTIAL_IDS = [
+  "reliable-wifi",
+  "workspace-friendly",
+  "secure-parking",
+  "backup-power",
+  "breakfast",
+];
+const essentialTags = await getCollection("essentials");
+const travelEssentials = ESSENTIAL_IDS.map((id) =>
+  essentialTags.find((tag) => tag.id === id),
+)
+  .filter((tag) => tag !== undefined)
+  .map((tag) => ({ name: tag.data.name, Icon: tagIcon(tag.data.icon) }));
+
+const businessNodes = nodes.map((node) => ({
   id: node.id,
   name: node.data.name,
 }));
-const settings = await getSiteSettings();
+
 const ctaOptions = {
   email: settings.data.enquiryEmail,
   whatsappNumber: settings.data.defaultWhatsapp,
@@ -62,45 +82,13 @@ const humanAssistanceLink = resolveCtaLink(humanAssistanceSection.cta.link, {
   ...ctaOptions,
   whatsappMessage: "Hi ACOSA, I need help finding business accommodation.",
 });
-const propertyOwnerPrimary = resolveCtaLink(
+const ownerPrimaryHref = resolveCtaLink(
   propertyOwnersSection.primaryCta.link,
   ctaOptions,
 );
-const propertyOwnerSecondary = resolveCtaLink(
+const ownerSecondaryHref = resolveCtaLink(
   propertyOwnersSection.secondaryCta.link,
   ctaOptions,
-);
-const closingLink = resolveCtaLink(closingSection.cta.link, ctaOptions);
-
-const propertySearchItems: PropertySearchItem[] = await Promise.all(
-  publishedProperties.map(async (property) => {
-    const img = await getImage({
-      src: property.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-    });
-    const businessNode = await getEntry(property.data.businessNode);
-    return {
-      id: property.id,
-      name: property.data.name,
-      province: property.data.province,
-      businessNode: property.data.businessNode.id,
-      businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
-      locationAddress: property.data.location.address,
-      propertyType: property.data.propertyType,
-      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
-      approved: property.data.acosaApproved.approved,
-      shortDescription: property.data.shortDescription,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: property.data.imageAlt || property.data.name,
-    };
-  }),
 );
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
@@ -134,29 +122,6 @@ const websiteSchema: Record<string, unknown> = {
     "query-input": "required name=search_term_string",
   },
 };
-
-const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
-  featuredProperties.map(async (property) => {
-    const img = await getImage({
-      src: property.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-    });
-    const businessNode = await getEntry(property.data.businessNode);
-    return toFeaturedPropertyCard({
-      property,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
-      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
-    });
-  }),
-);
 ---
 
 <Layout
@@ -166,114 +131,155 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
   ogImage={ogImageUrl}
   jsonLd={websiteSchema}
 >
-  <Section fullWidth className="!m-0">
-    <Hero
-      eyebrow={hero.eyebrow}
-      heading={hero.heading}
-      body={hero.body}
-      image={hero.image}
-      imageClassName="object-[72%_center] md:object-[68%_center] lg:object-center"
-      overlay={{
-        opacity: hero.overlayOpacity,
-      }}
-      contentClassName="text-background"
-      primaryCta={{
-        label: hero.primaryCta.label,
-        href: resolveCtaLink(hero.primaryCta.link, ctaOptions),
-      }}
-      secondaryCta={{
-        label: hero.secondaryCta.label,
-        href: resolveCtaLink(hero.secondaryCta.link, {
-          ...ctaOptions,
-          whatsappMessage:
-            "Hi ACOSA, I'm looking for business accommodation and would appreciate some assistance.",
-        }),
-        external: hero.secondaryCta.link === "whatsapp",
-      }}
-    />
-  </Section>
+  {
+    /* 01 — Cinematic hero. Find Accommodation dominates; the owner route is a
+      quieter text link so the two audiences don't compete equally. */
+  }
+  <Hero
+    size="cinematic"
+    align="left"
+    eyebrow={hero.eyebrow}
+    heading={hero.heading}
+    body={hero.body}
+    image={hero.image}
+    imageAlt="An ACOSA host welcoming a business traveller at an independent guesthouse"
+    imageClassName="object-[74%_center] sm:object-[70%_center] lg:object-[62%_center]"
+    overlay={{ opacity: Math.max(hero.overlayOpacity ?? 0, 94) }}
+    primaryCta={{
+      label: hero.primaryCta.label,
+      href: resolveCtaLink(hero.primaryCta.link, ctaOptions),
+    }}
+    secondaryCta={{
+      label: hero.secondaryCta.label,
+      href: resolveCtaLink(hero.secondaryCta.link, {
+        ...ctaOptions,
+        whatsappMessage:
+          "Hi ACOSA, I'm looking for business accommodation and would appreciate some assistance.",
+      }),
+      external: hero.secondaryCta.link === "whatsapp",
+    }}
+    secondaryStyle="link"
+  />
 
-  <Section className="mt-28">
-    <div class="grid gap-8 md:grid-cols-2 md:items-center">
-      <div class="flex flex-col gap-4">
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-        >
-          {businessTravelSection.eyebrow}
-        </p>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {businessTravelSection.heading}
-        </h2>
-        <p class="text-muted-foreground text-sm md:text-base">
-          {businessTravelSection.body}
-        </p>
+  {/* Built around business travel (editorial split) */}
+  <Section>
+    <div
+      class="grid items-center gap-10 md:grid-cols-2 lg:grid-cols-[1fr_1.1fr] lg:gap-20"
+    >
+      <SectionHeader
+        eyebrow={businessTravelSection.eyebrow}
+        title={businessTravelSection.heading}
+        lead={businessTravelSection.body}
+      >
+        {
+          travelEssentials.length > 0 && (
+            <ul
+              aria-label="Business traveller essentials"
+              class="border-border mt-2 grid grid-cols-2 gap-x-6 gap-y-4 border-y py-6 sm:grid-cols-3"
+            >
+              {travelEssentials.map(({ name, Icon }) => (
+                <li class="text-foreground flex items-center gap-3 text-sm font-medium">
+                  <span class="bg-gold/12 text-gold-ink inline-flex size-9 shrink-0 items-center justify-center rounded-lg">
+                    <Icon className="size-4" aria-hidden="true" />
+                  </span>
+                  {name}
+                </li>
+              ))}
+            </ul>
+          )
+        }
         <TextLink
           label={businessTravelSection.cta.label}
           href={businessTravelSection.cta.link}
+          className="mt-2"
+        />
+      </SectionHeader>
+      {
+        businessTravelSection.image && (
+          <Image
+            src={businessTravelSection.image}
+            alt="A business traveller working at the desk of her guesthouse room"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="aspect-4/3 w-full rounded-xl object-cover object-[60%_center] md:aspect-5/4 lg:aspect-4/3"
+          />
+        )
+      }
+    </div>
+  </Section>
+
+  {/* Location matters: business nodes + property search */}
+  <Section id="business-nodes" tone="warm">
+    <div class="flex flex-col gap-10 md:gap-12">
+      <div
+        class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+      >
+        <SectionHeader
+          eyebrow={businessNodesSection.eyebrow}
+          title={businessNodesSection.heading}
+          lead={businessNodesSection.body}
+        />
+        <TextLink
+          label={businessNodesSection.cta.label}
+          href={businessNodesSection.cta.link}
+          className="shrink-0"
         />
       </div>
-      {businessTravelSection.image && <Image src={businessTravelSection.image} alt="Business traveller working from accommodation" class="aspect-4/3 h-auto max-h-96 w-full rounded-2xl object-cover object-[65%_center] md:aspect-auto md:object-center" />}
-    </div>
-  </Section>
-
-  <Section className="mt-24">
-    <div class="flex flex-col gap-6">
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
-      >
-        {businessNodesSection.eyebrow}
-      </p>
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {businessNodesSection.heading}
-      </h2>
-      <p class="text-muted-foreground max-w-2xl text-sm md:text-base">
-        {businessNodesSection.body}
-      </p>
       <PropertySearch
         client:load
-        items={propertySearchItems}
+        items={searchItems}
         businessNodes={businessNodes}
       />
-      <TextLink
-        label={businessNodesSection.cta.label}
-        href={businessNodesSection.cta.link}
-      />
     </div>
   </Section>
 
-  <Section className="mt-28">
-    <div class="flex flex-col gap-2">
-      <p
-        class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+  {/* Featured properties */}
+  {
+    featuredItems.length > 0 && (
+      <Section id="featured-properties">
+        <div class="flex flex-col gap-10 md:gap-12">
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeader
+              eyebrow={featuredPropertiesSection.eyebrow}
+              title={featuredPropertiesSection.heading}
+              lead={featuredPropertiesSection.body}
+            />
+            <TextLink
+              label="View all properties"
+              href="/properties"
+              className="shrink-0"
+            />
+          </div>
+          <PropertyGrid items={featuredItems} />
+        </div>
+      </Section>
+    )
+  }
+
+  {/* Corporate booking pathway: a distinct editorial moment */}
+  <Section id="corporate" tone="warm">
+    <div
+      class="grid items-center gap-10 md:grid-cols-2 lg:grid-cols-[1.15fr_1fr] lg:gap-20"
+    >
+      {
+        corporateBookersSection.image && (
+          <Image
+            src={corporateBookersSection.image}
+            alt="A corporate booker reviewing accommodation options for a colleague"
+            widths={[480, 800, 1200, 1376]}
+            sizes="(min-width: 768px) 55vw, 100vw"
+            class="order-last aspect-4/3 w-full rounded-xl object-cover object-[78%_center] md:order-first md:aspect-5/4 lg:aspect-4/3"
+          />
+        )
+      }
+      <SectionHeader
+        eyebrow={corporateBookersSection.eyebrow}
+        title={corporateBookersSection.heading}
+        lead={corporateBookersSection.body}
       >
-        {featuredPropertiesSection.eyebrow}
-      </p>
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {featuredPropertiesSection.heading}
-      </h2>
-      <p class="text-muted-foreground text-sm md:text-base">
-        {featuredPropertiesSection.body}
-      </p>
-    </div>
-    <FeaturedProperties items={featuredPropertyItems} />
-  </Section>
-
-  <Section className="mt-28">
-    <div class="grid gap-8 md:grid-cols-2 md:items-center">
-      {corporateBookersSection.image && <Image src={corporateBookersSection.image} alt="Corporate booker reviewing accommodation options" class="aspect-4/3 h-auto max-h-96 w-full rounded-2xl object-cover object-[65%_center] md:aspect-auto md:object-center" />}
-      <div class="flex flex-col gap-4">
-        <p
-          class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+        <div
+          class="mt-3 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4"
         >
-          {corporateBookersSection.eyebrow}
-        </p>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {corporateBookersSection.heading}
-        </h2>
-        <p class="text-muted-foreground text-sm md:text-base">
-          {corporateBookersSection.body}
-        </p>
-        <div class="flex flex-wrap gap-3">
           <CtaLink
             label={corporateBookersSection.primaryCta.label}
             href={resolveCtaLink(
@@ -281,60 +287,120 @@ const featuredPropertyItems: FeaturedPropertyItem[] = await Promise.all(
               ctaOptions,
             )}
             variant="primary"
-            size="md"
             icon="arrow"
+            trackingKey="home_corporate_click"
           />
           <CtaLink
             label={corporateBookersSection.secondaryCta.label}
             href={corporateEmail}
-            variant="outline"
-            size="md"
+            variant="link"
+            icon="email"
+            trackingKey="home_corporate_email_click"
           />
+        </div>
+      </SectionHeader>
+    </div>
+  </Section>
+
+  {/* Human assistance (centred, as in the approved layout) */}
+  <Section>
+    <div class="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
+      <h2 class="type-h2">{humanAssistanceSection.heading}</h2>
+      <p class="type-lead">{humanAssistanceSection.body}</p>
+      <CtaLink
+        label={humanAssistanceSection.cta.label}
+        href={humanAssistanceLink}
+        variant="secondary"
+        icon="whatsapp"
+        external={humanAssistanceLink.startsWith("http")}
+        trackingKey="home_assistance_whatsapp_click"
+        className="mt-2"
+      />
+    </div>
+  </Section>
+
+  {
+    /* Property-owner invitation: a deliberate shift to a new audience.
+      Full-bleed ivory split with the welcoming-host photograph. */
+  }
+  <Section spacing="none" fullWidth id="for-accommodation-providers">
+    <div class="surface-ivory grid lg:min-h-160 lg:grid-cols-2">
+      {
+        propertyOwnersSection.image && (
+          <div class="relative aspect-4/3 sm:aspect-video lg:aspect-auto">
+            <Image
+              src={propertyOwnersSection.image}
+              alt="An independent accommodation host welcoming a business traveller"
+              widths={[480, 800, 1200, 1408]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="absolute inset-0 h-full w-full object-cover object-[64%_center] lg:object-[60%_center]"
+            />
+          </div>
+        )
+      }
+      <div class="flex items-center">
+        <div
+          class="flex w-full max-w-xl flex-col gap-5 px-4 py-14 sm:px-6 md:py-20 lg:px-16 xl:px-20"
+        >
+          <p class="eyebrow">{propertyOwnersSection.eyebrow}</p>
+          <h2 class="type-h2">
+            {propertyOwnersSection.heading || ownerCta.heading}
+          </h2>
+          <p class="type-lead">{propertyOwnersSection.body || ownerCta.body}</p>
+          <div
+            class="mt-3 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4"
+          >
+            <CtaLink
+              label={propertyOwnersSection.primaryCta.label ||
+                ownerCta.buttonLabel}
+              href={ownerPrimaryHref}
+              variant="primary"
+              icon="arrow"
+              trackingKey="home_list_property_click"
+            />
+            <CtaLink
+              label={propertyOwnersSection.secondaryCta.label ||
+                ownerCta.secondButtonLabel}
+              href={ownerSecondaryHref}
+              variant="link"
+              trackingKey="home_whats_included_click"
+            />
+          </div>
         </div>
       </div>
     </div>
   </Section>
-
-  <Section className="mt-28">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {humanAssistanceSection.heading}
-      </h2><p class="text-muted-foreground mt-3">
-        {humanAssistanceSection.body}
-      </p><CtaLink
-        label={humanAssistanceSection.cta.label}
-        href={humanAssistanceLink}
-        variant="secondary"
-        size="md"
-        icon="whatsapp"
-        external
-        className="mt-6"
-      />
-    </div>
-  </Section>
-
-  <Section fullWidth className="m-0 mt-20 md:mt-28">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
-      {propertyOwnersSection.image && (
-        <Image
-          src={propertyOwnersSection.image}
-          alt="An independent accommodation host welcoming a business traveller"
-          class="aspect-4/3 h-auto w-full rounded-2xl object-cover object-[22%_center] sm:object-[28%_center] md:object-[35%_center] lg:aspect-auto lg:h-136 lg:object-[28%_center]"
-        />
-      )}
-      <OwnerCta
-        eyebrow={propertyOwnersSection.eyebrow}
-        heading={propertyOwnersSection.heading || ownerCta.heading}
-        body={propertyOwnersSection.body || ownerCta.body}
-        buttonLabel={propertyOwnersSection.primaryCta.label ||
-          ownerCta.buttonLabel}
-        secondButtonLabel={propertyOwnersSection.secondaryCta.label ||
-          ownerCta.secondButtonLabel}
-        primaryHref={propertyOwnerPrimary}
-        secondaryHref={propertyOwnerSecondary}
-      />
-    </div>
-  </Section>
-
-  {closingSection.image && <Section fullWidth className="m-0 mt-20 md:mt-28"><div class="relative"><Image src={closingSection.image} alt="Traveller relaxing after a business day" class="aspect-4/3 h-auto max-h-128 w-full object-cover object-[65%_center] md:aspect-auto md:h-96 md:object-center" /><div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 p-6 text-center text-white md:p-10"><h2 class="text-2xl font-bold md:text-3xl">{closingSection.heading}</h2><p class="max-w-2xl text-sm md:text-base">{closingSection.body}</p><CtaLink label={closingSection.cta.label} href={closingLink} variant="inverted" size="md" icon="arrow" /></div></div></Section>}
+  {/* Closing: beyond working hours */}
+  {
+    closingSection.image && (
+      <Section spacing="none" fullWidth>
+        <div class="surface-navy relative isolate overflow-hidden">
+          <Image
+            src={closingSection.image}
+            alt="A traveller relaxing on the patio of her guesthouse after a business day"
+            widths={[480, 800, 1200, 1408, 1920]}
+            sizes="100vw"
+            class="absolute inset-0 -z-10 h-full w-full object-cover object-[72%_center]"
+          />
+          <div
+            aria-hidden="true"
+            class="from-navy/90 via-navy/60 to-navy/10 absolute inset-0 -z-10 bg-linear-to-t md:bg-linear-to-r md:to-transparent"
+          />
+          <div class="container-page flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20">
+            <div class="flex max-w-lg flex-col gap-5">
+              <h2 class="type-h2">{closingSection.heading}</h2>
+              <p class="type-lead">{closingSection.body}</p>
+              <CtaLink
+                label={closingSection.cta.label}
+                href={resolveCtaLink(closingSection.cta.link, ctaOptions)}
+                variant="secondary"
+                icon="arrow"
+                className="mt-2 w-fit"
+              />
+            </div>
+          </div>
+        </div>
+      </Section>
+    )
+  }
 </Layout>

@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
 import { MobileMenu } from "./mobile-menu";
 
@@ -18,6 +19,7 @@ export type HeaderLogo = {
 export type HeaderProps = {
   logo?: HeaderLogo;
   navItems?: NavItem[];
+  currentPath?: string;
 };
 export type NavItem = {
   label: string;
@@ -29,72 +31,84 @@ export type NavSubItem = {
   href: string;
 };
 
-export const Header = ({ logo, navItems }: HeaderProps) => {
+export function isActivePath(href: string, currentPath = "") {
+  if (href === "/") return currentPath === "/";
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+
+const navLinkClassName =
+  "relative inline-flex h-10 items-center px-3 text-[0.8125rem] font-medium text-foreground/75 no-underline transition-colors hover:text-foreground focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-ring xl:px-3.5 xl:text-sm";
+
+/* Active page: a short gold rule, one of gold's few selective highlights. */
+const activeIndicator =
+  "text-foreground after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:rounded-full after:bg-gold";
+
+export const Header = ({ logo, navItems, currentPath }: HeaderProps) => {
   return (
     <header
       data-slot="header"
-      className="bg-card text-card-foreground sticky top-0 left-0 z-50 max-w-screen px-4 py-2 shadow-md shadow-black/20 md:px-6 md:py-2.5 lg:px-8 lg:py-3"
+      className="bg-background/95 supports-backdrop-filter:bg-background/85 border-border sticky top-0 left-0 z-50 w-full border-b backdrop-blur"
     >
       <div
         data-slot="header-content"
-        className="flex items-center justify-between gap-4"
+        className="container-page flex h-16 items-center justify-between gap-6 lg:h-18"
       >
-        {logo ? (
-          <a href="/">
+        <a href="/" aria-label="ACOSA home" className="shrink-0">
+          {logo ? (
             <StaticAcosaImage
               fetchPriority="high"
               loading="eager"
               decoding="sync"
-              className="h-10 w-auto object-contain"
+              className="h-9 w-auto object-contain lg:h-10"
               {...logo.light}
             />
-          </a>
-        ) : (
-          <a href="/">ACOSA</a>
-        )}
-        <nav data-slot="header-navigation">
-          <ul className="hidden items-center gap-2 lg:flex">
-            {navItems &&
-              navItems.length > 0 &&
-              navItems?.map((navItem, i) => (
-                <li key={i}>
+          ) : (
+            <span className="font-heading text-xl font-bold">ACOSA</span>
+          )}
+        </a>
+        <nav data-slot="header-navigation" aria-label="Main">
+          <ul className="hidden items-center xl:flex">
+            {navItems?.map((navItem) => {
+              const active = isActivePath(navItem.href, currentPath);
+              return (
+                <li key={navItem.href}>
                   {navItem.subItems && navItem.subItems.length > 0 ? (
-                    <div className="border-border/70 flex items-center overflow-hidden rounded-full border bg-transparent">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        asChild
-                        type="button"
-                        className="hover:bg-muted/80 rounded-none border-0 px-3 text-xs"
+                    <div className="flex items-center">
+                      <a
+                        href={navItem.href}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          navLinkClassName,
+                          "pr-0.5 xl:pr-0.5",
+                          active && activeIndicator,
+                        )}
                       >
-                        <a href={navItem.href} className="text-xs no-underline">
-                          {navItem.label}
-                        </a>
-                      </Button>
+                        {navItem.label}
+                      </a>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon-xs"
                             type="button"
-                            className="border-border/70 hover:bg-muted/80 h-8 rounded-none border-0 border-l px-2 text-xs"
-                            aria-label={`Open ${navItem.label} submenu`}
+                            className="text-foreground/60 hover:text-foreground mr-1 size-6"
+                            aria-label={`Open ${navItem.label} menu`}
                           >
                             <ChevronDown className="size-3.5" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56" align="start">
+                        <DropdownMenuContent className="w-60" align="start">
                           <DropdownMenuGroup>
-                            <DropdownMenuItem key={`${navItem.href}-all`}>
+                            <DropdownMenuItem asChild>
                               <a
                                 href={navItem.href}
-                                className="w-full text-sm no-underline"
+                                className="w-full text-sm font-medium no-underline"
                               >
                                 View all {navItem.label}
                               </a>
                             </DropdownMenuItem>
                             {navItem.subItems.map((subItem) => (
-                              <DropdownMenuItem key={subItem.href}>
+                              <DropdownMenuItem key={subItem.href} asChild>
                                 <a
                                   href={subItem.href}
                                   className="w-full text-sm no-underline"
@@ -108,14 +122,20 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
                       </DropdownMenu>
                     </div>
                   ) : (
-                    <Button variant="ghost" size="sm" asChild>
-                      <a href={navItem.href} className="text-xs no-underline">
-                        {navItem.label}
-                      </a>
-                    </Button>
+                    <a
+                      href={navItem.href}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        navLinkClassName,
+                        active && activeIndicator,
+                      )}
+                    >
+                      {navItem.label}
+                    </a>
                   )}
                 </li>
-              ))}
+              );
+            })}
           </ul>
         </nav>
         <div data-slot="header-actions" className="flex items-center gap-2">
@@ -123,13 +143,20 @@ export const Header = ({ logo, navItems }: HeaderProps) => {
             variant="default"
             size="sm"
             asChild
-            className="hidden lg:inline-flex"
+            className="hidden sm:inline-flex"
           >
-            <a href="/business-nodes" className="text-xs no-underline">
+            <a
+              href="/business-nodes"
+              data-acosa-track="header_find_accommodation"
+            >
               Find Accommodation
             </a>
           </Button>
-          <MobileMenu navItems={navItems} logo={logo} />
+          <MobileMenu
+            navItems={navItems}
+            logo={logo}
+            currentPath={currentPath}
+          />
         </div>
       </div>
     </header>

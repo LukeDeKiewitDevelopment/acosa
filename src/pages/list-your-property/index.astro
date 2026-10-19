@@ -9,14 +9,35 @@ import {
   LISTING_WHATSAPP_MESSAGE,
 } from "@/lib/content";
 import { Section } from "@/components/custom/section";
+import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
-
 import { CtaLink } from "@/components/custom/cta-link";
-import { FeatureList } from "@/components/custom/feature-list";
-import { SectionIcon } from "@/components/custom/section-icon";
-import { BadgeCheck, Home, ClipboardCheck, Tag, RefreshCw, UserPlus } from "lucide-react";
+import {
+  BadgeCheck,
+  BadgePercent,
+  ChartColumn,
+  Check,
+  ClipboardCheck,
+  Images,
+  MapPin,
+  Megaphone,
+  RefreshCw,
+  Rocket,
+  Search,
+  Send,
+  Store,
+} from "lucide-react";
+import { IconMark } from "@/components/custom/icon-mark";
 
 export const prerender = true;
+
+/* For Properties — Creative Direction Blueprint, Page 07 (highest visual
+   priority) and the pre-launch addendum §11 pacing:
+   cinematic hero (desire) → editorial 50/50 (qualification) → image +
+   benefits grid (value) → curation feature (trust) → typography (beyond the
+   listing) → pricing panel (commercial decision) → compact support strip →
+   image + process → final conversion (action). One application CTA closes
+   the journey, so there are no stacked duplicates. */
 
 const page = await getEntry("listYourPropertyPage", "list-your-property");
 if (!page) throw new Error("List Your Property page content not found");
@@ -38,27 +59,43 @@ const ctaOptions = {
   whatsappNumber: settings.data.defaultWhatsapp,
   whatsappMessage: LISTING_WHATSAPP_MESSAGE,
 };
+const applicationOptions = {
+  ...ctaOptions,
+  emailSubject: "ACOSA Property Listing Application",
+};
 const heroPrimaryHref = resolveCtaLink(hero.primaryCta.link, ctaOptions);
 const heroSecondaryHref = resolveCtaLink(hero.secondaryCta.link, ctaOptions);
-const listingApplicationHref = resolveCtaLink(pricingSection.cta.link, {
-  ...ctaOptions,
-  emailSubject: "ACOSA Property Listing Application",
-});
-const joinApplicationHref = resolveCtaLink(howToJoinSection.cta.link, {
-  ...ctaOptions,
-  emailSubject: "ACOSA Property Listing Application",
-});
-const finalPrimaryHref = resolveCtaLink(finalCta.primaryCta.link, {
-  ...ctaOptions,
-  emailSubject: "ACOSA Property Listing Application",
-});
-const finalSecondaryHref = resolveCtaLink(
-  finalCta.secondaryCta.link,
-  ctaOptions,
+const pricingHref = resolveCtaLink(pricingSection.cta.link, applicationOptions);
+const applicationHref = resolveCtaLink(
+  howToJoinSection.cta.link,
+  applicationOptions,
 );
+const questionHref = resolveCtaLink(finalCta.secondaryCta.link, ctaOptions);
+const curationHref = resolveCtaLink(curationSection.cta.link, ctaOptions);
 const promoHref = promotionalVisibilitySection.cta
   ? resolveCtaLink(promotionalVisibilitySection.cta.link, ctaOptions)
   : undefined;
+
+// One icon per listing benefit, matched on the CMS title (fallback: check).
+const benefitIcons: [RegExp, typeof Check][] = [
+  [/profile/i, ClipboardCheck],
+  [/gallery/i, Images],
+  [/node/i, MapPin],
+  [/search|filter/i, Search],
+  [/convenience/i, Store],
+  [/enquir/i, Send],
+  [/commission/i, BadgePercent],
+  [/launch/i, Rocket],
+  [/promot/i, Megaphone],
+  [/asset/i, BadgeCheck],
+  [/snapshot|performance/i, ChartColumn],
+];
+const benefitIcon = (title: string) =>
+  benefitIcons.find(([pattern]) => pattern.test(title))?.[1] ?? Check;
+
+// The monthly partner rate is the highlighted offer (R389 at launch).
+const isPartnerPlan = (plan: { tier: string; price: string; period: string }) =>
+  /partner/i.test(plan.tier) && /month/i.test(plan.period);
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -80,13 +117,16 @@ const ogImageUrl = seo?.ogImage
   ogImage={ogImageUrl}
   whatsappMessage={LISTING_WHATSAPP_MESSAGE}
 >
+  {/* 01 — Desire: the hero sells the opportunity. */}
   <Hero
+    size="cinematic"
+    align="left"
     eyebrow={hero.eyebrow}
     heading={hero.heading}
     body={hero.body}
     image={hero.image}
-    imageAlt="Independent accommodation provider"
-    imageClassName="object-[68%_center] md:object-[64%_center] lg:object-center"
+    imageAlt="An independent accommodation host welcoming a business traveller"
+    imageClassName="object-[62%_center] sm:object-[60%_center] lg:object-[58%_center]"
     primaryCta={{ label: hero.primaryCta.label, href: heroPrimaryHref }}
     secondaryCta={{
       label: hero.secondaryCta.label,
@@ -95,149 +135,170 @@ const ogImageUrl = seo?.ogImage
     }}
   />
 
-  <div class="mx-auto mt-8 max-w-6xl px-4 md:px-6">
-    <div class="grid gap-4 md:grid-cols-3">
-      <div class="rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Who it suits</p>
-        <h3 class="mt-3 text-lg font-semibold text-primary">Independent stays</h3>
-        <p class="mt-2 text-sm text-muted-foreground">Boutique stays, guesthouses and executive rentals that care about the guest experience.</p>
-      </div>
-      <div class="rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">What you get</p>
-        <h3 class="mt-3 text-lg font-semibold text-primary">Relevant visibility</h3>
-        <p class="mt-2 text-sm text-muted-foreground">A curated profile, practical property discovery and a clearer route to the right business travellers.</p>
-      </div>
-      <div class="rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">How it works</p>
-        <h3 class="mt-3 text-lg font-semibold text-primary">Simple and selective</h3>
-        <p class="mt-2 text-sm text-muted-foreground">Apply, get reviewed, then go live when your property meets ACOSA's accommodation standards.</p>
-      </div>
-    </div>
-  </div>
-
-  <Section id="why-list" className="mt-16">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      {whoWeWorkWithSection.image && (
-        <Image
-          src={whoWeWorkWithSection.image}
-          alt="An independent accommodation owner caring for her property"
-          class="aspect-4/3 h-auto w-full rounded-2xl object-cover"
+  {/* 02 — Qualification: selectivity, as an editorial 50/50. */}
+  <Section id="why-list">
+    <div class="grid items-center gap-10 md:grid-cols-2 lg:gap-20">
+      {
+        whoWeWorkWithSection.image && (
+          <Image
+            src={whoWeWorkWithSection.image}
+            alt="An independent accommodation owner preparing her guesthouse"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="aspect-4/3 w-full rounded-xl object-cover object-[62%_center] md:aspect-4/5 lg:aspect-5/6"
+          />
+        )
+      }
+      <div class="flex flex-col gap-8">
+        <SectionHeader
+          eyebrow={whoWeWorkWithSection.eyebrow}
+          title={whoWeWorkWithSection.heading}
+          lead={whoWeWorkWithSection.body || null}
         />
-      )}
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={Home} />
-          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-            {whoWeWorkWithSection.eyebrow}
+        <div class="flex flex-col gap-4">
+          <p class="text-foreground text-sm font-semibold">
+            ACOSA works with properties that:
           </p>
+          <ul
+            class="divide-border border-border flex flex-col divide-y border-y"
+          >
+            {
+              whoWeWorkWithSection.properties.map((quality) => (
+                <li class="flex items-start gap-3 py-3.5">
+                  <Check
+                    className="text-gold-ink mt-1 size-4 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span class="text-foreground/90 text-[0.9375rem] leading-relaxed">
+                    {quality}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
         </div>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {whoWeWorkWithSection.heading}
-        </h2>
-        {whoWeWorkWithSection.body && (
-          <p class="text-muted-foreground mt-3">{whoWeWorkWithSection.body}</p>
-        )}
-        <FeatureList
-          className="mt-6"
-          items={whoWeWorkWithSection.properties.map((property) => ({ text: property }))}
-        />
-        <p class="text-primary mt-6 font-semibold">
-          {whoWeWorkWithSection.highlight}
-        </p>
-        <p class="text-muted-foreground mt-2 text-sm">
-          {whoWeWorkWithSection.note}
-        </p>
+        <div class="flex flex-col gap-1.5">
+          <p class="type-h3">{whoWeWorkWithSection.highlight}</p>
+          <p class="type-small">{whoWeWorkWithSection.note}</p>
+        </div>
       </div>
     </div>
   </Section>
 
-  <Section id="whats-included" className="mt-16 bg-muted/35 py-16 md:mt-24 md:py-20">
-    <div class="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 md:gap-16 md:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+  {/* 03 — Value: image + scannable benefits grid. */}
+  <Section id="whats-included" tone="warm">
+    <div
+      class="grid items-center gap-10 md:grid-cols-2 lg:grid-cols-[1fr_1.1fr] lg:gap-20"
+    >
+      <SectionHeader
+        eyebrow={valueSection.eyebrow}
+        title={valueSection.heading}
+        lead={valueSection.body}
+      />
       {
         valueSection.image && (
           <Image
             src={valueSection.image}
-            alt="ACOSA property visibility"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
+            alt="A property owner reviewing his ACOSA listing"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 768px) 55vw, 100vw"
+            class="aspect-4/3 w-full rounded-xl object-cover object-[55%_center] lg:aspect-video"
           />
         )
       }
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={BadgeCheck} />
-          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-            {valueSection.eyebrow}
-          </p>
-        </div>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">
-          {valueSection.heading}
-        </h2>
-        <p class="text-muted-foreground mt-3">{valueSection.body}</p>
-        <FeatureList
-          className="mt-6"
-          items={valueSection.includes.map((item) => ({
-            title: item.title,
-            detail: item.detail,
-            text: item.detail,
-          }))}
-        />
-      </div>
     </div>
+    <ul
+      class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 md:mt-20 lg:grid-cols-3"
+    >
+      {
+        valueSection.includes.map((item) => (
+          <li class="border-sage flex flex-col gap-3 border-t pt-6">
+            <IconMark icon={benefitIcon(item.title)} size="sm" />
+            <h3 class="font-heading text-foreground text-base font-semibold">
+              {item.title}
+            </h3>
+            <p class="type-small">{item.detail}</p>
+          </li>
+        ))
+      }
+    </ul>
   </Section>
 
-  <Section id="acosa-review" className="mt-16 md:mt-24">
-    <div class="grid items-center gap-10 lg:grid-cols-[1.25fr_0.9fr] lg:gap-16">
-      <div class="grid gap-4 sm:grid-cols-[1.5fr_1fr] lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
-        {curationSection.image && (
-          <Image
-            src={curationSection.image}
-            alt="ACOSA reviewing a guesthouse room"
-            class="aspect-4/3 h-auto w-full rounded-2xl object-cover lg:aspect-5/4"
-          />
-        )}
-        {curationSection.secondaryImage && (
-          <Image
-            src={curationSection.secondaryImage}
-            alt="A professional hospitality team preparing a property"
-            class="aspect-4/3 h-auto w-full rounded-2xl object-cover lg:mb-10 lg:aspect-4/5"
-          />
-        )}
+  {/* 04 — Trust: curation justifies trust. Navy feature. */}
+  <Section id="acosa-review" tone="navy">
+    <div class="grid items-start gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
+      <div class="relative">
+        {
+          curationSection.image && (
+            <Image
+              src={curationSection.image}
+              alt="ACOSA assessing a guesthouse room with the owner"
+              widths={[480, 800, 1200, 1408]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="aspect-4/3 w-full rounded-xl object-cover object-[60%_center] lg:aspect-5/4"
+            />
+          )
+        }
+        {
+          curationSection.secondaryImage && (
+            <Image
+              src={curationSection.secondaryImage}
+              alt="A professional hospitality team preparing a property"
+              widths={[400, 800]}
+              sizes="(min-width: 1024px) 20vw, 40vw"
+              class="ring-navy absolute -right-3 -bottom-10 hidden aspect-4/3 w-[42%] rounded-xl object-cover object-[45%_center] ring-8 sm:block lg:-right-8"
+            />
+          )
+        }
       </div>
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={ClipboardCheck} />
-          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{curationSection.eyebrow}</p>
-        </div>
-        <h2 class="text-primary mt-2 text-2xl font-bold md:text-3xl">{curationSection.heading}</h2>
-        <p class="text-muted-foreground mt-3">{curationSection.body}</p>
-        <FeatureList
-          className="mt-5"
-          items={curationSection.criteria.map((item) => ({ text: item }))}
+      <div class="flex flex-col gap-8 sm:pt-6 lg:pt-0">
+        <SectionHeader
+          eyebrow={curationSection.eyebrow}
+          title={curationSection.heading}
+          lead={curationSection.body}
+          accent
         />
-        <div class="border-border mt-8 border-l-2 pl-4">
-          <h3 class="text-primary font-semibold">{curationSection.approvedHeading}</h3>
-          <p class="text-muted-foreground mt-2 text-sm">{curationSection.approvedBody}</p>
+        <ul class="grid grid-cols-2 gap-x-6 gap-y-3">
+          {
+            curationSection.criteria.map((criterion) => (
+              <li class="text-foreground flex items-center gap-2.5 text-[0.9375rem]">
+                <Check
+                  className="text-gold size-4 shrink-0"
+                  aria-hidden="true"
+                />
+                {criterion}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="border-border flex gap-4 border-t pt-7">
+          <BadgeCheck
+            className="text-gold mt-0.5 size-6 shrink-0"
+            aria-hidden="true"
+          />
+          <div class="flex flex-col gap-2">
+            <h3 class="type-h3">{curationSection.approvedHeading}</h3>
+            <p class="type-small">{curationSection.approvedBody}</p>
+          </div>
         </div>
         <CtaLink
           label={curationSection.cta.label}
-          href={resolveCtaLink(curationSection.cta.link, ctaOptions)}
+          href={curationHref}
           variant="link"
-          size="md"
           icon="arrow"
-          className="mt-6"
+          trackingKey="listing_curation_click"
         />
       </div>
     </div>
   </Section>
 
-  <Section className="mt-16 md:mt-24">
-    <div class="mx-auto max-w-3xl border-y border-border py-16 text-center md:py-20">
-      <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">{promotionalVisibilitySection.eyebrow}</p>
-      <h2 class="text-primary text-2xl font-bold md:text-3xl">
-        {promotionalVisibilitySection.heading}
-      </h2><p class="text-muted-foreground mt-3">
-        {promotionalVisibilitySection.body}
-      </p><p class="text-muted-foreground mt-4 text-sm">
+  {/* Beyond the listing: typography only, no container. */}
+  <Section>
+    <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+      <p class="eyebrow">{promotionalVisibilitySection.eyebrow}</p>
+      <h2 class="type-h2">{promotionalVisibilitySection.heading}</h2>
+      <p class="type-lead">{promotionalVisibilitySection.body}</p>
+      <p class="type-small max-w-2xl text-xs">
         {promotionalVisibilitySection.note}
       </p>
       {
@@ -246,139 +307,163 @@ const ogImageUrl = seo?.ogImage
             label={promotionalVisibilitySection.cta.label}
             href={promoHref}
             variant="link"
-            size="md"
             icon="arrow"
-            className="mt-6"
+            className="mt-2"
           />
         )
       }
     </div>
   </Section>
 
-  <Section id="pricing" className="mt-16 md:mt-24">
-    <div class="mx-auto w-full max-w-5xl rounded-2xl bg-primary p-8 text-primary-foreground md:p-12">
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={Tag} className="bg-secondary/20 text-secondary" />
-          <p class="text-primary-foreground/70 text-xs font-semibold tracking-wider uppercase">
-            {pricingSection.eyebrow}
-          </p>
-        </div>
-        <h2 class="mt-2 text-2xl font-bold md:text-3xl">
-          {pricingSection.heading}
-        </h2><div class="mt-6 grid gap-4 md:grid-cols-3 md:mt-8">
+  {
+    /* 05 — Commercial decision: restrained typography, clear price hierarchy.
+      The R389 partner rate is identified without hiding R499 or R4,290. */
+  }
+  <Section id="pricing" tone="warm">
+    <div class="flex flex-col gap-12 md:gap-14">
+      <SectionHeader
+        eyebrow={pricingSection.eyebrow}
+        title={pricingSection.heading}
+        align="center"
+      />
+      <ul class="grid gap-4 md:grid-cols-3 md:gap-5">
         {
-          pricingSection.pricing.map((plan) => (
-            <article class:list={["rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-5", plan.price === "R389" && "border-secondary ring-secondary/30 bg-primary-foreground/20 ring-2"]}>
-              <>
-                <h3 class="font-semibold">{plan.tier}</h3>
-                <p class="mt-4 text-2xl font-bold">
-                  {plan.price}
-                  <span class="text-primary-foreground/70 text-sm font-normal">
+          pricingSection.pricing.map((plan) => {
+            const partner = isPartnerPlan(plan);
+            return (
+              <li
+                class:list={[
+                  "bg-card relative flex flex-col gap-5 rounded-xl border p-7 md:p-8",
+                  partner
+                    ? "border-gold shadow-[0_24px_50px_-30px_rgb(5_10_60/0.45)] md:-my-3 md:py-11"
+                    : "border-border",
+                ]}
+              >
+                {partner && (
+                  <p class="bg-gold text-navy absolute -top-3 left-7 rounded-md px-2.5 py-1 text-[0.6875rem] font-semibold tracking-[0.12em] uppercase md:left-8">
+                    Partner offer
+                  </p>
+                )}
+                <h3 class="font-heading text-foreground text-base font-semibold">
+                  {plan.tier}
+                </h3>
+                <p class="flex items-baseline gap-1.5">
+                  <span class="font-heading text-foreground text-[2.75rem] leading-none font-semibold tracking-tight">
+                    {plan.price}
+                  </span>
+                  <span class="text-muted-foreground text-sm">
                     {plan.period}
                   </span>
                 </p>
-                <p class="text-primary-foreground/75 mt-2 text-sm">{plan.detail}</p>
-              </>
-            </article>
-          ))
+                <p class="type-small border-border border-t pt-5">
+                  {plan.detail}
+                </p>
+              </li>
+            );
+          })
         }
-      </div><CtaLink
-        label={pricingSection.cta.label}
-        href={listingApplicationHref}
-        variant="secondary"
-        size="md"
-        icon="arrow"
-        className="mt-8"
-      />
-    </div>
-  </Section>
-
-  <Section className="mt-16">
-    <div class="mx-auto max-w-3xl border-l-2 border-secondary pl-6 md:pl-8">
-      <div class="flex items-center gap-3">
-        <SectionIcon icon={RefreshCw} />
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {listingUpdatesSection.heading}
-        </h2>
-      </div>
-      <p class="text-muted-foreground mt-3">
-        {listingUpdatesSection.body}
-      </p>
-      <FeatureList
-        className="mt-5"
-        items={listingUpdatesSection.refreshIncludes.map((item) => ({ text: item }))}
-      />
-    </div>
-  </Section>
-
-  <Section id="apply" className="mt-16 md:mt-24">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      {howToJoinSection.image && (
-        <Image
-          src={howToJoinSection.image}
-          alt="A business traveller being welcomed by a host"
-          class="aspect-4/3 h-auto w-full rounded-2xl object-cover"
-        />
-      )}
-      <div>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={UserPlus} />
-          <p class="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-            {howToJoinSection.eyebrow}
-          </p>
-        </div><ol class="mt-6 space-y-4">
-        {
-          howToJoinSection.steps.map((step) => (
-            <li class="flex gap-4">
-              <>
-                <span class="text-secondary font-bold">{step.number}</span>
-                <div>
-                  <>
-                    <h3 class="text-primary font-semibold">{step.title}</h3>
-                    <p class="text-muted-foreground text-sm">{step.detail}</p>
-                  </>
-                </div>
-              </>
-            </li>
-          ))
-        }
-      </ol><CtaLink
-        label={howToJoinSection.cta.label}
-        href={joinApplicationHref}
-        variant="secondary"
-        size="md"
-        icon="arrow"
-        className="mt-6"
-      />
-      </div>
-    </div></Section
-  >
-
-  <Section className="mt-16 mb-28 md:mt-24"
-    ><div
-      class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-10 text-center shadow-xl md:p-14"
-    >
-      <h2 class="text-2xl font-bold md:text-3xl">{finalCta.heading}</h2><p
-        class="mt-3"
-      >
-        {finalCta.body}
-      </p><div class="mt-6 flex flex-wrap justify-center gap-3">
+      </ul>
+      <div class="flex flex-col items-center gap-3 text-center">
         <CtaLink
-          label={finalCta.primaryCta.label}
-          href={finalPrimaryHref}
-          variant="inverted"
-          size="md"
+          label={pricingSection.cta.label}
+          href={pricingHref}
+          variant="primary"
+          size="lg"
           icon="arrow"
-        /><CtaLink
-          label={finalCta.secondaryCta.label}
-          href={finalSecondaryHref}
-          variant="inverted"
-          size="md"
-          icon="whatsapp"
-          external={finalCta.secondaryCta.link === "whatsapp"}
-          className="border border-background/30 bg-transparent text-background hover:bg-background/10"
+          trackingKey="listing_pricing_apply_click"
         />
       </div>
-    </div></Section
-  >
+    </div>
+  </Section>
+
+  {/* Listing support: a compact strip. */}
+  <Section spacing="tight">
+    <div
+      class="border-border grid gap-6 border-y py-10 md:grid-cols-[1fr_1.4fr] md:gap-12 md:py-12"
+    >
+      <div class="flex items-start gap-4">
+        <IconMark icon={RefreshCw} />
+        <h2 class="type-h3 md:text-2xl">{listingUpdatesSection.heading}</h2>
+      </div>
+      <div class="flex flex-col gap-4">
+        <p class="type-body">{listingUpdatesSection.body}</p>
+      </div>
+    </div>
+  </Section>
+
+  {/* 06 — Action: image + process, then one concluding application. */}
+  <Section id="apply" tone="ivory">
+    <div
+      class="grid items-start gap-12 md:grid-cols-2 lg:grid-cols-[1fr_1.05fr] lg:gap-20"
+    >
+      {
+        howToJoinSection.image && (
+          <Image
+            src={howToJoinSection.image}
+            alt="A host welcoming a returning business guest"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="aspect-4/3 w-full rounded-xl object-cover object-[50%_center] md:sticky md:top-28 md:aspect-4/5"
+          />
+        )
+      }
+      <div class="flex flex-col gap-10">
+        <SectionHeader
+          eyebrow={howToJoinSection.eyebrow}
+          title="How to join ACOSA"
+        />
+        <ol class="flex flex-col">
+          {
+            howToJoinSection.steps.map((step, index) => (
+              <li class="relative flex gap-5 pb-8 last:pb-0">
+                {index < howToJoinSection.steps.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    class="bg-sage absolute top-11 bottom-1 left-4.75 w-px"
+                  />
+                )}
+                <span class="font-heading border-sage bg-card text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg border text-sm font-semibold">
+                  {step.number}
+                </span>
+                <div class="flex flex-col gap-1 pt-2">
+                  <h3 class="font-heading text-foreground text-base font-semibold">
+                    {step.title}
+                  </h3>
+                  <p class="type-small">{step.detail}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        {/* Final conversion: a conclusion, not another promotional panel. */}
+        <div class="border-sage flex flex-col gap-5 border-t pt-10">
+          <h2 class="type-h2">{finalCta.heading}</h2>
+          <p class="type-lead">{finalCta.body}</p>
+          <div
+            class="mt-2 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4"
+          >
+            <CtaLink
+              label={howToJoinSection.cta.label}
+              href={applicationHref}
+              variant="primary"
+              size="lg"
+              icon="email"
+              trackingKey="listing_application_click"
+            />
+            <CtaLink
+              label={finalCta.secondaryCta.label}
+              href={questionHref}
+              variant="link"
+              icon={finalCta.secondaryCta.link === "whatsapp"
+                ? "whatsapp"
+                : "arrow"}
+              external={questionHref.startsWith("http")}
+              trackingKey="listing_question_click"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
 </Layout>

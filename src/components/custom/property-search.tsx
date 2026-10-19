@@ -1,40 +1,16 @@
-import { useMemo, useState } from "react";
-import { ArrowRight, BadgeCheck, MapPin } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronDown, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Field } from "../ui/field";
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from "../ui/combobox";
-import { StaticAcosaImage } from "./image";
-import { PROVINCES, provinceLabel, type ProvinceSlug } from "@/lib/provinces";
+import { provinceLabel } from "@/lib/provinces";
 import { matchesPropertySearchQuery } from "@/lib/property-search";
+import { cn } from "@/lib/utils";
+import { PropertyGrid, type PropertyCardItem } from "./property-card";
 
-export type PropertySearchItem = {
-  id: string;
-  name: string;
+export type PropertySearchItem = PropertyCardItem & {
   province: string;
   businessNode: string;
-  businessNodeLabel: string;
-  locationAddress: string;
   propertyType: string;
-  propertyTypeLabel: string;
-  approved: boolean;
-  shortDescription: string;
-  image: {
-    src: string;
-    srcSet?: string;
-    sizes?: string;
-    width?: number;
-    height?: number;
-  };
-  imageAlt: string;
+  locationAddress: string;
 };
 
 export type PropertySearchBusinessNode = {
@@ -47,79 +23,128 @@ export type PropertySearchProps = {
   businessNodes?: PropertySearchBusinessNode[];
 };
 
-const PROVINCE_SLUGS = Object.keys(PROVINCES) as ProvinceSlug[];
+type Option = { value: string; label: string };
 
+function uniqueOptions(entries: [string, string][]): Option[] {
+  const map = new Map(entries);
+  return [...map.entries()]
+    .map(([value, label]) => ({ value, label }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+const fieldLabelClassName =
+  "text-muted-foreground px-4 pt-3 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase";
+
+const FilterSelect = ({
+  id,
+  label,
+  value,
+  onChange,
+  allLabel,
+  options,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  allLabel: string;
+  options: Option[];
+}) => (
+  <div className="relative flex min-w-0 flex-col">
+    <label htmlFor={id} className={fieldLabelClassName}>
+      {label}
+    </label>
+    <select
+      id={id}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      className="text-foreground h-11 w-full cursor-pointer appearance-none bg-transparent pr-10 pl-4 text-[0.9375rem] outline-none"
+    >
+      <option value="">{allLabel}</option>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+    <ChevronDown
+      className="text-foreground/60 pointer-events-none absolute right-4 bottom-3.5 size-4"
+      aria-hidden="true"
+    />
+  </div>
+);
+
+/* Properties, Creative Direction Blueprint Page 03: search and filter
+   controls as one cohesive bar rather than competing fields and buttons,
+   over genuine property cards. Filtering is instant, so there is no
+   separate submit button to compete with. */
 export const PropertySearch = ({
   items,
   businessNodes = [],
 }: PropertySearchProps) => {
   const [query, setQuery] = useState("");
-  const [selectedProvince, setSelectedProvince] = useState<ProvinceSlug | null>(
-    null,
-  );
-  const [selectedBusinessNode, setSelectedBusinessNode] = useState<string | null>(
-    null,
-  );
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedBusinessNode, setSelectedBusinessNode] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
-  const { businessNodeSlugs, businessNodeLabels } = useMemo(() => {
-    const labels = new Map<string, string>();
-    for (const node of businessNodes) {
-      labels.set(node.id, node.name);
-    }
-    for (const item of items) {
-      if (!labels.has(item.businessNode)) {
-        labels.set(item.businessNode, item.businessNodeLabel);
-      }
-    }
-    const entries = [...labels.entries()].sort((a, b) =>
-      a[1].localeCompare(b[1]),
-    );
-    return {
-      businessNodeSlugs: entries.map(([slug]) => slug),
-      businessNodeLabels: Object.fromEntries(entries) as Record<string, string>,
-    };
-  }, [businessNodes, items]);
+  // Deep links: /properties?q=centurion or ?node=centurion
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q");
+    const node = params.get("node");
+    if (q) setQuery(q);
+    if (node) setSelectedBusinessNode(node);
+  }, []);
 
-  // The canonical PROPERTY_TYPES map lives in content.config.ts, which imports
-  // the server-only `astro:content` module and so cannot be pulled into a
-  // client island. Each item already carries its type slug + display label
-  // (resolved server-side), so derive the type-filter options from the data.
-  const { typeSlugs, typeLabels } = useMemo(() => {
-    const labels = new Map<string, string>();
-    for (const item of items) {
-      if (!labels.has(item.propertyType)) {
-        labels.set(item.propertyType, item.propertyTypeLabel);
-      }
-    }
-    const entries = [...labels.entries()].sort((a, b) =>
-      a[1].localeCompare(b[1]),
-    );
-    return {
-      typeSlugs: entries.map(([slug]) => slug),
-      typeLabels: Object.fromEntries(entries) as Record<string, string>,
-    };
-  }, [items]);
+  const nodeOptions = useMemo(
+    () =>
+      uniqueOptions([
+        ...businessNodes.map((node): [string, string] => [node.id, node.name]),
+        ...items.map((item): [string, string] => [
+          item.businessNode,
+          item.businessNodeLabel,
+        ]),
+      ]),
+    [businessNodes, items],
+  );
+  const typeOptions = useMemo(
+    () =>
+      uniqueOptions(
+        items.map((item): [string, string] => [
+          item.propertyType,
+          item.propertyTypeLabel,
+        ]),
+      ),
+    [items],
+  );
+  const provinceOptions = useMemo(
+    () =>
+      uniqueOptions(
+        items.map((item): [string, string] => [
+          item.province,
+          provinceLabel(item.province),
+        ]),
+      ),
+    [items],
+  );
+  // A province filter only earns its place once listings span provinces.
+  const showProvince = provinceOptions.length > 1;
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
     return items
       .filter((item) => {
-        if (selectedProvince && item.province !== selectedProvince) {
+        if (selectedProvince && item.province !== selectedProvince)
+          return false;
+        if (
+          selectedBusinessNode &&
+          item.businessNode !== selectedBusinessNode
+        ) {
           return false;
         }
-        if (selectedBusinessNode && item.businessNode !== selectedBusinessNode) {
-          return false;
-        }
-        if (selectedType && item.propertyType !== selectedType) {
-          return false;
-        }
+        if (selectedType && item.propertyType !== selectedType) return false;
         return matchesPropertySearchQuery(
-          {
-            ...item,
-            provinceLabel: provinceLabel(item.province),
-          },
-          q,
+          { ...item, provinceLabel: provinceLabel(item.province) },
+          query,
         );
       })
       .sort((a, b) => {
@@ -130,110 +155,105 @@ export const PropertySearch = ({
 
   const hasActiveFilters =
     query.trim() !== "" ||
-    selectedProvince !== null ||
-    selectedBusinessNode !== null ||
-    selectedType !== null;
+    selectedProvince !== "" ||
+    selectedBusinessNode !== "" ||
+    selectedType !== "";
 
   const clearFilters = () => {
     setQuery("");
-    setSelectedProvince(null);
-    setSelectedBusinessNode(null);
-    setSelectedType(null);
+    setSelectedProvince("");
+    setSelectedBusinessNode("");
+    setSelectedType("");
   };
 
   return (
     <div data-slot="property-search" className="flex flex-col gap-8">
-      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr_1fr_1fr]">
-        <Field className="w-full min-w-0">
-          <Input
-            id="property-search-input"
-            type="search"
-            placeholder="Search by property, business node, province or type..."
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-        </Field>
-        <div className="min-w-0">
-          <Combobox
-            items={PROVINCE_SLUGS}
+      <form
+        role="search"
+        aria-label="Search properties"
+        onSubmit={(event) => event.preventDefault()}
+        className={cn(
+          "bg-card divide-border border-border focus-within:border-foreground/40 grid grid-cols-1 divide-y overflow-hidden rounded-xl border shadow-[0_18px_40px_-30px_rgb(5_10_60/0.35)] lg:divide-x lg:divide-y-0",
+          showProvince
+            ? "lg:grid-cols-[1.6fr_1fr_1fr_1fr]"
+            : "lg:grid-cols-[1.8fr_1fr_1fr]",
+        )}
+      >
+        <div className="relative flex min-w-0 flex-col">
+          <label
+            htmlFor="property-search-input"
+            className={fieldLabelClassName}
+          >
+            Search
+          </label>
+          <div className="relative">
+            <Search
+              className="text-foreground/50 pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2"
+              aria-hidden="true"
+            />
+            <input
+              id="property-search-input"
+              type="search"
+              placeholder="Property name, area or address"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              className="text-foreground placeholder:text-muted-foreground/80 h-11 w-full bg-transparent pr-4 pl-10 text-[0.9375rem] outline-none [&::-webkit-search-cancel-button]:hidden"
+            />
+          </div>
+        </div>
+        <FilterSelect
+          id="property-node-filter"
+          label="Business node"
+          value={selectedBusinessNode}
+          onChange={setSelectedBusinessNode}
+          allLabel="All business nodes"
+          options={nodeOptions}
+        />
+        <FilterSelect
+          id="property-type-filter"
+          label="Property type"
+          value={selectedType}
+          onChange={setSelectedType}
+          allLabel="All types"
+          options={typeOptions}
+        />
+        {showProvince && (
+          <FilterSelect
+            id="property-province-filter"
+            label="Province"
             value={selectedProvince}
-            onValueChange={(value) => setSelectedProvince(value)}
-            itemToStringLabel={(slug) => provinceLabel(slug)}
-          >
-            <ComboboxInput placeholder="All Provinces" />
-            <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
-              <ComboboxList>
-                {(item) => (
-                  <ComboboxItem key={item} value={item}>
-                    {provinceLabel(item)}
-                  </ComboboxItem>
-                )}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-        </div>
-        <div className="min-w-0">
-          <Combobox
-            items={businessNodeSlugs}
-            value={selectedBusinessNode}
-            onValueChange={(value) => setSelectedBusinessNode(value)}
-            itemToStringLabel={(slug) => businessNodeLabels[slug]}
-          >
-            <ComboboxInput placeholder="All Business Nodes" />
-            <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
-              <ComboboxList>
-                {(item: string) => (
-                  <ComboboxItem key={item} value={item}>
-                    {businessNodeLabels[item]}
-                  </ComboboxItem>
-                )}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-        </div>
-        <div className="min-w-0">
-          <Combobox
-            items={typeSlugs}
-            value={selectedType}
-            onValueChange={(value) => setSelectedType(value)}
-            itemToStringLabel={(slug) => typeLabels[slug]}
-          >
-            <ComboboxInput placeholder="All Types" />
-            <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
-              <ComboboxList>
-                {(item: string) => (
-                  <ComboboxItem key={item} value={item}>
-                    {typeLabels[item]}
-                  </ComboboxItem>
-                )}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-        </div>
+            onChange={setSelectedProvince}
+            allLabel="All provinces"
+            options={provinceOptions}
+          />
+        )}
+      </form>
+
+      <div className="flex min-h-9 items-center justify-between gap-4">
+        <p className="type-small" aria-live="polite">
+          {results.length === 1 ? "1 property" : `${results.length} properties`}
+          {hasActiveFilters && " match your search"}
+        </p>
+        {hasActiveFilters && (
+          <Button variant="ghost" size="sm" onClick={clearFilters}>
+            <X aria-hidden="true" />
+            Clear filters
+          </Button>
+        )}
       </div>
-      <Separator />
+
       <div data-slot="property-search-results">
         {results.length > 0 ? (
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {results.map((item) => (
-              <PropertyCard key={item.id} item={item} />
-            ))}
-          </ul>
+          <PropertyGrid items={results} headingLevel="h2" />
         ) : (
-          <div className="text-muted-foreground flex flex-col items-center gap-3 rounded-xl border border-dashed p-10 text-center">
-            <p>
+          <div className="surface-warm border-border flex flex-col items-center gap-4 rounded-xl border px-6 py-14 text-center">
+            <p className="type-h3">
               {items.length === 0
                 ? "Our first ACOSA properties are coming soon."
                 : "No properties match your search."}
             </p>
             {hasActiveFilters && (
-              <Button variant="outline" size="sm" onClick={clearFilters}>
+              <Button variant="outline" onClick={clearFilters}>
                 Clear filters
               </Button>
             )}
@@ -241,61 +261,5 @@ export const PropertySearch = ({
         )}
       </div>
     </div>
-  );
-};
-
-const PropertyCard = ({ item }: { item: PropertySearchItem }) => {
-  return (
-    <li>
-      <article className="bg-card text-card-foreground relative flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition-shadow hover:shadow-md">
-        <div className="relative m-3 aspect-16/11 overflow-hidden rounded-xl">
-          <StaticAcosaImage
-            {...item.image}
-            alt={item.imageAlt}
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute top-3 left-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center">
-            <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
-              {item.propertyTypeLabel}
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-foreground uppercase backdrop-blur">
-              <MapPin className="size-3" aria-hidden="true" />
-              {item.businessNodeLabel}
-            </span>
-            {item.approved && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
-                <BadgeCheck className="size-3.5" aria-hidden="true" />
-                    ACOSA Approved
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-1 flex-col gap-3 p-4 pt-1">
-          <h3 className="text-primary text-lg font-bold">
-            <a
-              href={`/properties/${item.id}`}
-              className="after:absolute after:inset-0"
-              data-acosa-track="property_card_click"
-              data-property-id={item.id}
-              data-property-name={item.name}
-            >
-              {item.name}
-            </a>
-          </h3>
-          {item.shortDescription && (
-            <p className="text-muted-foreground flex items-start gap-1.5 text-sm">
-              <MapPin
-                className="text-secondary mt-0.5 size-4 shrink-0"
-                aria-hidden="true"
-              />
-              <span className="line-clamp-2">{item.shortDescription}</span>
-            </p>
-          )}
-          <span className="border-secondary text-secondary mt-auto inline-flex items-center justify-between rounded-full border px-5 py-2.5 text-sm font-medium">
-            View Details <ArrowRight className="size-4" aria-hidden="true" />
-          </span>
-        </div>
-      </article>
-    </li>
   );
 };

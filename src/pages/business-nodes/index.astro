@@ -1,84 +1,39 @@
 ---
 import businessNodesHero from "@/assets/images/pages/business-nodes/hero.png";
-import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import {
-  getNodes,
-  getActiveProvinces,
+  getPublishedProperties,
   getSiteSettings,
-  whatsappLink,
+  resolveCtaLink,
+  buildNodeSummaries,
+  buildPropertyListingItems,
 } from "@/lib/content";
-import { Section } from "@/components/custom/section";
 import { Hero } from "@/components/custom/hero";
+import { Section } from "@/components/custom/section";
+import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
-import {
-  NodeDirectory,
-  type DirectoryGroup,
-  type DirectoryNode,
-} from "@/components/custom/node-directory";
-import {
-  BusinessNodeMap,
-  type BusinessNodeMapItem,
-} from "@/components/custom/business-node-map";
+import { PropertyGrid } from "@/components/custom/property-card";
+import { BusinessNodeExplorer } from "@/components/custom/business-node-explorer";
 
 export const prerender = true;
 
-const nodes = await getNodes();
-const provinces = await getActiveProvinces();
-const settings = await getSiteSettings();
+/* Business Nodes — Creative Direction Blueprint, Page 02.
+   Hero (page heading + short orientation) → map and node selection →
+   accommodation discovery → assistance if nothing suitable is found.
+   A standard-height hero keeps the map reachable before the visitor scrolls far. */
 
-const sortedProvinces = provinces.filter((province) => province.slug === "gauteng");
+const [nodes, properties, settings] = await Promise.all([
+  buildNodeSummaries("gauteng"),
+  getPublishedProperties().then(buildPropertyListingItems),
+  getSiteSettings(),
+]);
 
-const directoryNodes: DirectoryNode[] = await Promise.all(
-  nodes.map(async (node) => {
-    const img = await getImage({
-      src: node.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
-    });
-
-    return {
-      id: node.id,
-      name: node.data.name,
-      province: node.data.province,
-      city: node.data.city || "",
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: node.data.imageAlt || `${node.data.name} business district`,
-    };
-  }),
-);
-
-const groups: DirectoryGroup[] = sortedProvinces.map((province) => ({
-  slug: province.slug,
-  label: province.label,
-  nodeCount: province.nodeCount,
-  nodes: directoryNodes.filter((node) => node.province === province.slug),
-}));
-
-const mapCoordinates: Record<string, [number, number]> = {
-  bryanston: [28.0227, -26.0575],
-  sandton: [28.0567, -26.1076],
-  edenvale: [28.1525, -26.1438],
-  midrand: [28.1284, -25.9895],
-  "pretoria-east": [28.327, -25.776],
-  centurion: [28.1894, -25.8603],
-  rosslyn: [28.1, -25.633],
-};
-const mapNodes: BusinessNodeMapItem[] = nodes
-  .filter((node) => node.data.province === "gauteng")
-  .filter((node) => mapCoordinates[node.id])
-  .map((node) => ({
-    id: node.id,
-    name: node.data.name,
-    longitude: mapCoordinates[node.id][0],
-    latitude: mapCoordinates[node.id][1],
-  }));
+const askAcosaHref = resolveCtaLink("whatsapp", {
+  email: settings.data.enquiryEmail,
+  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappMessage:
+    "Hi ACOSA, I'm looking for business accommodation in [AREA]. Can you assist?",
+});
 ---
 
 <Layout
@@ -86,6 +41,7 @@ const mapNodes: BusinessNodeMapItem[] = nodes
   description="Find accommodation by location across South Africa's key business nodes."
 >
   <Hero
+    align="left"
     eyebrow="FIND ACCOMMODATION BY LOCATION"
     heading="Where do you need to do business?"
     body="Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays."
@@ -94,78 +50,82 @@ const mapNodes: BusinessNodeMapItem[] = nodes
       href: "#directory",
     }}
     image={businessNodesHero}
-    imageAlt="Business traveller arriving at curated accommodation"
-    imageClassName="object-[72%_center] md:object-[68%_center] lg:object-center"
-    overlay={{ color: "#000", opacity: 35 }}
+    imageAlt="A business traveller arriving at curated accommodation"
+    imageClassName="object-[78%_center] sm:object-[74%_center] lg:object-[70%_center]"
   />
 
-  <Section className="mt-28">
-    <div class="mx-auto max-w-5xl">
-      <div class="mb-6 text-center">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          EXPLORE ACOSA'S BUSINESS NODES
-        </p>
-        <h2 class="mt-3 text-2xl font-bold text-primary md:text-3xl">
-          Find accommodation where you need to do business.
-        </h2>
-      </div>
-
-      <div class="rounded-3xl border border-border bg-card p-4 shadow-sm md:p-6">
-        <BusinessNodeMap client:load nodes={mapNodes} />
-        <p class="text-muted-foreground mt-4 text-center text-xs md:text-sm">
-          Pan and zoom the map, then select a node marker to view accommodation in that area.
-        </p>
-      </div>
+  {/* Map and node selection directly under the hero, working together. */}
+  <Section id="directory" tone="warm">
+    <div class="flex flex-col gap-8 md:gap-10">
+      <SectionHeader
+        eyebrow="EXPLORE ACOSA'S BUSINESS NODES"
+        title="Find accommodation where you need to do business."
+      />
+      <BusinessNodeExplorer client:load nodes={nodes} />
     </div>
   </Section>
 
-  <Section id="directory" className="mt-28">
-    <NodeDirectory groups={groups} />
-  </Section>
+  {
+    properties.length > 0 && (
+      <Section id="accommodation">
+        <div class="flex flex-col gap-10">
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeader
+              eyebrow="ACOSA PROPERTIES"
+              title="Accommodation in the ACOSA network."
+            />
+            <CtaLink
+              label="View all properties"
+              href="/properties"
+              variant="link"
+            />
+          </div>
+          <PropertyGrid items={properties} />
+        </div>
+      </Section>
+    )
+  }
 
-  <Section className="mt-28">
-    <div class="space-y-8">
-      <div class="flex flex-col gap-4 text-center">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Growing Network
-        </p>
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          ACOSA is growing deliberately.
-        </h2>
-        <p class="mx-auto max-w-2xl text-sm text-muted-foreground md:text-base">
-          We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands.
-        </p>
-      </div>
-
-      <div class="space-y-6">
-        <div class="rounded-lg border border-border bg-card p-6">
-          <p class="mb-4 text-sm font-medium">Can't see the area you need?</p>
+  <Section tone="ivory">
+    <div class="flex flex-col gap-12">
+      <SectionHeader
+        align="center"
+        eyebrow="Growing Network"
+        title="ACOSA is growing deliberately."
+        lead="We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands."
+      />
+      <div class="grid gap-4 md:grid-cols-2 md:gap-5">
+        <div
+          class="bg-card border-border flex flex-col gap-4 rounded-xl border p-7 md:p-8"
+        >
+          <h3 class="type-h3">Can't see the area you need?</h3>
+          <p class="type-body">
+            Tell ACOSA where you need to be and we'll help you explore suitable
+            options.
+          </p>
           <CtaLink
             label="Ask ACOSA"
-            href={whatsappLink(
-              settings.data.defaultWhatsapp,
-              "Hi ACOSA, I'm looking for business accommodation in [AREA]. Can you assist?",
-            )}
+            href={askAcosaHref}
             variant="secondary"
-            size="md"
             icon="whatsapp"
-            external
+            external={askAcosaHref.startsWith("http")}
+            trackingKey="nodes_ask_acosa_click"
+            className="mt-auto w-fit"
           />
         </div>
-
-        <div class="rounded-lg border border-border bg-card p-6">
-          <p class="mb-4 text-sm font-medium">
-            Own a quality property in a business area?
-          </p>
-          <p class="mb-4 text-sm text-muted-foreground">
-            We're building a curated network of independent accommodation providers that understand the needs of corporate travellers.
+        <div
+          class="bg-card border-border flex flex-col gap-4 rounded-xl border p-7 md:p-8"
+        >
+          <h3 class="type-h3">Own a quality property in a business area?</h3>
+          <p class="type-body">
+            We're building a curated network of independent accommodation
+            providers that understand the needs of corporate travellers.
           </p>
           <CtaLink
             label="List Your Property"
             href="/list-your-property"
-            variant="primary"
-            size="md"
-            icon="arrow"
+            variant="link"
+            className="mt-auto"
           />
         </div>
       </div>

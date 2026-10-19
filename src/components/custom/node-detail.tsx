@@ -1,12 +1,15 @@
 // src/components/custom/node-detail.tsx
 import type { ReactNode } from "react";
-import { BadgeCheck, MapPin } from "lucide-react";
-import { StaticAcosaImage, type ResolvedAcosaImage } from "./image";
-import type { FeaturedPropertyItem } from "./featured-properties";
+import { PropertyGrid, type PropertyCardItem } from "./property-card";
 import { CtaLink } from "./cta-link";
+import { SectionHeader } from "./section-header";
+import { Section } from "./section";
+import { tagIcon, type IconTag } from "@/lib/tag-icons";
 
-/* Business node detail intentionally has only the four public sections in the
-   copy master: Hero, Business Location, Properties, and Assistance. */
+/* Business node detail. The page renders the hero; this covers the three
+   public sections from the copy master that follow it: Properties,
+   Business Location and Assistance. Exploring a node leads to its
+   available properties first. */
 export type NodeDetailNode = {
   id: string;
   name: string;
@@ -14,8 +17,6 @@ export type NodeDetailNode = {
   province: string;
   provinceLabel: string;
   mapUrl: string;
-  image: ResolvedAcosaImage;
-  imageAlt: string;
 };
 
 export type NodeDetailHighlight = {
@@ -25,9 +26,9 @@ export type NodeDetailHighlight = {
 
 export type NodeDetailProps = {
   node: NodeDetailNode;
-  properties: FeaturedPropertyItem[];
+  properties: PropertyCardItem[];
   highlights: NodeDetailHighlight[];
-  nearby: string[];
+  nearby: IconTag[];
   whatsappHref: string;
   children?: ReactNode;
 };
@@ -41,179 +42,132 @@ export const NodeDetail = ({
   children,
 }: NodeDetailProps) => {
   return (
-    <div data-slot="node-detail" className="flex flex-col gap-12">
-      {/* ---- Hero ---- */}
-      <div className="relative overflow-hidden rounded-2xl">
-        <StaticAcosaImage
-          {...node.image}
-          alt={node.imageAlt}
-          className="h-64 w-full object-cover object-[65%_center] md:h-80 md:object-center lg:h-96"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent"
-        />
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-6 text-white md:p-8">
-          <p className="text-xs font-semibold uppercase tracking-wider text-white/80">
-            Business accommodation in
-          </p>
-          <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
-            {node.name}
-          </h1>
-          <CtaLink
-            label="View Accommodation"
-            href="#properties"
-            variant="inverted"
-            size="md"
-            icon="arrow"
-            className="mt-3"
-          />
-        </div>
-      </div>
-
+    <>
       {/* ---- Properties ---- */}
-      <div id="properties" className="flex flex-col gap-6">
-        <h2 className="text-primary text-xl font-bold md:text-2xl">
-          Find your stay in {node.name}.
-        </h2>
-        {properties.length === 0 && (
-          <div className="text-muted-foreground rounded-xl border border-dashed p-10 text-center">
-            <p>Our first ACOSA properties are coming soon.</p>
-          </div>
-        )}
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {properties.map((item) => (
-            <li key={item.id}>
-              <article className="bg-card text-card-foreground relative flex h-full flex-col overflow-hidden rounded-2xl shadow-sm transition-shadow hover:shadow-md">
-                <div className="relative m-3 aspect-16/11 overflow-hidden rounded-xl">
-                  <StaticAcosaImage
-                    {...item.image}
-                    alt={item.imageAlt}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute top-3 left-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center">
-                    <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide uppercase">
-                      {item.propertyTypeLabel}
-                    </span>
-                    {item.approved && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wide text-white uppercase backdrop-blur">
-                        <BadgeCheck className="size-3.5" aria-hidden="true" />
-                        ACOSA Approved
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col gap-3 p-4 pt-1">
-                  <h3 className="text-primary text-lg font-bold">
-                    <a
-                      href={`/properties/${item.id}`}
-                      className="after:absolute after:inset-0 no-underline"
-                    >
-                      {item.name}
-                    </a>
-                  </h3>
-                  {item.shortDescription && (
-                    <p className="text-muted-foreground flex items-start gap-1.5 text-sm">
-                      <MapPin
-                        className="text-secondary mt-0.5 size-4 shrink-0"
-                        aria-hidden="true"
-                      />
-                      <span className="line-clamp-2">
-                        {item.shortDescription}
-                      </span>
-                    </p>
-                  )}
-                  <CtaLink
-                    label="View Details"
-                    href={`/properties/${item.id}`}
-                    variant="outline"
-                    size="sm"
-                    icon="arrow"
-                    className="mt-auto w-fit text-secondary"
-                  />
-                </div>
-              </article>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <Section id="properties">
+        <div className="flex flex-col gap-10">
+          <SectionHeader
+            eyebrow={`${node.name}, ${node.provinceLabel}`}
+            title={`Find your stay in ${node.name}.`}
+          />
+          {properties.length > 0 ? (
+            <PropertyGrid items={properties} />
+          ) : (
+            <div className="surface-warm border-border flex flex-col items-start gap-5 rounded-xl border p-8 md:flex-row md:items-center md:justify-between md:p-10">
+              <div className="flex flex-col gap-2">
+                <p className="type-h3">
+                  Our first ACOSA properties are coming soon.
+                </p>
+                <p className="type-body">
+                  Need accommodation in {node.name} now? ACOSA can help you
+                  explore suitable options.
+                </p>
+              </div>
+              {whatsappHref && (
+                <CtaLink
+                  label="Ask ACOSA"
+                  href={whatsappHref}
+                  variant="secondary"
+                  icon="whatsapp"
+                  external={whatsappHref.startsWith("http")}
+                  trackingKey="node_ask_acosa_click"
+                  className="shrink-0"
+                />
+              )}
+            </div>
+          )}
+        </div>
+      </Section>
 
       {/* ---- Business Location ---- */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-primary text-xl font-bold md:text-2xl">
-          Working in {node.name}?
-        </h2>
-        <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none">
-          {children}
-        </div>
-        {node.mapUrl && (
-          <CtaLink
-            label="View on Google Maps"
-            href={node.mapUrl}
-            variant="outline"
-            size="md"
-            icon="none"
-            external
-            className="w-fit text-secondary"
-            trackingKey="business_node_maps_click"
-          />
-        )}
-      </div>
-
-      {/* ---- Assistance: highlight cards + nearby convenience + WhatsApp CTA ---- */}
-      {(highlights.length > 0 || nearby.length > 0 || whatsappHref) && (
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="flex flex-col gap-4">
-            {highlights.length > 0 && (
-              <>
-                <h2 className="text-primary text-xl font-bold md:text-2xl">
-                  Why travellers choose {node.name}
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {highlights.map((highlight) => (
-                    <div key={highlight.title} className="bg-card rounded-2xl border p-4">
-                      <p className="text-primary text-sm font-semibold">{highlight.title}</p>
-                      {highlight.detail && (
-                        <p className="text-muted-foreground mt-1 text-sm">{highlight.detail}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-4 rounded-2xl border bg-card p-6">
-            {nearby.length > 0 && (
-              <>
-                <h3 className="text-primary text-lg font-bold">Nearby convenience</h3>
-                <div className="flex flex-wrap gap-2">
-                  {nearby.map((item) => (
-                    <span
-                      key={item}
-                      className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-xs font-medium"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-            {whatsappHref && (
+      <Section tone="warm">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+          <div className="flex flex-col gap-6">
+            <h2 className="type-h2">Working in {node.name}?</h2>
+            <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_h1]:hidden [&_p]:mb-4 [&_p]:leading-relaxed">
+              {children}
+            </div>
+            {node.mapUrl && (
               <CtaLink
-                label="Need assistance? Message ACOSA"
-                href={whatsappHref}
-                variant="secondary"
-                size="md"
-                icon="whatsapp"
+                label="View on Google Maps"
+                href={node.mapUrl}
+                variant="link"
+                icon="external"
                 external
-                className="mt-2 w-fit"
+                trackingKey="business_node_maps_click"
               />
             )}
           </div>
-        </div>
-      )}
 
-    </div>
+          <div className="flex flex-col gap-10">
+            {highlights.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <p className="eyebrow">Why travellers choose {node.name}</p>
+                <ul className="divide-sage border-sage flex flex-col divide-y border-y">
+                  {highlights.map((highlight) => (
+                    <li
+                      key={highlight.title}
+                      className="flex flex-col gap-1 py-4"
+                    >
+                      <p className="font-heading text-foreground text-base font-semibold">
+                        {highlight.title}
+                      </p>
+                      {highlight.detail && (
+                        <p className="type-small">{highlight.detail}</p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {nearby.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <p className="eyebrow">Nearby convenience</p>
+                <ul className="flex flex-wrap gap-2">
+                  {nearby.map((item) => {
+                    const Icon = tagIcon(item.icon);
+                    return (
+                      <li
+                        key={item.name}
+                        className="bg-card text-foreground/85 border-border inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm"
+                      >
+                        <Icon
+                          className="text-gold-ink size-4 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </Section>
+
+      {/* ---- Assistance ---- */}
+      {whatsappHref && properties.length > 0 && (
+        <Section spacing="tight">
+          <div className="border-border flex flex-col gap-5 border-y py-10 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-2">
+              <h2 className="type-h3">Need assistance?</h2>
+              <p className="type-body">
+                Tell ACOSA where you need to be and what matters for the stay.
+              </p>
+            </div>
+            <CtaLink
+              label="Need assistance? Message ACOSA"
+              href={whatsappHref}
+              variant="secondary"
+              icon="whatsapp"
+              external={whatsappHref.startsWith("http")}
+              trackingKey="node_assistance_click"
+              className="shrink-0"
+            />
+          </div>
+        </Section>
+      )}
+    </>
   );
 };

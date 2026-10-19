@@ -1,67 +1,71 @@
 ---
-import { getImage } from "astro:assets";
-import { getEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
-import { getNodes, getPublishedProperties, propertyTypeLabel } from "@/lib/content";
+import { SectionHeader } from "@/components/custom/section-header";
+import { CtaLink } from "@/components/custom/cta-link";
 import {
-  PropertySearch,
-  type PropertySearchItem,
-} from "@/components/custom/property-search";
+  getNodes,
+  getPublishedProperties,
+  buildPropertyListingItems,
+} from "@/lib/content";
+import { PropertySearch } from "@/components/custom/property-search";
 
 export const prerender = true;
 
-const properties = await getPublishedProperties();
-const businessNodes = (await getNodes()).map((node) => ({
+/* Properties — Creative Direction Blueprint, Page 03.
+   Cohesive search, then genuine listings. No invented inventory: a single
+   listing is presented as a feature, followed by an honest growing-network
+   note. */
+
+const [items, nodes] = await Promise.all([
+  getPublishedProperties().then(buildPropertyListingItems),
+  getNodes(),
+]);
+const businessNodes = nodes.map((node) => ({
   id: node.id,
   name: node.data.name,
 }));
-
-const items: PropertySearchItem[] = await Promise.all(
-  properties.map(async (property) => {
-    const img = await getImage({
-      src: property.data.heroImage,
-      widths: [400, 800],
-      sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-    });
-    const businessNode = await getEntry(property.data.businessNode);
-    return {
-      id: property.id,
-      name: property.data.name,
-      province: property.data.province,
-      businessNode: property.data.businessNode.id,
-      businessNodeLabel: businessNode?.data.name ?? property.data.businessNode.id,
-      locationAddress: property.data.location.address,
-      propertyType: property.data.propertyType,
-      propertyTypeLabel: propertyTypeLabel(property.data.propertyType),
-      approved: property.data.acosaApproved.approved,
-      shortDescription: property.data.shortDescription,
-      image: {
-        src: img.src,
-        srcSet: img.srcSet.attribute || undefined,
-        sizes: img.attributes.sizes,
-        width: img.attributes.width,
-        height: img.attributes.height,
-      },
-      imageAlt: property.data.imageAlt || property.data.name,
-    };
-  }),
-);
 ---
 
 <Layout
   title="All Properties | ACOSA"
   description="Browse vetted business accommodation properties across South Africa."
 >
-  <Section className="mt-28">
-    <h1 class="text-primary text-2xl font-bold md:text-3xl lg:text-4xl">
-      All Properties
-    </h1>
-    <p class="text-muted-foreground mt-2 text-sm md:text-base">
-      Browse business accommodation across South Africa's key corporate nodes.
-    </p>
+  <Section
+    tone="warm"
+    spacing="none"
+    className="pt-12 pb-12 md:pt-16 md:pb-16 lg:pt-20"
+  >
+    <SectionHeader
+      as="h1"
+      eyebrow="ACOSA PROPERTIES"
+      title="All Properties"
+      lead="Browse business accommodation across South Africa's key corporate nodes."
+    />
   </Section>
-  <Section className="mt-16 mb-28">
-    <PropertySearch client:load items={items} businessNodes={businessNodes} />
+
+  <Section spacing="none" className="pt-10 pb-16 md:pt-12 md:pb-24 lg:pb-28">
+    <div class="flex flex-col gap-14">
+      <PropertySearch client:load items={items} businessNodes={businessNodes} />
+
+      <div
+        class="border-border flex flex-col gap-5 border-t pt-10 md:flex-row md:items-center md:justify-between"
+      >
+        <div class="flex max-w-2xl flex-col gap-2">
+          <h2 class="type-h3">ACOSA is growing deliberately.</h2>
+          <p class="type-body">
+            We're building our accommodation network around quality, not simply
+            quantity. New business nodes and carefully selected properties will
+            be added as the ACOSA network expands.
+          </p>
+        </div>
+        <CtaLink
+          label="Explore Business Nodes"
+          href="/business-nodes"
+          variant="link"
+          className="shrink-0"
+        />
+      </div>
+    </div>
   </Section>
 </Layout>

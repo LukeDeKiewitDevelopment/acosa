@@ -4,14 +4,29 @@ import { getImage, Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
+import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
 import { getSiteSettings, resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
-import { FeatureList } from "@/components/custom/feature-list";
-import { SectionIcon } from "@/components/custom/section-icon";
-import { Users, Handshake, ClipboardList } from "lucide-react";
+import { IconMark } from "@/components/custom/icon-mark";
+import {
+  BadgeCheck,
+  CalendarDays,
+  Check,
+  ClipboardList,
+  ConciergeBell,
+  Hourglass,
+  ListChecks,
+  MapPin,
+  Users,
+} from "lucide-react";
 
 export const prerender = true;
+
+/* For Companies — Creative Direction Blueprint, Page 06, and addendum §12.
+   A structured B2B rhythm: who we help → self-service discovery vs assisted
+   enquiry (immediately distinguishable) → Teams & Project Stays → one clean,
+   decisive contact panel (one button, WhatsApp as a text link, no imagery). */
 
 const page = await getEntry("forCompaniesPage", "for-companies");
 if (!page) throw new Error("For Companies page content not found");
@@ -38,22 +53,23 @@ const ogImageUrl = seo?.ogImage
   : undefined;
 
 const email = settings.data.enquiryEmail;
+const whatsappNumber = settings.data.defaultWhatsapp;
 const heroPrimaryHref = resolveCtaLink(hero.primaryCta.link, {
   email,
   emailSubject: "Corporate Accommodation Requirements",
-  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappNumber,
 });
 const heroSecondaryHref = resolveCtaLink(hero.secondaryCta.link, {
   email,
   emailSubject: "Corporate Accommodation Requirements",
-  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappNumber,
 });
 const teamPrimaryHref = resolveCtaLink(
   teamsAndProjectsSection.primaryCta.link,
   {
     email,
     emailSubject: "Team or Project Accommodation Request",
-    whatsappNumber: settings.data.defaultWhatsapp,
+    whatsappNumber,
   },
 );
 const teamSecondaryHref = resolveCtaLink(
@@ -61,7 +77,7 @@ const teamSecondaryHref = resolveCtaLink(
   {
     email,
     emailSubject: "Team or Project Accommodation Request",
-    whatsappNumber: settings.data.defaultWhatsapp,
+    whatsappNumber,
     whatsappMessage:
       "Hi ACOSA, I need assistance finding accommodation for a team or project.",
   },
@@ -69,13 +85,43 @@ const teamSecondaryHref = resolveCtaLink(
 const finalPrimaryHref = resolveCtaLink(finalCta.primaryCta.link, {
   email,
   emailSubject: "Corporate Accommodation Enquiry",
-  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappNumber,
 });
 const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
   email,
-  whatsappNumber: settings.data.defaultWhatsapp,
+  whatsappNumber,
   whatsappMessage:
     "Hi ACOSA, I'm arranging business accommodation and would appreciate some assistance.",
+});
+
+// The last feature ("Ask for Help When Necessary") is the assisted route;
+// the rest are self-service discovery.
+const selfService = howAcosaHelpsSection.features.slice(0, -1);
+const assisted = howAcosaHelpsSection.features.at(-1);
+
+// "Location: Where does the team need to be based?" → label + question.
+// Icons matched on CMS wording (fallback: check).
+const iconFor = (text: string, map: [RegExp, typeof Check][]) =>
+  map.find(([pattern]) => pattern.test(text))?.[1] ?? Check;
+const featureIcons: [RegExp, typeof Check][] = [
+  [/location/i, MapPin],
+  [/compare|information/i, ListChecks],
+  [/curated/i, BadgeCheck],
+  [/help/i, ConciergeBell],
+];
+const requirementIcons: [RegExp, typeof Check][] = [
+  [/^location/i, MapPin],
+  [/travellers|people/i, Users],
+  [/^dates/i, CalendarDays],
+  [/length/i, Hourglass],
+  [/requirement/i, ClipboardList],
+];
+
+const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
+  const [label, ...rest] = item.split(":");
+  return rest.length > 0
+    ? { label: label.trim(), detail: rest.join(":").trim() }
+    : { label: "", detail: item };
 });
 ---
 
@@ -86,131 +132,192 @@ const finalSecondaryHref = resolveCtaLink(finalCta.secondaryCta.link, {
   ogImage={ogImageUrl}
 >
   <Hero
+    align="left"
     eyebrow={hero.eyebrow}
     heading={hero.heading}
     body={hero.body}
     image={hero.image}
-    imageAlt="A corporate booker arranging business accommodation"
-    imageClassName="object-[72%_center] md:object-[68%_center] lg:object-center"
+    imageAlt="A corporate booker arranging business accommodation for a colleague"
+    imageClassName="object-[76%_center] sm:object-[74%_center] lg:object-[70%_center]"
     primaryCta={{ label: hero.primaryCta.label, href: heroPrimaryHref }}
     secondaryCta={{ label: hero.secondaryCta.label, href: heroSecondaryHref }}
   />
 
-  <Section className="mt-16">
-    <div class="mx-auto max-w-3xl text-center">
-      <div class="flex items-center justify-center gap-3">
-        <SectionIcon icon={Users} />
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {whoWeHelpSection.heading}
-        </h2>
-      </div>
-      <p class="text-muted-foreground mt-3">{whoWeHelpSection.body}</p>
-      <FeatureList
-        className="mt-8"
-        items={whoWeHelpSection.roles.map((role) => ({ text: role }))}
+  {/* Who we help */}
+  <Section>
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+      <SectionHeader
+        title={whoWeHelpSection.heading}
+        lead={whoWeHelpSection.body}
       />
+      <ul class="border-border grid border-t sm:grid-cols-2 sm:gap-x-10">
+        {
+          whoWeHelpSection.roles.map((role) => (
+            <li class="border-border font-heading text-foreground border-b py-4 text-base font-semibold">
+              {role}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </Section>
 
-  <Section className="mt-16">
-    <div class="mx-auto max-w-4xl">
-      <div class="flex items-center gap-3">
-        <SectionIcon icon={Handshake} />
-        <h2 class="text-primary text-2xl font-bold md:text-3xl">
-          {howAcosaHelpsSection.heading}
-        </h2>
-      </div>
-      <div class="mt-8 grid gap-4 md:grid-cols-2">
+  {/* Self-service discovery vs assisted enquiry */}
+  <Section tone="warm">
+    <div class="flex flex-col gap-12">
+      <SectionHeader title={howAcosaHelpsSection.heading} />
+      <div class="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
+        <div
+          class="bg-card border-border flex flex-col gap-8 rounded-xl border p-7 md:p-9"
+        >
+          <div class="flex items-center justify-between gap-4">
+            <p class="eyebrow">Self-service discovery</p>
+            <CtaLink
+              label={hero.secondaryCta.label}
+              href={heroSecondaryHref}
+              variant="link"
+              className="text-sm"
+            />
+          </div>
+          <ol class="grid gap-8 md:grid-cols-3 md:gap-6">
+            {
+              selfService.map((feature) => (
+                <li class="flex flex-col gap-3">
+                  <IconMark
+                    icon={iconFor(feature.title, featureIcons)}
+                    size="sm"
+                  />
+                  <h3 class="font-heading text-foreground text-base font-semibold">
+                    {feature.title}
+                  </h3>
+                  <p class="type-small">{feature.body}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
         {
-          howAcosaHelpsSection.features.map((feature) => (
-            <article class="bg-card rounded-lg border p-5">
-              <>
-                <h3 class="text-primary font-semibold">{feature.title}</h3>
-                <p class="text-muted-foreground mt-2 text-sm">{feature.body}</p>
-              </>
-            </article>
-          ))
+          assisted && (
+            <div class="surface-navy flex flex-col gap-5 rounded-xl p-7 md:p-9">
+              <IconMark
+                icon={iconFor(assisted.title, featureIcons)}
+                tone="navy"
+                size="sm"
+              />
+              <p class="eyebrow-accent">Assisted enquiry</p>
+              <h3 class="type-h3">{assisted.title}</h3>
+              <p class="type-small">{assisted.body}</p>
+              <CtaLink
+                label={hero.primaryCta.label}
+                href={heroPrimaryHref}
+                variant="link"
+                icon="email"
+                className="mt-auto pt-2"
+                trackingKey="companies_assisted_email_click"
+              />
+            </div>
+          )
         }
       </div>
     </div>
   </Section>
 
-  <Section className="mt-16">
-    <div class="grid items-center gap-8 lg:grid-cols-2">
-      {
-        teamsAndProjectsSection.image && (
-          <Image
-            src={teamsAndProjectsSection.image}
-            alt="A project team staying in business accommodation"
-            class="aspect-4/3 w-full rounded-2xl object-cover"
-          />
-        )
-      }
-      <div>
-        <p class="text-muted-foreground text-sm font-semibold">
+  {/* Teams & Project Stays */}
+  <Section id="teams">
+    <div class="grid items-start gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
+      <div class="flex flex-col gap-8">
+        {
+          teamsAndProjectsSection.image && (
+            <Image
+              src={teamsAndProjectsSection.image}
+              alt="A project team arriving at their business accommodation"
+              widths={[480, 800, 1200, 1408]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="aspect-4/3 w-full rounded-xl object-cover object-[68%_center] lg:aspect-3/2"
+            />
+          )
+        }
+        <SectionHeader
+          eyebrow="Teams & project stays"
+          title={teamsAndProjectsSection.heading}
+          lead={teamsAndProjectsSection.body}
+        />
+      </div>
+      <div
+        class="bg-card border-border flex flex-col gap-7 rounded-xl border p-7 md:p-9 lg:sticky lg:top-28"
+      >
+        <p class="text-foreground text-sm font-semibold">
           To help us understand what you need, please include:
         </p>
-        <div class="flex items-center gap-3">
-          <SectionIcon icon={ClipboardList} />
-          <h2 class="text-primary text-2xl font-bold md:text-3xl">
-            {teamsAndProjectsSection.heading}
-          </h2>
-        </div>
-        <p class="text-muted-foreground mt-3">{teamsAndProjectsSection.body}</p>
-        <FeatureList
-          className="mt-5"
-          items={teamsAndProjectsSection.requirementsList.map((item) => ({ text: item }))}
-        />
-        <div class="mt-7 flex flex-wrap gap-3">
+        <ol class="border-border flex flex-col border-t">
+          {
+            requirements.map((item) => (
+              <li class="border-border flex items-center gap-4 border-b py-4">
+                <IconMark
+                  icon={iconFor(item.label || item.detail, requirementIcons)}
+                  size="sm"
+                />
+                <span class="flex flex-col gap-0.5">
+                  {item.label && (
+                    <span class="font-heading text-foreground text-[0.9375rem] font-semibold">
+                      {item.label}
+                    </span>
+                  )}
+                  <span class="type-small">{item.detail}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <div
+          class="flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4"
+        >
           <CtaLink
             label={teamsAndProjectsSection.primaryCta.label}
             href={teamPrimaryHref}
-            variant="secondary"
-            size="md"
-            icon="arrow"
+            variant="primary"
+            icon="email"
+            trackingKey="companies_team_email_click"
           />
           <CtaLink
             label={teamsAndProjectsSection.secondaryCta.label}
             href={teamSecondaryHref}
-            variant="outline"
-            size="md"
+            variant="link"
             icon="whatsapp"
-            external
+            external={teamSecondaryHref.startsWith("http")}
+            trackingKey="companies_team_whatsapp_click"
           />
         </div>
       </div>
     </div>
   </Section>
 
-  <Section className="mt-16 mb-28">
-    <div
-      class="bg-primary text-primary-foreground mx-auto max-w-4xl rounded-2xl p-8 text-center md:p-12"
-    >
-      {finalCta.eyebrow && (
-        <p class="text-primary-foreground/70 text-xs font-semibold tracking-wider uppercase">
-          {finalCta.eyebrow}
-        </p>
-      )}
-      <h2 class="text-2xl font-bold md:text-3xl">{finalCta.heading}</h2>
-      <p class="mt-3 opacity-90">{finalCta.body}</p>
-
-      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+  {/* Final conversion: navy, generous space, one dominant button. */}
+  <Section spacing="none" className="pb-16 md:pb-24 lg:pb-28">
+    <div class="surface-navy rounded-xl px-6 py-16 md:px-12 md:py-20">
+      <div
+        class="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center"
+      >
+        {finalCta.eyebrow && <p class="eyebrow-accent">{finalCta.eyebrow}</p>}
+        <h2 class="type-h2">{finalCta.heading}</h2>
+        <p class="type-lead">{finalCta.body}</p>
         <CtaLink
           label={finalCta.primaryCta.label}
           href={finalPrimaryHref}
-          variant="inverted"
-          size="md"
-          icon="arrow"
+          variant="primary"
+          size="lg"
+          icon="email"
+          className="mt-3"
+          trackingKey="companies_final_email_click"
         />
-
         <CtaLink
           label={finalCta.secondaryCta.label}
           href={finalSecondaryHref}
-          variant="inverted"
-          size="md"
-          icon="whatsapp"
-          external
-          className="border border-background/30 bg-transparent text-background hover:bg-background/10"
+          variant="link"
+          icon="arrow"
+          external={finalSecondaryHref.startsWith("http")}
+          className="text-sm"
+          trackingKey="companies_final_whatsapp_click"
         />
       </div>
     </div>
