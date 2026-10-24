@@ -9,7 +9,9 @@ import {
   getTestimonialsForProperty,
   propertyTypeLabel,
   provinceLabel,
+  NODE_MAP_COORDINATES,
 } from "@/lib/content";
+import { ContourTexture } from "@/components/custom/map-graphics";
 import { getEntry } from "astro:content";
 import { Section } from "@/components/custom/section";
 import {
@@ -118,7 +120,13 @@ const slides: PropertyGallerySlide[] = await Promise.all(
   ogImage={ogImageUrl}
   jsonLd={propertySchema}
 >
-  <Section spacing="none" className="pt-6 md:pt-8 lg:pt-10">
+  <Section
+    tone="warm"
+    spacing="none"
+    className="overflow-hidden pt-6 pb-10 md:pt-8 md:pb-12 lg:pt-10"
+    containerClassName="relative"
+  >
+    <ContourTexture className="text-sage" />
     <nav
       aria-label="Breadcrumb"
       class="type-small mb-5 flex flex-wrap items-center gap-2 text-xs"
@@ -157,6 +165,13 @@ const slides: PropertyGallerySlide[] = await Promise.all(
         phone: property.data.contact.phone,
         email: property.data.contact.email,
         website: property.data.contact.website ?? undefined,
+        mapPin: NODE_MAP_COORDINATES[property.data.businessNode.id]
+          ? {
+              longitude: NODE_MAP_COORDINATES[property.data.businessNode.id][0],
+              latitude: NODE_MAP_COORDINATES[property.data.businessNode.id][1],
+              label: businessNode?.data.name,
+            }
+          : undefined,
       }}
       essentials={essentials.map((tag) => ({
         name: tag.data.name,

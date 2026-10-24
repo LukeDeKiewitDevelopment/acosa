@@ -759,6 +759,7 @@ export default config({
           eyebrow: fields.text({ label: "Eyebrow" }),
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
+          image: fields.image({ label: "Hero Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
         }, { label: "Hero" }),
         contactRoutes: fields.array(fields.object({
           number: fields.text({ label: "Number" }),
@@ -863,6 +864,7 @@ export default config({
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           note: fields.text({ label: "Note", multiline: true }),
+          image: fields.image({ label: "Section Image (optional)", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
           cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
         }, { label: "Promotional Visibility" }),
         pricingSection: fields.object({
@@ -875,6 +877,7 @@ export default config({
           heading: fields.text({ label: "Heading" }),
           body: fields.text({ label: "Body", multiline: true }),
           refreshIncludes: fields.array(fields.text({ label: "Refresh Item" }), { label: "Refresh Includes", itemLabel: (props) => props.value || "Item" }),
+          image: fields.image({ label: "Section Image (optional)", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
         }, { label: "Listing Updates" }),
         howToJoinSection: fields.object({
           eyebrow: fields.text({ label: "Eyebrow" }),

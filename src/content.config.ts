@@ -379,6 +379,7 @@ const listYourPropertyPage = defineCollection({
         heading: z.string(),
         body: z.string(),
         note: z.string().optional().default(""),
+        image: ctx.image().optional().nullable(),
         cta: z.object({ label: z.string(), link: z.string() }).optional(),
       }),
       pricingSection: z.object({
@@ -400,6 +401,7 @@ const listYourPropertyPage = defineCollection({
         heading: z.string(),
         body: z.string(),
         refreshIncludes: z.array(z.string()).default([]),
+        image: ctx.image().optional().nullable(),
       }),
       howToJoinSection: z.object({
         eyebrow: z.string().optional().default(""),
@@ -434,6 +436,7 @@ const contactPage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
       }),
       contactRoutes: z
         .array(

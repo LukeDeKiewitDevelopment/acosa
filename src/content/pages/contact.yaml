@@ -3,6 +3,7 @@ hero:
   heading: How can we help?
   body: >-
     Whether you're looking for business accommodation, arranging a stay for someone else, or interested in joining ACOSA as an accommodation provider, choose the quickest route below.
+  image: ../../assets/images/pages/acosa-library/ACOSA_11_Independent_Hospitality.png
 
 contactRoutes:
   - number: "1"

@@ -6,6 +6,7 @@ import { mailtoLink, whatsappLink } from "@/lib/content";
 import { propertyEnquiryWhatsappMessage } from "@/lib/property-search";
 import { CtaLink } from "./cta-link";
 import { ApprovedBadge } from "./property-card";
+import { SaMap, type SaMapPin } from "./map-graphics";
 
 /* Individual property profile, Creative Direction Blueprint Page 04:
    1. Photography (PropertyGallery, mounted above this by the page)
@@ -29,6 +30,8 @@ export type PropertyDetailProperty = {
   phone: string;
   email: string;
   website?: string;
+  /** The property's business node, pinned on the location map. */
+  mapPin?: SaMapPin;
 };
 
 export type PropertyDetailTag = {
@@ -215,27 +218,39 @@ export const PropertyDetail = ({
 
         {(property.address || property.mapUrl) && (
           <DetailBlock title="Location">
-            <div className="flex flex-col gap-4">
-              {property.address && (
-                <p className="text-foreground/90 flex items-start gap-2 text-[0.9375rem]">
-                  <MapPin
-                    className="mt-0.5 size-4 shrink-0"
-                    aria-hidden="true"
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+              {property.mapPin && (
+                <figure className="surface-warm border-border order-last w-full max-w-56 shrink-0 rounded-xl border p-3 sm:order-none">
+                  <SaMap pins={[property.mapPin]} className="text-navy" />
+                  {property.mapPin.label && (
+                    <figcaption className="text-muted-foreground mt-1 text-center text-xs">
+                      {property.mapPin.label}, South Africa
+                    </figcaption>
+                  )}
+                </figure>
+              )}
+              <div className="flex flex-col gap-4 sm:order-first">
+                {property.address && (
+                  <p className="text-foreground/90 flex items-start gap-2 text-[0.9375rem]">
+                    <MapPin
+                      className="mt-0.5 size-4 shrink-0"
+                      aria-hidden="true"
+                    />
+                    {property.address}
+                  </p>
+                )}
+                {property.mapUrl && (
+                  <CtaLink
+                    label="View on Google Maps"
+                    href={property.mapUrl}
+                    variant="link"
+                    icon="external"
+                    external
+                    trackingKey="property_maps_click"
+                    {...tracking}
                   />
-                  {property.address}
-                </p>
-              )}
-              {property.mapUrl && (
-                <CtaLink
-                  label="View on Google Maps"
-                  href={property.mapUrl}
-                  variant="link"
-                  icon="external"
-                  external
-                  trackingKey="property_maps_click"
-                  {...tracking}
-                />
-              )}
+                )}
+              </div>
             </div>
           </DetailBlock>
         )}

@@ -1,13 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
-import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
 import {
   getNodes,
   getPublishedProperties,
   buildPropertyListingItems,
+  buildNodeSummaries,
 } from "@/lib/content";
+import { PropertiesMapHero } from "@/components/custom/properties-map-hero";
 import { PropertySearch } from "@/components/custom/property-search";
 
 export const prerender = true;
@@ -17,9 +18,10 @@ export const prerender = true;
    listing is presented as a feature, followed by an honest growing-network
    note. */
 
-const [items, nodes] = await Promise.all([
+const [items, nodes, mapNodes] = await Promise.all([
   getPublishedProperties().then(buildPropertyListingItems),
   getNodes(),
+  buildNodeSummaries("gauteng"),
 ]);
 const businessNodes = nodes.map((node) => ({
   id: node.id,
@@ -31,18 +33,14 @@ const businessNodes = nodes.map((node) => ({
   title="All Properties | ACOSA"
   description="Browse vetted business accommodation properties across South Africa."
 >
-  <Section
-    tone="warm"
-    spacing="none"
-    className="pt-12 pb-12 md:pt-16 md:pb-16 lg:pt-20"
-  >
-    <SectionHeader
-      as="h1"
-      eyebrow="ACOSA PROPERTIES"
-      title="All Properties"
-      lead="Browse business accommodation across South Africa's key corporate nodes."
-    />
-  </Section>
+  <PropertiesMapHero
+    eyebrow="ACOSA PROPERTIES"
+    title="All Properties"
+    lead="Browse business accommodation across South Africa's key corporate nodes."
+    regionLabel="Gauteng"
+    nodes={mapNodes}
+    propertyCount={items.length}
+  />
 
   <Section spacing="none" className="pt-10 pb-16 md:pt-12 md:pb-24 lg:pb-28">
     <div class="flex flex-col gap-14">

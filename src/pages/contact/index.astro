@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { getEntry } from "astro:content";
-import { getImage } from "astro:assets";
+import { getImage, Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import {
   getSiteSettings,
@@ -25,9 +25,10 @@ const routeIcon = (title: string) =>
         ? BedDouble
         : CircleHelp;
 
-/* Contact — Creative Direction Blueprint, Page 08. The most restrained page:
-   a concise heading, four clearly differentiated enquiry routes and one
-   consistent contact treatment. No hero, no decorative tiles. */
+/* Contact — Creative Direction Blueprint, Page 08, with the later
+   improvement brief's hero image: a standard (not cinematic) hero that puts
+   WhatsApp first, then four clearly differentiated enquiry routes with one
+   consistent contact treatment, then ACOSA on LinkedIn. */
 
 export const prerender = true;
 
@@ -66,6 +67,15 @@ const routeHref = (link: string, subject?: string, message?: string) =>
         ? whatsappLink(configuredWhatsapp, message)
         : "/contact"
       : link;
+
+const heroWhatsappHref = routeHref(
+  "whatsapp",
+  undefined,
+  "Hi ACOSA, I'd like to ask a question about accommodation and/or listing opportunities.",
+);
+const linkedin = settings.data.socialLinks.find((social) =>
+  /linkedin/i.test(`${social.label} ${social.url}`),
+);
 ---
 
 <Layout
@@ -74,16 +84,64 @@ const routeHref = (link: string, subject?: string, message?: string) =>
     "Get in touch with ACOSA about business accommodation in South Africa."}
   ogImage={ogImageUrl}
 >
-  <Section
-    spacing="none"
-    className="pt-12 pb-16 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28"
-  >
-    <div class="flex flex-col gap-12 md:gap-14">
+  {/* Split header: the photo has two people, so copy never sits over it. */}
+  <section class="surface-navy grid lg:min-h-[34rem] lg:grid-cols-2">
+    <div class="order-last flex items-center lg:order-first">
+      <div
+        class="flex w-full max-w-xl flex-col gap-5 px-4 py-12 sm:px-6 md:py-16 lg:ml-auto lg:pr-14 lg:pl-10"
+      >
+        {hero.eyebrow && <p class="eyebrow-accent">{hero.eyebrow}</p>}
+        <h1 class="type-h1">{hero.heading}</h1>
+        <p class="type-lead">{hero.body}</p>
+        <div
+          class="mt-3 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6"
+        >
+          <CtaLink
+            label="WhatsApp ACOSA"
+            href={heroWhatsappHref}
+            variant="primary"
+            size="lg"
+            icon="whatsapp"
+            external={heroWhatsappHref.startsWith("http")}
+            trackingKey="contact_hero_whatsapp_click"
+            className="w-full sm:w-auto"
+          />
+          {
+            configuredEmail && (
+              <CtaLink
+                label="Email ACOSA"
+                href={mailtoLink(configuredEmail, "General ACOSA Enquiry")}
+                variant="link"
+                icon="email"
+                trackingKey="contact_hero_email_click"
+              />
+            )
+          }
+        </div>
+      </div>
+    </div>
+    {
+      hero.image && (
+        <div class="relative aspect-4/3 sm:aspect-video lg:aspect-auto">
+          <Image
+            src={hero.image}
+            alt="An ACOSA host talking a business traveller through her stay"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="absolute inset-0 h-full w-full object-cover object-[45%_center]"
+          />
+        </div>
+      )
+    }
+  </section>
+
+  <Section>
+    <div class="flex flex-col gap-10 md:gap-12">
       <SectionHeader
-        as="h1"
-        eyebrow={hero.eyebrow}
-        title={hero.heading}
-        lead={hero.body}
+        eyebrow="Choose the right route"
+        title="Which option applies to you?"
       />
 
       <ol class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
@@ -98,7 +156,11 @@ const routeHref = (link: string, subject?: string, message?: string) =>
                   ? "email"
                   : "arrow";
             return (
-              <li class="bg-card border-border flex flex-col gap-6 rounded-xl border p-6 md:p-8">
+              <li
+                data-reveal
+                style={`--reveal-index: ${Number(route.number) - 1}`}
+                class="bg-card border-border hover:border-foreground/30 flex flex-col gap-6 rounded-xl border p-6 transition-[border-color,box-shadow] duration-200 hover:shadow-[0_18px_40px_-28px_rgb(5_10_60/0.4)] md:p-8"
+              >
                 <div class="flex flex-col gap-2">
                   <IconMark icon={routeIcon(route.title)} className="mb-2" />
                   <h2 class="type-h3">{route.title}</h2>
@@ -158,6 +220,23 @@ const routeHref = (link: string, subject?: string, message?: string) =>
           })
         }
       </ol>
+
+      {
+        linkedin && (
+          <div class="border-border flex flex-col gap-4 border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="type-h3">Follow ACOSA</h2>
+            <CtaLink
+              label="ACOSA on LinkedIn"
+              href={linkedin.url}
+              variant="secondary"
+              icon="external"
+              external
+              trackingKey="contact_linkedin_click"
+              className="w-full sm:w-auto"
+            />
+          </div>
+        )
+      }
     </div>
   </Section>
 </Layout>

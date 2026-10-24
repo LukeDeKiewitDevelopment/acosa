@@ -15,6 +15,11 @@ import { CtaLink } from "@/components/custom/cta-link";
 import {
   BadgeCheck,
   BadgePercent,
+  ChevronDown,
+  House,
+  Info,
+  PenLine,
+  Sparkles,
   ChartColumn,
   Check,
   ClipboardCheck,
@@ -28,6 +33,8 @@ import {
   Store,
 } from "lucide-react";
 import { IconMark } from "@/components/custom/icon-mark";
+import { ReachRings } from "@/components/custom/map-graphics";
+import { SectionNav } from "@/components/custom/section-nav";
 
 export const prerender = true;
 
@@ -93,6 +100,25 @@ const benefitIcons: [RegExp, typeof Check][] = [
 const benefitIcon = (title: string) =>
   benefitIcons.find(([pattern]) => pattern.test(title))?.[1] ?? Check;
 
+// Refresh items from the CMS, matched to an icon (fallback: check).
+const refreshIcon = (item: string) =>
+  /image|gallery|photo/i.test(item)
+    ? Images
+    : /copy|descript|text/i.test(item)
+      ? PenLine
+      : /facilit/i.test(item)
+        ? Sparkles
+        : Check;
+
+// "R4,290" + "/year" -> "R358", so the annual plan can be compared monthly.
+const monthlyEquivalent = (plan: { price: string; period: string }) => {
+  if (!/year|annual/i.test(plan.period)) return null;
+  const amount = Number(plan.price.replace(/[^0-9.]/g, ""));
+  return amount > 0
+    ? `R${Math.round(amount / 12).toLocaleString("en-ZA")}`
+    : null;
+};
+
 // The monthly partner rate is the highlighted offer (R389 at launch).
 const isPartnerPlan = (plan: { tier: string; price: string; period: string }) =>
   /partner/i.test(plan.tier) && /month/i.test(plan.period);
@@ -126,13 +152,25 @@ const ogImageUrl = seo?.ogImage
     body={hero.body}
     image={hero.image}
     imageAlt="An independent accommodation host welcoming a business traveller"
-    imageClassName="object-[62%_center] sm:object-[60%_center] lg:object-[58%_center]"
+    imageClassName="object-[62%_center] sm:object-[60%_center] lg:object-[58%_center] motion-safe:animate-[acosa-zoom_18s_ease-out_both]"
     primaryCta={{ label: hero.primaryCta.label, href: heroPrimaryHref }}
     secondaryCta={{
       label: hero.secondaryCta.label,
       href: heroSecondaryHref,
       external: hero.secondaryCta.link === "whatsapp",
     }}
+  />
+
+  <SectionNav
+    client:load
+    items={[
+      { id: "why-list", label: "Who we work with" },
+      { id: "whats-included", label: "What's included" },
+      { id: "acosa-review", label: "Our standards" },
+      { id: "visibility", label: "Visibility" },
+      { id: "pricing", label: "Pricing" },
+      { id: "apply", label: "How to join" },
+    ]}
   />
 
   {/* 02 — Qualification: selectivity, as an editorial 50/50. */}
@@ -163,8 +201,12 @@ const ogImageUrl = seo?.ogImage
             class="divide-border border-border flex flex-col divide-y border-y"
           >
             {
-              whoWeWorkWithSection.properties.map((quality) => (
-                <li class="flex items-start gap-3 py-3.5">
+              whoWeWorkWithSection.properties.map((quality, index) => (
+                <li
+                  data-reveal
+                  style={`--reveal-index: ${index}`}
+                  class="flex items-start gap-3 py-3.5"
+                >
                   <Check
                     className="text-gold-ink mt-1 size-4 shrink-0"
                     aria-hidden="true"
@@ -211,9 +253,17 @@ const ogImageUrl = seo?.ogImage
       class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 md:mt-20 lg:grid-cols-3"
     >
       {
-        valueSection.includes.map((item) => (
-          <li class="border-sage flex flex-col gap-3 border-t pt-6">
-            <IconMark icon={benefitIcon(item.title)} size="sm" />
+        valueSection.includes.map((item, index) => (
+          <li
+            data-reveal
+            style={`--reveal-index: ${index % 3}`}
+            class="group border-sage hover:border-gold flex flex-col gap-3 border-t pt-6 transition-[border-color,translate] duration-300 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+          >
+            <IconMark
+              icon={benefitIcon(item.title)}
+              size="sm"
+              className="group-hover:bg-gold group-hover:text-navy transition-colors duration-300"
+            />
             <h3 class="font-heading text-foreground text-base font-semibold">
               {item.title}
             </h3>
@@ -260,8 +310,12 @@ const ogImageUrl = seo?.ogImage
         />
         <ul class="grid grid-cols-2 gap-x-6 gap-y-3">
           {
-            curationSection.criteria.map((criterion) => (
-              <li class="text-foreground flex items-center gap-2.5 text-[0.9375rem]">
+            curationSection.criteria.map((criterion, index) => (
+              <li
+                data-reveal
+                style={`--reveal-index: ${index % 2}`}
+                class="text-foreground flex items-center gap-2.5 text-[0.9375rem]"
+              >
                 <Check
                   className="text-gold size-4 shrink-0"
                   aria-hidden="true"
@@ -292,26 +346,65 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  {/* Beyond the listing: typography only, no container. */}
-  <Section>
-    <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-      <p class="eyebrow">{promotionalVisibilitySection.eyebrow}</p>
-      <h2 class="type-h2">{promotionalVisibilitySection.heading}</h2>
-      <p class="type-lead">{promotionalVisibilitySection.body}</p>
-      <p class="type-small max-w-2xl text-xs">
-        {promotionalVisibilitySection.note}
-      </p>
-      {
-        promotionalVisibilitySection.cta && promoHref && (
-          <CtaLink
-            label={promotionalVisibilitySection.cta.label}
-            href={promoHref}
-            variant="link"
-            icon="arrow"
-            className="mt-2"
-          />
-        )
-      }
+  {/* Beyond the listing: reaching the right audience. */}
+  <Section id="visibility">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+      <div class="flex flex-col gap-6" data-reveal>
+        <SectionHeader
+          eyebrow={promotionalVisibilitySection.eyebrow}
+          title={promotionalVisibilitySection.heading}
+          lead={promotionalVisibilitySection.body}
+        />
+        {
+          promotionalVisibilitySection.note && (
+            <details class="group border-border bg-card rounded-lg border [&_summary::-webkit-details-marker]:hidden">
+              <summary class="text-foreground focus-visible:outline-ring flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-sm font-semibold focus-visible:outline-2">
+                <span class="flex items-center gap-2.5">
+                  <Info className="text-gold-ink size-4" aria-hidden="true" />
+                  Good to know
+                </span>
+                <ChevronDown
+                  className="size-4 transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <p class="type-small border-border border-t px-4 py-3">
+                {promotionalVisibilitySection.note}
+              </p>
+            </details>
+          )
+        }
+        {
+          promotionalVisibilitySection.cta && promoHref && (
+            <CtaLink
+              label={promotionalVisibilitySection.cta.label}
+              href={promoHref}
+              variant="link"
+              icon="arrow"
+            />
+          )
+        }
+      </div>
+      <div data-reveal style="--reveal-index: 1">
+        {
+          promotionalVisibilitySection.image ? (
+            <Image
+              src={promotionalVisibilitySection.image}
+              alt=""
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              class="aspect-4/3 w-full rounded-xl object-cover"
+            />
+          ) : (
+            <div class="surface-ivory relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl">
+              <ReachRings className="text-navy absolute inset-0 m-auto w-[92%]" />
+              <span class="bg-navy text-gold absolute inset-0 m-auto flex size-20 items-center justify-center rounded-xl shadow-[0_18px_40px_-18px_rgb(5_10_60/0.6)]">
+                <House className="size-8" aria-hidden="true" />
+              </span>
+            </div>
+          )
+        }
+      </div>
     </div>
   </Section>
 
@@ -328,12 +421,16 @@ const ogImageUrl = seo?.ogImage
       />
       <ul class="grid gap-4 md:grid-cols-3 md:gap-5">
         {
-          pricingSection.pricing.map((plan) => {
+          pricingSection.pricing.map((plan, index) => {
             const partner = isPartnerPlan(plan);
+            const perMonth = monthlyEquivalent(plan);
             return (
               <li
+                data-reveal
+                style={`--reveal-index: ${index}`}
                 class:list={[
-                  "bg-card relative flex flex-col gap-5 rounded-xl border p-7 md:p-8",
+                  "bg-card relative flex flex-col gap-5 rounded-xl border p-7 transition-[box-shadow,border-color] duration-300 hover:shadow-[0_28px_60px_-34px_rgb(5_10_60/0.5)] md:p-8",
+                  !partner && "hover:border-foreground/30",
                   partner
                     ? "border-gold shadow-[0_24px_50px_-30px_rgb(5_10_60/0.45)] md:-my-3 md:py-11"
                     : "border-border",
@@ -355,6 +452,11 @@ const ogImageUrl = seo?.ogImage
                     {plan.period}
                   </span>
                 </p>
+                {perMonth && (
+                  <p class="text-gold-ink -mt-2 text-sm font-semibold">
+                    Works out to {perMonth} a month.
+                  </p>
+                )}
                 <p class="type-small border-border border-t pt-5">
                   {plan.detail}
                 </p>
@@ -376,17 +478,62 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 
-  {/* Listing support: a compact strip. */}
-  <Section spacing="tight">
+  {/* Listing support: what a refresh covers, as a feature card. */}
+  <Section spacing="tight" id="listing-updates">
     <div
-      class="border-border grid gap-6 border-y py-10 md:grid-cols-[1fr_1.4fr] md:gap-12 md:py-12"
+      data-reveal
+      class="bg-card border-border grid overflow-hidden rounded-xl border md:grid-cols-[1fr_1.35fr]"
     >
-      <div class="flex items-start gap-4">
-        <IconMark icon={RefreshCw} />
-        <h2 class="type-h3 md:text-2xl">{listingUpdatesSection.heading}</h2>
-      </div>
-      <div class="flex flex-col gap-4">
+      {
+        listingUpdatesSection.image ? (
+          <Image
+            src={listingUpdatesSection.image}
+            alt=""
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 768px) 40vw, 100vw"
+            class="aspect-video h-full w-full object-cover md:aspect-auto"
+          />
+        ) : (
+          <div class="surface-navy relative flex flex-col justify-end gap-5 overflow-hidden p-7 md:p-10">
+            <RefreshCw
+              className="text-gold/15 absolute -top-6 -right-6 size-44"
+              aria-hidden="true"
+            />
+            <IconMark icon={RefreshCw} tone="navy" />
+            <h2 class="type-h3 md:text-2xl">{listingUpdatesSection.heading}</h2>
+          </div>
+        )
+      }
+      <div class="flex flex-col gap-6 p-7 md:p-10">
+        {
+          listingUpdatesSection.image && (
+            <h2 class="type-h3 md:text-2xl">{listingUpdatesSection.heading}</h2>
+          )
+        }
         <p class="type-body">{listingUpdatesSection.body}</p>
+        {
+          listingUpdatesSection.refreshIncludes.length > 0 && (
+            <div class="flex flex-col gap-3">
+              <p class="eyebrow">A refresh can include</p>
+              <ul class="grid gap-3 sm:grid-cols-3">
+                {listingUpdatesSection.refreshIncludes.map((item) => {
+                  const Icon = refreshIcon(item);
+                  return (
+                    <li class="surface-warm border-border flex flex-col gap-3 rounded-lg border p-4 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                      <Icon
+                        className="text-gold-ink size-5"
+                        aria-hidden="true"
+                      />
+                      <span class="text-foreground text-sm font-medium first-letter:uppercase">
+                        {item}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )
+        }
       </div>
     </div>
   </Section>
@@ -415,14 +562,14 @@ const ogImageUrl = seo?.ogImage
         <ol class="flex flex-col">
           {
             howToJoinSection.steps.map((step, index) => (
-              <li class="relative flex gap-5 pb-8 last:pb-0">
+              <li data-step class="group relative flex gap-5 pb-8 last:pb-0">
                 {index < howToJoinSection.steps.length - 1 && (
                   <span
                     aria-hidden="true"
-                    class="bg-sage absolute top-11 bottom-1 left-4.75 w-px"
+                    class="bg-sage group-[.is-active]:bg-gold absolute top-11 bottom-1 left-4.75 w-px transition-colors duration-500"
                   />
                 )}
-                <span class="font-heading border-sage bg-card text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg border text-sm font-semibold">
+                <span class="font-heading border-sage bg-card text-foreground group-[.is-active]:border-gold group-[.is-active]:bg-gold group-[.is-active]:text-navy flex size-10 shrink-0 items-center justify-center rounded-lg border text-sm font-semibold transition-colors duration-300">
                   {step.number}
                 </span>
                 <div class="flex flex-col gap-1 pt-2">
@@ -467,3 +614,23 @@ const ogImageUrl = seo?.ogImage
     </div>
   </Section>
 </Layout>
+
+<script>
+  // Light up each join step as it scrolls past the middle of the screen.
+  const steps = document.querySelectorAll("[data-step]");
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-active");
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -45% 0px" },
+    );
+    steps.forEach((step) => observer.observe(step));
+  } else {
+    steps.forEach((step) => step.classList.add("is-active"));
+  }
+</script>

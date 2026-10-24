@@ -6,7 +6,8 @@ import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
-import { resolveCtaLink } from "@/lib/content";
+import { NODE_MAP_COORDINATES, resolveCtaLink } from "@/lib/content";
+import { SaMap } from "@/components/custom/map-graphics";
 import { CtaLink } from "@/components/custom/cta-link";
 import {
   BadgeCheck,
@@ -73,6 +74,11 @@ const iconFor = (criterion: string) =>
   criterionIcons.find(([pattern]) => pattern.test(criterion))?.[1] ?? Check;
 
 // "More than 20 years of …" → "20+" for the experience figure.
+// ACOSA's business nodes, pinned on the experience section's map.
+const nodePins = Object.values(NODE_MAP_COORDINATES).map(
+  ([longitude, latitude]) => ({ longitude, latitude }),
+);
+
 const yearsMatch = experienceSection.heading.match(/(\d+)\s+years/i);
 const yearsFigure = yearsMatch ? `${yearsMatch[1]}+` : null;
 const [experienceLead, ...experienceBody] = experienceSection.body
@@ -101,7 +107,14 @@ const [experienceLead, ...experienceBody] = experienceSection.body
   {/* Experience claim: a figure, then editorial prose. */}
   <Section>
     <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-      <div class="flex flex-col gap-6">
+      <div
+        data-reveal
+        class="surface-warm relative isolate flex min-h-[22rem] flex-col gap-6 overflow-hidden rounded-xl p-7 md:min-h-[28rem] md:p-10"
+      >
+        <SaMap
+          pins={nodePins}
+          className="text-navy absolute -right-[8%] -bottom-[6%] -z-10 w-[88%] opacity-70 md:w-[78%]"
+        />
         <p class="eyebrow">{experienceSection.eyebrow}</p>
         {
           yearsFigure && (

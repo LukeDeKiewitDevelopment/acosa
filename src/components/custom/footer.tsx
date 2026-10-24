@@ -85,6 +85,7 @@ export const Footer = ({
     {
       title: "Explore",
       links: [
+        { label: "Home", href: "/" },
         { label: "Business Nodes", href: "/business-nodes" },
         { label: "Properties", href: "/properties" },
         { label: "Why ACOSA?", href: "/why-acosa" },
