@@ -192,6 +192,7 @@ const ogImageUrl = seo?.ogImage
           eyebrow={whoWeWorkWithSection.eyebrow}
           title={whoWeWorkWithSection.heading}
           lead={whoWeWorkWithSection.body || null}
+          underline
         />
         <div class="flex flex-col gap-4">
           <p class="text-foreground text-sm font-semibold">
@@ -236,6 +237,7 @@ const ogImageUrl = seo?.ogImage
         eyebrow={valueSection.eyebrow}
         title={valueSection.heading}
         lead={valueSection.body}
+        underline
       />
       {
         valueSection.image && (
@@ -354,6 +356,7 @@ const ogImageUrl = seo?.ogImage
           eyebrow={promotionalVisibilitySection.eyebrow}
           title={promotionalVisibilitySection.heading}
           lead={promotionalVisibilitySection.body}
+          underline
         />
         {
           promotionalVisibilitySection.note && (
@@ -418,6 +421,7 @@ const ogImageUrl = seo?.ogImage
         eyebrow={pricingSection.eyebrow}
         title={pricingSection.heading}
         align="center"
+        underline
       />
       <ul class="grid gap-4 md:grid-cols-3 md:gap-5">
         {

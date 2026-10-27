@@ -11,6 +11,8 @@ export type SectionHeaderProps = {
   as?: "h1" | "h2";
   /** Gold eyebrow, for navy surfaces. */
   accent?: boolean;
+  /** Brand-gold hand-drawn underline under the heading's final word. */
+  underline?: boolean;
   className?: string;
   titleClassName?: string;
 };
@@ -25,9 +27,17 @@ export const SectionHeader = ({
   align = "start",
   as: Heading = "h2",
   accent = false,
+  underline = false,
   className,
   titleClassName,
 }: SectionHeaderProps) => {
+  // The final word (with its punctuation) carries the hand-drawn accent.
+  const trimmedTitle = title.trim();
+  const lastSpace = trimmedTitle.lastIndexOf(" ");
+  const titleLead =
+    lastSpace >= 0 ? trimmedTitle.slice(0, lastSpace + 1) : "";
+  const titleFinalWord = trimmedTitle.slice(lastSpace + 1);
+
   return (
     <div
       className={cn(
@@ -42,7 +52,14 @@ export const SectionHeader = ({
       <Heading
         className={cn(Heading === "h1" ? "type-h1" : "type-h2", titleClassName)}
       >
-        {title}
+        {underline ? (
+          <>
+            {titleLead}
+            <span className="accent-underline">{titleFinalWord}</span>
+          </>
+        ) : (
+          title
+        )}
       </Heading>
       {lead && <p className="type-lead">{lead}</p>}
       {children}

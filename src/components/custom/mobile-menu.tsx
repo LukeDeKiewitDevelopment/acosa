@@ -59,18 +59,6 @@ export const MobileMenu = ({
         </SheetHeader>
         <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-5">
           <ul className="flex flex-col">
-            <li>
-              <a
-                href="/"
-                aria-current={currentPath === "/" ? "page" : undefined}
-                className={cn(
-                  itemClassName,
-                  currentPath === "/" && "text-gold-ink",
-                )}
-              >
-                Home
-              </a>
-            </li>
             {navItems?.map((navItem) => {
               const active = isActivePath(navItem.href, currentPath);
               return (

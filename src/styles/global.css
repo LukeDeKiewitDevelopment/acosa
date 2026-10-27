@@ -370,6 +370,31 @@
   @apply text-gold font-sans text-xs leading-none font-semibold tracking-[0.18em] uppercase;
 }
 
+/* Hand-drawn brand-gold underline under the final word of a heading.
+   Uses a mask so the stroke always follows the brand token. */
+@utility accent-underline {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -3%;
+    bottom: -0.24em;
+    left: -3%;
+    height: 0.3em;
+    background-color: var(--brand-gold);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8.6C33 4.4 67 2.4 101 3.2c30 .7 58 2.7 96 .2' fill='none' stroke='%23000' stroke-width='4.2' stroke-linecap='round'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 8.6C33 4.4 67 2.4 101 3.2c30 .7 58 2.7 96 .2' fill='none' stroke='%23000' stroke-width='4.2' stroke-linecap='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    pointer-events: none;
+  }
+}
+
 @utility type-display {
   @apply font-heading text-foreground text-[2.25rem] leading-[1.08] font-semibold tracking-[-0.02em] sm:text-5xl lg:text-[3.5rem] xl:text-[3.875rem];
 }
