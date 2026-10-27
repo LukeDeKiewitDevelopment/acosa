@@ -5,6 +5,7 @@ import type { ImageMetadata } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { SectionHeader } from "@/components/custom/section-header";
+import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { Hero } from "@/components/custom/hero";
 import { resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
@@ -254,30 +255,22 @@ const [experienceLead, ...experienceBody] = experienceSection.body
   </Section>
 
   {/* Outcome */}
-  <Section>
-    <div
-      class="grid items-center gap-10 md:grid-cols-2 lg:grid-cols-[1fr_1.15fr] lg:gap-20"
-    >
-      <SectionHeader title={outcomeSection.heading} lead={outcomeSection.body}>
-        <CtaLink
-          label={outcomeSection.cta.label}
-          href={outcomeSection.cta.link}
-          variant="secondary"
-          icon="arrow"
-          className="mt-3 w-fit"
-        />
-      </SectionHeader>
-      {
-        outcomeSection.image && (
-          <Image
-            src={outcomeSection.image}
-            alt="A traveller relaxing at her guesthouse at the end of a work day"
-            widths={[480, 800, 1200, 1408]}
-            sizes="(min-width: 768px) 55vw, 100vw"
-            class="aspect-4/3 w-full rounded-xl object-cover object-[72%_center]"
-          />
-        )
-      }
-    </div>
-  </Section>
+  {
+    outcomeSection.image && (
+      <ClosingImageSection
+        heading={outcomeSection.heading}
+        body={outcomeSection.body}
+        image={outcomeSection.image}
+        imageAlt="A traveller relaxing at her guesthouse at the end of a work day"
+        actions={[
+          {
+            label: outcomeSection.cta.label,
+            href: outcomeSection.cta.link,
+            variant: "secondary",
+            icon: "arrow",
+          },
+        ]}
+      />
+    )
+  }
 </Layout>

@@ -1,6 +1,8 @@
 ---
+import southAfricaNetwork from "@/assets/images/pages/business-nodes/south-africa-network.png";
 import businessNodesHero from "@/assets/images/pages/business-nodes/hero.png";
 import Layout from "@/layouts/Layout.astro";
+import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import {
   getPublishedProperties,
   getSiteSettings,
@@ -86,49 +88,26 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
     )
   }
 
-  <Section tone="ivory">
-    <div class="flex flex-col gap-12">
-      <SectionHeader
-        align="center"
-        eyebrow="Growing Network"
-        title="ACOSA is growing deliberately."
-        lead="We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands."
-      />
-      <div class="grid gap-4 md:grid-cols-2 md:gap-5">
-        <div
-          class="bg-card border-border flex flex-col gap-4 rounded-xl border p-7 md:p-8"
-        >
-          <h3 class="type-h3">Can't see the area you need?</h3>
-          <p class="type-body">
-            Tell ACOSA where you need to be and we'll help you explore suitable
-            options.
-          </p>
-          <CtaLink
-            label="Ask ACOSA"
-            href={askAcosaHref}
-            variant="secondary"
-            icon="whatsapp"
-            external={askAcosaHref.startsWith("http")}
-            trackingKey="nodes_ask_acosa_click"
-            className="mt-auto w-fit"
-          />
-        </div>
-        <div
-          class="bg-card border-border flex flex-col gap-4 rounded-xl border p-7 md:p-8"
-        >
-          <h3 class="type-h3">Own a quality property in a business area?</h3>
-          <p class="type-body">
-            We're building a curated network of independent accommodation
-            providers that understand the needs of corporate travellers.
-          </p>
-          <CtaLink
-            label="List Your Property"
-            href="/list-your-property"
-            variant="link"
-            className="mt-auto"
-          />
-        </div>
-      </div>
-    </div>
-  </Section>
+  <ClosingImageSection
+    eyebrow="GROWING NETWORK"
+    heading="ACOSA is growing deliberately."
+    body="We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands. Need help finding an area or want to add your property to the network? We'll help you take the next step."
+    image={southAfricaNetwork}
+    imageAlt=""
+    actions={[
+      {
+        label: "Ask ACOSA",
+        href: askAcosaHref,
+        variant: "secondary",
+        icon: "whatsapp",
+        external: askAcosaHref.startsWith("http"),
+        trackingKey: "nodes_ask_acosa_click",
+      },
+      {
+        label: "List Your Property",
+        href: "/list-your-property",
+        variant: "link",
+      },
+    ]}
+  />
 </Layout>

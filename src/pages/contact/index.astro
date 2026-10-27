@@ -91,18 +91,18 @@ const linkedin = settings.data.socialLinks.find((social) =>
           sizes="100vw"
           loading="eager"
           fetchpriority="high"
-          class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_center]"
+          class="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] brightness-110 saturate-110 md:object-[72%_center]"
         />
       )
     }
     <div
       aria-hidden="true"
-      class="from-navy/70 via-navy/75 to-navy/90 md:from-navy/75 md:via-navy/65 md:to-navy/80 absolute inset-0 -z-10 bg-linear-to-b md:bg-linear-to-r"
+      class="from-navy/55 via-navy/38 to-navy/60 md:from-navy/78 md:via-navy/38 md:to-navy/16 absolute inset-0 z-10 bg-linear-to-b md:bg-linear-to-r"
     >
     </div>
 
     <div
-      class="container-page relative z-10 flex min-h-[calc(100svh-5rem)] flex-col justify-center gap-10 py-12 sm:gap-12 sm:py-16 lg:gap-14 lg:py-20"
+      class="container-page relative z-20 flex min-h-[calc(100svh-5rem)] flex-col justify-center gap-10 py-12 sm:gap-12 sm:py-16 lg:gap-14 lg:py-20"
     >
       <header class="flex max-w-3xl flex-col gap-5">
         {hero.eyebrow && <p class="eyebrow-accent">{hero.eyebrow}</p>}

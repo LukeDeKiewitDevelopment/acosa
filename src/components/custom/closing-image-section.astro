@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { CtaLink } from "@/components/custom/cta-link";
+
+type Action = {
+  label: string;
+  href: string;
+  variant?: "primary" | "secondary" | "link";
+  icon?: "arrow" | "whatsapp" | "email" | "phone" | "external" | "none";
+  external?: boolean;
+  trackingKey?: string;
+};
+
+type Props = {
+  eyebrow?: string;
+  heading: string;
+  body: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  actions: Action[];
+};
+
+const { eyebrow, heading, body, image, imageAlt, actions } = Astro.props;
+---
+
+<section class="surface-navy relative isolate overflow-hidden">
+  <Image
+    src={image}
+    alt={imageAlt}
+    widths={[480, 800, 1200, 1408, 1920]}
+    sizes="100vw"
+    class="absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]"
+  />
+  <div
+    aria-hidden="true"
+    class="from-navy/90 via-navy/60 to-navy/10 absolute inset-0 z-10 bg-linear-to-t md:bg-linear-to-r md:to-transparent"
+  >
+  </div>
+  <div
+    class="container-page relative z-20 flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20"
+  >
+    <div class="flex max-w-lg flex-col gap-5">
+      {eyebrow && <p class="eyebrow-accent">{eyebrow}</p>}
+      <h2 class="type-h2 text-white">{heading}</h2>
+      <p class="type-lead text-white/85">{body}</p>
+      <div class="mt-2 flex flex-wrap items-center gap-x-7 gap-y-4">
+        {
+          actions.map((action) => (
+            <CtaLink
+              {...action}
+              className={action.variant === "link" ? "text-white" : undefined}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

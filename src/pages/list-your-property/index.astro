@@ -415,15 +415,39 @@ const ogImageUrl = seo?.ogImage
     /* 05 — Commercial decision: restrained typography, clear price hierarchy.
       The R389 partner rate is identified without hiding R499 or R4,290. */
   }
-  <Section id="pricing" tone="warm">
-    <div class="flex flex-col gap-12 md:gap-14">
+  <Section
+    id="pricing"
+    spacing="none"
+    fullWidth
+    className="surface-navy relative isolate overflow-hidden"
+  >
+    {
+      promotionalVisibilitySection.image && (
+        <Image
+          src={promotionalVisibilitySection.image}
+          alt=""
+          widths={[480, 800, 1200, 1408, 1920]}
+          sizes="100vw"
+          class="absolute inset-0 z-0 h-full w-full object-cover object-[62%_center]"
+        />
+      )
+    }
+    <div aria-hidden="true" class="bg-navy/55 absolute inset-0 z-10"></div>
+    <div
+      class="container-page relative z-20 flex flex-col gap-12 py-14 md:gap-14 md:py-20"
+    >
       <SectionHeader
         eyebrow={pricingSection.eyebrow}
         title={pricingSection.heading}
         align="center"
         underline
+        accent
+        titleClassName="text-white"
       />
-      <ul class="grid gap-4 md:grid-cols-3 md:gap-5">
+      <ul
+        style="--foreground: #050a3c; --muted-foreground: #695f54;"
+        class="grid gap-4 md:grid-cols-3 md:gap-5"
+      >
         {
           pricingSection.pricing.map((plan, index) => {
             const partner = isPartnerPlan(plan);
@@ -433,7 +457,7 @@ const ogImageUrl = seo?.ogImage
                 data-reveal
                 style={`--reveal-index: ${index}`}
                 class:list={[
-                  "bg-card relative flex flex-col gap-5 rounded-xl border p-7 transition-[box-shadow,border-color] duration-300 hover:shadow-[0_28px_60px_-34px_rgb(5_10_60/0.5)] md:p-8",
+                  "relative flex flex-col gap-5 rounded-xl border bg-white/95 p-7 backdrop-blur-sm transition-[box-shadow,border-color] duration-300 hover:shadow-[0_28px_60px_-34px_rgb(5_10_60/0.5)] md:p-8",
                   !partner && "hover:border-foreground/30",
                   partner
                     ? "border-gold shadow-[0_24px_50px_-30px_rgb(5_10_60/0.45)] md:-my-3 md:py-11"
@@ -484,55 +508,46 @@ const ogImageUrl = seo?.ogImage
 
   {/* Listing support: what a refresh covers, as a feature card. */}
   <Section spacing="tight" id="listing-updates">
-    <div
-      data-reveal
-      class="bg-card border-border grid overflow-hidden rounded-xl border md:grid-cols-[1fr_1.35fr]"
-    >
+    <div class="surface-navy relative isolate overflow-hidden rounded-xl">
       {
-        listingUpdatesSection.image ? (
-          <div class="surface-navy relative isolate flex min-h-60 flex-col justify-end overflow-hidden sm:min-h-72 md:min-h-full">
-            <Image
-              src={listingUpdatesSection.image}
-              alt=""
-              widths={[480, 800, 1200]}
-              sizes="(min-width: 768px) 40vw, 100vw"
-              class="absolute inset-0 -z-20 h-full w-full object-cover object-[58%_center]"
-            />
-            <div
-              aria-hidden="true"
-              class="from-navy/90 via-navy/55 to-navy/20 absolute inset-0 -z-10 bg-linear-to-t"
-            />
-            <h2 class="type-h3 relative z-10 p-6 text-white sm:p-8 md:text-2xl">
-              {listingUpdatesSection.heading}
-            </h2>
-          </div>
-        ) : (
-          <div class="surface-navy relative flex min-h-60 flex-col justify-end gap-5 overflow-hidden p-7 sm:min-h-72 md:min-h-full md:p-10">
-            <RefreshCw
-              className="text-gold/15 absolute -top-6 -right-6 size-44"
-              aria-hidden="true"
-            />
-            <IconMark icon={RefreshCw} tone="navy" />
-            <h2 class="type-h3 md:text-2xl">{listingUpdatesSection.heading}</h2>
-          </div>
+        listingUpdatesSection.image && (
+          <Image
+            src={listingUpdatesSection.image}
+            alt=""
+            widths={[480, 800, 1200, 1408, 1920]}
+            sizes="(min-width: 1280px) 1200px, calc(100vw - 2rem)"
+            class="absolute inset-0 z-0 h-full w-full object-cover object-[58%_center]"
+          />
         )
       }
-      <div class="flex flex-col gap-6 p-7 md:p-10">
-        <p class="type-body">{listingUpdatesSection.body}</p>
+      <div
+        aria-hidden="true"
+        class="from-navy/90 via-navy/75 to-navy/55 md:from-navy/90 md:via-navy/65 md:to-navy/30 absolute inset-0 z-10 bg-linear-to-t"
+      >
+      </div>
+      <div
+        class="relative z-20 flex flex-col gap-6 px-6 py-8 sm:px-8 sm:py-10 md:px-12 md:py-14"
+      >
+        <RefreshCw
+          className="text-gold/15 absolute -top-6 -right-6 size-44"
+          aria-hidden="true"
+        />
+        <div class="relative flex max-w-3xl flex-col gap-4">
+          <p class="eyebrow-accent">LISTING SUPPORT</p>
+          <h2 class="type-h2 text-white">{listingUpdatesSection.heading}</h2>
+          <p class="type-body text-white/90">{listingUpdatesSection.body}</p>
+        </div>
         {
           listingUpdatesSection.refreshIncludes.length > 0 && (
             <div class="flex flex-col gap-3">
-              <p class="eyebrow">A refresh can include</p>
+              <p class="eyebrow-accent">A refresh can include</p>
               <ul class="grid gap-3 sm:grid-cols-3">
                 {listingUpdatesSection.refreshIncludes.map((item) => {
                   const Icon = refreshIcon(item);
                   return (
-                    <li class="surface-warm border-border flex flex-col gap-3 rounded-lg border p-4 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-                      <Icon
-                        className="text-gold-ink size-5"
-                        aria-hidden="true"
-                      />
-                      <span class="text-foreground text-sm font-medium first-letter:uppercase">
+                    <li class="bg-navy/40 flex flex-col gap-3 rounded-lg border border-white/25 p-4 text-white backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                      <Icon className="text-gold size-5" aria-hidden="true" />
+                      <span class="text-sm font-medium first-letter:uppercase">
                         {item}
                       </span>
                     </li>

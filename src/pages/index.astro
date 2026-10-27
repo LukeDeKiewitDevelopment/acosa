@@ -17,6 +17,7 @@ import { SectionHeader } from "@/components/custom/section-header";
 import { PropertyGrid } from "@/components/custom/property-card";
 import { PropertySearch } from "@/components/custom/property-search";
 import { CtaLink } from "@/components/custom/cta-link";
+import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { TextLink } from "@/components/custom/text-link";
 import { getCollection } from "astro:content";
 import { tagIcon } from "@/lib/tag-icons";
@@ -373,34 +374,20 @@ const websiteSchema: Record<string, unknown> = {
   {/* Closing: beyond working hours */}
   {
     closingSection.image && (
-      <Section spacing="none" fullWidth>
-        <div class="surface-navy relative isolate overflow-hidden">
-          <Image
-            src={closingSection.image}
-            alt="A traveller relaxing on the patio of her guesthouse after a business day"
-            widths={[480, 800, 1200, 1408, 1920]}
-            sizes="100vw"
-            class="absolute inset-0 -z-10 h-full w-full object-cover object-[72%_center]"
-          />
-          <div
-            aria-hidden="true"
-            class="from-navy/90 via-navy/60 to-navy/10 absolute inset-0 -z-10 bg-linear-to-t md:bg-linear-to-r md:to-transparent"
-          />
-          <div class="container-page flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20">
-            <div class="flex max-w-lg flex-col gap-5">
-              <h2 class="type-h2">{closingSection.heading}</h2>
-              <p class="type-lead">{closingSection.body}</p>
-              <CtaLink
-                label={closingSection.cta.label}
-                href={resolveCtaLink(closingSection.cta.link, ctaOptions)}
-                variant="secondary"
-                icon="arrow"
-                className="mt-2 w-fit"
-              />
-            </div>
-          </div>
-        </div>
-      </Section>
+      <ClosingImageSection
+        heading={closingSection.heading}
+        body={closingSection.body}
+        image={closingSection.image}
+        imageAlt="A traveller relaxing on the patio of her guesthouse after a business day"
+        actions={[
+          {
+            label: closingSection.cta.label,
+            href: resolveCtaLink(closingSection.cta.link, ctaOptions),
+            variant: "secondary",
+            icon: "arrow",
+          },
+        ]}
+      />
     )
   }
 </Layout>

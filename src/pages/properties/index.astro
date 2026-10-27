@@ -1,7 +1,8 @@
 ---
+import southAfricaNetwork from "@/assets/images/pages/business-nodes/south-africa-network.png";
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
-import { CtaLink } from "@/components/custom/cta-link";
+import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import {
   getNodes,
   getPublishedProperties,
@@ -43,27 +44,21 @@ const businessNodes = nodes.map((node) => ({
   />
 
   <Section spacing="none" className="pt-10 pb-16 md:pt-12 md:pb-24 lg:pb-28">
-    <div class="flex flex-col gap-14">
-      <PropertySearch client:load items={items} businessNodes={businessNodes} />
-
-      <div
-        class="border-border flex flex-col gap-5 border-t pt-10 md:flex-row md:items-center md:justify-between"
-      >
-        <div class="flex max-w-2xl flex-col gap-2">
-          <h2 class="type-h3">ACOSA is growing deliberately.</h2>
-          <p class="type-body">
-            We're building our accommodation network around quality, not simply
-            quantity. New business nodes and carefully selected properties will
-            be added as the ACOSA network expands.
-          </p>
-        </div>
-        <CtaLink
-          label="Explore Business Nodes"
-          href="/business-nodes"
-          variant="link"
-          className="shrink-0"
-        />
-      </div>
-    </div>
+    <PropertySearch client:load items={items} businessNodes={businessNodes} />
   </Section>
+  <ClosingImageSection
+    eyebrow="GROWING NETWORK"
+    heading="ACOSA is growing deliberately."
+    body="We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands."
+    image={southAfricaNetwork}
+    imageAlt=""
+    actions={[
+      {
+        label: "Explore Business Nodes",
+        href: "/business-nodes",
+        variant: "secondary",
+        icon: "arrow",
+      },
+    ]}
+  />
 </Layout>

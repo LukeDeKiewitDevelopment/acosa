@@ -8,6 +8,7 @@ import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
 import { getSiteSettings, resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
+import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { IconMark } from "@/components/custom/icon-mark";
 import {
   BadgeCheck,
@@ -294,53 +295,31 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   </Section>
 
   {
-    /* Final conversion: a navy-overlaid image, generous space, one dominant button. */
+    finalCta.image && (
+      <ClosingImageSection
+        eyebrow={finalCta.eyebrow}
+        heading={finalCta.heading}
+        body={finalCta.body}
+        image={finalCta.image}
+        imageAlt="Business travellers walking through a sunlit corporate lobby"
+        actions={[
+          {
+            label: finalCta.primaryCta.label,
+            href: finalPrimaryHref,
+            variant: "secondary",
+            icon: "email",
+            trackingKey: "companies_final_email_click",
+          },
+          {
+            label: finalCta.secondaryCta.label,
+            href: finalSecondaryHref,
+            variant: "link",
+            icon: "arrow",
+            external: finalSecondaryHref.startsWith("http"),
+            trackingKey: "companies_final_whatsapp_click",
+          },
+        ]}
+      />
+    )
   }
-  <Section spacing="none" className="pb-16 md:pb-24 lg:pb-28">
-    <div class="surface-navy relative isolate overflow-hidden rounded-xl">
-      {
-        finalCta.image && (
-          <Image
-            src={finalCta.image}
-            alt="Business travellers walking through a sunlit corporate lobby"
-            widths={[480, 800, 1200, 1408, 1920]}
-            sizes="100vw"
-            class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
-          />
-        )
-      }
-      <div
-        aria-hidden="true"
-        class="from-navy/90 via-navy/65 to-navy/40 md:from-navy/85 md:via-navy/55 md:to-navy/20 absolute inset-0 -z-10 bg-linear-to-t md:bg-linear-to-r"
-      >
-      </div>
-      <div class="px-6 py-16 md:px-12 md:py-20">
-        <div
-          class="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center"
-        >
-          {finalCta.eyebrow && <p class="eyebrow-accent">{finalCta.eyebrow}</p>}
-          <h2 class="type-h2">{finalCta.heading}</h2>
-          <p class="type-lead">{finalCta.body}</p>
-          <CtaLink
-            label={finalCta.primaryCta.label}
-            href={finalPrimaryHref}
-            variant="primary"
-            size="lg"
-            icon="email"
-            className="mt-3"
-            trackingKey="companies_final_email_click"
-          />
-          <CtaLink
-            label={finalCta.secondaryCta.label}
-            href={finalSecondaryHref}
-            variant="link"
-            icon="arrow"
-            external={finalSecondaryHref.startsWith("http")}
-            className="text-sm"
-            trackingKey="companies_final_whatsapp_click"
-          />
-        </div>
-      </div>
-    </div>
-  </Section>
 </Layout>
