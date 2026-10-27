@@ -4,28 +4,36 @@ Generated from `node scripts/image-audit.mjs`. Run it again after you add or rep
 
 ## Duplicates on live pages
 
-| Image | Where it appears | Status |
-| --- | --- | --- |
-| `acosa-library/ACOSA_14_The_Right_Guest.png` | Home, "For accommodation providers" section. For Properties hero. | Kept. The pre-launch addendum specifies ACOSA_14 for both places. Supply a second host image only if the client wants them to differ. |
-| `corporate-booker/image.jpg` | Home, "Booking for someone else?" section. For Companies hero. | Needs one new corporate-booker image for Home. |
-| `acosa-library/ACOSA_04_Hospitality_Assessment.png` and `why-acosa/curation.png` (the same photo) | For Properties, "Curated, not crowded". Why ACOSA?, "Curated, not crowded". | Needs a second assessment image for Why ACOSA?. |
-| `nodes/centurion/heroImage.jpg` | Business node pages for Bryanston, Centurion, Edenvale, Midrand, Pretoria East and Rosslyn. | Needs one photo per node. Centurion keeps the current photo. |
-| `end-of-workday/image.jpg` | Was on Home (closing banner) and Why ACOSA? (closing section). | Fixed. Why ACOSA? now uses the unused approved image `ACOSA_12_Practical_Business_Stay.png`. |
+| Image                                        | Where it appears                                                                            | Status                                                                                                           |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `acosa-library/ACOSA_14_The_Right_Guest.png` | For Properties hero.                                                                        | Kept as specified by the pre-launch addendum. Home, "For accommodation providers," now uses supplied image 2.11. |
+| `corporate-booker/image.jpg`                 | Home, "Booking for someone else?" section. For Companies hero.                              | Needs one new corporate-booker image for Home.                                                                   |
+| `nodes/centurion/heroImage.jpg`              | Business node pages for Bryanston, Centurion, Edenvale, Midrand, Pretoria East and Rosslyn. | Needs one photo per node. Centurion keeps the current photo.                                                     |
+| `end-of-workday/image.jpg`                   | Was on Home (closing banner) and Why ACOSA? (closing section).                              | Fixed. Why ACOSA? now uses the unused approved image `ACOSA_12_Practical_Business_Stay.png`.                     |
 
 ## Sections that take a new image
 
 Upload each image in Keystatic. The field is already in the editor.
 
-| Page and section | Keystatic field | Current state |
-| --- | --- | --- |
-| Contact, header | Contact Page > Hero > Hero Image | Interim: approved, previously unused `ACOSA_11_Independent_Hospitality.png`. |
-| For Properties, "Give the right audience more ways to discover you." | List Your Property Page > Promotional Visibility > Section Image (optional) | Empty. Shows the audience-reach graphic until an image is added. |
-| For Properties, "Keep your property information current." | List Your Property Page > Listing Updates > Section Image (optional) | Empty. Shows the navy panel until an image is added. |
-| Home, "Booking for someone else?" | Home Page > Corporate bookers > Image | Duplicate, see above. |
-| Why ACOSA?, "Curated, not crowded" | Why ACOSA Page > Curation > Curation Image | Duplicate, see above. |
-| Business node pages | Business Nodes > (node) > Hero Image | Five nodes share the Centurion photo. |
+| Page and section                                                     | Keystatic field                                                  | Current state                                                                                                             |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Home, hero                                                           | Home Page > Hero > Hero Image                                    | Replaced with supplied image 2.11, with the host and guest kept in frame.                                                 |
+| Home, "Reach the people you actually want to host"                   | Home Page > Property Owners > Image                              | Uses supplied image 2.11, matching the Home hero.                                                                         |
+| Contact, full-page background                                        | Contact Page > Hero > Hero Image                                 | Updated with the supplied open-door image, behind the welcome heading and all four contact routes.                        |
+| Why ACOSA, header                                                    | Why ACOSA Page > Hero > Hero Image                               | Updated with the supplied guesthouse breakfast image.                                                                     |
+| Why ACOSA, "20+ years" experience                                    | Why ACOSA Page > Experience > Image                              | Added the supplied hospitality professional image.                                                                        |
+| Why ACOSA, "Curated, not crowded"                                    | Why ACOSA Page > Curation > Curation Image                       | Retains its original image; supplied image 2.2 is used in For Properties' standards section.                              |
+| Why ACOSA, "ACOSA Approved"                                          | Why ACOSA Page > Approved > Image                                | Added the supplied garden courtyard image.                                                                                |
+| For Companies, final CTA                                             | For Companies Page > Final CTA > Image                           | Added the supplied corporate-travellers image with a navy overlay.                                                        |
+| For Properties, "Give the right audience more ways to discover you." | List Your Property Page > Promotional Visibility > Section Image | Added the supplied corporate-team image.                                                                                  |
+| For Properties, "The standard matters because the network matters."  | List Your Property Page > Curation > Section Image               | Replaced the large standards-section image with supplied image 2.2.                                                       |
+| For Properties, "Keep your property information current."            | List Your Property Page > Listing Updates > Section Image        | Added the supplied guesthouse-room image with a navy overlay and white heading; the image and content stack responsively. |
+| Home, "Booking for someone else?"                                    | Home Page > Corporate bookers > Image                            | Duplicate, see above.                                                                                                     |
+| Business node pages                                                  | Business Nodes > (node) > Hero Image                             | Five nodes share the Centurion photo.                                                                                     |
 
 Recommended source size is 1600 x 900 px or larger for full-width and hero images, and 1200 x 900 px for split sections. Astro resizes and compresses every image at build time, so upload the full-quality file.
+
+Image 2.11 is stored as `acosa-library/ACOSA_17_Host_Welcome.png` and is shared by the Home hero and property-owner section.
 
 ## Tablet and mobile crops
 

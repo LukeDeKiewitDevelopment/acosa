@@ -3,7 +3,7 @@ hero:
   heading: Reach the people you actually want to host.
   body: >-
     Your property doesn't need more irrelevant visibility. It needs to be discovered by people whose accommodation needs match what you've built. ACOSA connects carefully selected independent accommodation providers with corporate travellers and the people who book for them.
-  image: ../../assets/images/pages/acosa-library/ACOSA_14_The_Right_Guest.png
+  image: ../../assets/images/pages/acosa-library/ACOSA_01_Home_Hero.png
   primaryCta:
     label: Apply to List Your Property
     link: /list-your-property#apply
@@ -61,7 +61,7 @@ curationSection:
   heading: The standard matters because the network matters.
   body: >-
     Every property is reviewed before being accepted onto ACOSA. We look beyond attractive photographs to consider the practical details that can influence a business stay.
-  image: ../../assets/images/pages/acosa-library/ACOSA_04_Hospitality_Assessment.png
+  image: ../../assets/images/pages/list-your-property/standards-review.png
   secondaryImage: ../../assets/images/pages/acosa-library/ACOSA_15_Professional_Hospitality_Team.png
   criteria:
     - Reliable WiFi
@@ -86,6 +86,7 @@ promotionalVisibilitySection:
   heading: Give the right audience more ways to discover you.
   body: >-
     ACOSA's content is designed to build an audience around business accommodation, including business-node information, property discovery, practical corporate-travel content, accommodation features, and relevant partner stories. Approved properties can therefore benefit from opportunities to appear within relevant ACOSA content as the platform grows.
+  image: ../../assets/images/pages/list-your-property/promotional-visibility.png
   note: "Promotional inclusion does not constitute property-specific social-media management and does not guarantee reach, enquiries or bookings."
   cta:
     label: View Pricing
@@ -115,6 +116,7 @@ listingUpdatesSection:
   heading: Keep your property information current.
   body: >-
     Essential factual corrections can be requested whenever necessary. Your subscription also allows for up to two substantial listing refresh requests during a 12-month period, should you need them. These may include replacing gallery images, updating descriptive copy, and adding significant new facilities. Additional extensive content changes may be quoted separately where required.
+  image: ../../assets/images/pages/list-your-property/listing-updates.png
   refreshIncludes:
     - replacing gallery images
     - updating descriptive copy

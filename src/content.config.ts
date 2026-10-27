@@ -260,6 +260,7 @@ const whyAcosaPage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
       }),
       curationSection: z.object({
         eyebrow: z.string().optional().default(""),
@@ -273,6 +274,7 @@ const whyAcosaPage = defineCollection({
       approvedSection: z.object({
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
         cta: z.object({ label: z.string(), link: z.string() }),
       }),
       outcomeSection: z.object({
@@ -320,6 +322,7 @@ const forCompaniesPage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
         primaryCta: z.object({ label: z.string(), link: z.string() }),
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
         whatsappCta: z

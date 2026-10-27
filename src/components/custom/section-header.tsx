@@ -11,7 +11,7 @@ export type SectionHeaderProps = {
   as?: "h1" | "h2";
   /** Gold eyebrow, for navy surfaces. */
   accent?: boolean;
-  /** Brand-gold hand-drawn underline under the heading's final word. */
+  /** Straight brand-gold underline under the heading's final word. */
   underline?: boolean;
   className?: string;
   titleClassName?: string;
@@ -31,11 +31,10 @@ export const SectionHeader = ({
   className,
   titleClassName,
 }: SectionHeaderProps) => {
-  // The final word (with its punctuation) carries the hand-drawn accent.
+  // The final word (with its punctuation) carries the underline accent.
   const trimmedTitle = title.trim();
   const lastSpace = trimmedTitle.lastIndexOf(" ");
-  const titleLead =
-    lastSpace >= 0 ? trimmedTitle.slice(0, lastSpace + 1) : "";
+  const titleLead = lastSpace >= 0 ? trimmedTitle.slice(0, lastSpace + 1) : "";
   const titleFinalWord = trimmedTitle.slice(lastSpace + 1);
 
   return (

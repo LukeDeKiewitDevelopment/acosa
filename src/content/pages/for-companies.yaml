@@ -56,6 +56,7 @@ teamsAndProjectsSection:
 finalCta:
   eyebrow: NEED HELP FINDING THE RIGHT STAY?
   heading: Tell us what your travellers need.
+  image: ../../assets/images/pages/for-companies/closing-cta.png
   body: >-
     Whether you're placing one employee or coordinating accommodation for a team, we'll help you start with more relevant options.
   primaryCta:

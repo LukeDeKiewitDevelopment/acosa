@@ -490,15 +490,24 @@ const ogImageUrl = seo?.ogImage
     >
       {
         listingUpdatesSection.image ? (
-          <Image
-            src={listingUpdatesSection.image}
-            alt=""
-            widths={[480, 800, 1200]}
-            sizes="(min-width: 768px) 40vw, 100vw"
-            class="aspect-video h-full w-full object-cover md:aspect-auto"
-          />
+          <div class="surface-navy relative isolate flex min-h-60 flex-col justify-end overflow-hidden sm:min-h-72 md:min-h-full">
+            <Image
+              src={listingUpdatesSection.image}
+              alt=""
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 768px) 40vw, 100vw"
+              class="absolute inset-0 -z-20 h-full w-full object-cover object-[58%_center]"
+            />
+            <div
+              aria-hidden="true"
+              class="from-navy/90 via-navy/55 to-navy/20 absolute inset-0 -z-10 bg-linear-to-t"
+            />
+            <h2 class="type-h3 relative z-10 p-6 text-white sm:p-8 md:text-2xl">
+              {listingUpdatesSection.heading}
+            </h2>
+          </div>
         ) : (
-          <div class="surface-navy relative flex flex-col justify-end gap-5 overflow-hidden p-7 md:p-10">
+          <div class="surface-navy relative flex min-h-60 flex-col justify-end gap-5 overflow-hidden p-7 sm:min-h-72 md:min-h-full md:p-10">
             <RefreshCw
               className="text-gold/15 absolute -top-6 -right-6 size-44"
               aria-hidden="true"
@@ -509,11 +518,6 @@ const ogImageUrl = seo?.ogImage
         )
       }
       <div class="flex flex-col gap-6 p-7 md:p-10">
-        {
-          listingUpdatesSection.image && (
-            <h2 class="type-h3 md:text-2xl">{listingUpdatesSection.heading}</h2>
-          )
-        }
         <p class="type-body">{listingUpdatesSection.body}</p>
         {
           listingUpdatesSection.refreshIncludes.length > 0 && (

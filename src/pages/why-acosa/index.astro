@@ -6,8 +6,7 @@ import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
-import { NODE_MAP_COORDINATES, resolveCtaLink } from "@/lib/content";
-import { SaMap } from "@/components/custom/map-graphics";
+import { resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
 import {
   BadgeCheck,
@@ -74,11 +73,6 @@ const iconFor = (criterion: string) =>
   criterionIcons.find(([pattern]) => pattern.test(criterion))?.[1] ?? Check;
 
 // "More than 20 years of …" → "20+" for the experience figure.
-// ACOSA's business nodes, pinned on the experience section's map.
-const nodePins = Object.values(NODE_MAP_COORDINATES).map(
-  ([longitude, latitude]) => ({ longitude, latitude }),
-);
-
 const yearsMatch = experienceSection.heading.match(/(\d+)\s+years/i);
 const yearsFigure = yearsMatch ? `${yearsMatch[1]}+` : null;
 const [experienceLead, ...experienceBody] = experienceSection.body
@@ -99,8 +93,8 @@ const [experienceLead, ...experienceBody] = experienceSection.body
     heading={hero.heading}
     body={hero.body}
     image={hero.image}
-    imageAlt="A business traveller checking in at an independent guesthouse"
-    imageClassName="object-[32%_center] sm:object-[30%_center] lg:object-[24%_center]"
+    imageAlt="A guest preparing breakfast in a welcoming guesthouse"
+    imageClassName="object-[44%_center] sm:object-[42%_center] lg:object-[40%_center]"
     primaryCta={{ label: hero.cta.label, href: heroHref }}
   />
 
@@ -109,18 +103,32 @@ const [experienceLead, ...experienceBody] = experienceSection.body
     <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
       <div
         data-reveal
-        class="surface-warm relative isolate flex min-h-[22rem] flex-col gap-6 overflow-hidden rounded-xl p-7 md:min-h-[28rem] md:p-10"
+        class="surface-navy relative isolate flex min-h-[22rem] flex-col gap-6 overflow-hidden rounded-xl p-7 md:min-h-[28rem] md:p-10"
       >
-        <SaMap
-          pins={nodePins}
-          className="text-navy absolute -right-[8%] -bottom-[6%] -z-10 w-[88%] opacity-70 md:w-[78%]"
-        />
-        <p class="eyebrow">{experienceSection.eyebrow}</p>
+        {
+          experienceSection.image && (
+            <Image
+              src={experienceSection.image}
+              alt="A hospitality professional standing in a sunlit garden"
+              widths={[480, 800, 1200, 1408]}
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              class="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_center]"
+            />
+          )
+        }
+        <div
+          aria-hidden="true"
+          class="from-navy/90 via-navy/35 to-navy/10 absolute inset-0 -z-10 bg-linear-to-t"
+        >
+        </div>
+        <p class="eyebrow relative z-10 text-white">
+          {experienceSection.eyebrow}
+        </p>
         {
           yearsFigure && (
-            <p class="font-heading text-foreground text-[5.5rem] leading-none font-semibold tracking-[-0.04em] md:text-[7.5rem]">
+            <p class="font-heading relative z-10 text-[5.5rem] leading-none font-semibold tracking-[-0.04em] text-white md:text-[7.5rem]">
               {yearsFigure}
-              <span class="text-muted-foreground mt-3 block font-sans text-sm font-medium tracking-normal">
+              <span class="mt-3 block font-sans text-sm font-medium tracking-normal text-white/85">
                 years of hands-on hospitality experience
               </span>
             </p>
@@ -151,7 +159,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
           curationSection.image && (
             <Image
               src={curationSection.image}
-              alt="ACOSA assessing a guesthouse room with the owner"
+              alt="A couple reviewing accommodation information together"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 1024px) 50vw, 100vw"
               class="aspect-4/3 w-full rounded-xl object-cover object-[60%_center]"
@@ -203,7 +211,21 @@ const [experienceLead, ...experienceBody] = experienceSection.body
 
   {/* ACOSA Approved: the explanation gets its own authority band. */}
   <Section id="acosa-approved" tone="navy">
-    <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+    <div
+      class="relative isolate mx-auto flex max-w-4xl flex-col items-center gap-6 overflow-hidden rounded-xl px-7 py-12 text-center md:px-12 md:py-16"
+    >
+      {
+        approvedSection.image && (
+          <Image
+            src={approvedSection.image}
+            alt="A peaceful garden courtyard at a curated guesthouse"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 1024px) 75vw, 100vw"
+            class="absolute inset-0 -z-20 h-full w-full object-cover"
+          />
+        )
+      }
+      <div aria-hidden="true" class="bg-navy/75 absolute inset-0 -z-10"></div>
       <span
         class="border-gold/50 flex size-16 items-center justify-center rounded-xl border"
       >

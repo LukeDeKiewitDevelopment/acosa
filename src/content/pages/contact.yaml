@@ -1,9 +1,9 @@
 hero:
-  eyebrow: CONTACT ACOSA
+  eyebrow: WELCOME TO ACOSA
   heading: How can we help?
   body: >-
-    Whether you're looking for business accommodation, arranging a stay for someone else, or interested in joining ACOSA as an accommodation provider, choose the quickest route below.
-  image: ../../assets/images/pages/acosa-library/ACOSA_11_Independent_Hospitality.png
+    Whether you're looking for a business stay, arranging accommodation for a team, or exploring a property listing, choose the route that fits. We're here to help you take the next step.
+  image: ../../assets/images/pages/contact/doorway-background.png
 
 contactRoutes:
   - number: "1"

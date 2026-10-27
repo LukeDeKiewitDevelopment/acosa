@@ -26,7 +26,7 @@ export const prerender = true;
 /* For Companies — Creative Direction Blueprint, Page 06, and addendum §12.
    A structured B2B rhythm: who we help → self-service discovery vs assisted
    enquiry (immediately distinguishable) → Teams & Project Stays → one clean,
-   decisive contact panel (one button, WhatsApp as a text link, no imagery). */
+   decisive contact panel with a full-width closing image. */
 
 const page = await getEntry("forCompaniesPage", "for-companies");
 if (!page) throw new Error("For Companies page content not found");
@@ -293,33 +293,53 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
     </div>
   </Section>
 
-  {/* Final conversion: navy, generous space, one dominant button. */}
+  {
+    /* Final conversion: a navy-overlaid image, generous space, one dominant button. */
+  }
   <Section spacing="none" className="pb-16 md:pb-24 lg:pb-28">
-    <div class="surface-navy rounded-xl px-6 py-16 md:px-12 md:py-20">
+    <div class="surface-navy relative isolate overflow-hidden rounded-xl">
+      {
+        finalCta.image && (
+          <Image
+            src={finalCta.image}
+            alt="Business travellers walking through a sunlit corporate lobby"
+            widths={[480, 800, 1200, 1408, 1920]}
+            sizes="100vw"
+            class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+          />
+        )
+      }
       <div
-        class="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center"
+        aria-hidden="true"
+        class="from-navy/90 via-navy/65 to-navy/40 md:from-navy/85 md:via-navy/55 md:to-navy/20 absolute inset-0 -z-10 bg-linear-to-t md:bg-linear-to-r"
       >
-        {finalCta.eyebrow && <p class="eyebrow-accent">{finalCta.eyebrow}</p>}
-        <h2 class="type-h2">{finalCta.heading}</h2>
-        <p class="type-lead">{finalCta.body}</p>
-        <CtaLink
-          label={finalCta.primaryCta.label}
-          href={finalPrimaryHref}
-          variant="primary"
-          size="lg"
-          icon="email"
-          className="mt-3"
-          trackingKey="companies_final_email_click"
-        />
-        <CtaLink
-          label={finalCta.secondaryCta.label}
-          href={finalSecondaryHref}
-          variant="link"
-          icon="arrow"
-          external={finalSecondaryHref.startsWith("http")}
-          className="text-sm"
-          trackingKey="companies_final_whatsapp_click"
-        />
+      </div>
+      <div class="px-6 py-16 md:px-12 md:py-20">
+        <div
+          class="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center"
+        >
+          {finalCta.eyebrow && <p class="eyebrow-accent">{finalCta.eyebrow}</p>}
+          <h2 class="type-h2">{finalCta.heading}</h2>
+          <p class="type-lead">{finalCta.body}</p>
+          <CtaLink
+            label={finalCta.primaryCta.label}
+            href={finalPrimaryHref}
+            variant="primary"
+            size="lg"
+            icon="email"
+            className="mt-3"
+            trackingKey="companies_final_email_click"
+          />
+          <CtaLink
+            label={finalCta.secondaryCta.label}
+            href={finalSecondaryHref}
+            variant="link"
+            icon="arrow"
+            external={finalSecondaryHref.startsWith("http")}
+            className="text-sm"
+            trackingKey="companies_final_whatsapp_click"
+          />
+        </div>
       </div>
     </div>
   </Section>

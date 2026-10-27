@@ -11,6 +11,7 @@ hero:
 experienceSection:
   eyebrow: BUILT FROM HOSPITALITY EXPERIENCE
   heading: More than 20 years of seeing what makes a stay work.
+  image: ../../assets/images/pages/why-acosa/experience-20-years.png
   body: >-
     ACOSA grew from more than two decades of hands-on experience across guesthouses, lodges, hospitality management and consulting.
 
@@ -42,6 +43,7 @@ curationSection:
 
 approvedSection:
   heading: What does ACOSA Approved mean?
+  image: ../../assets/images/pages/why-acosa/approved-garden.png
   body: >-
     ACOSA Approved indicates that a property has been reviewed by ACOSA and considered suitable for business travellers according to ACOSA's accommodation criteria. It is a curated suitability designation, not a formal industry certification.
 
