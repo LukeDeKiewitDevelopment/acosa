@@ -159,11 +159,11 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   {/* Who we help */}
   <Section id="who-we-help">
     <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-      <SectionHeader
-        title={whoWeHelpSection.heading}
-        lead={whoWeHelpSection.body}
-        underline
-      />
+      <SectionHeader title={whoWeHelpSection.heading} underline>
+        <p class="text-foreground text-sm font-semibold">
+          {whoWeHelpSection.body}
+        </p>
+      </SectionHeader>
       <ul class="border-border grid border-t sm:grid-cols-2 sm:gap-x-10">
         {
           whoWeHelpSection.roles.map((role) => (
