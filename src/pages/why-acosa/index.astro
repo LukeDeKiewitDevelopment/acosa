@@ -166,7 +166,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
             {experienceHeadingTrimmed.slice(experienceHeadingLastSpace + 1)}
           </span>
         </h2>
-        {experienceLead && <p class="type-body">{experienceLead}</p>}
+        {experienceLead && <p class="type-emphasis">{experienceLead}</p>}
         {
           experienceBody.map((paragraph) => (
             <p class="type-body">{paragraph}</p>
@@ -216,9 +216,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
           title={curationSection.heading}
           underline
         >
-          <p class="type-lead text-navy text-lg font-semibold md:text-xl">
-            {curationEmphasis}
-          </p>
+          <p class="type-emphasis">{curationEmphasis}</p>
           {
             curationSupportingCopy && (
               <p class="type-body">{curationSupportingCopy}</p>

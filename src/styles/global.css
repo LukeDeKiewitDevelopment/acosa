@@ -406,11 +406,15 @@
 }
 
 @utility type-lead {
-  @apply text-muted-foreground text-base leading-relaxed md:text-lg;
+  @apply text-muted-foreground font-sans text-base leading-relaxed md:text-lg;
+}
+
+@utility type-emphasis {
+  @apply text-navy font-sans text-lg leading-relaxed font-semibold md:text-xl;
 }
 
 @utility type-body {
-  @apply text-muted-foreground text-[0.9375rem] leading-relaxed;
+  @apply text-muted-foreground font-sans text-base leading-relaxed md:text-lg;
 }
 
 @utility type-small {

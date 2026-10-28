@@ -12,7 +12,7 @@ for matching semantic roles; preserve the existing font families and hierarchy.
 | Section heading (H2) | `type-h2`                     | Responsive H2 scale             |
 | Subheading (H3)      | `type-h3`                     | 18px / 20px from medium screens |
 | Lead paragraph       | `type-lead`                   | 16px / 18px from medium screens |
-| Body paragraph       | `type-body`                   | 15px                            |
+| Body paragraph       | `type-body`                   | 16px / 18px from medium screens |
 | Supporting text      | `type-small`                  | 14px                            |
 | Eyebrow              | `eyebrow` or `eyebrow-accent` | 12px                            |
 | Heading font         | `font-heading`                | Montserrat                      |
@@ -24,6 +24,9 @@ for matching semantic roles; preserve the existing font families and hierarchy.
   using the established shared utilities in `src/styles/global.css`.
 - Use `type-lead` for hero and section-intro copy, `type-body` for regular
   explanatory paragraphs, and `type-small` for supporting details.
+- Lead and body paragraphs share Poppins at 16px / 18px from medium screens;
+  use color and semantic role to distinguish hero introductions from regular
+  explanatory copy.
 - Compact controls, navigation, labels, badges, and metadata may retain their
   role-specific smaller sizes.
 - Rich-text paragraph styling should match the shared body or lead scale while
@@ -149,6 +152,9 @@ Last updated: 2026-10-28
 - The ACOSA Approved section follows the home-page editorial split: text on the
   left and a full-height supporting photograph on the right, stacked on mobile.
 - Supporting editorial paragraphs in the experience and approval sections use
-  `type-body` consistently. Closing images remain full-bleed with `object-cover`
+  `type-body` consistently. Body paragraphs share the hero lead's 16px / 18px
+  Poppins scale site-wide. Closing images remain full-bleed with `object-cover`
   and use a desktop 16:9 frame with top alignment to keep the photographic
   subjects in frame without changing the existing mobile presentation.
+- The lead statements in the experience and curation sections share
+  `type-emphasis` (`font-sans`, navy, semibold, 18px/20px).
