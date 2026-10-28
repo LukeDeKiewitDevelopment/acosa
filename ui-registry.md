@@ -126,6 +126,28 @@ Last updated: 2026-10-28
 - Use the location-pin icon before “View on Google Maps” to clearly identify
   the destination link on every business node page.
 
+### Business Node Map Legend
+
+File: `src/components/custom/business-node-explorer.tsx`
+Last updated: 2026-10-28
+
+| Property         | Class                                    |
+| ---------------- | ---------------------------------------- |
+| Background       | None                                     |
+| Border           | None                                     |
+| Border radius    | None                                     |
+| Text — primary   | `type-emphasis` (navy, semibold Poppins) |
+| Text — secondary | None                                     |
+| Spacing          | Beneath the map                          |
+| Hover state      | None                                     |
+| Shadow           | None                                     |
+| Accent usage     | Navy emphasis                            |
+
+**Pattern notes:**
+
+- Explain map markers and selection behavior using the shared navy emphasis
+  style so the guidance is easy to notice and consistent with other lead copy.
+
 ### Why ACOSA Editorial Emphasis
 
 File: `src/pages/why-acosa/index.astro`

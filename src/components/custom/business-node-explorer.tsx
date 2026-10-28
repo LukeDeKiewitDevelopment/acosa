@@ -92,7 +92,7 @@ export const BusinessNodeExplorer = ({
             })}
           </Map>
         </div>
-        <p className="type-small">
+        <p className="type-emphasis">
           Gold markers show business nodes with live ACOSA accommodation. Select
           a marker or a business node to view accommodation in that area.
         </p>
