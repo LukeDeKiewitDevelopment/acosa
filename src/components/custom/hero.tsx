@@ -127,10 +127,7 @@ export const Hero = async ({
   const headingLead =
     headingLastSpace >= 0 ? headingTrimmed.slice(0, headingLastSpace + 1) : "";
   const headingFinalWord = headingTrimmed.slice(headingLastSpace + 1);
-  const minHeight =
-    size === "cinematic"
-      ? "lg:min-h-[min(calc(100svh-4.5rem),54rem)]"
-      : "lg:min-h-[34rem] xl:min-h-[38rem]";
+  const minHeight = "lg:min-h-[min(calc(100svh-4.5rem),54rem)]";
 
   return (
     <section
