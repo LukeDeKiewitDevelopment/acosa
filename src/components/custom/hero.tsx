@@ -193,11 +193,7 @@ export const Hero = async ({
                 heading
               )}
             </h1>
-            {copy && (
-              <p className="text-muted-foreground max-w-136 text-base leading-relaxed lg:text-[1.0625rem]">
-                {copy}
-              </p>
-            )}
+            {copy && <p className="type-lead max-w-136">{copy}</p>}
             {(primaryCta || secondaryCta) && (
               <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
                 {primaryCta && (

@@ -63,9 +63,7 @@ const DetailBlock = ({
   children: ReactNode;
 }) => (
   <section className="border-border grid gap-5 border-t pt-8 md:grid-cols-[11rem_1fr] md:gap-10">
-    <h2 className="font-heading text-foreground text-lg font-semibold">
-      {title}
-    </h2>
+    <h2 className="type-h3">{title}</h2>
     <div className="min-w-0">{children}</div>
   </section>
 );
@@ -168,7 +166,7 @@ export const PropertyDetail = ({
 
         {/* ---- About ---- */}
         <DetailBlock title="About this property">
-          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_p]:mb-4 [&_p]:leading-relaxed">
+          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_p]:mb-4 [&_p]:text-[0.9375rem] [&_p]:leading-relaxed">
             {children}
           </div>
         </DetailBlock>

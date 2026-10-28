@@ -59,7 +59,7 @@ export const NodeDetail = ({
                 <p className="type-h3">
                   Our first ACOSA properties are coming soon.
                 </p>
-                <p className="type-body">
+                <p className="type-lead">
                   Need accommodation in {node.name} now? ACOSA can help you
                   explore suitable options.
                 </p>
@@ -153,7 +153,7 @@ export const NodeDetail = ({
           <div className="border-gold mt-10 grid gap-6 border-t-2 pt-8 md:grid-cols-[1fr_auto] md:items-center md:gap-8">
             <div className="flex max-w-2xl flex-col gap-2">
               <h2 className="type-h3 text-white">Need assistance?</h2>
-              <p className="type-body text-white/85">
+              <p className="type-lead text-white/85">
                 Tell ACOSA where you need to be and what matters for your stay.
               </p>
             </div>

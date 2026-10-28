@@ -266,9 +266,7 @@ const ogImageUrl = seo?.ogImage
               size="sm"
               className="group-hover:bg-gold group-hover:text-navy transition-colors duration-300"
             />
-            <h3 class="font-heading text-foreground text-base font-semibold">
-              {item.title}
-            </h3>
+            <h3 class="type-h3">{item.title}</h3>
             <p class="type-small">{item.detail}</p>
           </li>
         ))
@@ -461,9 +459,7 @@ const ogImageUrl = seo?.ogImage
                     Partner offer
                   </p>
                 )}
-                <h3 class="font-heading text-foreground text-base font-semibold">
-                  {plan.tier}
-                </h3>
+                <h3 class="type-h3">{plan.tier}</h3>
                 <p class="flex items-baseline gap-1.5">
                   <span class="font-heading text-foreground text-[2.75rem] leading-none font-semibold tracking-tight">
                     {plan.price}
@@ -527,7 +523,7 @@ const ogImageUrl = seo?.ogImage
         <div class="relative flex max-w-3xl flex-col gap-4">
           <p class="eyebrow-accent">LISTING SUPPORT</p>
           <h2 class="type-h2 text-white">{listingUpdatesSection.heading}</h2>
-          <p class="type-body text-white/90">{listingUpdatesSection.body}</p>
+          <p class="type-lead text-white/90">{listingUpdatesSection.body}</p>
         </div>
         {
           listingUpdatesSection.refreshIncludes.length > 0 && (
@@ -588,9 +584,7 @@ const ogImageUrl = seo?.ogImage
                   {step.number}
                 </span>
                 <div class="flex flex-col gap-1 pt-2">
-                  <h3 class="font-heading text-foreground text-base font-semibold">
-                    {step.title}
-                  </h3>
+                  <h3 class="type-h3">{step.title}</h3>
                   <p class="type-small">{step.detail}</p>
                 </div>
               </li>
