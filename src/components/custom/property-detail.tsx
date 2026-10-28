@@ -166,7 +166,7 @@ export const PropertyDetail = ({
 
         {/* ---- About ---- */}
         <DetailBlock title="About this property">
-          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_p]:mb-4 [&_p]:text-[0.9375rem] [&_p]:leading-relaxed">
+          <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_p]:mb-4 [&_p]:text-base [&_p]:leading-relaxed md:[&_p]:text-lg">
             {children}
           </div>
         </DetailBlock>
