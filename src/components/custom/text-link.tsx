@@ -2,13 +2,14 @@ import {
   ArrowRight,
   ArrowUpRight,
   Mail,
+  MapPin,
   MessageCircle,
   Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type TextLinkIcon =
-  "arrow" | "whatsapp" | "email" | "phone" | "external" | "none";
+  "arrow" | "whatsapp" | "email" | "phone" | "location" | "external" | "none";
 
 export type TextLinkProps = {
   label: string;
@@ -51,6 +52,7 @@ export function TextLink({
       )}
       {icon === "email" && <Mail className="size-4" aria-hidden="true" />}
       {icon === "phone" && <Phone className="size-4" aria-hidden="true" />}
+      {icon === "location" && <MapPin className="size-4" aria-hidden="true" />}
       <span className="decoration-gold underline decoration-2 underline-offset-[6px] transition-colors group-hover/link:decoration-current">
         {label}
       </span>

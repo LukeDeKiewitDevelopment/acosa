@@ -19,6 +19,7 @@ type Props = {
   underlineHeading?: boolean;
   body: string;
   image: ImageMetadata;
+  imagePosition?: "center" | "top";
   imageAlt: string;
   actions: Action[];
 };
@@ -30,6 +31,7 @@ const {
   underlineHeading = false,
   body,
   image,
+  imagePosition = "center",
   imageAlt,
   actions,
 } = Astro.props;
@@ -41,10 +43,16 @@ const headingFinalWord = heading.trim().slice(lastSpace + 1);
 <section id={id} class="surface-navy relative isolate overflow-hidden">
   <Image
     src={image}
+    format="webp"
+    quality={75}
+    loading="lazy"
     alt={imageAlt}
     widths={[480, 800, 1200, 1408, 1920]}
     sizes="100vw"
-    class="absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]"
+    class:list={[
+      "absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]",
+      imagePosition === "top" && "object-[72%_top]",
+    ]}
   />
   <div
     aria-hidden="true"

@@ -241,6 +241,9 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
           teamsAndProjectsSection.image && (
             <Image
               src={teamsAndProjectsSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
               alt="A project team arriving at their business accommodation"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 1024px) 50vw, 100vw"

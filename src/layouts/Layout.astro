@@ -54,6 +54,8 @@ async function resolveLogo(logo: { image: ImageMetadata; alt: string }) {
     src: logo.image,
     widths: [160, 240, 320],
     sizes: "160px",
+    format: "webp",
+    quality: 75,
   });
   return {
     src: image.src,

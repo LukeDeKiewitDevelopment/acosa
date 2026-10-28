@@ -85,7 +85,7 @@ export const PropertyCard = ({
         <StaticAcosaImage
           {...item.image}
           alt={item.imageAlt}
-          className="absolute inset-0 h-full w-full max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          className="absolute inset-0 h-full w-full max-w-none object-contain transition-transform duration-500 group-hover:scale-[1.03]"
         />
         {item.approved && (
           <div className="absolute top-3 left-3">

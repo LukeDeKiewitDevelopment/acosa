@@ -123,6 +123,9 @@ const [experienceLead, ...experienceBody] = experienceSection.body
           experienceSection.image && (
             <Image
               src={experienceSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
               alt="A hospitality professional standing in a sunlit garden"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 1024px) 45vw, 100vw"
@@ -173,6 +176,9 @@ const [experienceLead, ...experienceBody] = experienceSection.body
           curationSection.image && (
             <Image
               src={curationSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
               alt="A couple reviewing accommodation information together"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 1024px) 50vw, 100vw"
@@ -232,6 +238,9 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         approvedSection.image && (
           <Image
             src={approvedSection.image}
+            format="webp"
+            quality={75}
+            loading="lazy"
             alt="A peaceful garden courtyard at a curated guesthouse"
             widths={[480, 800, 1200, 1408]}
             sizes="(min-width: 1024px) 75vw, 100vw"
@@ -275,6 +284,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         heading={outcomeSection.heading}
         body={outcomeSection.body}
         image={outcomeSection.image}
+        imagePosition="top"
         imageAlt="A traveller relaxing at her guesthouse at the end of a work day"
         actions={[
           {

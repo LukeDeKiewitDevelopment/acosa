@@ -18,6 +18,7 @@ export const FloatingActions = ({
   whatsappLabel,
 }: FloatingActionsProps) => {
   const [scrollY, setScrollY] = useState(0);
+  const [backToTopOverNavy, setBackToTopOverNavy] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
@@ -40,8 +41,26 @@ export const FloatingActions = ({
         aria-hidden={!showBackToTop}
         tabIndex={showBackToTop ? 0 : -1}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        onPointerMove={(event) => {
+          const { clientX, clientY } = event;
+          const overNavy = Array.from(
+            document.querySelectorAll<HTMLElement>(".surface-navy"),
+          ).some((section) => {
+            const rect = section.getBoundingClientRect();
+            return (
+              clientX >= rect.left &&
+              clientX <= rect.right &&
+              clientY >= rect.top &&
+              clientY <= rect.bottom
+            );
+          });
+          setBackToTopOverNavy(overNavy);
+        }}
+        onPointerLeave={() => setBackToTopOverNavy(false)}
         className={clsx(
           "bg-card size-11 shadow-md shadow-black/10 transition-opacity duration-200 md:size-12",
+          backToTopOverNavy &&
+            "hover:border-transparent! hover:bg-transparent! hover:text-white! hover:shadow-none!",
           !showBackToTop && "pointer-events-none opacity-0!",
         )}
       >

@@ -41,13 +41,20 @@ const mapUrl =
       .filter(Boolean)
       .join(" "),
   )}`;
-const workingSectionBackground = (
-  await getImage({
-    src: node.data.heroImage,
-    width: 1920,
-    format: "webp",
-  })
-).src;
+const workingSectionBackground = await getImage({
+  src: node.data.heroImage,
+  widths: [480, 768, 1024, 1408, 1920],
+  sizes: "100vw",
+  format: "webp",
+  quality: 75,
+});
+const workingSectionBackgroundImage = {
+  src: workingSectionBackground.src,
+  srcSet: workingSectionBackground.srcSet.attribute || undefined,
+  sizes: workingSectionBackground.attributes.sizes,
+  width: workingSectionBackground.attributes.width,
+  height: workingSectionBackground.attributes.height,
+};
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
 const ogImageUrl = seo?.ogImage
@@ -132,7 +139,7 @@ const nearby = nearbyIds
       province: node.data.province,
       provinceLabel: provinceLabel(node.data.province),
       mapUrl,
-      workingSectionBackground,
+      workingSectionBackground: workingSectionBackgroundImage,
     }}
     properties={propertyItems}
     highlights={node.data.businessHighlights}

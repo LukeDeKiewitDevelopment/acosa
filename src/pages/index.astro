@@ -219,6 +219,9 @@ const websiteSchema: Record<string, unknown> = {
           <div class="relative">
             <Image
               src={businessTravelSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
               alt="A business traveller working at the desk of a guesthouse room"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 768px) 50vw, 100vw"
@@ -227,6 +230,9 @@ const websiteSchema: Record<string, unknown> = {
             {businessTravelSection.secondaryImage && (
               <Image
                 src={businessTravelSection.secondaryImage}
+                format="webp"
+                quality={75}
+                loading="lazy"
                 alt="A business traveller unpacking his clothes in a guesthouse room"
                 widths={[400, 800]}
                 sizes="(min-width: 1024px) 20vw, 40vw"
@@ -248,6 +254,9 @@ const websiteSchema: Record<string, unknown> = {
   >
     <Image
       src={southAfricaFlagMap}
+      format="webp"
+      quality={75}
+      loading="lazy"
       alt=""
       aria-hidden="true"
       widths={[768, 1200, 1600]}
@@ -310,6 +319,9 @@ const websiteSchema: Record<string, unknown> = {
         corporateBookersSection.image && (
           <Image
             src={corporateBookersSection.image}
+            format="webp"
+            quality={75}
+            loading="lazy"
             alt="A corporate booker reviewing accommodation options for a colleague"
             widths={[480, 800, 1200, 1376]}
             sizes="(min-width: 768px) 55vw, 100vw"
@@ -352,6 +364,9 @@ const websiteSchema: Record<string, unknown> = {
     <div class="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
       <Image
         src={acosaLogo}
+        format="webp"
+        quality={75}
+        loading="lazy"
         alt="ACOSA"
         widths={[160, 240, 320]}
         sizes="160px"
@@ -386,6 +401,9 @@ const websiteSchema: Record<string, unknown> = {
           <div class="relative aspect-4/3 sm:aspect-video lg:aspect-auto">
             <Image
               src={propertyOwnersSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
               alt="An independent accommodation host sharing a local guide with a guest"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 1024px) 50vw, 100vw"

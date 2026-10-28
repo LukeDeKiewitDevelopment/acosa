@@ -96,6 +96,8 @@ const slides: PropertyGallerySlide[] = await Promise.all(
       src: slide.image,
       widths: [480, 800, 1200, 1600],
       sizes: "(min-width: 1024px) 50vw, 100vw",
+      format: "webp",
+      quality: 75,
     });
     return {
       image: {

@@ -112,6 +112,8 @@ export async function buildPropertyListingItems(
           src: property.data.heroImage,
           widths: [480, 800, 1200],
           sizes: "(min-width: 768px) 50vw, 100vw",
+          format: "webp",
+          quality: 75,
         }),
         getEntry(property.data.businessNode),
         getEntries(property.data.essentials),
@@ -227,6 +229,8 @@ export async function buildNodeSummaries(
         src: node.data.heroImage,
         widths: [160, 400, 800],
         sizes: "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
+        format: "webp",
+        quality: 75,
       });
       const coordinates = NODE_MAP_COORDINATES[node.id];
       return {

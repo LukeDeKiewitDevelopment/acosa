@@ -17,7 +17,13 @@ export type NodeDetailNode = {
   province: string;
   provinceLabel: string;
   mapUrl: string;
-  workingSectionBackground: string;
+  workingSectionBackground: {
+    src: string;
+    srcSet?: string;
+    sizes?: string;
+    width: number;
+    height: number;
+  };
 };
 
 export type NodeDetailHighlight = {
@@ -71,10 +77,17 @@ export const NodeDetail = ({
 
       {/* ---- Business Location ---- */}
       <Section id="location" tone="navy" className="isolate overflow-hidden">
-        <div
+        <img
           aria-hidden="true"
-          className="absolute inset-0 z-0 bg-cover bg-center"
-          style={{ backgroundImage: `url("${node.workingSectionBackground}")` }}
+          alt=""
+          src={node.workingSectionBackground.src}
+          srcSet={node.workingSectionBackground.srcSet}
+          sizes={node.workingSectionBackground.sizes}
+          width={node.workingSectionBackground.width}
+          height={node.workingSectionBackground.height}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 z-0 size-full object-cover object-center"
         />
         <div
           aria-hidden="true"
@@ -92,7 +105,7 @@ export const NodeDetail = ({
                   label="View on Google Maps"
                   href={node.mapUrl}
                   variant="link"
-                  icon="external"
+                  icon="location"
                   external
                   trackingKey="business_node_maps_click"
                   className="text-white"

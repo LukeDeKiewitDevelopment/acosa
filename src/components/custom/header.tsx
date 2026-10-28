@@ -58,7 +58,7 @@ export const Header = ({ logo, navItems, currentPath }: HeaderProps) => {
             <StaticAcosaImage
               fetchPriority="high"
               loading="eager"
-              decoding="sync"
+              decoding="async"
               className="h-9 w-auto object-contain lg:h-10"
               {...logo.light}
             />

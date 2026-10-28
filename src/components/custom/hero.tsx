@@ -94,6 +94,8 @@ export const Hero = async ({
           src: source.image,
           widths,
           sizes,
+          format: "webp",
+          quality: 75,
         });
         return {
           media: source.media,

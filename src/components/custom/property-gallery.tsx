@@ -37,7 +37,7 @@ export type PropertyGalleryProps = {
 const SlideCarousel = ({
   slides,
   startIndex = 0,
-  fit = "cover",
+  fit = "contain",
   className,
 }: {
   slides: PropertyGallerySlide[];
@@ -71,8 +71,10 @@ const SlideCarousel = ({
             <CarouselItem key={slide.image.src} className="basis-full">
               <div
                 className={cn(
-                  "bg-muted relative aspect-4/3 overflow-hidden rounded-xl",
-                  fit === "contain" && "bg-navy aspect-3/2",
+                  "relative overflow-hidden rounded-xl",
+                  fit === "contain"
+                    ? "bg-muted aspect-3/2"
+                    : "bg-muted aspect-4/3",
                 )}
               >
                 <StaticAcosaImage
@@ -161,7 +163,7 @@ export const PropertyGallery = ({
                 alt=""
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : "auto"}
-                className="absolute inset-0 h-full w-full max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                className="absolute inset-0 h-full w-full max-w-none object-contain transition-transform duration-500 group-hover:scale-[1.03]"
               />
             </button>
           ))}

@@ -2,6 +2,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   Mail,
+  MapPin,
   MessageCircle,
   Phone,
 } from "lucide-react";
@@ -14,7 +15,8 @@ import { TextLink } from "./text-link";
    - link      → tertiary text link with a gold underline. */
 type CtaVariant = "primary" | "secondary" | "link";
 type CtaSize = "sm" | "md" | "lg";
-type CtaIcon = "arrow" | "whatsapp" | "email" | "phone" | "external" | "none";
+type CtaIcon =
+  "arrow" | "whatsapp" | "email" | "phone" | "location" | "external" | "none";
 
 export type CtaLinkProps = {
   label: string;
@@ -40,6 +42,7 @@ const leadingIcons: Partial<Record<CtaIcon, React.ReactNode>> = {
   whatsapp: <MessageCircle aria-hidden="true" />,
   email: <Mail aria-hidden="true" />,
   phone: <Phone aria-hidden="true" />,
+  location: <MapPin aria-hidden="true" />,
 };
 
 const trailingIcons: Partial<Record<CtaIcon, React.ReactNode>> = {

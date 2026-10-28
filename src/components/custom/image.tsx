@@ -34,7 +34,8 @@ export const AcosaImage = async ({
     src,
     width,
     height,
-    format,
+    format: format || "webp",
+    quality: 75,
     widths: widths || DEFAULT_WIDTHS,
     sizes: sizes || "100vw",
   });
@@ -48,7 +49,7 @@ export const AcosaImage = async ({
       srcSet={image.srcSet.attribute || undefined}
       sizes={image.attributes.sizes}
       loading={loading || "lazy"}
-      decoding={decoding || "sync"}
+      decoding={decoding || "async"}
       fetchPriority={fetchPriority || "auto"}
       className={cn(
         "text-muted-foreground pointer-events-none flex h-auto max-w-full items-center justify-center text-xs italic select-none",
@@ -100,7 +101,7 @@ export const StaticAcosaImage = ({
       srcSet={srcSet}
       sizes={sizes}
       loading={loading || "lazy"}
-      decoding={decoding || "sync"}
+      decoding={decoding || "async"}
       fetchPriority={fetchPriority || "auto"}
       className={cn(
         "text-muted-foreground pointer-events-none flex h-auto max-w-full items-center justify-center text-xs italic select-none",
