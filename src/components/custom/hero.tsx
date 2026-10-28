@@ -17,6 +17,7 @@ export type HeroProps = {
   subheading?: string;
   eyebrow?: string;
   body?: string;
+  emphasizeBody?: boolean;
   primaryCta?: {
     label: string;
     href: string;
@@ -60,6 +61,7 @@ export const Hero = async ({
   subheading,
   eyebrow,
   body,
+  emphasizeBody = false,
   primaryCta,
   secondaryCta,
   secondaryStyle = "button",
@@ -113,6 +115,13 @@ export const Hero = async ({
   const gradient = `linear-gradient(${direction}, ${navy(strength)} 0%, ${navy(strength * 0.97)} 34%, ${navy(strength * 0.6)} 50%, ${navy(strength * 0.15)} 66%, transparent 80%)`;
 
   const copy = body || subheading;
+  const emphasizedCopy =
+    emphasizeBody && copy
+      ? (copy.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0] ?? copy)
+      : null;
+  const supportingCopy = emphasizedCopy
+    ? copy?.slice(emphasizedCopy.length).trim()
+    : null;
   const headingTrimmed = heading.trim();
   const headingLastSpace = headingTrimmed.lastIndexOf(" ");
   const headingLead =
@@ -195,7 +204,16 @@ export const Hero = async ({
                 heading
               )}
             </h1>
-            {copy && <p className="type-lead max-w-136">{copy}</p>}
+            {emphasizedCopy ? (
+              <div className="flex max-w-136 flex-col gap-3">
+                <p className="type-emphasis text-white">{emphasizedCopy}</p>
+                {supportingCopy && (
+                  <p className="type-lead text-white/85">{supportingCopy}</p>
+                )}
+              </div>
+            ) : (
+              copy && <p className="type-lead max-w-136">{copy}</p>
+            )}
             {(primaryCta || secondaryCta) && (
               <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
                 {primaryCta && (

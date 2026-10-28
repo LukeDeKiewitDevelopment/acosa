@@ -5,6 +5,7 @@ export type SectionHeaderProps = {
   eyebrow?: string | null;
   title: string;
   lead?: string | null;
+  emphasizeLead?: boolean;
   /** Rendered under the lead, e.g. a text link. */
   children?: ReactNode;
   align?: "start" | "center";
@@ -23,6 +24,7 @@ export const SectionHeader = ({
   eyebrow,
   title,
   lead,
+  emphasizeLead = false,
   children,
   align = "start",
   as: Heading = "h2",
@@ -36,6 +38,13 @@ export const SectionHeader = ({
   const lastSpace = trimmedTitle.lastIndexOf(" ");
   const titleLead = lastSpace >= 0 ? trimmedTitle.slice(0, lastSpace + 1) : "";
   const titleFinalWord = trimmedTitle.slice(lastSpace + 1);
+  const leadSentence =
+    emphasizeLead && lead
+      ? (lead.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0] ?? lead)
+      : null;
+  const leadSupportingCopy = leadSentence
+    ? lead.slice(leadSentence.length).trim()
+    : "";
 
   return (
     <div
@@ -60,7 +69,20 @@ export const SectionHeader = ({
           title
         )}
       </Heading>
-      {lead && <p className="type-lead">{lead}</p>}
+      {leadSentence ? (
+        <>
+          <p className={cn("type-emphasis", accent && "text-white")}>
+            {leadSentence}
+          </p>
+          {leadSupportingCopy && (
+            <p className={cn("type-body", accent && "text-white/85")}>
+              {leadSupportingCopy}
+            </p>
+          )}
+        </>
+      ) : (
+        lead && <p className="type-lead">{lead}</p>
+      )}
       {children}
     </div>
   );

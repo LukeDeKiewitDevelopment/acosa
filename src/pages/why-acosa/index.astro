@@ -84,6 +84,13 @@ const curationEmphasis = curationLeadMatch?.[0] ?? curationSection.body;
 const curationSupportingCopy = curationSection.body
   .slice(curationEmphasis.length)
   .trim();
+const approvedLeadMatch = approvedSection.body.match(/^[\s\S]*?[.!?](?=\s|$)/);
+const approvedEmphasis = approvedLeadMatch?.[0] ?? approvedSection.body;
+const approvedSupportingCopy = approvedSection.body
+  .slice(approvedEmphasis.length)
+  .split(/\n+/)
+  .map((paragraph) => paragraph.trim())
+  .filter(Boolean);
 const [experienceLead, ...experienceBody] = experienceSection.body
   .split(/\n+/)
   .map((paragraph) => paragraph.trim())
@@ -97,6 +104,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
   ogImage={ogImageUrl}
 >
   <Hero
+    emphasizeBody
     align="right"
     eyebrow={hero.eyebrow}
     heading={hero.heading}
@@ -201,7 +209,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
                 aria-hidden="true"
                 class="border-gold/40 text-gold flex size-14 items-center justify-center rounded-xl border"
               >
-                <BadgeCheck className="size-9" />
+                <BadgeCheck className="size-7" />
               </span>
               <p class="font-heading text-navy border-gold border-l-2 pl-5 text-[1.875rem] leading-snug font-semibold md:text-[2rem]">
                 {curationSection.highlightStatement}
@@ -261,17 +269,16 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         >
           <span
             aria-hidden="true"
-            class="border-gold/40 text-gold flex size-14 items-center justify-center rounded-xl border"
+            class="border-gold/40 text-gold flex size-20 items-center justify-center rounded-xl border"
           >
-            <BadgeCheck className="size-8" />
+            <BadgeCheck className="size-12" />
           </span>
           <h2 class="type-h2">{approvedSection.heading}</h2>
+          <p class="type-emphasis">{approvedEmphasis}</p>
           {
-            approvedSection.body
-              .split(/\n+/)
-              .map((paragraph) => paragraph.trim())
-              .filter(Boolean)
-              .map((paragraph) => <p class="type-body">{paragraph}</p>)
+            approvedSupportingCopy.map((paragraph) => (
+              <p class="type-body">{paragraph}</p>
+            ))
           }
           <CtaLink
             label={approvedSection.cta.label}
