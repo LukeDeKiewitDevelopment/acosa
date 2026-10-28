@@ -84,7 +84,7 @@ export const NodeDetail = ({
           <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
             <div className="flex flex-col gap-6">
               <h2 className="type-h2 text-white">Working in {node.name}?</h2>
-              <div className="prose [&_h2]:font-heading [&_h3]:font-heading max-w-none text-[0.9375rem] leading-relaxed text-white/85 [&_h1]:hidden [&_h2]:text-xl [&_h2]:text-white [&_h3]:text-lg [&_h3]:text-white [&_p]:mb-4 [&_p]:text-[0.9375rem] [&_p]:leading-relaxed [&_strong]:text-white">
+              <div className="prose [&_h2]:font-heading [&_h3]:font-heading max-w-none text-base leading-relaxed text-white/85 md:text-lg [&_h1]:hidden [&_h2]:text-xl [&_h2]:text-white [&_h3]:text-lg [&_h3]:text-white [&_p]:mb-4 [&_p]:text-base [&_p]:leading-relaxed md:[&_p]:text-lg [&_strong]:text-white">
                 {children}
               </div>
               {node.mapUrl && (
