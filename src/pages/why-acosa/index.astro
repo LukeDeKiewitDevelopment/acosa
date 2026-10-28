@@ -9,6 +9,7 @@ import ClosingImageSection from "@/components/custom/closing-image-section.astro
 import { Hero } from "@/components/custom/hero";
 import { resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
+import { SectionNav } from "@/components/custom/section-nav";
 import {
   BadgeCheck,
   BedDouble,
@@ -99,8 +100,20 @@ const [experienceLead, ...experienceBody] = experienceSection.body
     primaryCta={{ label: hero.cta.label, href: heroHref }}
   />
 
+  <SectionNav
+    client:load
+    items={[
+      { id: "experience", label: "Our experience" },
+      { id: "curation", label: "How we curate" },
+      { id: "acosa-approved", label: "ACOSA Approved" },
+      ...(outcomeSection.image
+        ? [{ id: "outcome", label: "Explore ACOSA" }]
+        : []),
+    ]}
+  />
+
   {/* Experience claim: a figure, then editorial prose. */}
-  <Section>
+  <Section id="experience">
     <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
       <div
         data-reveal
@@ -153,7 +166,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
   </Section>
 
   {/* Selection criteria */}
-  <Section tone="warm">
+  <Section id="curation" tone="warm">
     <div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-20">
       <div class="flex flex-col gap-8 lg:sticky lg:top-28">
         {
@@ -258,6 +271,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
   {
     outcomeSection.image && (
       <ClosingImageSection
+        id="outcome"
         heading={outcomeSection.heading}
         body={outcomeSection.body}
         image={outcomeSection.image}

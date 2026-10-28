@@ -39,6 +39,7 @@ businessTravelSection:
   body: >-
     Reliable WiFi. A practical workspace. Secure parking. Backup power. A good breakfast. A quiet room after a long day. When you're travelling for work, the practical details matter. ACOSA helps you discover independent accommodation selected with those realities in mind.
   image: ../../assets/images/pages/business-traveller-workspace/image.jpg
+  secondaryImage: ../../assets/images/pages/business-traveller-unpacking.png
   cta:
     label: Why ACOSA?
     link: /why-acosa
@@ -84,7 +85,7 @@ propertyOwnersSection:
   heading: Reach the people you actually want to host.
   body: >-
     If you've built an independent accommodation experience that works exceptionally well for business travellers, ACOSA gives you a more focused way to be discovered by them — and by the people responsible for placing them.
-  image: ../../assets/images/pages/acosa-library/ACOSA_01_Home_Hero.png
+  image: ../../assets/images/pages/acosa-library/ACOSA_11_Independent_Hospitality.png
   primaryCta:
     label: List Your Property
     link: /list-your-property

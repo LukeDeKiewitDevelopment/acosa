@@ -16,6 +16,7 @@ import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
 import { PropertyGrid } from "@/components/custom/property-card";
 import { BusinessNodeExplorer } from "@/components/custom/business-node-explorer";
+import { SectionNav } from "@/components/custom/section-nav";
 
 export const prerender = true;
 
@@ -56,6 +57,17 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
     imageClassName="object-[78%_center] sm:object-[74%_center] lg:object-[70%_center]"
   />
 
+  <SectionNav
+    client:load
+    items={[
+      { id: "directory", label: "Business nodes" },
+      ...(properties.length > 0
+        ? [{ id: "accommodation", label: "Accommodation" }]
+        : []),
+      { id: "network", label: "Growing network" },
+    ]}
+  />
+
   {/* Map and node selection directly under the hero, working together. */}
   <Section id="directory" tone="warm">
     <div class="flex flex-col gap-8 md:gap-10">
@@ -89,6 +101,7 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
   }
 
   <ClosingImageSection
+    id="network"
     eyebrow="GROWING NETWORK"
     heading="ACOSA is growing deliberately."
     body="We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands. Need help finding an area or want to add your property to the network? We'll help you take the next step."

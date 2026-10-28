@@ -3,7 +3,7 @@ hero:
   heading: Reach the people you actually want to host.
   body: >-
     Your property doesn't need more irrelevant visibility. It needs to be discovered by people whose accommodation needs match what you've built. ACOSA connects carefully selected independent accommodation providers with corporate travellers and the people who book for them.
-  image: ../../assets/images/pages/acosa-library/ACOSA_14_The_Right_Guest.png
+  image: ../../assets/images/pages/acosa-library/ACOSA_17_Host_Welcome_Updated.png
   primaryCta:
     label: Apply to List Your Property
     link: /list-your-property#apply
@@ -61,7 +61,7 @@ curationSection:
   heading: The standard matters because the network matters.
   body: >-
     Every property is reviewed before being accepted onto ACOSA. We look beyond attractive photographs to consider the practical details that can influence a business stay.
-  image: ../../assets/images/pages/list-your-property/standards-review.png
+  image: ../../assets/images/pages/business-traveller-unpacking.png
   secondaryImage: ../../assets/images/pages/acosa-library/ACOSA_15_Professional_Hospitality_Team.png
   criteria:
     - Reliable WiFi

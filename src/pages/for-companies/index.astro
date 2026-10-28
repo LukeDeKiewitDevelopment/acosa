@@ -10,6 +10,7 @@ import { getSiteSettings, resolveCtaLink } from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
 import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { IconMark } from "@/components/custom/icon-mark";
+import { SectionNav } from "@/components/custom/section-nav";
 import {
   BadgeCheck,
   CalendarDays,
@@ -144,8 +145,18 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
     secondaryCta={{ label: hero.secondaryCta.label, href: heroSecondaryHref }}
   />
 
+  <SectionNav
+    client:load
+    items={[
+      { id: "who-we-help", label: "Who we help" },
+      { id: "discovery", label: "Find accommodation" },
+      { id: "teams", label: "Teams & projects" },
+      { id: "contact", label: "Get in touch" },
+    ]}
+  />
+
   {/* Who we help */}
-  <Section>
+  <Section id="who-we-help">
     <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
       <SectionHeader
         title={whoWeHelpSection.heading}
@@ -165,7 +176,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   </Section>
 
   {/* Self-service discovery vs assisted enquiry */}
-  <Section tone="warm">
+  <Section id="discovery" tone="warm">
     <div class="flex flex-col gap-12">
       <SectionHeader title={howAcosaHelpsSection.heading} underline />
       <div class="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
@@ -297,6 +308,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   {
     finalCta.image && (
       <ClosingImageSection
+        id="contact"
         eyebrow={finalCta.eyebrow}
         heading={finalCta.heading}
         body={finalCta.body}

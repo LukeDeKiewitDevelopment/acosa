@@ -13,6 +13,7 @@ import {
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { NodeDetail } from "@/components/custom/node-detail";
+import { SectionNav } from "@/components/custom/section-nav";
 
 export const prerender = true;
 
@@ -97,6 +98,16 @@ const nearby = nearbyIds
     imageAlt={node.data.imageAlt || node.data.name}
     imageClassName="object-[60%_center] lg:object-center"
     primaryCta={{ label: "View Accommodation", href: "#properties" }}
+  />
+  <SectionNav
+    client:load
+    items={[
+      { id: "properties", label: "Accommodation" },
+      { id: "location", label: "Business location" },
+      ...(propertyItems.length > 0
+        ? [{ id: "assistance", label: "Get help" }]
+        : []),
+    ]}
   />
   <NodeDetail
     node={{

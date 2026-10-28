@@ -80,7 +80,7 @@ export const NodeDetail = ({
       </Section>
 
       {/* ---- Business Location ---- */}
-      <Section tone="warm">
+      <Section id="location" tone="warm">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
           <div className="flex flex-col gap-6">
             <h2 className="type-h2">Working in {node.name}?</h2>
@@ -148,7 +148,7 @@ export const NodeDetail = ({
 
       {/* ---- Assistance ---- */}
       {whatsappHref && properties.length > 0 && (
-        <Section spacing="tight">
+        <Section id="assistance" spacing="tight">
           <div className="border-border flex flex-col gap-5 border-y py-10 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-2">
               <h2 className="type-h3">Need assistance?</h2>

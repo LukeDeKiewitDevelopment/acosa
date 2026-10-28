@@ -12,6 +12,7 @@ import { SectionHeader } from "@/components/custom/section-header";
 import { NodeChooser } from "@/components/custom/node-chooser";
 import { PropertyGrid } from "@/components/custom/property-card";
 import { CtaLink } from "@/components/custom/cta-link";
+import { SectionNav } from "@/components/custom/section-nav";
 
 export const prerender = true;
 
@@ -35,7 +36,15 @@ const hasProperties = properties.length > 0;
   title={`Business Accommodation in ${label} | ACOSA`}
   description={`Business accommodation in ${label}.`}
 >
+  <SectionNav
+    client:load
+    items={[
+      { id: "business-nodes", label: "Business nodes" },
+      ...(hasProperties ? [{ id: "properties", label: "Properties" }] : []),
+    ]}
+  />
   <Section
+    id="business-nodes"
     tone="warm"
     spacing="none"
     className="pt-12 pb-16 md:pt-16 md:pb-24 lg:pt-20"
@@ -53,7 +62,7 @@ const hasProperties = properties.length > 0;
 
   {
     hasProperties && (
-      <Section>
+      <Section id="properties">
         <div class="flex flex-col gap-10">
           <SectionHeader title={`Properties in ${label}`} />
           <PropertyGrid items={properties} />

@@ -13,6 +13,7 @@ import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
 import { IconMark } from "@/components/custom/icon-mark";
 import { BedDouble, Building2, CircleHelp, House } from "lucide-react";
+import { SectionNav } from "@/components/custom/section-nav";
 
 // Each route's icon identifies the enquiry type, matched on its CMS title.
 const routeIcon = (title: string) =>
@@ -136,7 +137,12 @@ const linkedin = settings.data.socialLinks.find((social) =>
         </div>
       </header>
 
-      <div class="flex flex-col gap-6 sm:gap-8">
+      <SectionNav
+        client:load
+        items={[{ id: "contact-options", label: "Contact options" }]}
+      />
+
+      <div id="contact-options" class="flex flex-col gap-6 sm:gap-8">
         <SectionHeader
           eyebrow="Choose the right route"
           title="Which option applies to you?"

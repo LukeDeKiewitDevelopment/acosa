@@ -13,6 +13,7 @@ type Action = {
 };
 
 type Props = {
+  id?: string;
   eyebrow?: string;
   heading: string;
   body: string;
@@ -21,10 +22,10 @@ type Props = {
   actions: Action[];
 };
 
-const { eyebrow, heading, body, image, imageAlt, actions } = Astro.props;
+const { id, eyebrow, heading, body, image, imageAlt, actions } = Astro.props;
 ---
 
-<section class="surface-navy relative isolate overflow-hidden">
+<section id={id} class="surface-navy relative isolate overflow-hidden">
   <Image
     src={image}
     alt={imageAlt}

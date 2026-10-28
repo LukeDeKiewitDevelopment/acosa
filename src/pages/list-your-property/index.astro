@@ -284,7 +284,7 @@ const ogImageUrl = seo?.ogImage
           curationSection.image && (
             <Image
               src={curationSection.image}
-              alt="ACOSA assessing a guesthouse room with the owner"
+              alt="A business traveller unpacking in a guesthouse room"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 1024px) 50vw, 100vw"
               class="aspect-4/3 w-full rounded-xl object-cover object-[60%_center] lg:aspect-5/4"
@@ -389,24 +389,16 @@ const ogImageUrl = seo?.ogImage
         }
       </div>
       <div data-reveal style="--reveal-index: 1">
-        {
-          promotionalVisibilitySection.image ? (
-            <Image
-              src={promotionalVisibilitySection.image}
-              alt=""
-              widths={[480, 800, 1200]}
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              class="aspect-4/3 w-full rounded-xl object-cover"
-            />
-          ) : (
-            <div class="surface-ivory relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl">
-              <ReachRings className="text-navy absolute inset-0 m-auto w-[92%]" />
-              <span class="bg-navy text-gold absolute inset-0 m-auto flex size-20 items-center justify-center rounded-xl shadow-[0_18px_40px_-18px_rgb(5_10_60/0.6)]">
-                <House className="size-8" aria-hidden="true" />
-              </span>
-            </div>
-          )
-        }
+        <div
+          class="surface-ivory relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl"
+        >
+          <ReachRings className="text-navy absolute inset-0 m-auto w-[92%]" />
+          <span
+            class="bg-navy text-gold absolute inset-0 m-auto flex size-20 items-center justify-center rounded-xl shadow-[0_18px_40px_-18px_rgb(5_10_60/0.6)]"
+          >
+            <House className="size-8" aria-hidden="true" />
+          </span>
+        </div>
       </div>
     </div>
   </Section>

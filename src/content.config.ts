@@ -200,6 +200,7 @@ const homePage = defineCollection({
         heading: z.string(),
         body: z.string(),
         image: ctx.image().optional().nullable(),
+        secondaryImage: ctx.image().optional().nullable(),
         cta: z.object({ label: z.string(), link: z.string() }),
       }),
       businessNodesSection: z.object({
