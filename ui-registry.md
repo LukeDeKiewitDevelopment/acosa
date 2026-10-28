@@ -151,6 +151,8 @@ Last updated: 2026-10-28
   beneath the image; both headline accents use the existing yellow underline.
 - The ACOSA Approved section follows the home-page editorial split: text on the
   left and a full-height supporting photograph on the right, stacked on mobile.
+- Its gold badge icon is slightly larger (`size-8`) within the existing
+  `size-14` rounded icon tile.
 - Supporting editorial paragraphs in the experience and approval sections use
   `type-body` consistently. Body paragraphs share the hero lead's 16px / 18px
   Poppins scale site-wide. Closing images remain full-bleed with `object-cover`
