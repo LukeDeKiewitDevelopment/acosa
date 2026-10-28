@@ -94,6 +94,8 @@ const ownerSecondaryHref = resolveCtaLink(
   propertyOwnersSection.secondaryCta.link,
   ctaOptions,
 );
+const ownerHeading = propertyOwnersSection.heading || ownerCta.heading;
+const hostMatch = ownerHeading.match(/\bhost\b/i);
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -399,7 +401,17 @@ const websiteSchema: Record<string, unknown> = {
         >
           <p class="eyebrow">{propertyOwnersSection.eyebrow}</p>
           <h2 class="type-h2">
-            {propertyOwnersSection.heading || ownerCta.heading}
+            {
+              hostMatch && hostMatch.index !== undefined ? (
+                <>
+                  {ownerHeading.slice(0, hostMatch.index)}
+                  <span class="accent-underline">{hostMatch[0]}</span>
+                  {ownerHeading.slice(hostMatch.index + hostMatch[0].length)}
+                </>
+              ) : (
+                ownerHeading
+              )
+            }
           </h2>
           <p class="type-lead">{propertyOwnersSection.body || ownerCta.body}</p>
           <div
