@@ -20,6 +20,7 @@ type Props = {
   body: string;
   image: ImageMetadata;
   imagePosition?: "center" | "top";
+  desktopAspectRatio?: "video";
   imageAlt: string;
   actions: Action[];
 };
@@ -32,6 +33,7 @@ const {
   body,
   image,
   imagePosition = "center",
+  desktopAspectRatio,
   imageAlt,
   actions,
 } = Astro.props;
@@ -40,7 +42,13 @@ const headingLead = heading.trim().slice(0, lastSpace + 1);
 const headingFinalWord = heading.trim().slice(lastSpace + 1);
 ---
 
-<section id={id} class="surface-navy relative isolate overflow-hidden">
+<section
+  id={id}
+  class:list={[
+    "surface-navy relative isolate overflow-hidden",
+    desktopAspectRatio === "video" && "md:aspect-video",
+  ]}
+>
   <Image
     src={image}
     format="webp"
@@ -51,7 +59,7 @@ const headingFinalWord = heading.trim().slice(lastSpace + 1);
     sizes="100vw"
     class:list={[
       "absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]",
-      imagePosition === "top" && "object-[72%_top]",
+      imagePosition === "top" && "md:object-[72%_top]",
     ]}
   />
   <div
@@ -60,7 +68,10 @@ const headingFinalWord = heading.trim().slice(lastSpace + 1);
   >
   </div>
   <div
-    class="container-page relative z-20 flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20"
+    class:list={[
+      "container-page relative z-20 flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20",
+      desktopAspectRatio === "video" && "md:absolute md:inset-0 md:min-h-0",
+    ]}
   >
     <div class="flex max-w-lg flex-col gap-5">
       {eyebrow && <p class="eyebrow-accent">{eyebrow}</p>}

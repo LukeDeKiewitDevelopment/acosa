@@ -122,3 +122,33 @@ Last updated: 2026-10-28
 
 - Use the location-pin icon before “View on Google Maps” to clearly identify
   the destination link on every business node page.
+
+### Why ACOSA Editorial Emphasis
+
+File: `src/pages/why-acosa/index.astro`
+Last updated: 2026-10-28
+
+| Property         | Class or behavior                         |
+| ---------------- | ----------------------------------------- |
+| Background       | Existing section surface                  |
+| Border           | `border-gold` callout rule                |
+| Border radius    | `rounded-xl` icon tile                    |
+| Text — primary   | `text-navy` emphasized lead and callout   |
+| Text — secondary | `text-white` experience figure label      |
+| Spacing          | Inline icon-and-callout grid              |
+| Hover state      | None                                      |
+| Shadow           | None                                      |
+| Accent usage     | Gold icon, rule, and final-word underline |
+
+**Pattern notes:**
+
+- Only the opening curation statement uses larger navy emphasis; following
+  explanatory copy stays at the regular body size.
+- The curation callout keeps its badge icon and gold rule aligned in one row
+  beneath the image; both headline accents use the existing yellow underline.
+- The ACOSA Approved section follows the home-page editorial split: text on the
+  left and a full-height supporting photograph on the right, stacked on mobile.
+- Supporting editorial paragraphs in the experience and approval sections use
+  `type-body` consistently. Closing images remain full-bleed with `object-cover`
+  and use a desktop 16:9 frame with top alignment to keep the photographic
+  subjects in frame without changing the existing mobile presentation.

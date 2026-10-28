@@ -77,6 +77,13 @@ const iconFor = (criterion: string) =>
 // "More than 20 years of …" → "20+" for the experience figure.
 const yearsMatch = experienceSection.heading.match(/(\d+)\s+years/i);
 const yearsFigure = yearsMatch ? `${yearsMatch[1]}+` : null;
+const experienceHeadingTrimmed = experienceSection.heading.trim();
+const experienceHeadingLastSpace = experienceHeadingTrimmed.lastIndexOf(" ");
+const curationLeadMatch = curationSection.body.match(/^[\s\S]*?[.!?](?=\s|$)/);
+const curationEmphasis = curationLeadMatch?.[0] ?? curationSection.body;
+const curationSupportingCopy = curationSection.body
+  .slice(curationEmphasis.length)
+  .trim();
 const [experienceLead, ...experienceBody] = experienceSection.body
   .split(/\n+/)
   .map((paragraph) => paragraph.trim())
@@ -145,7 +152,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
           yearsFigure && (
             <p class="font-heading text-gold relative z-10 text-[5.5rem] leading-none font-semibold tracking-[-0.04em] md:text-[7.5rem]">
               {yearsFigure}
-              <span class="mt-3 block font-sans text-sm font-medium tracking-normal text-white drop-shadow-sm">
+              <span class="mt-3 block max-w-full font-sans text-base leading-snug font-semibold tracking-normal text-white drop-shadow-sm md:text-xl">
                 years of hands-on hospitality experience
               </span>
             </p>
@@ -153,12 +160,13 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         }
       </div>
       <div class="flex flex-col gap-6">
-        <h2 class="type-h2">{experienceSection.heading}</h2>
-        {
-          experienceLead && (
-            <p class="type-lead text-foreground/85">{experienceLead}</p>
-          )
-        }
+        <h2 class="type-h2">
+          {experienceHeadingTrimmed.slice(0, experienceHeadingLastSpace + 1)}
+          <span class="accent-underline">
+            {experienceHeadingTrimmed.slice(experienceHeadingLastSpace + 1)}
+          </span>
+        </h2>
+        {experienceLead && <p class="type-body">{experienceLead}</p>}
         {
           experienceBody.map((paragraph) => (
             <p class="type-body">{paragraph}</p>
@@ -188,9 +196,17 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         }
         {
           curationSection.highlightStatement && (
-            <p class="font-heading text-foreground border-gold border-l-2 pl-5 text-2xl leading-snug font-semibold md:text-[1.75rem]">
-              {curationSection.highlightStatement}
-            </p>
+            <div class="grid grid-cols-[3.5rem_1fr] items-center gap-4">
+              <span
+                aria-hidden="true"
+                class="border-gold/40 text-gold flex size-14 items-center justify-center rounded-xl border"
+              >
+                <BadgeCheck className="size-7" />
+              </span>
+              <p class="font-heading text-navy border-gold border-l-2 pl-5 text-[1.875rem] leading-snug font-semibold md:text-[2rem]">
+                {curationSection.highlightStatement}
+              </p>
+            </div>
           )
         }
       </div>
@@ -198,8 +214,17 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         <SectionHeader
           eyebrow={curationSection.eyebrow}
           title={curationSection.heading}
-          lead={curationSection.body}
-        />
+          underline
+        >
+          <p class="type-lead text-navy text-lg font-semibold md:text-xl">
+            {curationEmphasis}
+          </p>
+          {
+            curationSupportingCopy && (
+              <p class="type-body">{curationSupportingCopy}</p>
+            )
+          }
+        </SectionHeader>
         <ul
           class="border-sage divide-sage grid border-t sm:grid-cols-2 sm:gap-x-8"
         >
@@ -222,57 +247,61 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         </ul>
         {
           curationSection.note && (
-            <p class="type-small">{curationSection.note}</p>
+            <p class="type-body">{curationSection.note}</p>
           )
         }
       </div>
     </div>
   </Section>
 
-  {/* ACOSA Approved: the explanation gets its own authority band. */}
-  <Section id="acosa-approved" tone="navy">
-    <div
-      class="relative isolate mx-auto flex max-w-4xl flex-col items-center gap-6 overflow-hidden rounded-xl px-7 py-12 text-center md:px-12 md:py-16"
-    >
+  {/* ACOSA Approved: editorial copy beside the supporting property image. */}
+  <Section spacing="none" fullWidth id="acosa-approved">
+    <div class="surface-ivory grid lg:min-h-160 lg:grid-cols-2">
+      <div class="flex items-center">
+        <div
+          class="flex w-full max-w-xl flex-col gap-5 px-4 py-14 sm:px-6 md:py-20 lg:px-16 xl:px-20"
+        >
+          <span
+            aria-hidden="true"
+            class="border-gold/40 text-gold flex size-14 items-center justify-center rounded-xl border"
+          >
+            <BadgeCheck className="size-7" />
+          </span>
+          <h2 class="type-h2">{approvedSection.heading}</h2>
+          {
+            approvedSection.body
+              .split(/\n+/)
+              .map((paragraph) => paragraph.trim())
+              .filter(Boolean)
+              .map((paragraph) => <p class="type-body">{paragraph}</p>)
+          }
+          <CtaLink
+            label={approvedSection.cta.label}
+            href={approvedSection.cta.link}
+            variant="primary"
+            size="lg"
+            icon="arrow"
+            className="mt-3"
+            trackingKey="why_explore_properties_click"
+          />
+        </div>
+      </div>
       {
         approvedSection.image && (
-          <Image
-            src={approvedSection.image}
-            format="webp"
-            quality={75}
-            loading="lazy"
-            alt="A peaceful garden courtyard at a curated guesthouse"
-            widths={[480, 800, 1200, 1408]}
-            sizes="(min-width: 1024px) 75vw, 100vw"
-            class="absolute inset-0 -z-20 h-full w-full object-cover"
-          />
+          <div class="relative aspect-4/3 sm:aspect-video lg:aspect-auto">
+            <Image
+              src={approvedSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
+              alt="A peaceful garden courtyard at a curated guesthouse"
+              widths={[480, 800, 1200, 1408]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="absolute inset-0 h-full w-full object-cover object-[60%_center]"
+            />
+          </div>
         )
       }
-      <div aria-hidden="true" class="bg-navy/75 absolute inset-0 -z-10"></div>
-      <span
-        class="border-gold/50 flex size-16 items-center justify-center rounded-xl border"
-      >
-        <BadgeCheck className="text-gold size-8" aria-hidden="true" />
-      </span>
-      <h2 class="type-h2">{approvedSection.heading}</h2>
-      {
-        approvedSection.body
-          .split(/\n+/)
-          .map((paragraph) => paragraph.trim())
-          .filter(Boolean)
-          .map((paragraph, index) => (
-            <p class={index === 0 ? "type-lead" : "type-small"}>{paragraph}</p>
-          ))
-      }
-      <CtaLink
-        label={approvedSection.cta.label}
-        href={approvedSection.cta.link}
-        variant="primary"
-        size="lg"
-        icon="arrow"
-        className="mt-3"
-        trackingKey="why_explore_properties_click"
-      />
     </div>
   </Section>
 
@@ -285,6 +314,7 @@ const [experienceLead, ...experienceBody] = experienceSection.body
         body={outcomeSection.body}
         image={outcomeSection.image}
         imagePosition="top"
+        desktopAspectRatio="video"
         imageAlt="A traveller relaxing at her guesthouse at the end of a work day"
         actions={[
           {
