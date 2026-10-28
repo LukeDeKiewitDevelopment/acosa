@@ -29,7 +29,25 @@ const { node } = Astro.props;
 const settings = await getSiteSettings();
 const { Content } = await render(node);
 const seo = node.data.seo;
-
+const mapUrl =
+  node.data.mapUrl ||
+  `https://maps.google.com/?q=${encodeURIComponent(
+    [
+      node.data.name,
+      node.data.city,
+      provinceLabel(node.data.province),
+      "South Africa",
+    ]
+      .filter(Boolean)
+      .join(" "),
+  )}`;
+const workingSectionBackground = (
+  await getImage({
+    src: node.data.heroImage,
+    width: 1920,
+    format: "webp",
+  })
+).src;
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
 const ogImageUrl = seo?.ogImage
@@ -58,7 +76,7 @@ const nodeSchema: Record<string, unknown> = {
     addressLocality: node.data.city || undefined,
     addressCountry: "ZA",
   },
-  ...(node.data.mapUrl ? { hasMap: node.data.mapUrl } : {}),
+  hasMap: mapUrl,
 };
 
 const nodeProperties = (await getPublishedProperties()).filter(
@@ -103,10 +121,7 @@ const nearby = nearbyIds
     client:load
     items={[
       { id: "properties", label: "Accommodation" },
-      { id: "location", label: "Business location" },
-      ...(propertyItems.length > 0
-        ? [{ id: "assistance", label: "Get help" }]
-        : []),
+      { id: "location", label: "Business location & assistance" },
     ]}
   />
   <NodeDetail
@@ -116,11 +131,12 @@ const nearby = nearbyIds
       city: node.data.city,
       province: node.data.province,
       provinceLabel: provinceLabel(node.data.province),
-      mapUrl: node.data.mapUrl ?? "",
+      mapUrl,
+      workingSectionBackground,
     }}
     properties={propertyItems}
     highlights={node.data.businessHighlights}
-    nearby={nearby}
+    nearby={["centurion", "pretoria-east"].includes(node.id) ? [] : nearby}
     whatsappHref={resolveCtaLink("whatsapp", {
       email: settings.data.enquiryEmail,
       whatsappNumber: settings.data.defaultWhatsapp,

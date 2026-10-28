@@ -4,14 +4,14 @@ Generated from `node scripts/image-audit.mjs`. Run it again after you add or rep
 
 ## Duplicates on live pages
 
-| Image                                             | Where it appears                                               | Status                                                                                       |
-| ------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `acosa-library/ACOSA_17_Host_Welcome_Updated.png` | For Properties hero.                                           | Supplied image 2.11 replaces the previous hero image.                                        |
-| `pages/business-traveller-unpacking.png`          | Home business-travel section.                                  | User-supplied man-unpacking photo is the Home section's overlapping secondary image.         |
-| `pages/south-africa-flag-map.png`                 | Home, business nodes section.                                  | Supplied image 2.12 appears as a subtle decorative background watermark.                     |
-| `corporate-booker/image.jpg`                      | Home, "Booking for someone else?" section. For Companies hero. | Needs one new corporate-booker image for Home.                                               |
-| `nodes/pretoria-east/heroImage.png`               | Pretoria East business node page.                              | Uses the supplied Pretoria East location image.                                              |
-| `end-of-workday/image.jpg`                        | Was on Home (closing banner) and Why ACOSA? (closing section). | Fixed. Why ACOSA? now uses the unused approved image `ACOSA_12_Practical_Business_Stay.png`. |
+| Image                                             | Where it appears                                               | Status                                                                                        |
+| ------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `acosa-library/ACOSA_17_Host_Welcome_Updated.png` | For Properties hero.                                           | Supplied image 2.11 replaces the previous hero image.                                         |
+| `pages/business-traveller-unpacking.png`          | Home business-travel section.                                  | User-supplied man-unpacking photo is the Home section's overlapping secondary image.          |
+| `pages/south-africa-flag-map.png`                 | Home, Business Nodes directory.                                | Supplied image 2.12 appears as a subtle decorative background watermark behind both sections. |
+| `corporate-booker/image.jpg`                      | Home, "Booking for someone else?" section. For Companies hero. | Needs one new corporate-booker image for Home.                                                |
+| `nodes/pretoria-east/heroImage.png`               | Pretoria East business node page.                              | Uses the supplied Pretoria East location image.                                               |
+| `end-of-workday/image.jpg`                        | Was on Home (closing banner) and Why ACOSA? (closing section). | Fixed. Why ACOSA? now uses the unused approved image `ACOSA_12_Practical_Business_Stay.png`.  |
 
 ## Sections that take a new image
 
@@ -35,12 +35,13 @@ Upload each image in Keystatic. The field is already in the editor.
 | For Properties, "The standard matters because the network matters."   | List Your Property Page > Curation > Section Image               | Restores the original standards-review image with the existing hospitality-team overlay.                              |
 | For Properties, "Keep your property information current."             | List Your Property Page > Listing Updates > Section Image        | The supplied guesthouse-room image fills the entire block behind the copy and refresh details with a navy overlay.    |
 | Home, "Booking for someone else?"                                     | Home Page > Corporate bookers > Image                            | Duplicate, see above.                                                                                                 |
-| Business node pages                                                   | Business Nodes > (node) > Hero Image                             | Supplied individual images now serve Bryanston, Centurion, Edenvale, Midrand, Pretoria East, Rosslyn and Sandton.     |
+| Business node pages                                                   | Business Nodes > (node) > Hero Image                             | Supplied individual images serve each node's hero and the background of its "Working in" section. The node-detail assistance block is text-only. |
+| Business Nodes overview, "Need assistance finding the right area?"   | Business Nodes > Assistance > Background                         | ACOSA 06 fills the section behind its copy with the shared full-width navy overlay treatment. |
 
 Recommended source size is 1600 x 900 px or larger for full-width and hero images, and 1200 x 900 px for split sections. Astro resizes and compresses every image at build time, so upload the full-quality file.
 
 Image 2.11 is stored as `acosa-library/ACOSA_17_Host_Welcome_Updated.png` and is used in the For Properties hero.
-The supplied South Africa image is stored as `pages/business-nodes/south-africa-network.png` and is used in the closing network sections on the Properties and Business Nodes pages.
+The supplied South Africa image is stored as `pages/business-nodes/south-africa-network.png` and is used in the Properties closing section. The 2.12 flag-map artwork is used behind the Home and Business Nodes directory sections.
 
 ## Tablet and mobile crops
 

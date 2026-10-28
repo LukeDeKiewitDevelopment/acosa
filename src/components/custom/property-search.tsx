@@ -50,7 +50,7 @@ const FilterSelect = ({
   allLabel: string;
   options: Option[];
 }) => (
-  <div className="relative flex min-w-0 flex-col">
+  <div className="relative flex min-w-0 flex-col bg-white">
     <label htmlFor={id} className={fieldLabelClassName}>
       {label}
     </label>
@@ -173,13 +173,13 @@ export const PropertySearch = ({
         aria-label="Search properties"
         onSubmit={(event) => event.preventDefault()}
         className={cn(
-          "bg-card divide-border border-border focus-within:border-foreground/40 grid grid-cols-1 divide-y overflow-hidden rounded-xl border shadow-[0_18px_40px_-30px_rgb(5_10_60/0.35)] lg:divide-x lg:divide-y-0",
+          "divide-border border-border focus-within:border-foreground/40 grid grid-cols-1 divide-y overflow-hidden rounded-xl border bg-white shadow-[0_18px_40px_-30px_rgb(5_10_60/0.35)] lg:divide-x lg:divide-y-0",
           showProvince
             ? "lg:grid-cols-[1.6fr_1fr_1fr_1fr]"
             : "lg:grid-cols-[1.8fr_1fr_1fr]",
         )}
       >
-        <div className="relative flex min-w-0 flex-col">
+        <div className="relative flex min-w-0 flex-col bg-white">
           <label
             htmlFor="property-search-input"
             className={fieldLabelClassName}

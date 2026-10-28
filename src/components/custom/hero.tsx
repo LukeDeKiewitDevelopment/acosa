@@ -38,6 +38,8 @@ export type HeroProps = {
   imageSizes?: string;
   /** object-position classes that keep the subject in frame per breakpoint. */
   imageClassName?: string;
+  /** Brand underline under the heading's final word. */
+  underlineHeading?: boolean;
   /** Desktop side for the copy, the side of the photo with negative space. */
   align?: "left" | "right";
   size?: "cinematic" | "standard";
@@ -68,6 +70,7 @@ export const Hero = async ({
   imageWidths,
   imageSizes,
   imageClassName,
+  underlineHeading = false,
   align = "left",
   size = "standard",
   className,
@@ -108,6 +111,11 @@ export const Hero = async ({
   const gradient = `linear-gradient(${direction}, ${navy(strength)} 0%, ${navy(strength * 0.97)} 34%, ${navy(strength * 0.6)} 50%, ${navy(strength * 0.15)} 66%, transparent 80%)`;
 
   const copy = body || subheading;
+  const headingTrimmed = heading.trim();
+  const headingLastSpace = headingTrimmed.lastIndexOf(" ");
+  const headingLead =
+    headingLastSpace >= 0 ? headingTrimmed.slice(0, headingLastSpace + 1) : "";
+  const headingFinalWord = headingTrimmed.slice(headingLastSpace + 1);
   const minHeight =
     size === "cinematic"
       ? "lg:min-h-[min(calc(100svh-4.5rem),54rem)]"
@@ -176,7 +184,14 @@ export const Hero = async ({
           >
             {eyebrow && <p className="eyebrow-accent">{eyebrow}</p>}
             <h1 className={size === "cinematic" ? "type-display" : "type-h1"}>
-              {heading}
+              {underlineHeading ? (
+                <>
+                  {headingLead}
+                  <span className="accent-underline">{headingFinalWord}</span>
+                </>
+              ) : (
+                heading
+              )}
             </h1>
             {copy && (
               <p className="text-muted-foreground max-w-136 text-base leading-relaxed lg:text-[1.0625rem]">

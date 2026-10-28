@@ -17,6 +17,7 @@ export type NodeDetailNode = {
   province: string;
   provinceLabel: string;
   mapUrl: string;
+  workingSectionBackground: string;
 };
 
 export type NodeDetailHighlight = {
@@ -63,111 +64,113 @@ export const NodeDetail = ({
                   explore suitable options.
                 </p>
               </div>
-              {whatsappHref && (
-                <CtaLink
-                  label="Ask ACOSA"
-                  href={whatsappHref}
-                  variant="secondary"
-                  icon="whatsapp"
-                  external={whatsappHref.startsWith("http")}
-                  trackingKey="node_ask_acosa_click"
-                  className="shrink-0"
-                />
-              )}
             </div>
           )}
         </div>
       </Section>
 
       {/* ---- Business Location ---- */}
-      <Section id="location" tone="warm">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
-          <div className="flex flex-col gap-6">
-            <h2 className="type-h2">Working in {node.name}?</h2>
-            <div className="prose prose-sm text-muted-foreground md:prose-base max-w-none [&_h1]:hidden [&_p]:mb-4 [&_p]:leading-relaxed">
-              {children}
+      <Section id="location" tone="navy" className="isolate overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{ backgroundImage: `url("${node.workingSectionBackground}")` }}
+        />
+        <div
+          aria-hidden="true"
+          className="from-navy/95 via-navy/90 to-navy/75 absolute inset-0 z-[1] bg-linear-to-r"
+        />
+        <div className="relative z-10">
+          <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+            <div className="flex flex-col gap-6">
+              <h2 className="type-h2 text-white">Working in {node.name}?</h2>
+              <div className="prose [&_h2]:font-heading [&_h3]:font-heading max-w-none text-[0.9375rem] leading-relaxed text-white/85 [&_h1]:hidden [&_h2]:text-xl [&_h2]:text-white [&_h3]:text-lg [&_h3]:text-white [&_p]:mb-4 [&_p]:text-[0.9375rem] [&_p]:leading-relaxed [&_strong]:text-white">
+                {children}
+              </div>
+              {node.mapUrl && (
+                <CtaLink
+                  label="View on Google Maps"
+                  href={node.mapUrl}
+                  variant="link"
+                  icon="external"
+                  external
+                  trackingKey="business_node_maps_click"
+                  className="text-white"
+                />
+              )}
             </div>
-            {node.mapUrl && (
-              <CtaLink
-                label="View on Google Maps"
-                href={node.mapUrl}
-                variant="link"
-                icon="external"
-                external
-                trackingKey="business_node_maps_click"
-              />
-            )}
+
+            <div className="flex flex-col gap-10">
+              {highlights.length > 0 && (
+                <div className="flex flex-col gap-4">
+                  <p className="eyebrow-accent">
+                    Why travellers choose {node.name}
+                  </p>
+                  <ul className="divide-gold/50 border-gold/50 flex flex-col divide-y border-y">
+                    {highlights.map((highlight) => (
+                      <li
+                        key={highlight.title}
+                        className="flex flex-col gap-1 py-4"
+                      >
+                        <p className="font-heading text-base font-semibold text-white">
+                          {highlight.title}
+                        </p>
+                        {highlight.detail && (
+                          <p className="type-small text-white/85">
+                            {highlight.detail}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {nearby.length > 0 && (
+                <div className="flex flex-col gap-4">
+                  <p className="eyebrow-accent">Nearby convenience</p>
+                  <ul className="flex flex-wrap gap-2">
+                    {nearby.map((item) => {
+                      const Icon = tagIcon(item.icon);
+                      return (
+                        <li
+                          key={item.name}
+                          className="inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/10 px-3 py-1.5 text-sm text-white"
+                        >
+                          <Icon
+                            className="text-gold size-4 shrink-0"
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-10">
-            {highlights.length > 0 && (
-              <div className="flex flex-col gap-4">
-                <p className="eyebrow">Why travellers choose {node.name}</p>
-                <ul className="divide-sage border-sage flex flex-col divide-y border-y">
-                  {highlights.map((highlight) => (
-                    <li
-                      key={highlight.title}
-                      className="flex flex-col gap-1 py-4"
-                    >
-                      <p className="font-heading text-foreground text-base font-semibold">
-                        {highlight.title}
-                      </p>
-                      {highlight.detail && (
-                        <p className="type-small">{highlight.detail}</p>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {nearby.length > 0 && (
-              <div className="flex flex-col gap-4">
-                <p className="eyebrow">Nearby convenience</p>
-                <ul className="flex flex-wrap gap-2">
-                  {nearby.map((item) => {
-                    const Icon = tagIcon(item.icon);
-                    return (
-                      <li
-                        key={item.name}
-                        className="bg-card text-foreground/85 border-border inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm"
-                      >
-                        <Icon
-                          className="text-gold-ink size-4 shrink-0"
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+          <div className="border-gold mt-10 grid gap-6 border-t-2 pt-8 md:grid-cols-[1fr_auto] md:items-center md:gap-8">
+            <div className="flex max-w-2xl flex-col gap-2">
+              <h2 className="type-h3 text-white">Need assistance?</h2>
+              <p className="type-body text-white/85">
+                Tell ACOSA where you need to be and what matters for your stay.
+              </p>
+            </div>
+            {whatsappHref && (
+              <CtaLink
+                label="Message ACOSA"
+                href={whatsappHref}
+                variant="secondary"
+                icon="whatsapp"
+                external={whatsappHref.startsWith("http")}
+                trackingKey="node_assistance_click"
+                className="shrink-0"
+              />
             )}
           </div>
         </div>
       </Section>
-
-      {/* ---- Assistance ---- */}
-      {whatsappHref && properties.length > 0 && (
-        <Section id="assistance" spacing="tight">
-          <div className="border-border flex flex-col gap-5 border-y py-10 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-col gap-2">
-              <h2 className="type-h3">Need assistance?</h2>
-              <p className="type-body">
-                Tell ACOSA where you need to be and what matters for the stay.
-              </p>
-            </div>
-            <CtaLink
-              label="Need assistance? Message ACOSA"
-              href={whatsappHref}
-              variant="secondary"
-              icon="whatsapp"
-              external={whatsappHref.startsWith("http")}
-              trackingKey="node_assistance_click"
-              className="shrink-0"
-            />
-          </div>
-        </Section>
-      )}
     </>
   );
 };

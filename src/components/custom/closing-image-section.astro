@@ -16,13 +16,26 @@ type Props = {
   id?: string;
   eyebrow?: string;
   heading: string;
+  underlineHeading?: boolean;
   body: string;
   image: ImageMetadata;
   imageAlt: string;
   actions: Action[];
 };
 
-const { id, eyebrow, heading, body, image, imageAlt, actions } = Astro.props;
+const {
+  id,
+  eyebrow,
+  heading,
+  underlineHeading = false,
+  body,
+  image,
+  imageAlt,
+  actions,
+} = Astro.props;
+const lastSpace = heading.trim().lastIndexOf(" ");
+const headingLead = heading.trim().slice(0, lastSpace + 1);
+const headingFinalWord = heading.trim().slice(lastSpace + 1);
 ---
 
 <section id={id} class="surface-navy relative isolate overflow-hidden">
@@ -43,7 +56,18 @@ const { id, eyebrow, heading, body, image, imageAlt, actions } = Astro.props;
   >
     <div class="flex max-w-lg flex-col gap-5">
       {eyebrow && <p class="eyebrow-accent">{eyebrow}</p>}
-      <h2 class="type-h2 text-white">{heading}</h2>
+      <h2 class="type-h2 text-white">
+        {
+          underlineHeading ? (
+            <>
+              {headingLead}
+              <span class="accent-underline">{headingFinalWord}</span>
+            </>
+          ) : (
+            heading
+          )
+        }
+      </h2>
       <p class="type-lead text-white/85">{body}</p>
       <div class="mt-2 flex flex-wrap items-center gap-x-7 gap-y-4">
         {

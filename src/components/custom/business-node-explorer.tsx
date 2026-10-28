@@ -98,7 +98,10 @@ export const BusinessNodeExplorer = ({
         </p>
       </div>
 
-      <nav aria-label="Business nodes" className="order-1 lg:order-2">
+      <nav
+        aria-label="Business nodes"
+        className="relative z-10 order-1 lg:order-2"
+      >
         <ul role="list" className="flex flex-col gap-2">
           {nodes.map((node) => {
             const active = activeId === node.id;
@@ -113,7 +116,7 @@ export const BusinessNodeExplorer = ({
                   onFocus={() => setActiveId(node.id)}
                   onBlur={() => setActiveId(null)}
                   className={cn(
-                    "group bg-card focus-visible:ring-ring flex items-center justify-between gap-4 rounded-xl border px-4 py-3.5 no-underline transition-[border-color,box-shadow] duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                    "group focus-visible:ring-ring flex items-center justify-between gap-4 rounded-xl border bg-white px-4 py-3.5 no-underline transition-[border-color,box-shadow] duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                     active
                       ? "border-navy shadow-[0_12px_30px_-20px_rgb(5_10_60/0.5)]"
                       : "border-border",
