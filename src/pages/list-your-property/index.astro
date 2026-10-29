@@ -515,7 +515,12 @@ const ogImageUrl = seo?.ogImage
 
   {/* Listing support: what a refresh covers, as a feature card. */}
   <Section spacing="tight" id="listing-updates">
-    <div class="surface-navy relative isolate overflow-hidden rounded-xl">
+    <div
+      class:list={[
+        "grid items-stretch gap-6",
+        listingUpdatesSection.image && "md:grid-cols-2",
+      ]}
+    >
       {
         listingUpdatesSection.image && (
           <Image
@@ -523,20 +528,15 @@ const ogImageUrl = seo?.ogImage
             format="webp"
             quality={75}
             loading="lazy"
-            alt=""
-            widths={[480, 800, 1200, 1408, 1920]}
-            sizes="(min-width: 1280px) 1200px, calc(100vw - 2rem)"
-            class="absolute inset-0 z-0 h-full w-full object-cover object-[58%_center]"
+            alt="A guesthouse room prepared for guests"
+            widths={[480, 800, 1200, 1408]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="aspect-4/3 h-full w-full rounded-xl object-cover object-[58%_center] md:aspect-auto"
           />
         )
       }
       <div
-        aria-hidden="true"
-        class="from-navy/90 via-navy/75 to-navy/55 md:from-navy/90 md:via-navy/65 md:to-navy/30 absolute inset-0 z-10 bg-linear-to-t"
-      >
-      </div>
-      <div
-        class="relative z-20 flex flex-col gap-6 px-6 py-8 sm:px-8 sm:py-10 md:px-12 md:py-14"
+        class="surface-navy relative isolate flex flex-col gap-6 overflow-hidden rounded-xl px-6 py-8 sm:px-8 sm:py-10"
       >
         <RefreshCw
           className="text-gold/15 absolute -top-6 -right-6 size-44"
