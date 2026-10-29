@@ -11,15 +11,21 @@ import { CtaLink } from "@/components/custom/cta-link";
 import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { IconMark } from "@/components/custom/icon-mark";
 import { SectionNav } from "@/components/custom/section-nav";
+import shortlistBackground from "@/assets/images/pages/for-companies/shortlist-background.png";
 import {
   BadgeCheck,
+  Building2,
   CalendarDays,
   Check,
   ClipboardList,
   ConciergeBell,
+  FolderKanban,
   Hourglass,
   ListChecks,
   MapPin,
+  Plane,
+  Settings2,
+  UserRound,
   Users,
 } from "lucide-react";
 
@@ -111,6 +117,15 @@ const featureIcons: [RegExp, typeof Check][] = [
   [/curated/i, BadgeCheck],
   [/help/i, ConciergeBell],
 ];
+const roleIcons: [RegExp, typeof Check][] = [
+  [/executive assistant/i, UserRound],
+  [/hr/i, Users],
+  [/procurement/i, ClipboardList],
+  [/operations/i, Settings2],
+  [/project/i, FolderKanban],
+  [/travel/i, Plane],
+  [/companies/i, Building2],
+];
 const requirementIcons: [RegExp, typeof Check][] = [
   [/^location/i, MapPin],
   [/travellers|people/i, Users],
@@ -158,7 +173,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
 
   {/* Who we help */}
   <Section id="who-we-help">
-    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+    <div class="flex flex-col gap-8">
       <SectionHeader title={whoWeHelpSection.heading} underline>
         <p class="text-foreground text-sm font-semibold">
           {whoWeHelpSection.body}
@@ -167,8 +182,9 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
       <ul class="border-border grid border-t sm:grid-cols-2 sm:gap-x-10">
         {
           whoWeHelpSection.roles.map((role) => (
-            <li class="border-border font-heading text-foreground border-b py-4 text-base font-semibold">
-              {role}
+            <li class="border-border font-heading text-foreground flex items-center gap-3 border-b py-4 text-base font-semibold">
+              <IconMark icon={iconFor(role, roleIcons)} size="sm" />
+              <span>{role}</span>
             </li>
           ))
         }
@@ -177,12 +193,34 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   </Section>
 
   {/* Self-service discovery vs assisted enquiry */}
-  <Section id="discovery" tone="warm">
-    <div class="flex flex-col gap-12">
-      <SectionHeader title={howAcosaHelpsSection.heading} underline />
+  <Section
+    id="discovery"
+    spacing="none"
+    fullWidth
+    className="isolate overflow-hidden"
+  >
+    <Image
+      src={shortlistBackground}
+      format="webp"
+      quality={75}
+      loading="lazy"
+      alt=""
+      widths={[768, 1200, 1600, 1920]}
+      sizes="100vw"
+      class="absolute inset-0 z-0 h-full w-full object-cover object-[center_55%]"
+    />
+    <div aria-hidden="true" class="bg-navy/70 absolute inset-0 z-10"></div>
+    <div
+      class="container-page relative z-20 flex flex-col gap-12 py-14 md:py-20"
+    >
+      <SectionHeader
+        title={howAcosaHelpsSection.heading}
+        underline
+        titleClassName="text-white"
+      />
       <div class="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         <div
-          class="bg-card border-border flex flex-col gap-8 rounded-xl border p-7 md:p-9"
+          class="bg-card/95 border-border flex flex-col gap-8 rounded-xl border p-7 backdrop-blur-sm md:p-9"
         >
           <div class="flex items-center justify-between gap-4">
             <p class="eyebrow">Self-service discovery</p>
