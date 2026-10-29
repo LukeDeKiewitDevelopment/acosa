@@ -209,8 +209,12 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
         <ul class="grid gap-x-6 gap-y-3 sm:grid-cols-2">
           {
             whoWeHelpSection.roles.map((role) => (
-              <li class="font-heading text-foreground flex items-center gap-2 text-sm font-semibold">
-                <IconMark icon={iconFor(role, roleIcons)} size="sm" />
+              <li class="group border-sage hover:border-gold font-heading text-foreground flex items-center gap-2 border-t pt-3 text-sm font-semibold transition-[border-color,translate] duration-300 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
+                <IconMark
+                  icon={iconFor(role, roleIcons)}
+                  size="sm"
+                  className="group-hover:bg-gold group-hover:text-navy transition-colors duration-300"
+                />
                 <span>{role}</span>
               </li>
             ))
