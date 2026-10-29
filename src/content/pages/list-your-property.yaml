@@ -16,6 +16,7 @@ whoWeWorkWithSection:
   heading: Built for properties that take hospitality seriously.
   body: ""
   image: ../../assets/images/pages/acosa-library/ACOSA_07_Property_Owner_Pride.png
+  secondaryImage: ../../assets/images/pages/for-companies/shortlist-background.png
   properties:
     - Care about the quality of the guest experience
     - Operate professionally
@@ -117,6 +118,7 @@ listingUpdatesSection:
   body: >-
     Essential factual corrections can be requested whenever necessary. Your subscription also allows for up to two substantial listing refresh requests during a 12-month period, should you need them. These may include replacing gallery images, updating descriptive copy, and adding significant new facilities. Additional extensive content changes may be quoted separately where required.
   image: ../../assets/images/pages/list-your-property/listing-updates.png
+  secondaryImage: ../../assets/images/pages/list-your-property/photo-overlay-2-10.png
   refreshIncludes:
     - replacing gallery images
     - updating descriptive copy

@@ -16,8 +16,6 @@ import { CtaLink } from "@/components/custom/cta-link";
 import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { IconMark } from "@/components/custom/icon-mark";
 import { SectionNav } from "@/components/custom/section-nav";
-import shortlistBackground from "@/assets/images/pages/for-companies/shortlist-background.png";
-import whoWeHelpBackground from "@/assets/images/pages/for-companies/who-we-help-2-13.png";
 import {
   BadgeCheck,
   BriefcaseBusiness,
@@ -46,6 +44,7 @@ export const prerender = true;
 const page = await getEntry("forCompaniesPage", "for-companies");
 if (!page) throw new Error("For Companies page content not found");
 const settings = await getSiteSettings();
+const uiCopy = settings.data.uiCopy.forCompanies;
 const {
   hero,
   whoWeHelpSection,
@@ -172,10 +171,10 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   <SectionNav
     client:load
     items={[
-      { id: "who-we-help", label: "Who we help" },
-      { id: "discovery", label: "Find accommodation" },
-      { id: "teams", label: "Teams & projects" },
-      { id: "contact", label: "Get in touch" },
+      { id: "who-we-help", label: uiCopy.whoWeHelpNav },
+      { id: "discovery", label: uiCopy.discoveryNav },
+      { id: "teams", label: uiCopy.teamsNav },
+      { id: "contact", label: uiCopy.contactNav },
     ]}
   />
 
@@ -184,16 +183,20 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
     <div
       class="relative isolate grid overflow-hidden rounded-xl lg:aspect-[2.75/1]"
     >
-      <Image
-        src={whoWeHelpBackground}
-        format="webp"
-        quality={78}
-        loading="lazy"
-        alt="Two colleagues reviewing plans together at a laptop"
-        widths={[768, 1200, 1600, 2000]}
-        sizes="(min-width: 1280px) 1280px, 100vw"
-        class="relative order-2 aspect-video w-full object-cover object-[72%_center] lg:absolute lg:inset-0 lg:order-0 lg:aspect-auto lg:h-full"
-      />
+      {
+        whoWeHelpSection.backgroundImage && (
+          <Image
+            src={whoWeHelpSection.backgroundImage}
+            format="webp"
+            quality={78}
+            loading="lazy"
+            alt="Two colleagues reviewing plans together at a laptop"
+            widths={[768, 1200, 1600, 2000]}
+            sizes="(min-width: 1280px) 1280px, 100vw"
+            class="relative order-2 aspect-video w-full object-cover object-[72%_center] lg:absolute lg:inset-0 lg:order-0 lg:aspect-auto lg:h-full"
+          />
+        )
+      }
       <div
         aria-hidden="true"
         class="from-background via-background/90 absolute inset-y-0 left-0 z-[1] hidden w-[56%] bg-gradient-to-r to-transparent lg:block"
@@ -236,16 +239,20 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
     fullWidth
     className="isolate overflow-hidden"
   >
-    <Image
-      src={shortlistBackground}
-      format="webp"
-      quality={75}
-      loading="lazy"
-      alt=""
-      widths={[768, 1200, 1600, 1920]}
-      sizes="100vw"
-      class="absolute inset-0 z-0 h-full w-full object-cover object-[center_55%]"
-    />
+    {
+      howAcosaHelpsSection.backgroundImage && (
+        <Image
+          src={howAcosaHelpsSection.backgroundImage}
+          format="webp"
+          quality={75}
+          loading="lazy"
+          alt=""
+          widths={[768, 1200, 1600, 1920]}
+          sizes="100vw"
+          class="absolute inset-0 z-0 h-full w-full object-cover object-[center_55%]"
+        />
+      )
+    }
     <div aria-hidden="true" class="bg-navy/55 absolute inset-0 z-10"></div>
     <div
       class="container-page relative z-20 flex flex-col gap-12 py-14 md:py-20"
@@ -260,7 +267,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
           class="bg-card/95 border-border flex flex-col gap-8 rounded-xl border p-7 backdrop-blur-sm md:p-9"
         >
           <div class="flex items-center justify-between gap-4">
-            <p class="eyebrow">Self-service discovery</p>
+            <p class="eyebrow">{uiCopy.selfServiceLabel}</p>
             <CtaLink
               label={hero.secondaryCta.label}
               href={heroSecondaryHref}
@@ -291,7 +298,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
                 tone="navy"
                 size="sm"
               />
-              <p class="eyebrow-accent">Assisted enquiry</p>
+              <p class="eyebrow-accent">{uiCopy.assistedLabel}</p>
               <h3 class="type-h3">{assisted.title}</h3>
               <p class="type-small">{assisted.body}</p>
               <CtaLink
@@ -328,7 +335,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
           )
         }
         <SectionHeader
-          eyebrow="Teams & project stays"
+          eyebrow={uiCopy.teamsEyebrow}
           title={teamsAndProjectsSection.heading}
           lead={teamsAndProjectsSection.body}
           emphasizeLead
@@ -339,7 +346,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
         class="bg-card border-border flex flex-col gap-7 rounded-xl border p-7 md:p-9 lg:sticky lg:top-28"
       >
         <p class="text-foreground text-sm font-semibold">
-          To help us understand what you need, please include:
+          {uiCopy.requirementsIntro}
         </p>
         <ol class="border-border flex flex-col border-t">
           {

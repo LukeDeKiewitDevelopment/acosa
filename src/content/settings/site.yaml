@@ -8,11 +8,87 @@ directoryCopy:
       accommodation around key South African business areas, helping you find
       options relevant to your destination rather than searching through
       hundreds of unrelated stays.
+    heroEyebrow: FIND ACCOMMODATION BY LOCATION
+    heroImage: ../../assets/images/pages/business-nodes/hero.png
+    primaryCtaLabel: Explore Business Nodes
+    primaryCtaLink: "#directory"
+    directoryEyebrow: EXPLORE ACOSA'S BUSINESS NODES
+    directoryHeading: Find accommodation where you need to do business.
+    assistanceEyebrow: HERE TO HELP
+    assistanceHeading: Need assistance finding the right area?
+    assistanceBody: >-
+      Tell us where you need to be and what matters for your stay. ACOSA can
+      help you explore suitable accommodation in the network.
+    assistanceImage: ../../assets/images/pages/acosa-library/ACOSA_06_Project_Team_Stay.png
   properties:
     title: All Properties | ACOSA
     description: Browse vetted business accommodation properties across South Africa.
     heading: All Properties
     lead: Browse business accommodation across South Africa's key corporate nodes.
+    heroEyebrow: ACOSA PROPERTIES
+    regionLabel: Gauteng
+    searchNavLabel: Search properties
+    networkNavLabel: Growing network
+    networkEyebrow: GROWING NETWORK
+    networkHeading: ACOSA is growing deliberately.
+    networkBody: >-
+      We're building our accommodation network around quality, not simply
+      quantity. New business nodes and carefully selected properties will be
+      added as the ACOSA network expands.
+    networkImage: ../../assets/images/pages/business-nodes/south-africa-network.png
+    networkCtaLabel: Explore Business Nodes
+    networkCtaLink: /business-nodes
+uiCopy:
+  home:
+    businessTravelNav: Business travel
+    businessNodesNav: Find a location
+    featuredNav: Featured stays
+    corporateNav: For companies
+    assistanceNav: Get help
+    propertiesNav: For properties
+    viewAllProperties: View all properties
+  businessNodes:
+    directoryNav: Business nodes
+    accommodationNav: Accommodation
+    assistanceNav: Need assistance?
+    propertiesNav: View all properties
+    propertiesEyebrow: ACOSA PROPERTIES
+    propertiesHeading: Accommodation in the ACOSA network.
+    askLabel: Ask ACOSA
+  properties:
+    searchNav: Search properties
+    networkNav: Growing network
+  forCompanies:
+    whoWeHelpNav: Who we help
+    discoveryNav: Find accommodation
+    teamsNav: Teams & projects
+    contactNav: Get in touch
+    selfServiceLabel: Self-service discovery
+    assistedLabel: Assisted enquiry
+    teamsEyebrow: Teams & project stays
+    requirementsIntro: "To help us understand what you need, please include:"
+  listYourProperty:
+    whoWeWorkWithNav: Who we work with
+    includedNav: What's included
+    standardsNav: Our standards
+    visibilityNav: Visibility
+    pricingNav: Pricing
+    joinNav: How to join
+    worksWithIntro: "ACOSA works with properties that:"
+    whyAcosaLabel: Why ACOSA?
+    whyAcosaLink: /why-acosa#acosa-approved
+    listingSupportEyebrow: LISTING SUPPORT
+    joinHeading: How to join ACOSA
+  contact:
+    routesEyebrow: Choose the right route
+    routesHeading: Which option applies to you?
+    readyHeading: Ready to get in touch?
+    readyBody: Share the relevant details above so we can direct your enquiry appropriately.
+    bookingCta: Email Your Booking Requirements
+    applicationCta: Request Your Property Application
+    whatsappCta: WhatsApp ACOSA
+    linkedinCta: ACOSA on LinkedIn
+    followHeading: Follow ACOSA
 navigation:
   - label: Home
     link: /

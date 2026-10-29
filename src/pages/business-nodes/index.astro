@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import businessNodesHero from "@/assets/images/pages/business-nodes/hero.png";
 import Layout from "@/layouts/Layout.astro";
 import {
   getPublishedProperties,
@@ -16,8 +15,6 @@ import { CtaLink } from "@/components/custom/cta-link";
 import { PropertyGrid } from "@/components/custom/property-card";
 import { BusinessNodeExplorer } from "@/components/custom/business-node-explorer";
 import { SectionNav } from "@/components/custom/section-nav";
-import southAfricaFlagMap from "@/assets/images/pages/south-africa-flag-map.png";
-import projectTeamStay from "@/assets/images/pages/acosa-library/ACOSA_06_Project_Team_Stay.png";
 import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 
 export const prerender = true;
@@ -33,6 +30,7 @@ const [nodes, properties, settings] = await Promise.all([
   getSiteSettings(),
 ]);
 const directoryCopy = settings.data.directoryCopy.businessNodes;
+const uiCopy = settings.data.uiCopy.businessNodes;
 
 const askAcosaHref = resolveCtaLink("whatsapp", {
   email: settings.data.enquiryEmail,
@@ -46,14 +44,14 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
   <Hero
     emphasizeBody
     align="left"
-    eyebrow="FIND ACCOMMODATION BY LOCATION"
+    eyebrow={directoryCopy.heroEyebrow}
     heading={directoryCopy.heroHeading}
     body={directoryCopy.heroBody}
     primaryCta={{
-      label: "Explore Business Nodes",
-      href: "#directory",
+      label: directoryCopy.primaryCtaLabel,
+      href: directoryCopy.primaryCtaLink,
     }}
-    image={businessNodesHero}
+    image={directoryCopy.heroImage}
     imageAlt="A business traveller arriving at curated accommodation"
     imageClassName="object-[78%_20%] sm:object-[74%_20%] lg:object-[70%_20%]"
   />
@@ -61,11 +59,11 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
   <SectionNav
     client:load
     items={[
-      { id: "directory", label: "Business nodes" },
+      { id: "directory", label: uiCopy.directoryNav },
       ...(properties.length > 0
-        ? [{ id: "accommodation", label: "Accommodation" }]
+        ? [{ id: "accommodation", label: uiCopy.accommodationNav }]
         : []),
-      { id: "assistance", label: "Need assistance?" },
+      { id: "assistance", label: uiCopy.assistanceNav },
     ]}
   />
 
@@ -76,21 +74,25 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
     className="isolate overflow-hidden"
     containerClassName="relative z-10"
   >
-    <Image
-      src={southAfricaFlagMap}
-      format="webp"
-      quality={75}
-      loading="lazy"
-      alt=""
-      aria-hidden="true"
-      widths={[768, 1200, 1600]}
-      sizes="100vw"
-      class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[70%_center] opacity-20"
-    />
+    {
+      directoryCopy.heroImage && (
+        <Image
+          src={directoryCopy.heroImage}
+          format="webp"
+          quality={75}
+          loading="lazy"
+          alt=""
+          aria-hidden="true"
+          widths={[768, 1200, 1600]}
+          sizes="100vw"
+          class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[70%_center] opacity-20"
+        />
+      )
+    }
     <div class="flex flex-col gap-8 md:gap-10">
       <SectionHeader
-        eyebrow="EXPLORE ACOSA'S BUSINESS NODES"
-        title="Find accommodation where you need to do business."
+        eyebrow={directoryCopy.directoryEyebrow}
+        title={directoryCopy.directoryHeading}
         underline
       />
       <BusinessNodeExplorer client:load nodes={nodes} />
@@ -103,12 +105,12 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
         <div class="flex flex-col gap-10">
           <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeader
-              eyebrow="ACOSA PROPERTIES"
-              title="Accommodation in the ACOSA network."
+              eyebrow={uiCopy.propertiesEyebrow}
+              title={uiCopy.propertiesHeading}
               underline
             />
             <CtaLink
-              label="View all properties"
+              label={uiCopy.propertiesNav}
               href="/properties"
               variant="link"
             />
@@ -119,22 +121,26 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
     )
   }
 
-  <ClosingImageSection
-    id="assistance"
-    eyebrow="HERE TO HELP"
-    heading="Need assistance finding the right area?"
-    body="Tell us where you need to be and what matters for your stay. ACOSA can help you explore suitable accommodation in the network."
-    image={projectTeamStay}
-    imageAlt="Business colleagues arriving for a project stay"
-    actions={[
-      {
-        label: "Ask ACOSA",
-        href: askAcosaHref,
-        variant: "secondary",
-        icon: "whatsapp",
-        external: askAcosaHref.startsWith("http"),
-        trackingKey: "nodes_ask_acosa_click",
-      },
-    ]}
-  />
+  {
+    directoryCopy.assistanceImage && (
+      <ClosingImageSection
+        id="assistance"
+        eyebrow={directoryCopy.assistanceEyebrow}
+        heading={directoryCopy.assistanceHeading}
+        body={directoryCopy.assistanceBody}
+        image={directoryCopy.assistanceImage}
+        imageAlt="Business colleagues arriving for a project stay"
+        actions={[
+          {
+            label: uiCopy.askLabel,
+            href: askAcosaHref,
+            variant: "secondary",
+            icon: "whatsapp",
+            external: askAcosaHref.startsWith("http"),
+            trackingKey: "nodes_ask_acosa_click",
+          },
+        ]}
+      />
+    )
+  }
 </Layout>

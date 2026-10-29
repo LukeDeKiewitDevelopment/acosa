@@ -39,9 +39,6 @@ import {
 import { IconMark } from "@/components/custom/icon-mark";
 import { ReachRings, SaMap } from "@/components/custom/map-graphics";
 import { SectionNav } from "@/components/custom/section-nav";
-import propertiesLifestyleImage from "@/assets/images/pages/for-companies/shortlist-background.png";
-import propertyPhotoOverlay from "@/assets/images/pages/list-your-property/photo-overlay-2-10.png";
-import acosaLogo from "@/assets/images/brand/logos/light/image.png";
 
 export const prerender = true;
 
@@ -68,6 +65,7 @@ const {
   seo,
 } = page.data;
 const settings = await getSiteSettings();
+const uiCopy = settings.data.uiCopy.listYourProperty;
 const mapNodes = await buildNodeSummaries("gauteng");
 const ctaOptions = {
   email: settings.data.enquiryEmail,
@@ -174,12 +172,12 @@ const ogImageUrl = seo?.ogImage
   <SectionNav
     client:load
     items={[
-      { id: "why-list", label: "Who we work with" },
-      { id: "whats-included", label: "What's included" },
-      { id: "acosa-review", label: "Our standards" },
-      { id: "visibility", label: "Visibility" },
-      { id: "pricing", label: "Pricing" },
-      { id: "apply", label: "How to join" },
+      { id: "why-list", label: uiCopy.whoWeWorkWithNav },
+      { id: "whats-included", label: uiCopy.includedNav },
+      { id: "acosa-review", label: uiCopy.standardsNav },
+      { id: "visibility", label: uiCopy.visibilityNav },
+      { id: "pricing", label: uiCopy.pricingNav },
+      { id: "apply", label: uiCopy.joinNav },
     ]}
   />
 
@@ -201,16 +199,18 @@ const ogImageUrl = seo?.ogImage
               sizes="(min-width: 768px) 58vw, 100vw"
               class="bg-muted aspect-[4/3] w-full rounded-xl object-contain"
             />
-            <Image
-              src={propertiesLifestyleImage}
-              format="webp"
-              quality={75}
-              loading="lazy"
-              alt="A relaxed guest lounge opening onto a terrace with mountain views"
-              widths={[400, 800]}
-              sizes="(min-width: 1024px) 20vw, 40vw"
-              class="ring-background absolute bottom-0 left-0 hidden aspect-4/3 w-[44%] rounded-xl object-cover ring-8 sm:block"
-            />
+            {whoWeWorkWithSection.secondaryImage && (
+              <Image
+                src={whoWeWorkWithSection.secondaryImage}
+                format="webp"
+                quality={75}
+                loading="lazy"
+                alt="A relaxed guest lounge opening onto a terrace with mountain views"
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 20vw, 40vw"
+                class="ring-background absolute bottom-0 left-0 hidden aspect-4/3 w-[44%] rounded-xl object-cover ring-8 sm:block"
+              />
+            )}
           </div>
         )
       }
@@ -223,7 +223,7 @@ const ogImageUrl = seo?.ogImage
         />
         <div class="flex flex-col gap-4">
           <p class="text-foreground text-sm font-semibold">
-            ACOSA works with properties that:
+            {uiCopy.worksWithIntro}
           </p>
           <ul
             class="divide-border border-border flex flex-col divide-y border-y"
@@ -258,8 +258,8 @@ const ogImageUrl = seo?.ogImage
             <p class="type-h3">{whoWeWorkWithSection.highlight}</p>
             <p class="type-small">{whoWeWorkWithSection.note}</p>
             <TextLink
-              label="Why ACOSA?"
-              href="/why-acosa#acosa-approved"
+              label={uiCopy.whyAcosaLabel}
+              href={uiCopy.whyAcosaLink}
               trackingKey="listing_why_acosa_click"
             />
           </div>
@@ -588,16 +588,18 @@ const ogImageUrl = seo?.ogImage
               sizes="(min-width: 768px) 50vw, 100vw"
               class="aspect-4/3 h-full w-full rounded-xl object-cover object-[58%_center] md:aspect-auto"
             />
-            <Image
-              src={propertyPhotoOverlay}
-              format="webp"
-              quality={75}
-              loading="lazy"
-              alt="A welcoming property entrance with an open front door"
-              widths={[400, 800]}
-              sizes="(min-width: 1024px) 20vw, 40vw"
-              class="ring-background absolute right-0 bottom-0 hidden aspect-4/3 w-[40%] rounded-xl object-cover ring-8 sm:block"
-            />
+            {listingUpdatesSection.secondaryImage && (
+              <Image
+                src={listingUpdatesSection.secondaryImage}
+                format="webp"
+                quality={75}
+                loading="lazy"
+                alt="A welcoming property entrance with an open front door"
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 20vw, 40vw"
+                class="ring-background absolute right-0 bottom-0 hidden aspect-4/3 w-[40%] rounded-xl object-cover ring-8 sm:block"
+              />
+            )}
           </div>
         )
       }
@@ -610,7 +612,7 @@ const ogImageUrl = seo?.ogImage
         />
         <div class="relative flex max-w-3xl flex-col gap-4">
           <SectionHeader
-            eyebrow="LISTING SUPPORT"
+            eyebrow={uiCopy.listingSupportEyebrow}
             title={listingUpdatesSection.heading}
             underlineWord="current"
             accent
@@ -665,18 +667,22 @@ const ogImageUrl = seo?.ogImage
       <div class="flex flex-col gap-10">
         <div class="flex flex-col items-start gap-4">
           <p class="eyebrow">{howToJoinSection.eyebrow}</p>
-          <Image
-            src={acosaLogo}
-            format="webp"
-            quality={75}
-            loading="lazy"
-            alt="ACOSA"
-            widths={[160, 240, 320]}
-            sizes="160px"
-            class="h-auto w-40"
-          />
+          {
+            settings.data.logos?.light?.image && (
+              <Image
+                src={settings.data.logos.light.image}
+                format="webp"
+                quality={75}
+                loading="lazy"
+                alt="ACOSA"
+                widths={[160, 240, 320]}
+                sizes="160px"
+                class="h-auto w-40"
+              />
+            )
+          }
           <h2 class="type-h2">
-            How to join <span class="accent-underline">ACOSA</span>
+            {uiCopy.joinHeading}
           </h2>
         </div>
         <ol class="flex flex-col">

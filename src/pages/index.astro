@@ -24,9 +24,6 @@ import { TextLink } from "@/components/custom/text-link";
 import { getCollection } from "astro:content";
 import { tagIcon } from "@/lib/tag-icons";
 import { SectionNav } from "@/components/custom/section-nav";
-import acosaLogo from "@/assets/images/brand/logos/light/image.png";
-import southAfricaFlagMap from "@/assets/images/pages/south-africa-flag-map.png";
-import corporateBookerOverlayImage from "@/assets/images/pages/corporate-booker/photo-overlay-2-5.png";
 
 export const prerender = true;
 
@@ -56,6 +53,7 @@ const [featuredItems, searchItems, nodes, settings] = await Promise.all([
   getNodes(),
   getSiteSettings(),
 ]);
+const uiCopy = settings.data.uiCopy;
 // Business Traveller Essentials named in the section copy, in copy order,
 // with their CMS icons.
 const ESSENTIAL_IDS = [
@@ -177,14 +175,14 @@ const websiteSchema: Record<string, unknown> = {
   <SectionNav
     client:load
     items={[
-      { id: "business-travel", label: "Business travel" },
-      { id: "business-nodes", label: "Find a location" },
+      { id: "business-travel", label: uiCopy.home.businessTravelNav },
+      { id: "business-nodes", label: uiCopy.home.businessNodesNav },
       ...(featuredItems.length > 0
-        ? [{ id: "featured-properties", label: "Featured stays" }]
+        ? [{ id: "featured-properties", label: uiCopy.home.featuredNav }]
         : []),
-      { id: "corporate", label: "For companies" },
-      { id: "assistance", label: "Get help" },
-      { id: "for-accommodation-providers", label: "For properties" },
+      { id: "corporate", label: uiCopy.home.corporateNav },
+      { id: "assistance", label: uiCopy.home.assistanceNav },
+      { id: "for-accommodation-providers", label: uiCopy.home.propertiesNav },
     ]}
   />
 
@@ -260,17 +258,21 @@ const websiteSchema: Record<string, unknown> = {
     className="isolate overflow-hidden"
     containerClassName="relative z-10"
   >
-    <Image
-      src={southAfricaFlagMap}
-      format="webp"
-      quality={75}
-      loading="lazy"
-      alt=""
-      aria-hidden="true"
-      widths={[768, 1200, 1600]}
-      sizes="100vw"
-      class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[85%_center] opacity-[0.12]"
-    />
+    {
+      businessNodesSection.backgroundImage && (
+        <Image
+          src={businessNodesSection.backgroundImage}
+          format="webp"
+          quality={75}
+          loading="lazy"
+          alt=""
+          aria-hidden="true"
+          widths={[768, 1200, 1600]}
+          sizes="100vw"
+          class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[85%_center] opacity-[0.12]"
+        />
+      )
+    }
     <div class="flex flex-col gap-10 md:gap-12">
       <div
         class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
@@ -308,7 +310,7 @@ const websiteSchema: Record<string, unknown> = {
               underline
             />
             <TextLink
-              label="View all properties"
+              label={uiCopy.home.viewAllProperties}
               href="/properties"
               className="shrink-0"
             />
@@ -337,16 +339,18 @@ const websiteSchema: Record<string, unknown> = {
               sizes="(min-width: 768px) 55vw, 100vw"
               class="aspect-4/3 w-full rounded-xl object-cover object-[78%_center] md:aspect-5/4 lg:aspect-4/3"
             />
-            <Image
-              src={corporateBookerOverlayImage}
-              format="webp"
-              quality={75}
-              loading="lazy"
-              alt="Business travellers walking through a sunlit office atrium with luggage"
-              widths={[400, 800]}
-              sizes="(min-width: 1024px) 20vw, 40vw"
-              class="ring-background absolute -bottom-10 -left-3 hidden aspect-4/3 w-[42%] rounded-xl object-cover object-[45%_center] ring-8 sm:block lg:-left-8"
-            />
+            {corporateBookersSection.secondaryImage && (
+              <Image
+                src={corporateBookersSection.secondaryImage}
+                format="webp"
+                quality={75}
+                loading="lazy"
+                alt="Business travellers walking through a sunlit office atrium with luggage"
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 20vw, 40vw"
+                class="ring-background absolute -bottom-10 -left-3 hidden aspect-4/3 w-[42%] rounded-xl object-cover object-[45%_center] ring-8 sm:block lg:-left-8"
+              />
+            )}
           </div>
         )
       }
@@ -384,16 +388,20 @@ const websiteSchema: Record<string, unknown> = {
   {/* Human assistance (centred, as in the approved layout) */}
   <Section id="assistance">
     <div class="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-      <Image
-        src={acosaLogo}
-        format="webp"
-        quality={75}
-        loading="lazy"
-        alt="ACOSA"
-        widths={[160, 240, 320]}
-        sizes="160px"
-        class="h-auto w-40"
-      />
+      {
+        humanAssistanceSection.image && (
+          <Image
+            src={humanAssistanceSection.image}
+            format="webp"
+            quality={75}
+            loading="lazy"
+            alt="ACOSA"
+            widths={[160, 240, 320]}
+            sizes="160px"
+            class="h-auto w-40"
+          />
+        )
+      }
       <SectionHeader
         title={humanAssistanceSection.heading}
         lead={humanAssistanceSection.body}

@@ -37,6 +37,7 @@ export const prerender = true;
 const page = await getEntry("contactPage", "contact");
 if (!page) throw new Error("Contact page content not found");
 const settings = await getSiteSettings();
+const uiCopy = settings.data.uiCopy.contact;
 const { hero, contactRoutes } = page.data;
 const seo = page.data.seo;
 const helpHeadingIndex = hero.heading.toLowerCase().lastIndexOf("help");
@@ -165,8 +166,8 @@ const linkedin = settings.data.socialLinks.find((social) =>
 
       <div id="contact-options" class="flex flex-col gap-6 sm:gap-8">
         <SectionHeader
-          eyebrow="Choose the right route"
-          title="Which option applies to you?"
+          eyebrow={uiCopy.routesEyebrow}
+          title={uiCopy.routesHeading}
           titleClassName="text-white"
           accent
         />
@@ -211,24 +212,21 @@ const linkedin = settings.data.socialLinks.find((social) =>
         </ol>
         <div class="flex flex-col gap-5 border-t border-white/30 pt-6">
           <div class="flex flex-col gap-2">
-            <h2 class="type-h2 text-white">Ready to get in touch?</h2>
-            <p class="type-emphasis text-white">
-              Share the relevant details above so we can direct your enquiry
-              appropriately.
-            </p>
+            <h2 class="type-h2 text-white">{uiCopy.readyHeading}</h2>
+            <p class="type-emphasis text-white">{uiCopy.readyBody}</p>
           </div>
           <div
             class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6"
           >
             <CtaLink
-              label="Email Your Booking Requirements"
+              label={uiCopy.bookingCta}
               href={bookingRequirementsHref}
               variant="primary"
               icon="email"
               trackingKey="contact_booking_requirements_click"
             />
             <CtaLink
-              label="Request Your Property Application"
+              label={uiCopy.applicationCta}
               href={propertyApplicationHref}
               variant="secondary"
               icon="email"
@@ -236,7 +234,7 @@ const linkedin = settings.data.socialLinks.find((social) =>
               className="text-navy w-full border-white bg-white hover:border-white hover:bg-white/90 sm:w-auto"
             />
             <CtaLink
-              label="WhatsApp ACOSA"
+              label={uiCopy.whatsappCta}
               href={bookingWhatsappHref}
               variant="link"
               icon="whatsapp"
@@ -251,9 +249,9 @@ const linkedin = settings.data.socialLinks.find((social) =>
       {
         linkedin && (
           <div class="flex flex-col gap-4 border-t border-white/30 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="type-h3 text-white">Follow ACOSA</h2>
+            <h2 class="type-h3 text-white">{uiCopy.followHeading}</h2>
             <CtaLink
-              label="ACOSA on LinkedIn"
+              label={uiCopy.linkedinCta}
               href={linkedin.url}
               variant="secondary"
               icon="external"

@@ -584,6 +584,11 @@ export default config({
             eyebrow: fields.text({ label: "Eyebrow" }),
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
+            backgroundImage: fields.image({
+              label: "Section background image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             cta: ctaFields("CTA"),
           },
           { label: "Business nodes" },
@@ -606,6 +611,11 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
+            secondaryImage: fields.image({
+              label: "Secondary image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             primaryCta: ctaFields("Primary CTA"),
             secondaryCta: ctaFields("Secondary CTA"),
           },
@@ -615,6 +625,11 @@ export default config({
           {
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Section image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             cta: ctaFields("CTA"),
           },
           { label: "Human assistance" },
@@ -801,6 +816,11 @@ export default config({
           {
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body" }),
+            backgroundImage: fields.image({
+              label: "Section background image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             roles: fields.array(fields.text({ label: "Role" }), {
               label: "Who We Help",
               itemLabel: (props) => props.value || "Role",
@@ -811,6 +831,11 @@ export default config({
         howAcosaHelpsSection: fields.object(
           {
             heading: fields.text({ label: "Heading" }),
+            backgroundImage: fields.image({
+              label: "Section background image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             features: fields.array(
               fields.object({
                 title: fields.text({ label: "Title" }),
@@ -1045,6 +1070,11 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
+            secondaryImage: fields.image({
+              label: "Supporting image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             properties: fields.array(fields.text({ label: "Property" }), {
               label: "Who We Work With",
               itemLabel: (props) => props.value || "Property",
@@ -1174,6 +1204,11 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
+            secondaryImage: fields.image({
+              label: "Supporting image (optional)",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
           },
           { label: "Listing Updates" },
         ),
@@ -1259,6 +1294,41 @@ export default config({
                   label: "Business nodes hero body",
                   multiline: true,
                 }),
+                heroEyebrow: fields.text({
+                  label: "Business nodes hero eyebrow",
+                }),
+                heroImage: fields.image({
+                  label: "Business nodes hero image",
+                  directory: "src/assets/images/pages",
+                  publicPath: "../../assets/images/pages/",
+                }),
+                primaryCtaLabel: fields.text({
+                  label: "Business nodes hero button",
+                }),
+                primaryCtaLink: fields.text({
+                  label: "Business nodes hero button link",
+                }),
+                directoryEyebrow: fields.text({
+                  label: "Business nodes section eyebrow",
+                }),
+                directoryHeading: fields.text({
+                  label: "Business nodes section heading",
+                }),
+                assistanceEyebrow: fields.text({
+                  label: "Assistance section eyebrow",
+                }),
+                assistanceHeading: fields.text({
+                  label: "Assistance section heading",
+                }),
+                assistanceBody: fields.text({
+                  label: "Assistance section body",
+                  multiline: true,
+                }),
+                assistanceImage: fields.image({
+                  label: "Assistance section image",
+                  directory: "src/assets/images/pages",
+                  publicPath: "../../assets/images/pages/",
+                }),
               },
               { label: "Business Nodes Directory" },
             ),
@@ -1277,11 +1347,135 @@ export default config({
                   label: "Properties page introduction",
                   multiline: true,
                 }),
+                heroEyebrow: fields.text({ label: "Properties hero eyebrow" }),
+                regionLabel: fields.text({ label: "Properties region label" }),
+                searchNavLabel: fields.text({
+                  label: "Property search navigation label",
+                }),
+                networkNavLabel: fields.text({
+                  label: "Network navigation label",
+                }),
+                networkEyebrow: fields.text({ label: "Network eyebrow" }),
+                networkHeading: fields.text({ label: "Network heading" }),
+                networkBody: fields.text({
+                  label: "Network body",
+                  multiline: true,
+                }),
+                networkImage: fields.image({
+                  label: "Network section image",
+                  directory: "src/assets/images/pages",
+                  publicPath: "../../assets/images/pages/",
+                }),
+                networkCtaLabel: fields.text({ label: "Network CTA label" }),
+                networkCtaLink: fields.text({ label: "Network CTA link" }),
               },
               { label: "Properties Directory" },
             ),
           },
           { label: "Directory Page Content" },
+        ),
+        uiCopy: fields.object(
+          {
+            home: fields.object(
+              {
+                businessTravelNav: fields.text({
+                  label: "Business travel nav",
+                }),
+                businessNodesNav: fields.text({ label: "Find a location nav" }),
+                featuredNav: fields.text({ label: "Featured stays nav" }),
+                corporateNav: fields.text({ label: "For companies nav" }),
+                assistanceNav: fields.text({ label: "Get help nav" }),
+                propertiesNav: fields.text({ label: "For properties nav" }),
+                viewAllProperties: fields.text({
+                  label: "View all properties label",
+                }),
+              },
+              { label: "Home UI copy" },
+            ),
+            businessNodes: fields.object(
+              {
+                directoryNav: fields.text({ label: "Directory nav" }),
+                accommodationNav: fields.text({ label: "Accommodation nav" }),
+                assistanceNav: fields.text({ label: "Assistance nav" }),
+                propertiesNav: fields.text({
+                  label: "Properties link label",
+                }),
+                propertiesEyebrow: fields.text({
+                  label: "Properties eyebrow",
+                }),
+                propertiesHeading: fields.text({
+                  label: "Properties heading",
+                }),
+                askLabel: fields.text({ label: "Ask ACOSA label" }),
+              },
+              { label: "Business nodes UI copy" },
+            ),
+            properties: fields.object(
+              {
+                searchNav: fields.text({ label: "Search nav" }),
+                networkNav: fields.text({ label: "Network nav" }),
+              },
+              { label: "Properties UI copy" },
+            ),
+            forCompanies: fields.object(
+              {
+                whoWeHelpNav: fields.text({ label: "Who we help nav" }),
+                discoveryNav: fields.text({ label: "Discovery nav" }),
+                teamsNav: fields.text({ label: "Teams nav" }),
+                contactNav: fields.text({ label: "Contact nav" }),
+                selfServiceLabel: fields.text({
+                  label: "Self-service label",
+                }),
+                assistedLabel: fields.text({ label: "Assisted label" }),
+                teamsEyebrow: fields.text({ label: "Teams eyebrow" }),
+                requirementsIntro: fields.text({
+                  label: "Requirements introduction",
+                  multiline: true,
+                }),
+              },
+              { label: "For companies UI copy" },
+            ),
+            listYourProperty: fields.object(
+              {
+                whoWeWorkWithNav: fields.text({
+                  label: "Who we work with nav",
+                }),
+                includedNav: fields.text({ label: "Included nav" }),
+                standardsNav: fields.text({ label: "Standards nav" }),
+                visibilityNav: fields.text({ label: "Visibility nav" }),
+                pricingNav: fields.text({ label: "Pricing nav" }),
+                joinNav: fields.text({ label: "Join nav" }),
+                worksWithIntro: fields.text({
+                  label: "Works with introduction",
+                }),
+                whyAcosaLabel: fields.text({ label: "Why ACOSA label" }),
+                whyAcosaLink: fields.text({ label: "Why ACOSA link" }),
+                listingSupportEyebrow: fields.text({
+                  label: "Listing support eyebrow",
+                }),
+                joinHeading: fields.text({ label: "Join heading" }),
+              },
+              { label: "List your property UI copy" },
+            ),
+            contact: fields.object(
+              {
+                routesEyebrow: fields.text({ label: "Routes eyebrow" }),
+                routesHeading: fields.text({ label: "Routes heading" }),
+                readyHeading: fields.text({ label: "Ready heading" }),
+                readyBody: fields.text({
+                  label: "Ready body",
+                  multiline: true,
+                }),
+                bookingCta: fields.text({ label: "Booking CTA" }),
+                applicationCta: fields.text({ label: "Application CTA" }),
+                whatsappCta: fields.text({ label: "WhatsApp CTA" }),
+                linkedinCta: fields.text({ label: "LinkedIn CTA" }),
+                followHeading: fields.text({ label: "Follow heading" }),
+              },
+              { label: "Contact UI copy" },
+            ),
+          },
+          { label: "Editable interface copy" },
         ),
         navigation: fields.array(
           fields.object(

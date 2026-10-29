@@ -49,6 +49,7 @@ businessNodesSection:
   heading: Stay closer to where business takes you.
   body: >-
     When you're travelling for work, where you stay can be just as important as the room itself. ACOSA organises accommodation around key business nodes, helping you start your search where you actually need to be.
+  backgroundImage: ../../assets/images/pages/south-africa-flag-map.png
   cta:
     label: View All Business Nodes
     link: /business-nodes
@@ -65,6 +66,7 @@ corporateBookersSection:
   body: >-
     ACOSA also helps the people responsible for arranging business accommodation — from executive assistants and HR teams to operations, procurement and project coordinators. Whether you're placing one colleague or arranging accommodation for a team, start with a more relevant shortlist.
   image: ../../assets/images/pages/corporate-booker/image.jpg
+  secondaryImage: ../../assets/images/pages/corporate-booker/photo-overlay-2-5.png
   primaryCta:
     label: Accommodation for Your Team
     link: /for-companies
@@ -76,6 +78,7 @@ humanAssistanceSection:
   heading: Can't find quite what you need?
   body: >-
     Tell us where you need to be, who you're booking for and what matters for the stay. If the right option isn't immediately obvious, ACOSA can help you explore suitable accommodation within our network.
+  image: ../../assets/images/brand/logos/light/image.png
   cta:
     label: WhatsApp ACOSA
     link: whatsapp

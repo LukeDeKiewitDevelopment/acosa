@@ -207,6 +207,7 @@ const homePage = defineCollection({
         eyebrow: z.string().optional().default(""),
         heading: z.string(),
         body: z.string(),
+        backgroundImage: ctx.image().optional().nullable(),
         cta: z.object({ label: z.string(), link: z.string() }),
       }),
       featuredPropertiesSection: z.object({
@@ -219,12 +220,14 @@ const homePage = defineCollection({
         heading: z.string(),
         body: z.string(),
         image: ctx.image().optional().nullable(),
+        secondaryImage: ctx.image().optional().nullable(),
         primaryCta: z.object({ label: z.string(), link: z.string() }),
         secondaryCta: z.object({ label: z.string(), link: z.string() }),
       }),
       humanAssistanceSection: z.object({
         heading: z.string(),
         body: z.string(),
+        image: ctx.image().optional().nullable(),
         cta: z.object({ label: z.string(), link: z.string() }),
       }),
       propertyOwnersSection: z.object({
@@ -303,10 +306,12 @@ const forCompaniesPage = defineCollection({
       whoWeHelpSection: z.object({
         heading: z.string(),
         body: z.string(),
+        backgroundImage: ctx.image().optional().nullable(),
         roles: z.array(z.string()).default([]),
       }),
       howAcosaHelpsSection: z.object({
         heading: z.string(),
+        backgroundImage: ctx.image().optional().nullable(),
         features: z
           .array(z.object({ title: z.string(), body: z.string() }))
           .default([]),
@@ -354,6 +359,7 @@ const listYourPropertyPage = defineCollection({
         heading: z.string(),
         body: z.string(),
         image: ctx.image().optional().nullable(),
+        secondaryImage: ctx.image().optional().nullable(),
         properties: z.array(z.string()).default([]),
         highlight: z.string().optional().default(""),
         note: z.string().optional().default(""),
@@ -406,6 +412,7 @@ const listYourPropertyPage = defineCollection({
         body: z.string(),
         refreshIncludes: z.array(z.string()).default([]),
         image: ctx.image().optional().nullable(),
+        secondaryImage: ctx.image().optional().nullable(),
       }),
       howToJoinSection: z.object({
         eyebrow: z.string().optional().default(""),
@@ -525,6 +532,26 @@ const siteSettings = defineCollection({
               .default(
                 "Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays.",
               ),
+            heroEyebrow: z.string().default("Find accommodation by location"),
+            heroImage: ctx.image().optional().nullable(),
+            primaryCtaLabel: z.string().default("Explore Business Nodes"),
+            primaryCtaLink: z.string().default("#directory"),
+            directoryEyebrow: z
+              .string()
+              .default("Explore ACOSA's business nodes"),
+            directoryHeading: z
+              .string()
+              .default("Find accommodation where you need to do business."),
+            assistanceEyebrow: z.string().default("Here to help"),
+            assistanceHeading: z
+              .string()
+              .default("Need assistance finding the right area?"),
+            assistanceBody: z
+              .string()
+              .default(
+                "Tell us where you need to be and what matters for your stay. ACOSA can help you explore suitable accommodation in the network.",
+              ),
+            assistanceImage: ctx.image().optional().nullable(),
           }),
           properties: z.object({
             title: z.string().default("All Properties | ACOSA"),
@@ -539,9 +566,25 @@ const siteSettings = defineCollection({
               .default(
                 "Browse business accommodation across South Africa's key corporate nodes.",
               ),
+            heroEyebrow: z.string().default("ACOSA Properties"),
+            regionLabel: z.string().default("Gauteng"),
+            searchNavLabel: z.string().default("Search properties"),
+            networkNavLabel: z.string().default("Growing network"),
+            networkEyebrow: z.string().default("Growing network"),
+            networkHeading: z
+              .string()
+              .default("ACOSA is growing deliberately."),
+            networkBody: z
+              .string()
+              .default(
+                "We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands.",
+              ),
+            networkImage: ctx.image().optional().nullable(),
+            networkCtaLabel: z.string().default("Explore Business Nodes"),
+            networkCtaLink: z.string().default("/business-nodes"),
           }),
         })
-        .default({
+        .default(() => ({
           businessNodes: {
             title: "Business Nodes | ACOSA",
             description:
@@ -549,6 +592,16 @@ const siteSettings = defineCollection({
             heroHeading: "Where do you need to do business?",
             heroBody:
               "Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays.",
+            heroEyebrow: "Find accommodation by location",
+            primaryCtaLabel: "Explore Business Nodes",
+            primaryCtaLink: "#directory",
+            directoryEyebrow: "Explore ACOSA's business nodes",
+            directoryHeading:
+              "Find accommodation where you need to do business.",
+            assistanceEyebrow: "Here to help",
+            assistanceHeading: "Need assistance finding the right area?",
+            assistanceBody:
+              "Tell us where you need to be and what matters for your stay. ACOSA can help you explore suitable accommodation in the network.",
           },
           properties: {
             title: "All Properties | ACOSA",
@@ -556,8 +609,88 @@ const siteSettings = defineCollection({
               "Browse vetted business accommodation properties across South Africa.",
             heading: "All Properties",
             lead: "Browse business accommodation across South Africa's key corporate nodes.",
+            heroEyebrow: "ACOSA Properties",
+            regionLabel: "Gauteng",
+            searchNavLabel: "Search properties",
+            networkNavLabel: "Growing network",
+            networkEyebrow: "Growing network",
+            networkHeading: "ACOSA is growing deliberately.",
+            networkBody:
+              "We're building our accommodation network around quality, not simply quantity. New business nodes and carefully selected properties will be added as the ACOSA network expands.",
+            networkCtaLabel: "Explore Business Nodes",
+            networkCtaLink: "/business-nodes",
           },
+        })),
+      uiCopy: z.object({
+        home: z.object({
+          businessTravelNav: z.string().default("Business travel"),
+          businessNodesNav: z.string().default("Find a location"),
+          featuredNav: z.string().default("Featured stays"),
+          corporateNav: z.string().default("For companies"),
+          assistanceNav: z.string().default("Get help"),
+          propertiesNav: z.string().default("For properties"),
+          viewAllProperties: z.string().default("View all properties"),
         }),
+        businessNodes: z.object({
+          directoryNav: z.string().default("Business nodes"),
+          accommodationNav: z.string().default("Accommodation"),
+          assistanceNav: z.string().default("Need assistance?"),
+          propertiesNav: z.string().default("View all properties"),
+          propertiesEyebrow: z.string().default("ACOSA PROPERTIES"),
+          propertiesHeading: z
+            .string()
+            .default("Accommodation in the ACOSA network."),
+          askLabel: z.string().default("Ask ACOSA"),
+        }),
+        properties: z.object({
+          searchNav: z.string().default("Search properties"),
+          networkNav: z.string().default("Growing network"),
+        }),
+        forCompanies: z.object({
+          whoWeHelpNav: z.string().default("Who we help"),
+          discoveryNav: z.string().default("Find accommodation"),
+          teamsNav: z.string().default("Teams & projects"),
+          contactNav: z.string().default("Get in touch"),
+          selfServiceLabel: z.string().default("Self-service discovery"),
+          assistedLabel: z.string().default("Assisted enquiry"),
+          teamsEyebrow: z.string().default("Teams & project stays"),
+          requirementsIntro: z
+            .string()
+            .default("To help us understand what you need, please include:"),
+        }),
+        listYourProperty: z.object({
+          whoWeWorkWithNav: z.string().default("Who we work with"),
+          includedNav: z.string().default("What's included"),
+          standardsNav: z.string().default("Our standards"),
+          visibilityNav: z.string().default("Visibility"),
+          pricingNav: z.string().default("Pricing"),
+          joinNav: z.string().default("How to join"),
+          worksWithIntro: z
+            .string()
+            .default("ACOSA works with properties that:"),
+          whyAcosaLabel: z.string().default("Why ACOSA?"),
+          whyAcosaLink: z.string().default("/why-acosa#acosa-approved"),
+          listingSupportEyebrow: z.string().default("LISTING SUPPORT"),
+          joinHeading: z.string().default("How to join ACOSA"),
+        }),
+        contact: z.object({
+          routesEyebrow: z.string().default("Choose the right route"),
+          routesHeading: z.string().default("Which option applies to you?"),
+          readyHeading: z.string().default("Ready to get in touch?"),
+          readyBody: z
+            .string()
+            .default(
+              "Share the relevant details above so we can direct your enquiry appropriately.",
+            ),
+          bookingCta: z.string().default("Email Your Booking Requirements"),
+          applicationCta: z
+            .string()
+            .default("Request Your Property Application"),
+          whatsappCta: z.string().default("WhatsApp ACOSA"),
+          linkedinCta: z.string().default("ACOSA on LinkedIn"),
+          followHeading: z.string().default("Follow ACOSA"),
+        }),
+      }),
       navigation: z
         .array(
           z.object({
