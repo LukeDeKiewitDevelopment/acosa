@@ -7,14 +7,13 @@ import {
   siYoutube,
 } from "simple-icons";
 import { getCurrentYear } from "@/lib/get-current-year";
-import type { NavItem } from "./header";
 import { StaticAcosaImage, type StaticAcosaImageProps } from "./image";
 import { Mail, MessageCircle } from "lucide-react";
 
 export type FooterProps = {
   logo?: HeaderLogo;
   description?: string;
-  footerItems?: NavItem[];
+  columns?: FooterColumn[];
   socials?: FooterSocial[];
   email?: string;
   emailHref?: string;
@@ -31,6 +30,11 @@ type FooterLink = {
   href: string;
   icon?: "email" | "whatsapp";
   external?: boolean;
+};
+
+export type FooterColumn = {
+  title: string;
+  links: FooterLink[];
 };
 
 export type FooterSocial = {
@@ -76,12 +80,13 @@ function resolveSocialSlug(label: string, url: string): string | null {
 export const Footer = ({
   logo,
   description,
+  columns: configuredColumns,
   socials,
   emailHref,
   whatsappHref,
 }: FooterProps) => {
   const currentYear = getCurrentYear();
-  const columns: { title: string; links: FooterLink[] }[] = [
+  const defaultColumns: FooterColumn[] = [
     {
       title: "Explore",
       links: [
@@ -137,6 +142,9 @@ export const Footer = ({
       ],
     },
   ];
+  const columns = configuredColumns?.length
+    ? configuredColumns
+    : defaultColumns;
 
   return (
     <footer className="surface-navy w-full">

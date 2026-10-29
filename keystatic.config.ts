@@ -9,16 +9,19 @@ const seoFields = fields.object(
   {
     title: fields.text({
       label: "Page title",
-      description: "Overrides the browser tab title. Keep it short and specific.",
+      description:
+        "Overrides the browser tab title. Keep it short and specific.",
     }),
     description: fields.text({
       label: "Meta description",
-      description: "Used in search results and social previews. Aim for 120–160 characters.",
+      description:
+        "Used in search results and social previews. Aim for 120–160 characters.",
       multiline: true,
     }),
     ogImage: fields.image({
       label: "Social share image",
-      description: "Recommended size: 1200×630. This is used for link previews when shared online.",
+      description:
+        "Recommended size: 1200×630. This is used for link previews when shared online.",
       directory: "src/assets/images/og",
       publicPath: "../../assets/images/og/",
     }),
@@ -505,14 +508,20 @@ export default config({
               defaultValue: 50,
               validation: { min: 0, max: 100 },
             }),
-            primaryCta: fields.object({
-              label: fields.text({ label: "Label" }),
-              link: fields.text({ label: "Link" }),
-            }, { label: "Primary CTA" }),
-            secondaryCta: fields.object({
-              label: fields.text({ label: "Label" }),
-              link: fields.text({ label: "Link" }),
-            }, { label: "Secondary CTA" }),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Secondary CTA" },
+            ),
           },
           { label: "Hero" },
         ),
@@ -541,7 +550,8 @@ export default config({
             body: fields.text({ label: "Body", multiline: true }),
             buttonLabel: fields.text({
               label: "Primary button label",
-              description: "Main call-to-action button text for property owners.",
+              description:
+                "Main call-to-action button text for property owners.",
             }),
             secondButtonLabel: fields.text({
               label: "Secondary button label",
@@ -550,52 +560,89 @@ export default config({
           },
           { label: "Property owner CTA" },
         ),
-        businessTravelSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          cta: ctaFields("CTA"),
-        }, { label: "Business travel" }),
-        businessNodesSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          cta: ctaFields("CTA"),
-        }, { label: "Business nodes" }),
-        featuredPropertiesSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-        }, { label: "Featured properties" }),
-        corporateBookersSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          primaryCta: ctaFields("Primary CTA"),
-          secondaryCta: ctaFields("Secondary CTA"),
-        }, { label: "Corporate bookers" }),
-        humanAssistanceSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          cta: ctaFields("CTA"),
-        }, { label: "Human assistance" }),
-        propertyOwnersSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          primaryCta: ctaFields("Primary CTA"),
-          secondaryCta: ctaFields("Secondary CTA"),
-        }, { label: "Property owners" }),
-        closingSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          cta: ctaFields("CTA"),
-        }, { label: "Closing section" }),
+        businessTravelSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            cta: ctaFields("CTA"),
+          },
+          { label: "Business travel" },
+        ),
+        businessNodesSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            cta: ctaFields("CTA"),
+          },
+          { label: "Business nodes" },
+        ),
+        featuredPropertiesSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+          },
+          { label: "Featured properties" },
+        ),
+        corporateBookersSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            primaryCta: ctaFields("Primary CTA"),
+            secondaryCta: ctaFields("Secondary CTA"),
+          },
+          { label: "Corporate bookers" },
+        ),
+        humanAssistanceSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            cta: ctaFields("CTA"),
+          },
+          { label: "Human assistance" },
+        ),
+        propertyOwnersSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            primaryCta: ctaFields("Primary CTA"),
+            secondaryCta: ctaFields("Secondary CTA"),
+          },
+          { label: "Property owners" },
+        ),
+        closingSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            cta: ctaFields("CTA"),
+          },
+          { label: "Closing section" },
+        ),
         seo: seoFields,
       },
     }),
@@ -608,62 +655,90 @@ export default config({
         hero: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading", validation: { isRequired: true } }),
-            body: fields.text({ label: "Body", multiline: true, validation: { isRequired: true } }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Hero Image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            cta: fields.object({
-              label: fields.text({ label: "Label" }),
-              link: fields.text({ label: "Link" }),
-            }, { label: "CTA" }),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
           },
           { label: "Hero" },
         ),
-        experienceSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-        }, { label: "Experience" }),
-        curationSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({
-            label: "Curation Image",
-            directory: "src/assets/images/pages",
-            publicPath: "../../assets/images/pages/",
-          }),
-          factorsInclude: fields.array(fields.text({ label: "Factor" }), {
-            label: "Assessment Factors",
-            itemLabel: (props) => props.value || "Factor",
-          }),
-          highlightStatement: fields.text({ label: "Highlight Statement" }),
-          note: fields.text({ label: "Note", multiline: true }),
-        }, { label: "Curation" }),
-        approvedSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          cta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "CTA" }),
-        }, { label: "ACOSA Approved" }),
-        outcomeSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({
-            label: "Outcome Image",
-            directory: "src/assets/images/pages",
-            publicPath: "../../assets/images/pages/",
-          }),
-          cta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "CTA" }),
-        }, { label: "Outcome" }),
+        experienceSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+          },
+          { label: "Experience" },
+        ),
+        curationSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Curation Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            factorsInclude: fields.array(fields.text({ label: "Factor" }), {
+              label: "Assessment Factors",
+              itemLabel: (props) => props.value || "Factor",
+            }),
+            highlightStatement: fields.text({ label: "Highlight Statement" }),
+            note: fields.text({ label: "Note", multiline: true }),
+          },
+          { label: "Curation" },
+        ),
+        approvedSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
+          },
+          { label: "ACOSA Approved" },
+        ),
+        outcomeSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Outcome Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
+          },
+          { label: "Outcome" },
+        ),
         seo: seoFields,
       },
     }),
@@ -676,76 +751,119 @@ export default config({
         hero: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading", validation: { isRequired: true } }),
-            body: fields.text({ label: "Body", multiline: true, validation: { isRequired: true } }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Hero Image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            primaryCta: fields.object({
-              label: fields.text({ label: "Label" }),
-              link: fields.text({ label: "Link" }),
-            }, { label: "Primary CTA" }),
-            secondaryCta: fields.object({
-              label: fields.text({ label: "Label" }),
-              link: fields.text({ label: "Link" }),
-            }, { label: "Secondary CTA" }),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Secondary CTA" },
+            ),
           },
           { label: "Hero" },
         ),
-        whoWeHelpSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body" }),
-          roles: fields.array(fields.text({ label: "Role" }), {
-            label: "Who We Help",
-            itemLabel: (props) => props.value || "Role",
-          }),
-        }, { label: "Who We Help" }),
-        howAcosaHelpsSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          features: fields.array(fields.object({
-            title: fields.text({ label: "Title" }),
+        whoWeHelpSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body" }),
+            roles: fields.array(fields.text({ label: "Role" }), {
+              label: "Who We Help",
+              itemLabel: (props) => props.value || "Role",
+            }),
+          },
+          { label: "Who We Help" },
+        ),
+        howAcosaHelpsSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            features: fields.array(
+              fields.object({
+                title: fields.text({ label: "Title" }),
+                body: fields.text({ label: "Body", multiline: true }),
+              }),
+              {
+                label: "How ACOSA Helps",
+                itemLabel: (props) => props.fields.title.value || "Feature",
+              },
+            ),
+          },
+          { label: "How ACOSA Helps" },
+        ),
+        teamsAndProjectsSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            image: fields.image({
+              label: "Team Stay Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             body: fields.text({ label: "Body", multiline: true }),
-          }), {
-            label: "How ACOSA Helps",
-            itemLabel: (props) => props.fields.title.value || "Feature",
-          }),
-        }, { label: "How ACOSA Helps" }),
-        teamsAndProjectsSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          image: fields.image({
-            label: "Team Stay Image",
-            directory: "src/assets/images/pages",
-            publicPath: "../../assets/images/pages/",
-          }),
-          body: fields.text({ label: "Body", multiline: true }),
-          requirementsList: fields.array(fields.text({ label: "Requirement" }), {
-            label: "Requirements",
-            itemLabel: (props) => props.value || "Requirement",
-          }),
-          primaryCta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "Primary CTA" }),
-          secondaryCta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "Secondary CTA" }),
-        }, { label: "Teams & Projects" }),
-        finalCta: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          primaryCta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "Primary CTA" }),
-          secondaryCta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }, { label: "Secondary CTA" }),
-        }, { label: "Final CTA" }),
+            requirementsList: fields.array(
+              fields.text({ label: "Requirement" }),
+              {
+                label: "Requirements",
+                itemLabel: (props) => props.value || "Requirement",
+              },
+            ),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Secondary CTA" },
+            ),
+          },
+          { label: "Teams & Projects" },
+        ),
+        finalCta: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Secondary CTA" },
+            ),
+          },
+          { label: "Final CTA" },
+        ),
         seo: seoFields,
       },
     }),
@@ -755,56 +873,102 @@ export default config({
       path: "src/content/pages/contact",
       entryLayout: "form",
       schema: {
-        hero: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Hero Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-        }, { label: "Hero" }),
-        contactRoutes: fields.array(fields.object({
-          number: fields.text({ label: "Number" }),
-          title: fields.text({ label: "Title" }),
-          description: fields.text({ label: "Description" }),
-          cta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-            prefilledMessage: fields.text({ label: "WhatsApp Message" }),
-            subject: fields.text({ label: "Email Subject" }),
-          }, { label: "CTA" }),
-          primaryCta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-            prefilledMessage: fields.text({ label: "WhatsApp Message" }),
-            subject: fields.text({ label: "Email Subject" }),
-          }, { label: "Primary CTA" }),
-          secondaryCta: fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-            prefilledMessage: fields.text({ label: "WhatsApp Message" }),
-          }, { label: "Secondary CTA" }),
-        }), {
-          label: "Contact Routes",
-          itemLabel: (props) => props.fields.title.value || "Route",
-        }),
-        footer: fields.object({
-          business: fields.object({
+        hero: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
             heading: fields.text({ label: "Heading" }),
-            tagline: fields.text({ label: "Tagline" }),
-            description: fields.text({ label: "Description", multiline: true }),
-          }, { label: "Business" }),
-          sections: fields.array(fields.object({
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Hero Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+          },
+          { label: "Hero" },
+        ),
+        contactRoutes: fields.array(
+          fields.object({
+            number: fields.text({ label: "Number" }),
             title: fields.text({ label: "Title" }),
-            links: fields.array(fields.object({
-              label: fields.text({ label: "Label" }),
-              link: fields.text({ label: "Link" }),
-            }), { label: "Links", itemLabel: (props) => props.fields.label.value || "Link" }),
-          }), { label: "Footer sections", itemLabel: (props) => props.fields.title.value || "Section" }),
-          legal: fields.array(fields.object({
-            label: fields.text({ label: "Label" }),
-            link: fields.text({ label: "Link" }),
-          }), { label: "Legal links", itemLabel: (props) => props.fields.label.value || "Legal link" }),
-          copyright: fields.text({ label: "Copyright text" }),
-        }, { label: "Footer" }),
+            description: fields.text({ label: "Description" }),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+                prefilledMessage: fields.text({ label: "WhatsApp Message" }),
+                subject: fields.text({ label: "Email Subject" }),
+              },
+              { label: "CTA" },
+            ),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+                prefilledMessage: fields.text({ label: "WhatsApp Message" }),
+                subject: fields.text({ label: "Email Subject" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+                prefilledMessage: fields.text({ label: "WhatsApp Message" }),
+              },
+              { label: "Secondary CTA" },
+            ),
+          }),
+          {
+            label: "Contact Routes",
+            itemLabel: (props) => props.fields.title.value || "Route",
+          },
+        ),
+        footer: fields.object(
+          {
+            business: fields.object(
+              {
+                heading: fields.text({ label: "Heading" }),
+                tagline: fields.text({ label: "Tagline" }),
+                description: fields.text({
+                  label: "Description",
+                  multiline: true,
+                }),
+              },
+              { label: "Business" },
+            ),
+            sections: fields.array(
+              fields.object({
+                title: fields.text({ label: "Title" }),
+                links: fields.array(
+                  fields.object({
+                    label: fields.text({ label: "Label" }),
+                    link: fields.text({ label: "Link" }),
+                  }),
+                  {
+                    label: "Links",
+                    itemLabel: (props) => props.fields.label.value || "Link",
+                  },
+                ),
+              }),
+              {
+                label: "Footer sections",
+                itemLabel: (props) => props.fields.title.value || "Section",
+              },
+            ),
+            legal: fields.array(
+              fields.object({
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              }),
+              {
+                label: "Legal links",
+                itemLabel: (props) => props.fields.label.value || "Legal link",
+              },
+            ),
+            copyright: fields.text({ label: "Copyright text" }),
+          },
+          { label: "Footer" },
+        ),
         seo: seoFields,
       },
     }),
@@ -827,70 +991,215 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            primaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Primary CTA" }),
-            secondaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Secondary CTA" }),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Secondary CTA" },
+            ),
           },
           { label: "Hero" },
         ),
-        whoWeWorkWithSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          properties: fields.array(fields.text({ label: "Property" }), { label: "Who We Work With", itemLabel: (props) => props.value || "Property" }),
-          highlight: fields.text({ label: "Highlight" }),
-          note: fields.text({ label: "Note" }),
-        }, { label: "Who We Work With" }),
-        valueSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          includes: fields.array(fields.object({ title: fields.text({ label: "Title" }), detail: fields.text({ label: "Detail", multiline: true }) }), { label: "What's Included", itemLabel: (props) => props.fields.title.value || "Feature" }),
-        }, { label: "Listing Value" }),
-        curationSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          image: fields.image({ label: "Curation Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          secondaryImage: fields.image({ label: "Supporting Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          criteria: fields.array(fields.text({ label: "Criterion" }), { label: "Assessment Criteria", itemLabel: (props) => props.value || "Criterion" }),
-          approvedHeading: fields.text({ label: "Approved Heading" }),
-          approvedBody: fields.text({ label: "Approved Explanation", multiline: true }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Curation" }),
-        promotionalVisibilitySection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          note: fields.text({ label: "Note", multiline: true }),
-          image: fields.image({ label: "Section Image (optional)", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Promotional Visibility" }),
-        pricingSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          heading: fields.text({ label: "Heading" }),
-          pricing: fields.array(fields.object({ tier: fields.text({ label: "Tier" }), price: fields.text({ label: "Price" }), period: fields.text({ label: "Period" }), detail: fields.text({ label: "Detail" }) }), { label: "Pricing", itemLabel: (props) => props.fields.tier.value || "Plan" }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "Pricing" }),
-        listingUpdatesSection: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          refreshIncludes: fields.array(fields.text({ label: "Refresh Item" }), { label: "Refresh Includes", itemLabel: (props) => props.value || "Item" }),
-          image: fields.image({ label: "Section Image (optional)", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-        }, { label: "Listing Updates" }),
-        howToJoinSection: fields.object({
-          eyebrow: fields.text({ label: "Eyebrow" }),
-          image: fields.image({ label: "How to Join Image", directory: "src/assets/images/pages", publicPath: "../../assets/images/pages/" }),
-          steps: fields.array(fields.object({ number: fields.text({ label: "Number" }), title: fields.text({ label: "Title" }), detail: fields.text({ label: "Detail", multiline: true }) }), { label: "Steps", itemLabel: (props) => props.fields.title.value || "Step" }),
-          cta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "CTA" }),
-        }, { label: "How to Join" }),
-        finalCta: fields.object({
-          heading: fields.text({ label: "Heading" }),
-          body: fields.text({ label: "Body", multiline: true }),
-          primaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Primary CTA" }),
-          secondaryCta: fields.object({ label: fields.text({ label: "Label" }), link: fields.text({ label: "Link" }) }, { label: "Secondary CTA" }),
-        }, { label: "Final CTA" }),
+        whoWeWorkWithSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            properties: fields.array(fields.text({ label: "Property" }), {
+              label: "Who We Work With",
+              itemLabel: (props) => props.value || "Property",
+            }),
+            highlight: fields.text({ label: "Highlight" }),
+            note: fields.text({ label: "Note" }),
+          },
+          { label: "Who We Work With" },
+        ),
+        valueSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            includes: fields.array(
+              fields.object({
+                title: fields.text({ label: "Title" }),
+                detail: fields.text({ label: "Detail", multiline: true }),
+              }),
+              {
+                label: "What's Included",
+                itemLabel: (props) => props.fields.title.value || "Feature",
+              },
+            ),
+          },
+          { label: "Listing Value" },
+        ),
+        curationSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Curation Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            secondaryImage: fields.image({
+              label: "Supporting Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            criteria: fields.array(fields.text({ label: "Criterion" }), {
+              label: "Assessment Criteria",
+              itemLabel: (props) => props.value || "Criterion",
+            }),
+            approvedHeading: fields.text({ label: "Approved Heading" }),
+            approvedBody: fields.text({
+              label: "Approved Explanation",
+              multiline: true,
+            }),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
+          },
+          { label: "Curation" },
+        ),
+        promotionalVisibilitySection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            note: fields.text({ label: "Note", multiline: true }),
+            image: fields.image({
+              label: "Section Image (optional)",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
+          },
+          { label: "Promotional Visibility" },
+        ),
+        pricingSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            heading: fields.text({ label: "Heading" }),
+            pricing: fields.array(
+              fields.object({
+                tier: fields.text({ label: "Tier" }),
+                price: fields.text({ label: "Price" }),
+                period: fields.text({ label: "Period" }),
+                detail: fields.text({ label: "Detail" }),
+              }),
+              {
+                label: "Pricing",
+                itemLabel: (props) => props.fields.tier.value || "Plan",
+              },
+            ),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
+          },
+          { label: "Pricing" },
+        ),
+        listingUpdatesSection: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            refreshIncludes: fields.array(
+              fields.text({ label: "Refresh Item" }),
+              {
+                label: "Refresh Includes",
+                itemLabel: (props) => props.value || "Item",
+              },
+            ),
+            image: fields.image({
+              label: "Section Image (optional)",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+          },
+          { label: "Listing Updates" },
+        ),
+        howToJoinSection: fields.object(
+          {
+            eyebrow: fields.text({ label: "Eyebrow" }),
+            image: fields.image({
+              label: "How to Join Image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
+            steps: fields.array(
+              fields.object({
+                number: fields.text({ label: "Number" }),
+                title: fields.text({ label: "Title" }),
+                detail: fields.text({ label: "Detail", multiline: true }),
+              }),
+              {
+                label: "Steps",
+                itemLabel: (props) => props.fields.title.value || "Step",
+              },
+            ),
+            cta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "CTA" },
+            ),
+          },
+          { label: "How to Join" },
+        ),
+        finalCta: fields.object(
+          {
+            heading: fields.text({ label: "Heading" }),
+            body: fields.text({ label: "Body", multiline: true }),
+            primaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Primary CTA" },
+            ),
+            secondaryCta: fields.object(
+              {
+                label: fields.text({ label: "Label" }),
+                link: fields.text({ label: "Link" }),
+              },
+              { label: "Secondary CTA" },
+            ),
+          },
+          { label: "Final CTA" },
+        ),
         formIntro: fields.text({
           label: "Application Form Intro",
           description: "Short text shown above the application form.",
@@ -904,6 +1213,122 @@ export default config({
       label: "Site Settings",
       path: "src/content/settings/site",
       schema: {
+        directoryCopy: fields.object(
+          {
+            businessNodes: fields.object(
+              {
+                title: fields.text({
+                  label: "Business nodes page title",
+                  description: "Browser title and default SEO title.",
+                }),
+                description: fields.text({
+                  label: "Business nodes meta description",
+                  multiline: true,
+                }),
+                heroHeading: fields.text({
+                  label: "Business nodes hero heading",
+                }),
+                heroBody: fields.text({
+                  label: "Business nodes hero body",
+                  multiline: true,
+                }),
+              },
+              { label: "Business Nodes Directory" },
+            ),
+            properties: fields.object(
+              {
+                title: fields.text({
+                  label: "Properties page title",
+                  description: "Browser title and default SEO title.",
+                }),
+                description: fields.text({
+                  label: "Properties meta description",
+                  multiline: true,
+                }),
+                heading: fields.text({ label: "Properties page heading" }),
+                lead: fields.text({
+                  label: "Properties page introduction",
+                  multiline: true,
+                }),
+              },
+              { label: "Properties Directory" },
+            ),
+          },
+          { label: "Directory Page Content" },
+        ),
+        navigation: fields.array(
+          fields.object(
+            {
+              label: fields.text({
+                label: "Navigation label",
+                validation: { isRequired: true },
+              }),
+              link: fields.text({
+                label: "Destination",
+                description: "Use a site path such as /properties or /contact.",
+                validation: { isRequired: true },
+              }),
+              subItems: fields.array(
+                fields.object({
+                  label: fields.text({
+                    label: "Dropdown label",
+                    validation: { isRequired: true },
+                  }),
+                  link: fields.text({
+                    label: "Dropdown destination",
+                    validation: { isRequired: true },
+                  }),
+                }),
+                {
+                  label: "Dropdown items",
+                  itemLabel: (props) => props.fields.label.value || "Item",
+                },
+              ),
+            },
+            { label: "Navigation item" },
+          ),
+          {
+            label: "Main navigation",
+            description:
+              "Primary links shown in the desktop and mobile navigation. Keep destinations as site paths.",
+            itemLabel: (props) => props.fields.label.value || "Link",
+          },
+        ),
+        footerColumns: fields.array(
+          fields.object(
+            {
+              title: fields.text({
+                label: "Column title",
+                validation: { isRequired: true },
+              }),
+              links: fields.array(
+                fields.object({
+                  label: fields.text({
+                    label: "Link label",
+                    validation: { isRequired: true },
+                  }),
+                  link: fields.text({
+                    label: "Destination",
+                    description:
+                      "Use a site path, anchor, mailto link, or full external URL.",
+                    validation: { isRequired: true },
+                  }),
+                }),
+                {
+                  label: "Column links",
+                  itemLabel: (props) => props.fields.label.value || "Link",
+                },
+              ),
+            },
+            { label: "Footer column" },
+          ),
+          {
+            label: "Footer link columns",
+            description:
+              "Organise the footer links shown across the site. Keep labels short and destinations valid.",
+            itemLabel: (props) => props.fields.title.value || "Column",
+          },
+        ),
         logos: fields.object(
           {
             light: fields.object(

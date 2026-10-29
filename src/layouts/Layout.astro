@@ -4,7 +4,7 @@ import {
   type HeaderLogo,
   type NavItem,
 } from "@/components/custom/header";
-import { Footer } from "@/components/custom/footer";
+import { Footer, type FooterColumn } from "@/components/custom/footer";
 import { FloatingActions } from "@/components/custom/floating-actions";
 import "@/styles/global.css";
 import { getImage } from "astro:assets";
@@ -86,8 +86,9 @@ export interface Props {
   whatsappMessage?: string;
 }
 
-// Primary navigation shared by the desktop and mobile menus.
-const navItems: NavItem[] = [
+// Fallbacks preserve the current site when older settings content has not yet
+// been migrated to the shared navigation fields.
+const defaultNavItems: NavItem[] = [
   { label: "Home", href: "/" },
   {
     label: "Business Nodes",
@@ -103,9 +104,58 @@ const navItems: NavItem[] = [
   { label: "For Properties", href: "/list-your-property" },
   { label: "Contact", href: "/contact" },
 ];
+const navItems: NavItem[] = settings.data.navigation.length
+  ? settings.data.navigation.map((item) => ({
+      label: item.label,
+      href: item.link,
+      subItems:
+        item.subItems.length > 0
+          ? item.subItems.map((subItem) => ({
+              label: subItem.label,
+              href: subItem.link,
+            }))
+          : item.link === "/business-nodes"
+            ? nodes.map((node) => ({
+                label: node.data.name,
+                href: `/business-nodes/${node.data.province}/${node.id}`,
+              }))
+            : [],
+    }))
+  : defaultNavItems;
+const footerColumns: FooterColumn[] = settings.data.footerColumns.map(
+  (column) => ({
+    title: column.title,
+    links: column.links
+      .map((link) => {
+        const href =
+          link.link === "email"
+            ? emailHref
+            : link.link === "whatsapp"
+              ? whatsappHref
+              : link.link;
+        if (!href) return null;
+        return {
+          label: link.label,
+          href,
+          icon:
+            link.link === "email"
+              ? ("email" as const)
+              : link.link === "whatsapp"
+                ? ("whatsapp" as const)
+                : undefined,
+          external: href.startsWith("http"),
+        };
+      })
+      .filter((link): link is NonNullable<typeof link> => link !== null),
+  }),
+);
 
 const siteBase: string = import.meta.env.SITE || Astro.url.origin;
 const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const gaScript = `window.dataLayer = window.dataLayer || [];
+window.gtag = function() { window.dataLayer.push(arguments); };
+window.gtag("js", new Date());
+window.gtag("config", ${JSON.stringify(gaMeasurementId)}, { send_page_view: false });`;
 const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
 // new URL() leaves an already-absolute ogImage untouched, so pages may pass
 // either a getImage() src or a full URL.
@@ -155,21 +205,16 @@ const organisationSchema: Record<string, unknown> = {
 
     <link rel="canonical" href={canonicalUrl} />
 
-    {gaMeasurementId && (
-      <script
-        is:inline
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-      />
-    )}
-    {gaMeasurementId && (
-      <script is:inline define:vars={{ gaMeasurementId }}>
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function() { window.dataLayer.push(arguments); };
-        window.gtag("js", new Date());
-        window.gtag("config", gaMeasurementId, { send_page_view: false });
-      </script>
-    )}
+    {
+      gaMeasurementId && (
+        <script
+          is:inline
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+        />
+      )
+    }
+    {gaMeasurementId && <script is:inline set:html={gaScript} />}
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -220,7 +265,7 @@ const organisationSchema: Record<string, unknown> = {
         targets.forEach((el) => observer.observe(el));
       });
 
-      window.acosaTrack = function(eventName, payload = {}) {
+      window.acosaTrack = function (eventName, payload = {}) {
         const queryParams = new URLSearchParams(window.location.search);
         const event = {
           event: eventName,
@@ -242,9 +287,10 @@ const organisationSchema: Record<string, unknown> = {
       };
 
       document.addEventListener("click", (event) => {
-        const target = event.target instanceof Element
-          ? event.target.closest("[data-acosa-track]")
-          : null;
+        const target =
+          event.target instanceof Element
+            ? event.target.closest("[data-acosa-track]")
+            : null;
         if (!target) return;
         const payload = {
           property_name: target.getAttribute("data-property-name") || undefined,
@@ -252,14 +298,19 @@ const organisationSchema: Record<string, unknown> = {
           link: target.getAttribute("href") || undefined,
           label: target.getAttribute("data-acosa-track") || undefined,
         };
-        window.acosaTrack(target.getAttribute("data-acosa-track") || "link_click", payload);
+        window.acosaTrack(
+          target.getAttribute("data-acosa-track") || "link_click",
+          payload,
+        );
       });
 
       const propertyDetail = document.querySelector("[data-property-id]");
       if (propertyDetail?.getAttribute("data-property-page") === "true") {
         window.acosaTrack("property_view", {
-          property_id: propertyDetail.getAttribute("data-property-id") || undefined,
-          property_name: propertyDetail.getAttribute("data-property-name") || undefined,
+          property_id:
+            propertyDetail.getAttribute("data-property-id") || undefined,
+          property_name:
+            propertyDetail.getAttribute("data-property-name") || undefined,
         });
       }
 
@@ -294,7 +345,7 @@ const organisationSchema: Record<string, unknown> = {
       <slot />
     </main>
     <Footer
-      footerItems={navItems}
+      columns={footerColumns}
       logo={logo}
       description={settings.data.footerDescription}
       socials={settings.data.socialLinks}

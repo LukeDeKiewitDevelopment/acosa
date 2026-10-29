@@ -39,7 +39,6 @@ export const SectionHeader = ({
   // The final word (with its punctuation) carries the underline accent.
   const trimmedTitle = title.trim();
   const lastSpace = trimmedTitle.lastIndexOf(" ");
-  const titleLead = lastSpace >= 0 ? trimmedTitle.slice(0, lastSpace + 1) : "";
   const titleFinalWord = trimmedTitle.slice(lastSpace + 1);
   const underlineTarget = underlineWord ?? (underline ? titleFinalWord : null);
   const underlineIndex = underlineTarget
@@ -50,7 +49,7 @@ export const SectionHeader = ({
       ? (lead.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0] ?? lead)
       : null;
   const leadSupportingCopy = leadSentence
-    ? lead.slice(leadSentence.length).trim()
+    ? (lead?.slice(leadSentence.length).trim() ?? "")
     : "";
 
   return (

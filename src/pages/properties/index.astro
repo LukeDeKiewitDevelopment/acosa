@@ -6,6 +6,7 @@ import ClosingImageSection from "@/components/custom/closing-image-section.astro
 import {
   getNodes,
   getPublishedProperties,
+  getSiteSettings,
   buildPropertyListingItems,
   buildNodeSummaries,
 } from "@/lib/content";
@@ -20,25 +21,24 @@ export const prerender = true;
    listing is presented as a feature, followed by an honest growing-network
    note. */
 
-const [items, nodes, mapNodes] = await Promise.all([
+const [items, nodes, mapNodes, settings] = await Promise.all([
   getPublishedProperties().then(buildPropertyListingItems),
   getNodes(),
   buildNodeSummaries("gauteng"),
+  getSiteSettings(),
 ]);
 const businessNodes = nodes.map((node) => ({
   id: node.id,
   name: node.data.name,
 }));
+const directoryCopy = settings.data.directoryCopy.properties;
 ---
 
-<Layout
-  title="All Properties | ACOSA"
-  description="Browse vetted business accommodation properties across South Africa."
->
+<Layout title={directoryCopy.title} description={directoryCopy.description}>
   <PropertiesMapHero
     eyebrow="ACOSA PROPERTIES"
-    title="All Properties"
-    lead="Browse business accommodation across South Africa's key corporate nodes."
+    title={directoryCopy.heading}
+    lead={directoryCopy.lead}
     regionLabel="Gauteng"
     nodes={mapNodes}
     propertyCount={items.length}

@@ -11,22 +11,6 @@ export type Property = CollectionEntry<"properties">;
 export type BusinessNode = CollectionEntry<"businessNodes">;
 export type Testimonial = CollectionEntry<"testimonials">;
 
-export const PUBLIC_BUSINESS_NODE_IDS = [
-  "centurion",
-  "pretoria-east",
-  "rosslyn",
-  "sandton",
-  "bryanston",
-  "midrand",
-  "edenvale",
-] as const;
-
-export function isPublicBusinessNode(nodeId: string): boolean {
-  return PUBLIC_BUSINESS_NODE_IDS.includes(
-    nodeId as (typeof PUBLIC_BUSINESS_NODE_IDS)[number],
-  );
-}
-
 export function propertyTypeLabel(slug: string): string {
   return PROPERTY_TYPES[slug as keyof typeof PROPERTY_TYPES] ?? slug;
 }
@@ -37,48 +21,38 @@ export function propertyTypeLabel(slug: string): string {
 
 /** All published properties (drafts excluded). Use this everywhere on the public site. */
 export async function getPublishedProperties(): Promise<Property[]> {
-  return getCollection(
+  const properties = await getCollection(
     "properties",
-    ({ data }) =>
-      data.published &&
-      data.acosaApproved.approved &&
-      isPublicBusinessNode(data.businessNode.id),
+    ({ data }) => data.published && data.acosaApproved.approved,
+  );
+  const eligibleProperties = await Promise.all(
+    properties.map(async (property) => {
+      const businessNode = await getEntry(property.data.businessNode);
+      return businessNode?.data.published ? property : null;
+    }),
+  );
+  return eligibleProperties.filter(
+    (property): property is Property => property !== null,
   );
 }
 
 export async function getFeaturedProperties(): Promise<Property[]> {
-  return getCollection(
-    "properties",
-    ({ data }) =>
-      data.published &&
-      data.acosaApproved.approved &&
-      data.featured &&
-      isPublicBusinessNode(data.businessNode.id),
-  );
+  const properties = await getPublishedProperties();
+  return properties.filter((property) => property.data.featured);
 }
 
 export async function getPropertiesByNode(nodeId: string): Promise<Property[]> {
-  return getCollection(
-    "properties",
-    ({ data }) =>
-      data.published &&
-      data.acosaApproved.approved &&
-      isPublicBusinessNode(data.businessNode.id) &&
-      data.businessNode.id === nodeId,
+  const properties = await getPublishedProperties();
+  return properties.filter(
+    (property) => property.data.businessNode.id === nodeId,
   );
 }
 
 export async function getPropertiesByProvince(
   province: string,
 ): Promise<Property[]> {
-  return getCollection(
-    "properties",
-    ({ data }) =>
-      data.published &&
-      data.acosaApproved.approved &&
-      isPublicBusinessNode(data.businessNode.id) &&
-      data.province === province,
-  );
+  const properties = await getPublishedProperties();
+  return properties.filter((property) => property.data.province === province);
 }
 
 /** Resolve a property's tag references into full entries (name + icon). */
@@ -153,23 +127,13 @@ export async function buildPropertyListingItems(
 // ---------------------------------------------------------------------------
 
 export async function getNodes(): Promise<BusinessNode[]> {
-  return getCollection(
-    "businessNodes",
-    (entry) =>
-      entry.data.published &&
-      PUBLIC_BUSINESS_NODE_IDS.includes(
-        entry.id as (typeof PUBLIC_BUSINESS_NODE_IDS)[number],
-      ),
-  );
+  return getCollection("businessNodes", (entry) => entry.data.published);
 }
 
 export async function getPopularNodes(): Promise<BusinessNode[]> {
   return getCollection(
     "businessNodes",
-    (entry) =>
-      entry.data.published &&
-      entry.data.featured &&
-      isPublicBusinessNode(entry.id),
+    (entry) => entry.data.published && entry.data.featured,
   );
 }
 
@@ -178,10 +142,7 @@ export async function getNodesByProvince(
 ): Promise<BusinessNode[]> {
   return getCollection(
     "businessNodes",
-    (entry) =>
-      entry.data.published &&
-      isPublicBusinessNode(entry.id) &&
-      entry.data.province === province,
+    (entry) => entry.data.published && entry.data.province === province,
   );
 }
 

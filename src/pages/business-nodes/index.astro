@@ -32,6 +32,7 @@ const [nodes, properties, settings] = await Promise.all([
   getPublishedProperties().then(buildPropertyListingItems),
   getSiteSettings(),
 ]);
+const directoryCopy = settings.data.directoryCopy.businessNodes;
 
 const askAcosaHref = resolveCtaLink("whatsapp", {
   email: settings.data.enquiryEmail,
@@ -41,16 +42,13 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
 });
 ---
 
-<Layout
-  title="Business Nodes | ACOSA"
-  description="Find accommodation by location across South Africa's key business nodes."
->
+<Layout title={directoryCopy.title} description={directoryCopy.description}>
   <Hero
     emphasizeBody
     align="left"
     eyebrow="FIND ACCOMMODATION BY LOCATION"
-    heading="Where do you need to do business?"
-    body="Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays."
+    heading={directoryCopy.heroHeading}
+    body={directoryCopy.heroBody}
     primaryCta={{
       label: "Explore Business Nodes",
       href: "#directory",

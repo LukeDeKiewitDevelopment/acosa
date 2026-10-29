@@ -1,3 +1,81 @@
+directoryCopy:
+  businessNodes:
+    title: Business Nodes | ACOSA
+    description: Find accommodation by location across South Africa's key business nodes.
+    heroHeading: Where do you need to do business?
+    heroBody: >-
+      Start with where you need to be. ACOSA brings together carefully selected
+      accommodation around key South African business areas, helping you find
+      options relevant to your destination rather than searching through
+      hundreds of unrelated stays.
+  properties:
+    title: All Properties | ACOSA
+    description: Browse vetted business accommodation properties across South Africa.
+    heading: All Properties
+    lead: Browse business accommodation across South Africa's key corporate nodes.
+navigation:
+  - label: Home
+    link: /
+    subItems: []
+  - label: Business Nodes
+    link: /business-nodes
+    subItems: []
+  - label: Properties
+    link: /properties
+    subItems: []
+  - label: Why ACOSA?
+    link: /why-acosa
+    subItems: []
+  - label: For Companies
+    link: /for-companies
+    subItems: []
+  - label: For Properties
+    link: /list-your-property
+    subItems: []
+  - label: Contact
+    link: /contact
+    subItems: []
+footerColumns:
+  - title: Explore
+    links:
+      - label: Home
+        link: /
+      - label: Business Nodes
+        link: /business-nodes
+      - label: Properties
+        link: /properties
+      - label: Why ACOSA?
+        link: /why-acosa
+  - title: For Companies
+    links:
+      - label: Corporate Accommodation
+        link: /for-companies
+      - label: Find Accommodation
+        link: /business-nodes
+      - label: Contact ACOSA
+        link: /contact
+  - title: For Properties
+    links:
+      - label: Why List with ACOSA?
+        link: /list-your-property#why-list
+      - label: What's Included
+        link: /list-your-property#whats-included
+      - label: Pricing
+        link: /list-your-property#pricing
+      - label: Apply to List
+        link: /list-your-property#apply
+  - title: Legal
+    links:
+      - label: Terms & Conditions
+        link: /terms
+      - label: Privacy Policy
+        link: /privacy
+  - title: Contact
+    links:
+      - label: Email ACOSA
+        link: email
+      - label: WhatsApp ACOSA
+        link: whatsapp
 logos:
   light:
     image: ../../assets/images/brand/logos/light/image.png
@@ -7,9 +85,9 @@ logos:
     alt: ACOSA Logo
 footerDescription: >-
   ACOSA connects business travellers and corporate accommodation bookers with carefully selected independent properties in key South African business nodes.
-defaultWhatsapp: '+27 76 519 0092'
+defaultWhatsapp: "+27 76 519 0092"
 enquiryEmail: info@acosa.co.za
-phone: '+27 76 519 0092'
+phone: "+27 76 519 0092"
 socialLinks:
   - label: LinkedIn
     url: https://www.linkedin.com/company/acosaza/

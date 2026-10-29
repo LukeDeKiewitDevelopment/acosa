@@ -508,6 +508,80 @@ const siteSettings = defineCollection({
   loader: glob({ pattern: "site.yaml", base: "./src/content/settings" }),
   schema: (ctx) =>
     z.object({
+      directoryCopy: z
+        .object({
+          businessNodes: z.object({
+            title: z.string().default("Business Nodes | ACOSA"),
+            description: z
+              .string()
+              .default(
+                "Find accommodation by location across South Africa's key business nodes.",
+              ),
+            heroHeading: z
+              .string()
+              .default("Where do you need to do business?"),
+            heroBody: z
+              .string()
+              .default(
+                "Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays.",
+              ),
+          }),
+          properties: z.object({
+            title: z.string().default("All Properties | ACOSA"),
+            description: z
+              .string()
+              .default(
+                "Browse vetted business accommodation properties across South Africa.",
+              ),
+            heading: z.string().default("All Properties"),
+            lead: z
+              .string()
+              .default(
+                "Browse business accommodation across South Africa's key corporate nodes.",
+              ),
+          }),
+        })
+        .default({
+          businessNodes: {
+            title: "Business Nodes | ACOSA",
+            description:
+              "Find accommodation by location across South Africa's key business nodes.",
+            heroHeading: "Where do you need to do business?",
+            heroBody:
+              "Start with where you need to be. ACOSA brings together carefully selected accommodation around key South African business areas, helping you find options relevant to your destination rather than searching through hundreds of unrelated stays.",
+          },
+          properties: {
+            title: "All Properties | ACOSA",
+            description:
+              "Browse vetted business accommodation properties across South Africa.",
+            heading: "All Properties",
+            lead: "Browse business accommodation across South Africa's key corporate nodes.",
+          },
+        }),
+      navigation: z
+        .array(
+          z.object({
+            label: z.string(),
+            link: z.string(),
+            subItems: z
+              .array(z.object({ label: z.string(), link: z.string() }))
+              .default([]),
+          }),
+        )
+        .default([]),
+      footerColumns: z
+        .array(
+          z.object({
+            title: z.string(),
+            links: z.array(
+              z.object({
+                label: z.string(),
+                link: z.string(),
+              }),
+            ),
+          }),
+        )
+        .default([]),
       footerDescription: z.string().optional().default(""),
       defaultWhatsapp: z.string(),
       enquiryEmail: z.string(),
