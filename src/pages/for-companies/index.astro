@@ -12,8 +12,10 @@ import ClosingImageSection from "@/components/custom/closing-image-section.astro
 import { IconMark } from "@/components/custom/icon-mark";
 import { SectionNav } from "@/components/custom/section-nav";
 import shortlistBackground from "@/assets/images/pages/for-companies/shortlist-background.png";
+import whoWeHelpBackground from "@/assets/images/pages/for-companies/who-we-help-2-13.png";
 import {
   BadgeCheck,
+  BriefcaseBusiness,
   Building2,
   CalendarDays,
   Check,
@@ -123,7 +125,7 @@ const roleIcons: [RegExp, typeof Check][] = [
   [/procurement/i, ClipboardList],
   [/operations/i, Settings2],
   [/project/i, FolderKanban],
-  [/travel/i, Plane],
+  [/travel/i, BriefcaseBusiness],
   [/companies/i, Building2],
 ];
 const requirementIcons: [RegExp, typeof Check][] = [
@@ -172,23 +174,48 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
   />
 
   {/* Who we help */}
-  <Section id="who-we-help">
-    <div class="flex flex-col gap-8">
-      <SectionHeader title={whoWeHelpSection.heading} underline>
-        <p class="text-foreground text-sm font-semibold">
-          {whoWeHelpSection.body}
-        </p>
-      </SectionHeader>
-      <ul class="border-border grid border-t sm:grid-cols-2 sm:gap-x-10">
-        {
-          whoWeHelpSection.roles.map((role) => (
-            <li class="border-border font-heading text-foreground flex items-center gap-3 border-b py-4 text-base font-semibold">
-              <IconMark icon={iconFor(role, roleIcons)} size="sm" />
-              <span>{role}</span>
-            </li>
-          ))
-        }
-      </ul>
+  <Section id="who-we-help" spacing="tight">
+    <div
+      class="relative isolate grid overflow-hidden rounded-xl lg:aspect-[2.75/1]"
+    >
+      <Image
+        src={whoWeHelpBackground}
+        format="webp"
+        quality={78}
+        loading="lazy"
+        alt="Two colleagues reviewing plans together at a laptop"
+        widths={[768, 1200, 1600, 2000]}
+        sizes="(min-width: 1280px) 1280px, 100vw"
+        class="relative order-2 aspect-video w-full object-cover object-[72%_center] lg:absolute lg:inset-0 lg:order-0 lg:aspect-auto lg:h-full"
+      />
+      <div
+        aria-hidden="true"
+        class="from-background via-background/90 absolute inset-y-0 left-0 z-[1] hidden w-[56%] bg-gradient-to-r to-transparent lg:block"
+      >
+      </div>
+      <div
+        class="bg-background relative z-10 order-1 flex flex-col gap-5 px-6 py-7 sm:px-8 lg:h-full lg:w-[48%] lg:justify-center lg:bg-transparent lg:px-10 lg:py-8"
+      >
+        <SectionHeader
+          title={whoWeHelpSection.heading}
+          underline
+          className="gap-3"
+        >
+          <p class="text-foreground text-sm font-semibold">
+            {whoWeHelpSection.body}
+          </p>
+        </SectionHeader>
+        <ul class="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+          {
+            whoWeHelpSection.roles.map((role) => (
+              <li class="font-heading text-foreground flex items-center gap-2 text-sm font-semibold">
+                <IconMark icon={iconFor(role, roleIcons)} size="sm" />
+                <span>{role}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </Section>
 

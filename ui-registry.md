@@ -182,3 +182,26 @@ Last updated: 2026-10-28
   subjects in frame without changing the existing mobile presentation.
 - The lead statements in the experience and curation sections share
   `type-emphasis` (`font-sans`, navy, semibold, 18px/20px).
+
+### Who We Help Banner
+
+File: `src/pages/for-companies/index.astro`
+Last updated: 2026-10-29
+
+| Property         | Class                                   |
+| ---------------- | --------------------------------------- |
+| Background       | `bg-background`                         |
+| Border           | None                                    |
+| Border radius    | `rounded-xl`                            |
+| Text — primary   | `text-foreground`                       |
+| Text — secondary | `text-foreground text-sm font-semibold` |
+| Spacing          | `px-6 py-7 sm:px-8 lg:px-10`            |
+| Hover state      | None                                    |
+| Shadow           | None                                    |
+| Accent usage     | Gold heading underline and role icons   |
+
+**Pattern notes:**
+
+- Keep the heading and role list together on the left of the wide photo banner.
+- On small screens, stack the text panel above the image to preserve legibility.
+- Retain the existing role icons and shared heading treatment.
