@@ -570,6 +570,11 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
+            secondaryImage: fields.image({
+              label: "Secondary image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             cta: ctaFields("CTA"),
           },
           { label: "Business travel" },
@@ -684,6 +689,11 @@ export default config({
             eyebrow: fields.text({ label: "Eyebrow" }),
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Experience image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
           },
           { label: "Experience" },
         ),
@@ -710,6 +720,11 @@ export default config({
           {
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Approved image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             cta: fields.object(
               {
                 label: fields.text({ label: "Label" }),
@@ -847,6 +862,11 @@ export default config({
             eyebrow: fields.text({ label: "Eyebrow" }),
             heading: fields.text({ label: "Heading" }),
             body: fields.text({ label: "Body", multiline: true }),
+            image: fields.image({
+              label: "Closing image",
+              directory: "src/assets/images/pages",
+              publicPath: "../../assets/images/pages/",
+            }),
             primaryCta: fields.object(
               {
                 label: fields.text({ label: "Label" }),
@@ -891,6 +911,13 @@ export default config({
             number: fields.text({ label: "Number" }),
             title: fields.text({ label: "Title" }),
             description: fields.text({ label: "Description" }),
+            details: fields.array(fields.text({ label: "Detail" }), {
+              label: "Details to include",
+              itemLabel: (props) => props.value || "Detail",
+            }),
+            note: fields.text({ label: "Note", multiline: true }),
+            learnMoreLabel: fields.text({ label: "Learn more label" }),
+            learnMoreLink: fields.text({ label: "Learn more link" }),
             cta: fields.object(
               {
                 label: fields.text({ label: "Label" }),

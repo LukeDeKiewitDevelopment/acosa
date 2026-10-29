@@ -280,6 +280,13 @@ Authenticated Keystatic cloud editing, cloud persistence, deployment/webhook pro
 
 **CONDITIONALLY READY** — local content loading, dynamic publication filtering, shared CMS-backed navigation/footer/directory content, type checking, build, tests, formatting, and route regressions pass. A reversible authenticated cloud edit and production publishing check are still required before unconditional handover.
 
+## 16. Responsive imagery refinement
+
+- Shortened the For Properties hero image zoom animation from 18 seconds to 15 seconds while retaining `motion-safe` reduced-motion behaviour.
+- Adjusted the South Africa map overlay beside the value-section image to use a larger mobile width, responsive padding, and smaller mobile ring treatment so it remains legible without overflowing.
+- The shared `Hero`, Astro image fields, and `SaMap` graphic continue to use responsive aspect-ratio containers, `object-cover`/`object-contain`, responsive source widths, and `h-auto w-full` SVG sizing.
+- Verified the `/list-your-property` page at 390px, 768px, and 1440px viewport widths through the local browser runtime. No application diagnostics or production-build regressions were introduced.
+
 ## 12. Remediation checklist
 
 Only add remediation tasks after the initial findings are recorded. Each task must include a root cause, affected files, smallest safe change, acceptance criteria, dependencies, verification result, and remaining risks.

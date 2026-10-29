@@ -24,8 +24,9 @@ export const SaMap = ({
   className?: string;
 }) => (
   <svg
-    viewBox={`-10 -10 ${SA_MAP_WIDTH + 20} ${SA_MAP_HEIGHT + 20}`}
-    className={cn("h-auto w-full", className)}
+    viewBox={`-28 -28 ${SA_MAP_WIDTH + 56} ${SA_MAP_HEIGHT + 56}`}
+    preserveAspectRatio="xMidYMid meet"
+    className={cn("block h-full w-full", className)}
     aria-hidden="true"
     focusable="false"
   >

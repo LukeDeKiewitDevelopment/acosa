@@ -83,12 +83,12 @@ Last updated: 2026-10-28
 File: `src/pages/list-your-property/index.astro`
 Last updated: 2026-10-29
 
-| Property         | Class                                                   |
-| ---------------- | ------------------------------------------------------- |
-| Hero animation   | `motion-safe:animate-[acosa-zoom_15s_ease-out_both]`    |
-| Hero image       | Responsive aspect-ratio frame with `object-cover`      |
-| Map panel        | `w-[56%] sm:w-[48%]`, responsive padding and ring       |
-| Map graphic      | `h-auto w-full` via `SaMap`                             |
+| Property       | Class                                                |
+| -------------- | ---------------------------------------------------- |
+| Hero animation | `motion-safe:animate-[acosa-zoom_15s_ease-out_both]` |
+| Hero image     | Responsive aspect-ratio frame with `object-cover`    |
+| Map panel      | `w-[56%] sm:w-[48%]`, responsive padding and ring    |
+| Map graphic    | `h-auto w-full` via `SaMap`                          |
 
 **Pattern notes:**
 
