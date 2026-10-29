@@ -370,7 +370,7 @@
   @apply text-gold font-sans text-xs leading-none font-semibold tracking-[0.18em] uppercase;
 }
 
-/* Straight brand-gold underline under the final word of a heading. */
+/* Straight brand-gold underline fitted to the highlighted heading word. */
 @utility accent-underline {
   position: relative;
   display: inline-block;
@@ -379,10 +379,10 @@
   &::after {
     content: "";
     position: absolute;
-    right: -3%;
+    right: 0;
     bottom: -0.18em;
-    left: -3%;
-    height: 0.085em;
+    left: 0;
+    height: 3px;
     background-color: var(--brand-gold);
     border-radius: 9999px;
     pointer-events: none;

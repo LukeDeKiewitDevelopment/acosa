@@ -16,8 +16,8 @@ import {
 import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
 import { IconMark } from "@/components/custom/icon-mark";
+import { TextLink } from "@/components/custom/text-link";
 import { BedDouble, Building2, CircleHelp, House } from "lucide-react";
-import { SectionNav } from "@/components/custom/section-nav";
 
 // Each route's icon identifies the enquiry type, matched on its CMS title.
 const routeIcon = (title: string) =>
@@ -39,6 +39,7 @@ if (!page) throw new Error("Contact page content not found");
 const settings = await getSiteSettings();
 const { hero, contactRoutes } = page.data;
 const seo = page.data.seo;
+const helpHeadingIndex = hero.heading.toLowerCase().lastIndexOf("help");
 
 // Cast: seoFields() in content.config.ts types image() as ZodTypeAny, which
 // erases ImageMetadata from the inferred schema. The runtime value is one.
@@ -88,10 +89,23 @@ const routeHref = (
         : "/contact"
       : link;
 
-const heroWhatsappHref = routeHref(
+const bookingWhatsappHref = routeHref(
   "whatsapp",
   undefined,
-  "Hi ACOSA, I'd like to ask a question about accommodation and/or listing opportunities.",
+  "Hi ACOSA, I'm looking for business accommodation and would appreciate assistance.",
+);
+const bookingRequirementsHref = routeHref(
+  "email",
+  BUSINESS_ACCOMMODATION_EMAIL_SUBJECT,
+  undefined,
+  false,
+  true,
+);
+const propertyApplicationHref = routeHref(
+  "email",
+  PROPERTY_APPLICATION_EMAIL_SUBJECT,
+  undefined,
+  true,
 );
 const linkedin = settings.data.socialLinks.find((social) =>
   /linkedin/i.test(`${social.label} ${social.url}`),
@@ -131,40 +145,23 @@ const linkedin = settings.data.socialLinks.find((social) =>
     >
       <header class="flex max-w-3xl flex-col gap-5">
         {hero.eyebrow && <p class="eyebrow-accent">{hero.eyebrow}</p>}
-        <h1 class="type-h1 text-white">{hero.heading}</h1>
-        <p class="type-lead text-white/85">{hero.body}</p>
-        <div
-          class="mt-2 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6"
-        >
-          <CtaLink
-            label="WhatsApp ACOSA"
-            href={heroWhatsappHref}
-            variant="primary"
-            size="lg"
-            icon="whatsapp"
-            external={heroWhatsappHref.startsWith("http")}
-            trackingKey="contact_hero_whatsapp_click"
-            className="w-full sm:w-auto"
-          />
+        <h1 class="type-h1 text-white">
           {
-            configuredEmail && (
-              <CtaLink
-                label="Email ACOSA"
-                href={mailtoLink(configuredEmail, "General ACOSA Enquiry")}
-                variant="link"
-                icon="email"
-                trackingKey="contact_hero_email_click"
-                className="text-white"
-              />
+            helpHeadingIndex >= 0 ? (
+              <>
+                {hero.heading.slice(0, helpHeadingIndex)}
+                <span class="accent-underline">
+                  {hero.heading.slice(helpHeadingIndex, helpHeadingIndex + 4)}
+                </span>
+                {hero.heading.slice(helpHeadingIndex + 4)}
+              </>
+            ) : (
+              hero.heading
             )
           }
-        </div>
+        </h1>
+        <p class="type-lead text-white/85">{hero.body}</p>
       </header>
-
-      <SectionNav
-        client:load
-        items={[{ id: "contact-options", label: "Contact options" }]}
-      />
 
       <div id="contact-options" class="flex flex-col gap-6 sm:gap-8">
         <SectionHeader
@@ -177,14 +174,6 @@ const linkedin = settings.data.socialLinks.find((social) =>
         <ol class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
           {
             contactRoutes.map((route) => {
-              const primary = route.primaryCta || route.cta;
-              const secondary = route.secondaryCta;
-              const icon = (link: string) =>
-                link === "whatsapp"
-                  ? "whatsapp"
-                  : link === "email"
-                    ? "email"
-                    : "arrow";
               return (
                 <li
                   data-reveal
@@ -195,63 +184,67 @@ const linkedin = settings.data.socialLinks.find((social) =>
                     <IconMark icon={routeIcon(route.title)} className="mb-2" />
                     <h2 class="type-h3">{route.title}</h2>
                     <p class="type-body">{route.description}</p>
-                  </div>
-                  <div class="mt-auto flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
-                    {primary && (
-                      <CtaLink
-                        label={primary.label}
-                        href={routeHref(
-                          primary.link,
-                          primary.subject,
-                          primary.prefilledMessage,
-                          primary.applicationRequest,
-                          primary.requirementsRequest,
-                        )}
-                        variant="secondary"
-                        icon={icon(primary.link)}
-                        external={
-                          primary.link === "whatsapp" &&
-                          Boolean(configuredWhatsapp)
-                        }
-                        trackingKey={`contact_route_${route.number}_click`}
-                        className="w-full sm:w-auto"
-                      />
-                    )}
-                    {secondary && (
-                      <CtaLink
-                        label={secondary.label}
-                        href={routeHref(
-                          secondary.link,
-                          undefined,
-                          secondary.prefilledMessage,
-                        )}
-                        variant="link"
-                        icon={icon(secondary.link)}
-                        external={
-                          secondary.link === "whatsapp" &&
-                          Boolean(configuredWhatsapp)
-                        }
-                        trackingKey={`contact_route_${route.number}_secondary_click`}
-                        className="text-sm"
+                    <ul class="mt-2 flex flex-col gap-2">
+                      {route.details.map((detail) => (
+                        <li class="text-foreground/80 flex items-start gap-2 text-sm leading-relaxed">
+                          <span
+                            aria-hidden="true"
+                            class="bg-gold mt-2 size-1.5 shrink-0 rounded-full"
+                          />
+                          <span>{detail}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {route.note && <p class="type-small mt-2">{route.note}</p>}
+                    {route.learnMoreLabel && route.learnMoreLink && (
+                      <TextLink
+                        label={route.learnMoreLabel}
+                        href={route.learnMoreLink}
+                        className="mt-2"
                       />
                     )}
                   </div>
-                  {route.number === "4" && configuredEmail && (
-                    <p class="type-small border-border border-t pt-4">
-                      Direct email:{" "}
-                      <a
-                        href={`mailto:${configuredEmail}`}
-                        class="text-foreground font-medium break-all"
-                      >
-                        {configuredEmail}
-                      </a>
-                    </p>
-                  )}
                 </li>
               );
             })
           }
         </ol>
+        <div class="flex flex-col gap-5 border-t border-white/30 pt-6">
+          <div class="flex flex-col gap-2">
+            <h2 class="type-h3 text-white">Ready to get in touch?</h2>
+            <p class="type-body text-white/85">
+              Share the relevant details above so we can direct your enquiry
+              appropriately.
+            </p>
+          </div>
+          <div
+            class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6"
+          >
+            <CtaLink
+              label="Email Your Booking Requirements"
+              href={bookingRequirementsHref}
+              variant="primary"
+              icon="email"
+              trackingKey="contact_booking_requirements_click"
+            />
+            <CtaLink
+              label="Request Your Property Application"
+              href={propertyApplicationHref}
+              variant="secondary"
+              icon="email"
+              trackingKey="contact_property_application_click"
+            />
+            <CtaLink
+              label="WhatsApp ACOSA"
+              href={bookingWhatsappHref}
+              variant="link"
+              icon="whatsapp"
+              external={bookingWhatsappHref.startsWith("https://wa.me/")}
+              trackingKey="contact_whatsapp_click"
+              className="text-white"
+            />
+          </div>
+        </div>
       </div>
 
       {

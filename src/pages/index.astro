@@ -26,6 +26,7 @@ import { tagIcon } from "@/lib/tag-icons";
 import { SectionNav } from "@/components/custom/section-nav";
 import acosaLogo from "@/assets/images/brand/logos/light/image.png";
 import southAfricaFlagMap from "@/assets/images/pages/south-africa-flag-map.png";
+import corporateBookerOverlayImage from "@/assets/images/pages/corporate-booker/photo-overlay-2-5.png";
 
 export const prerender = true;
 
@@ -325,16 +326,28 @@ const websiteSchema: Record<string, unknown> = {
     >
       {
         corporateBookersSection.image && (
-          <Image
-            src={corporateBookersSection.image}
-            format="webp"
-            quality={75}
-            loading="lazy"
-            alt="A corporate booker reviewing accommodation options for a colleague"
-            widths={[480, 800, 1200, 1376]}
-            sizes="(min-width: 768px) 55vw, 100vw"
-            class="order-last aspect-4/3 w-full rounded-xl object-cover object-[78%_center] md:order-first md:aspect-5/4 lg:aspect-4/3"
-          />
+          <div class="relative order-last w-full md:order-first">
+            <Image
+              src={corporateBookersSection.image}
+              format="webp"
+              quality={75}
+              loading="lazy"
+              alt="A corporate booker reviewing accommodation options for a colleague"
+              widths={[480, 800, 1200, 1376]}
+              sizes="(min-width: 768px) 55vw, 100vw"
+              class="aspect-4/3 w-full rounded-xl object-cover object-[78%_center] md:aspect-5/4 lg:aspect-4/3"
+            />
+            <Image
+              src={corporateBookerOverlayImage}
+              format="webp"
+              quality={75}
+              loading="lazy"
+              alt="Business travellers walking through a sunlit office atrium with luggage"
+              widths={[400, 800]}
+              sizes="(min-width: 1024px) 20vw, 40vw"
+              class="ring-background absolute bottom-0 left-0 hidden aspect-4/3 w-[40%] rounded-xl object-cover ring-8 sm:block"
+            />
+          </div>
         )
       }
       <SectionHeader

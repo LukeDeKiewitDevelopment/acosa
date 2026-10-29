@@ -9,38 +9,40 @@ contactRoutes:
   - number: "1"
     title: I need accommodation.
     description: Looking for a business stay for yourself?
-    cta:
-      label: WhatsApp ACOSA
-      link: whatsapp
-      prefilledMessage: "Hi ACOSA, I'm looking for business accommodation in [AREA]."
+    details:
+      - Preferred location or business node
+      - Check-in and check-out dates
+      - Number of guests
+      - Essential amenities or requirements
 
   - number: "2"
     title: I'm booking for a company or team.
     description: Tell us where, when, and for how many travellers.
-    cta:
-      label: Email Your Requirements
-      link: email
-      requirementsRequest: true
+    details:
+      - Company name and preferred location
+      - Number of travellers and rooms required
+      - Travel dates and length of stay
+      - Budget and any special requirements
 
   - number: "3"
     title: I want to list my property.
     description: Interested in reaching ACOSA's corporate accommodation audience?
-    primaryCta:
-      label: Email a Property Application
-      link: email
-      applicationRequest: true
-    secondaryCta:
-      label: WhatsApp ACOSA
-      link: whatsapp
-      prefilledMessage: "Hi ACOSA, I'm interested in listing my property and would like some more information."
+    details:
+      - Property name and location
+      - Accommodation type and number of rooms
+      - Website or social media link (if available)
+      - Contact name and details
+    note: We'll send you the official application form and explain the next steps.
+    learnMoreLabel: Learn About Listing with ACOSA
+    learnMoreLink: /list-your-property
 
   - number: "4"
     title: Something else?
     description: For general enquiries.
-    cta:
-      label: Email ACOSA
-      link: email
-      subject: "General ACOSA Enquiry"
+    details:
+      - Brief description of your enquiry
+      - Relevant property, location or service (if applicable)
+      - Your name and contact details
 
 footer:
   business:

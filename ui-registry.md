@@ -182,6 +182,56 @@ Last updated: 2026-10-28
   subjects in frame without changing the existing mobile presentation.
 - The lead statements in the experience and curation sections share
   `type-emphasis` (`font-sans`, navy, semibold, 18px/20px).
+- The shared gold heading underline should match the highlighted word's width
+  without extending beyond its edges and use a consistent 3px thickness at all
+  viewport sizes.
+
+### Contact Enquiry Routes
+
+File: `src/pages/contact/index.astro`
+Last updated: 2026-10-29
+
+| Property         | Class or behavior                                   |
+| ---------------- | --------------------------------------------------- |
+| Background       | `bg-card/95` route cards over navy hero             |
+| Border           | `border-border` with foreground hover               |
+| Border radius    | `rounded-xl`                                        |
+| Text — primary   | `text-foreground`                                   |
+| Text — secondary | `text-foreground/80` detail lists                   |
+| Spacing          | `p-5 sm:p-6 md:p-8`; `gap-6`                        |
+| Hover state      | `hover:border-foreground/30 hover:-translate-y-0.5` |
+| Shadow           | `shadow-[0_18px_40px_-28px_rgb(5_10_60/0.4)]`       |
+| Accent usage     | Gold detail bullets and shared route icons          |
+
+**Pattern notes:**
+
+- Keep route titles and descriptions, then show relevant enquiry details as
+  concise bullets.
+- Place booking, property-application, and WhatsApp actions together beneath
+  all route cards; the property route may include a contextual learn-more link.
+
+### Home Corporate Booker Image Pair
+
+File: `src/pages/index.astro`
+Last updated: 2026-10-29
+
+| Property         | Class or behavior                          |
+| ---------------- | ------------------------------------------ |
+| Background       | Primary photo with `ring-background` inset |
+| Border           | None                                       |
+| Border radius    | `rounded-xl`                               |
+| Text — primary   | None                                       |
+| Text — secondary | None                                       |
+| Spacing          | Overlay anchored at lower left             |
+| Hover state      | None                                       |
+| Shadow           | None                                       |
+| Accent usage     | Background-colored ring around inset photo |
+
+**Pattern notes:**
+
+- The corporate-booker section pairs its main image with supplied image 2.5 in
+  a 40%-width, 4:3 inset, matching the site's existing editorial image
+  overlays.
 
 ### Who We Help Banner
 

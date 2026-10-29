@@ -448,6 +448,10 @@ const contactPage = defineCollection({
             number: z.string(),
             title: z.string(),
             description: z.string(),
+            details: z.array(z.string()).default([]),
+            note: z.string().optional(),
+            learnMoreLabel: z.string().optional(),
+            learnMoreLink: z.string().optional(),
             cta: z
               .object({
                 label: z.string(),
