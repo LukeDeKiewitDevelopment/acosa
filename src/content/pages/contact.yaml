@@ -20,7 +20,7 @@ contactRoutes:
     cta:
       label: Email Your Requirements
       link: email
-      subject: "Corporate Accommodation Request"
+      requirementsRequest: true
 
   - number: "3"
     title: I want to list my property.
@@ -28,7 +28,7 @@ contactRoutes:
     primaryCta:
       label: Email a Property Application
       link: email
-      subject: "ACOSA Property Listing Application"
+      applicationRequest: true
     secondaryCta:
       label: WhatsApp ACOSA
       link: whatsapp

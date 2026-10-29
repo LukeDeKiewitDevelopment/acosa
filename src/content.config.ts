@@ -454,6 +454,7 @@ const contactPage = defineCollection({
                 link: z.string(),
                 prefilledMessage: z.string().optional(),
                 subject: z.string().optional(),
+                requirementsRequest: z.boolean().optional(),
               })
               .optional(),
             primaryCta: z
@@ -462,6 +463,8 @@ const contactPage = defineCollection({
                 link: z.string(),
                 prefilledMessage: z.string().optional(),
                 subject: z.string().optional(),
+                applicationRequest: z.boolean().optional(),
+                requirementsRequest: z.boolean().optional(),
               })
               .optional(),
             secondaryCta: z

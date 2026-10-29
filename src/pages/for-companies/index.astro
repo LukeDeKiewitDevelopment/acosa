@@ -6,7 +6,12 @@ import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
 import { SectionHeader } from "@/components/custom/section-header";
 import { Hero } from "@/components/custom/hero";
-import { getSiteSettings, resolveCtaLink } from "@/lib/content";
+import {
+  BUSINESS_ACCOMMODATION_EMAIL_BODY,
+  BUSINESS_ACCOMMODATION_EMAIL_SUBJECT,
+  getSiteSettings,
+  resolveCtaLink,
+} from "@/lib/content";
 import { CtaLink } from "@/components/custom/cta-link";
 import ClosingImageSection from "@/components/custom/closing-image-section.astro";
 import { IconMark } from "@/components/custom/icon-mark";
@@ -64,10 +69,14 @@ const ogImageUrl = seo?.ogImage
 
 const email = settings.data.enquiryEmail;
 const whatsappNumber = settings.data.defaultWhatsapp;
-const heroPrimaryHref = resolveCtaLink(hero.primaryCta.link, {
+const requirementsEmailOptions = {
   email,
-  emailSubject: "Corporate Accommodation Requirements",
+  emailSubject: BUSINESS_ACCOMMODATION_EMAIL_SUBJECT,
+  emailBody: BUSINESS_ACCOMMODATION_EMAIL_BODY,
   whatsappNumber,
+};
+const heroPrimaryHref = resolveCtaLink(hero.primaryCta.link, {
+  ...requirementsEmailOptions,
 });
 const heroSecondaryHref = resolveCtaLink(hero.secondaryCta.link, {
   email,
@@ -76,11 +85,7 @@ const heroSecondaryHref = resolveCtaLink(hero.secondaryCta.link, {
 });
 const teamPrimaryHref = resolveCtaLink(
   teamsAndProjectsSection.primaryCta.link,
-  {
-    email,
-    emailSubject: "Team or Project Accommodation Request",
-    whatsappNumber,
-  },
+  requirementsEmailOptions,
 );
 const teamSecondaryHref = resolveCtaLink(
   teamsAndProjectsSection.secondaryCta.link,
@@ -241,7 +246,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
       sizes="100vw"
       class="absolute inset-0 z-0 h-full w-full object-cover object-[center_55%]"
     />
-    <div aria-hidden="true" class="bg-navy/70 absolute inset-0 z-10"></div>
+    <div aria-hidden="true" class="bg-navy/55 absolute inset-0 z-10"></div>
     <div
       class="container-page relative z-20 flex flex-col gap-12 py-14 md:py-20"
     >
@@ -280,7 +285,7 @@ const requirements = teamsAndProjectsSection.requirementsList.map((item) => {
         </div>
         {
           assisted && (
-            <div class="surface-navy flex flex-col gap-5 rounded-xl p-7 md:p-9">
+            <div class="surface-navy bg-navy/60 flex flex-col gap-5 rounded-xl p-7 md:p-9">
               <IconMark
                 icon={iconFor(assisted.title, featureIcons)}
                 tone="navy"

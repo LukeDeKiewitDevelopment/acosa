@@ -8,6 +8,10 @@ import {
   whatsappLink,
   mailtoLink,
   isConfiguredContactValue,
+  PROPERTY_APPLICATION_EMAIL_BODY,
+  PROPERTY_APPLICATION_EMAIL_SUBJECT,
+  BUSINESS_ACCOMMODATION_EMAIL_BODY,
+  BUSINESS_ACCOMMODATION_EMAIL_SUBJECT,
 } from "@/lib/content";
 import { SectionHeader } from "@/components/custom/section-header";
 import { CtaLink } from "@/components/custom/cta-link";
@@ -55,10 +59,28 @@ const configuredWhatsapp = isConfiguredContactValue(
 )
   ? settings.data.defaultWhatsapp
   : "";
-const routeHref = (link: string, subject?: string, message?: string) =>
+const routeHref = (
+  link: string,
+  subject?: string,
+  message?: string,
+  applicationRequest = false,
+  requirementsRequest = false,
+) =>
   link === "email"
     ? configuredEmail
-      ? mailtoLink(configuredEmail, subject || "General ACOSA Enquiry")
+      ? mailtoLink(
+          configuredEmail,
+          applicationRequest
+            ? PROPERTY_APPLICATION_EMAIL_SUBJECT
+            : requirementsRequest
+              ? BUSINESS_ACCOMMODATION_EMAIL_SUBJECT
+              : subject || "General ACOSA Enquiry",
+          applicationRequest
+            ? PROPERTY_APPLICATION_EMAIL_BODY
+            : requirementsRequest
+              ? BUSINESS_ACCOMMODATION_EMAIL_BODY
+              : undefined,
+        )
       : "/contact"
     : link === "whatsapp"
       ? configuredWhatsapp
@@ -182,6 +204,8 @@ const linkedin = settings.data.socialLinks.find((social) =>
                           primary.link,
                           primary.subject,
                           primary.prefilledMessage,
+                          primary.applicationRequest,
+                          primary.requirementsRequest,
                         )}
                         variant="secondary"
                         icon={icon(primary.link)}

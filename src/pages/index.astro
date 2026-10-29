@@ -10,6 +10,8 @@ import {
   getSiteSettings,
   resolveCtaLink,
   buildPropertyListingItems,
+  BUSINESS_ACCOMMODATION_EMAIL_BODY,
+  BUSINESS_ACCOMMODATION_EMAIL_SUBJECT,
 } from "@/lib/content";
 import { Hero } from "@/components/custom/hero";
 import { Section } from "@/components/custom/section";
@@ -80,7 +82,11 @@ const ctaOptions = {
 };
 const corporateEmail = resolveCtaLink(
   corporateBookersSection.secondaryCta.link,
-  { ...ctaOptions, emailSubject: "Corporate Accommodation Enquiry" },
+  {
+    ...ctaOptions,
+    emailSubject: BUSINESS_ACCOMMODATION_EMAIL_SUBJECT,
+    emailBody: BUSINESS_ACCOMMODATION_EMAIL_BODY,
+  },
 );
 const humanAssistanceLink = resolveCtaLink(humanAssistanceSection.cta.link, {
   ...ctaOptions,

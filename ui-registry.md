@@ -207,3 +207,56 @@ Last updated: 2026-10-29
 - Retain the existing role icons and shared heading treatment.
 - Role items reuse the For Properties visibility-network hover: lift slightly,
   shift the top border to gold, and highlight the icon tile.
+
+### Assisted Enquiry Card
+
+File: `src/pages/for-companies/index.astro`
+Last updated: 2026-10-29
+
+| Property         | Class or behavior                    |
+| ---------------- | ------------------------------------ |
+| Background       | `surface-navy bg-navy/60`            |
+| Border           | None                                 |
+| Border radius    | `rounded-xl`                         |
+| Text — primary   | `text-white` via `surface-navy`      |
+| Text — secondary | Muted foreground from `surface-navy` |
+| Spacing          | `p-7 md:p-9`                         |
+| Hover state      | None                                 |
+| Shadow           | None                                 |
+| Accent usage     | Gold icon and eyebrow                |
+
+**Pattern notes:**
+
+- Keep the panel translucent over the discovery background so the photograph
+  remains visible without sacrificing contrast for the assisted-enquiry copy.
+
+### Property Owner Photo Collage
+
+File: `src/pages/list-your-property/index.astro`
+Last updated: 2026-10-29
+
+| Property         | Class or behavior                          |
+| ---------------- | ------------------------------------------ |
+| Background       | `bg-muted` behind the contained main photo |
+| Border           | None                                       |
+| Border radius    | `rounded-xl`                               |
+| Text — primary   | Image alt text                             |
+| Text — secondary | None                                       |
+| Spacing          | Main photo with lower inset-photo overlaps |
+| Hover state      | None                                       |
+| Shadow           | None                                       |
+| Accent usage     | `ring-background` around inset photos      |
+
+**Pattern notes:**
+
+- Contain the qualification image so its full composition remains visible.
+- Use supplied image 2.14 as its only inset photo, overlapping the lower-left
+  corner with a background-colored ring.
+- Use supplied image 2.10 as a lower-right inset only on the listing-updates
+  property photo.
+- Pair the acceptance note with the ACOSA Approved badge and link to the
+  “Why ACOSA?” page using the shared `TextLink` treatment.
+- Keep “JOIN ACOSA” above the dark ACOSA logo, followed by the “How to join
+  ACOSA” heading and application steps.
+- Add the application-form reassurance immediately beneath both application
+  actions.

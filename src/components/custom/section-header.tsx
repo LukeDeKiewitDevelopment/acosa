@@ -14,6 +14,8 @@ export type SectionHeaderProps = {
   accent?: boolean;
   /** Straight brand-gold underline under the heading's final word. */
   underline?: boolean;
+  /** Underline the first occurrence of this word instead of the final word. */
+  underlineWord?: string;
   className?: string;
   titleClassName?: string;
 };
@@ -30,6 +32,7 @@ export const SectionHeader = ({
   as: Heading = "h2",
   accent = false,
   underline = false,
+  underlineWord,
   className,
   titleClassName,
 }: SectionHeaderProps) => {
@@ -38,6 +41,10 @@ export const SectionHeader = ({
   const lastSpace = trimmedTitle.lastIndexOf(" ");
   const titleLead = lastSpace >= 0 ? trimmedTitle.slice(0, lastSpace + 1) : "";
   const titleFinalWord = trimmedTitle.slice(lastSpace + 1);
+  const underlineTarget = underlineWord ?? (underline ? titleFinalWord : null);
+  const underlineIndex = underlineTarget
+    ? trimmedTitle.lastIndexOf(underlineTarget)
+    : -1;
   const leadSentence =
     emphasizeLead && lead
       ? (lead.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0] ?? lead)
@@ -60,10 +67,11 @@ export const SectionHeader = ({
       <Heading
         className={cn(Heading === "h1" ? "type-h1" : "type-h2", titleClassName)}
       >
-        {underline ? (
+        {underlineIndex >= 0 && underlineTarget ? (
           <>
-            {titleLead}
-            <span className="accent-underline">{titleFinalWord}</span>
+            {trimmedTitle.slice(0, underlineIndex)}
+            <span className="accent-underline">{underlineTarget}</span>
+            {trimmedTitle.slice(underlineIndex + underlineTarget.length)}
           </>
         ) : (
           title

@@ -350,6 +350,7 @@ export function resolveCtaLink(
   options: {
     email: string;
     emailSubject?: string;
+    emailBody?: string;
     whatsappNumber?: string;
     whatsappMessage?: string;
   },
@@ -359,6 +360,7 @@ export function resolveCtaLink(
     return mailtoLink(
       options.email,
       options.emailSubject ?? "General ACOSA Enquiry",
+      options.emailBody,
     );
   }
   if (link === "whatsapp") {
@@ -374,3 +376,95 @@ export const DEFAULT_WHATSAPP_MESSAGE =
 
 export const LISTING_WHATSAPP_MESSAGE =
   "Hi ACOSA, I'm interested in listing my property and would like some more information.";
+
+export const PROPERTY_APPLICATION_EMAIL_SUBJECT =
+  "ACOSA | Property Listing Application Request – [Property Name]";
+
+export const PROPERTY_APPLICATION_EMAIL_BODY = `Hello ACOSA Team,
+
+I am interested in listing my property with ACOSA and would like to request the official property application form.
+
+Property details
+
+Property / Establishment Name:
+
+Property Location (Suburb, City, Province):
+
+Accommodation Type (Guesthouse, Lodge, B&B, etc.):
+
+Number of Guest Rooms / Units:
+
+Website or Social Media Page (if available):
+
+Contact details
+
+Contact Person:
+
+Contact Number:
+
+Email Address:
+
+Please send me the official ACOSA Property Application Form and information about the next steps in the review and onboarding process.
+
+I understand that submitting this enquiry does not constitute an application approval or guarantee acceptance onto the ACOSA platform.
+
+Kind regards,
+
+[Your Name]`;
+
+export const BUSINESS_ACCOMMODATION_EMAIL_SUBJECT =
+  "ACOSA | Business Accommodation Enquiry – [Location / Company Name]";
+
+export const BUSINESS_ACCOMMODATION_EMAIL_BODY = `Hello ACOSA Team,
+
+I'm looking for suitable business accommodation and would appreciate assistance identifying relevant options.
+
+1. Accommodation requirements
+
+Preferred location / business node:
+
+Check-in date:
+
+Check-out date:
+
+Number of travellers:
+
+Number of rooms required:
+
+Approximate budget per room, per night:
+
+2. Business travel requirements
+
+Please indicate any essential requirements:
+
+Reliable Wi-Fi and workspace
+
+Secure parking
+
+Backup power
+
+Breakfast
+
+Extended-stay accommodation
+
+Other:
+
+3. Company and contact details
+
+Company name (if applicable):
+
+Contact person:
+
+Contact number:
+
+Email address:
+
+4. Additional information
+
+Please share any specific requirements, preferred proximity to a workplace or project site, or other information that may help ACOSA identify suitable accommodation.
+
+Thank you. I look forward to hearing from you.
+
+Kind regards,
+
+[Your Name]`;
