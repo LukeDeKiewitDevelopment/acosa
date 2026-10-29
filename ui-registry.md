@@ -209,29 +209,32 @@ Last updated: 2026-10-29
   concise bullets.
 - Place booking, property-application, and WhatsApp actions together beneath
   all route cards; the property route may include a contextual learn-more link.
+- On the navy contact surface, use a `type-h2` for the final contact prompt,
+  `type-emphasis text-white` for its supporting sentence, and white-filled
+  secondary buttons with navy text for high-priority property and social CTAs.
 
 ### Home Corporate Booker Image Pair
 
 File: `src/pages/index.astro`
 Last updated: 2026-10-29
 
-| Property         | Class or behavior                          |
-| ---------------- | ------------------------------------------ |
-| Background       | Primary photo with `ring-background` inset |
-| Border           | None                                       |
-| Border radius    | `rounded-xl`                               |
-| Text — primary   | None                                       |
-| Text — secondary | None                                       |
-| Spacing          | Overlay anchored at lower left             |
-| Hover state      | None                                       |
-| Shadow           | None                                       |
-| Accent usage     | Background-colored ring around inset photo |
+| Property         | Class or behavior                           |
+| ---------------- | ------------------------------------------- |
+| Background       | Primary photo with `ring-background` inset  |
+| Border           | None                                        |
+| Border radius    | `rounded-xl`                                |
+| Text — primary   | None                                        |
+| Text — secondary | None                                        |
+| Spacing          | 42%-width overlay below the lower-left edge |
+| Hover state      | None                                        |
+| Shadow           | None                                        |
+| Accent usage     | Background-colored ring around inset photo  |
 
 **Pattern notes:**
 
 - The corporate-booker section pairs its main image with supplied image 2.5 in
-  a 40%-width, 4:3 inset, matching the site's existing editorial image
-  overlays.
+  a 42%-width, 4:3 inset positioned below the lower-left edge, matching the
+  site's existing editorial image overlays.
 
 ### Who We Help Banner
 

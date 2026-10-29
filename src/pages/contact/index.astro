@@ -211,8 +211,8 @@ const linkedin = settings.data.socialLinks.find((social) =>
         </ol>
         <div class="flex flex-col gap-5 border-t border-white/30 pt-6">
           <div class="flex flex-col gap-2">
-            <h2 class="type-h3 text-white">Ready to get in touch?</h2>
-            <p class="type-body text-white/85">
+            <h2 class="type-h2 text-white">Ready to get in touch?</h2>
+            <p class="type-emphasis text-white">
               Share the relevant details above so we can direct your enquiry
               appropriately.
             </p>
@@ -233,6 +233,7 @@ const linkedin = settings.data.socialLinks.find((social) =>
               variant="secondary"
               icon="email"
               trackingKey="contact_property_application_click"
+              className="text-navy w-full border-white bg-white hover:border-white hover:bg-white/90 sm:w-auto"
             />
             <CtaLink
               label="WhatsApp ACOSA"
@@ -241,7 +242,7 @@ const linkedin = settings.data.socialLinks.find((social) =>
               icon="whatsapp"
               external={bookingWhatsappHref.startsWith("https://wa.me/")}
               trackingKey="contact_whatsapp_click"
-              className="text-white"
+              className="!text-white"
             />
           </div>
         </div>
@@ -258,7 +259,7 @@ const linkedin = settings.data.socialLinks.find((social) =>
               icon="external"
               external
               trackingKey="contact_linkedin_click"
-              className="w-full sm:w-auto"
+              className="w-full border-white bg-white text-navy hover:border-white hover:bg-white/90 sm:w-auto"
             />
           </div>
         )
