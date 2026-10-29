@@ -85,14 +85,14 @@ Last updated: 2026-10-29
 
 | Property       | Class                                                |
 | -------------- | ---------------------------------------------------- |
-| Hero animation | `motion-safe:animate-[acosa-zoom_15s_ease-out_both]` |
+| Hero animation | `motion-safe:animate-[acosa-zoom_10s_ease-out_both]` |
 | Hero image     | Responsive aspect-ratio frame with `object-cover`    |
 | Map panel      | `w-[56%] sm:w-[48%]`, responsive padding and ring    |
 | Map graphic    | `h-auto w-full` via `SaMap`                          |
 
 **Pattern notes:**
 
-- The hero uses a moderate 15-second zoom and respects reduced-motion
+- The hero uses a noticeable 10-second zoom and respects reduced-motion
   preferences through the `motion-safe` utility.
 - The South Africa map remains contained inside a responsive overlay panel,
   using a larger mobile width and smaller mobile padding so it stays legible
