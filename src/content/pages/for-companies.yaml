@@ -26,7 +26,6 @@ whoWeHelpSection:
 
 howAcosaHelpsSection:
   heading: Start with a more relevant shortlist.
-  backgroundImage: ../../assets/images/pages/for-companies/shortlist-background.png
   features:
     - title: Search by Business Location
       body: Start where your traveller actually needs to work.

@@ -16,6 +16,10 @@ hero:
 whoWeWorkWithSection:
   eyebrow: QUALITY INDEPENDENT HOSPITALITY
   heading: Built for properties that take hospitality seriously.
+  body: >-
+    ACOSA is for independent accommodation providers who care about the guest
+    experience, operate professionally, and understand what business
+    travellers need from a stay.
   image: ../../assets/images/pages/whoWeWorkWithSection/image.png
   secondaryImage: ../../assets/images/pages/whoWeWorkWithSection/secondaryImage.png
   properties:
