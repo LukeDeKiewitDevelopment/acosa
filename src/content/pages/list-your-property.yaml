@@ -2,21 +2,22 @@ hero:
   eyebrow: FOR ACCOMMODATION PROVIDERS
   heading: Reach the people you actually want to host.
   body: >-
-    Your property doesn't need more irrelevant visibility. It needs to be discovered by people whose accommodation needs match what you've built. ACOSA connects carefully selected independent accommodation providers with corporate travellers and the people who book for them.
-  image: ../../assets/images/pages/acosa-library/ACOSA_17_Host_Welcome_Updated.png
+    Your property doesn't need more irrelevant visibility. It needs to be
+    discovered by people whose accommodation needs match what you've built.
+    ACOSA connects carefully selected independent accommodation providers with
+    corporate travellers and the people who book for them.
+  image: ../../assets/images/pages/hero/image.png
   primaryCta:
     label: Apply to List Your Property
     link: /list-your-property#apply
   secondaryCta:
     label: See What's Included
     link: /list-your-property#whats-included
-
 whoWeWorkWithSection:
   eyebrow: QUALITY INDEPENDENT HOSPITALITY
   heading: Built for properties that take hospitality seriously.
-  body: ""
-  image: ../../assets/images/pages/acosa-library/ACOSA_07_Property_Owner_Pride.png
-  secondaryImage: ../../assets/images/pages/for-companies/shortlist-background.png
+  image: ../../assets/images/pages/whoWeWorkWithSection/image.png
+  secondaryImage: ../../assets/images/pages/whoWeWorkWithSection/secondaryImage.png
   properties:
     - Care about the quality of the guest experience
     - Operate professionally
@@ -24,46 +25,61 @@ whoWeWorkWithSection:
     - Value respectful corporate guests
     - Are interested in repeat and longer-stay opportunities
     - Want more focused visibility within the corporate accommodation market
-  highlight: "Every property is reviewed before being accepted."
-  note: "Paying for a listing does not guarantee acceptance."
-
+  highlight: Every property is reviewed before being accepted.
+  note: Paying for a listing does not guarantee acceptance.
 valueSection:
   eyebrow: MORE THAN A DIRECTORY LISTING
   heading: Become part of a corporate-travel visibility network.
   body: >-
-    An ACOSA listing helps a more relevant audience discover your property and understand why it may suit their stay.
-  image: ../../assets/images/pages/acosa-library/ACOSA_08_Property_Visibility.png
+    An ACOSA listing helps a more relevant audience discover your property and
+    understand why it may suit their stay.
+  image: ../../assets/images/pages/valueSection/image.png
   includes:
     - title: Professionally Curated Property Profile
-      detail: ACOSA structures and presents your property information for a corporate accommodation audience.
+      detail: >-
+        ACOSA structures and presents your property information for a corporate
+        accommodation audience.
     - title: Property Gallery
       detail: Showcase your accommodation and the practical facilities that matter.
     - title: Business Node Visibility
       detail: Be discovered where corporate travellers need accommodation.
     - title: Search & Filter Visibility
-      detail: Surface according to relevant property information and traveller requirements.
+      detail: >-
+        Surface according to relevant property information and traveller
+        requirements.
     - title: Nearby Convenience Information
       detail: Help visitors understand the practicality of your location.
     - title: Direct Enquiry Opportunities
       detail: Give interested visitors a clear route to contact you.
     - title: No ACOSA Booking Commission
-      detail: Under the current listing model, ACOSA does not take a percentage of bookings generated through the platform.
+      detail: >-
+        Under the current listing model, ACOSA does not take a percentage of
+        bookings generated through the platform.
     - title: Launch Exposure
-      detail: New approved properties receive introductory exposure through ACOSA's owned social channels.
+      detail: >-
+        New approved properties receive introductory exposure through ACOSA's
+        owned social channels.
     - title: Ongoing Promotional Opportunities
-      detail: Approved properties may be included in relevant ACOSA business-node, property and corporate-travel content.
+      detail: >-
+        Approved properties may be included in relevant ACOSA business-node,
+        property and corporate-travel content.
     - title: Listed on ACOSA Asset
       detail: Receive a branded digital asset you can share through your own channels.
     - title: Performance Snapshot on Request
-      detail: Where technically available, ACOSA can provide a snapshot of relevant listing activity, such as property profile views and enquiry actions.
-
+      detail: >-
+        Understand how visitors engage with your ACOSA listing. Request a
+        performance snapshot showing property profile views and available
+        contact-action activity, helping you assess your property's visibility
+        and interest over time.
 curationSection:
   eyebrow: CURATED, NOT CROWDED
   heading: The standard matters because the network matters.
   body: >-
-    Every property is reviewed before being accepted onto ACOSA. We look beyond attractive photographs to consider the practical details that can influence a business stay.
-  image: ../../assets/images/pages/list-your-property/standards-review.png
-  secondaryImage: ../../assets/images/pages/acosa-library/ACOSA_15_Professional_Hospitality_Team.png
+    Every property is reviewed before being accepted onto ACOSA. We look beyond
+    attractive photographs to consider the practical details that can influence
+    a business stay.
+  image: ../../assets/images/pages/curationSection/image.png
+  secondaryImage: ../../assets/images/pages/curationSection/secondaryImage.png
   criteria:
     - Reliable WiFi
     - Workspace
@@ -77,22 +93,29 @@ curationSection:
     - Business Usability
   approvedHeading: What does ACOSA Approved mean?
   approvedBody: >-
-    ACOSA Approved indicates that a property has been reviewed by ACOSA and considered suitable for business travellers according to ACOSA's accommodation criteria. It is a curated suitability designation, not a formal industry certification. Approval remains at ACOSA's discretion.
+    ACOSA Approved indicates that a property has been reviewed by ACOSA and
+    considered suitable for business travellers according to ACOSA's
+    accommodation criteria. It is a curated suitability designation, not a
+    formal industry certification. Approval remains at ACOSA's discretion.
   cta:
     label: Think Your Property Fits?
     link: /list-your-property#apply
-
 promotionalVisibilitySection:
   eyebrow: BEYOND YOUR PROPERTY PAGE
   heading: Give the right audience more ways to discover you.
   body: >-
-    ACOSA's content is designed to build an audience around business accommodation, including business-node information, property discovery, practical corporate-travel content, accommodation features, and relevant partner stories. Approved properties can therefore benefit from opportunities to appear within relevant ACOSA content as the platform grows.
-  image: ../../assets/images/pages/list-your-property/promotional-visibility.png
-  note: "Promotional inclusion does not constitute property-specific social-media management and does not guarantee reach, enquiries or bookings."
+    ACOSA's content is designed to build an audience around business
+    accommodation, including business-node information, property discovery,
+    practical corporate-travel content, accommodation features, and relevant
+    partner stories. Approved properties can therefore benefit from
+    opportunities to appear within relevant ACOSA content as the platform grows.
+  note: >-
+    Promotional inclusion does not constitute property-specific social-media
+    management and does not guarantee reach, enquiries or bookings.
+  image: ../../assets/images/pages/promotionalVisibilitySection/image.png
   cta:
     label: View Pricing
     link: /list-your-property#pricing
-
 pricingSection:
   eyebrow: SIMPLE SUBSCRIPTION. NO BOOKING COMMISSION.
   heading: Invest in more focused corporate visibility.
@@ -112,53 +135,61 @@ pricingSection:
   cta:
     label: Apply to List Your Property
     link: /list-your-property#apply
-
 listingUpdatesSection:
   heading: Keep your property information current.
   body: >-
-    Essential factual corrections can be requested whenever necessary. Your subscription also allows for up to two substantial listing refresh requests during a 12-month period, should you need them. These may include replacing gallery images, updating descriptive copy, and adding significant new facilities. Additional extensive content changes may be quoted separately where required.
-  image: ../../assets/images/pages/list-your-property/listing-updates.png
-  secondaryImage: ../../assets/images/pages/list-your-property/photo-overlay-2-10.png
+    Essential factual corrections can be requested whenever necessary. Your
+    subscription also allows for up to two substantial listing refresh requests
+    during a 12-month period, should you need them. These may include replacing
+    gallery images, updating descriptive copy, and adding significant new
+    facilities. Additional extensive content changes may be quoted separately
+    where required.
   refreshIncludes:
     - replacing gallery images
     - updating descriptive copy
     - adding significant new facilities
-
+  image: ../../assets/images/pages/listingUpdatesSection/image.png
+  secondaryImage: ../../assets/images/pages/listingUpdatesSection/secondaryImage.png
 howToJoinSection:
   eyebrow: JOIN ACOSA
-  image: ../../assets/images/pages/acosa-library/ACOSA_16_Returning_Guest.png
+  image: ../../assets/images/pages/howToJoinSection/image.png
   steps:
-    - number: "01"
+    - number: '01'
       title: Apply
       detail: Email ACOSA with your property details.
-    - number: "02"
+    - number: '02'
       title: Review
       detail: ACOSA reviews the property against its accommodation criteria.
-    - number: "03"
+    - number: '03'
       title: Approval
-      detail: If your property is a suitable fit, we'll confirm acceptance and onboarding.
-    - number: "04"
+      detail: >-
+        If your property is a suitable fit, we'll confirm acceptance and
+        onboarding.
+    - number: '04'
       title: Supply Your Assets
-      detail: Provide your approved property information, current images, testimonials, and contact details.
-    - number: "05"
+      detail: >-
+        Provide your approved property information, current images,
+        testimonials, and contact details.
+    - number: '05'
       title: Go Live
-      detail: ACOSA prepares your property profile and introduces your establishment to the platform.
+      detail: >-
+        ACOSA prepares your property profile and introduces your establishment
+        to the platform.
   cta:
     label: Start Your Application
     link: email
-
 finalCta:
   heading: Built a stay that works for business?
-  body: >-
-    Let's see whether it's right for ACOSA.
+  body: Let's see whether it's right for ACOSA.
   primaryCta:
     label: Apply to List Your Property
     link: email
   secondaryCta:
     label: Ask Us a Question
     link: whatsapp
-
 seo:
   title: List Your Property | ACOSA
   description: >-
-    List your guesthouse, boutique hotel or executive stay on ACOSA and connect with corporate travellers actively seeking business accommodation in your area.
+    List your guesthouse, boutique hotel or executive stay on ACOSA and connect
+    with corporate travellers actively seeking business accommodation in your
+    area.
