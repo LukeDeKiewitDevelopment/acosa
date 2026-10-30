@@ -208,7 +208,7 @@ const ogImageUrl = seo?.ogImage
                 alt="A relaxed guest lounge opening onto a terrace with mountain views"
                 widths={[400, 800]}
                 sizes="(min-width: 1024px) 20vw, 40vw"
-                class="ring-background absolute bottom-0 left-0 hidden aspect-4/3 w-[44%] rounded-xl object-cover ring-8 sm:block"
+                class="ring-background absolute bottom-0 left-0 block aspect-4/3 w-[44%] rounded-xl object-cover ring-8"
               />
             )}
           </div>
@@ -338,7 +338,7 @@ const ogImageUrl = seo?.ogImage
   {/* 04 — Trust: curation justifies trust. Navy feature. */}
   <Section id="acosa-review" tone="navy">
     <div class="grid items-start gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
-      <div class="relative">
+      <div class="relative pb-10 sm:pb-0">
         {
           curationSection.image && (
             <Image
@@ -363,7 +363,7 @@ const ogImageUrl = seo?.ogImage
               alt="A professional hospitality team preparing a property"
               widths={[400, 800]}
               sizes="(min-width: 1024px) 20vw, 40vw"
-              class="ring-navy absolute -right-3 -bottom-10 hidden aspect-4/3 w-[42%] rounded-xl object-cover object-[45%_center] ring-8 sm:block lg:-right-8"
+              class="ring-navy absolute -right-3 -bottom-10 block aspect-4/3 w-[42%] rounded-xl object-cover object-[45%_center] ring-8 lg:-right-8"
             />
           )
         }
@@ -597,7 +597,7 @@ const ogImageUrl = seo?.ogImage
                 alt="A welcoming property entrance with an open front door"
                 widths={[400, 800]}
                 sizes="(min-width: 1024px) 20vw, 40vw"
-                class="ring-background absolute right-0 bottom-0 hidden aspect-4/3 w-[40%] rounded-xl object-cover ring-8 sm:block"
+                class="ring-background absolute right-0 bottom-0 block aspect-4/3 w-[40%] rounded-xl object-cover ring-8"
               />
             )}
           </div>
