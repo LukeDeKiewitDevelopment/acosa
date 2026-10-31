@@ -67,6 +67,15 @@ const {
 const settings = await getSiteSettings();
 const uiCopy = settings.data.uiCopy.listYourProperty;
 const mapNodes = await buildNodeSummaries("gauteng");
+const mappedValueNodes = mapNodes.filter(
+  (node) => node.longitude !== undefined && node.latitude !== undefined,
+);
+const valueMapPins = mappedValueNodes.flatMap((node) => [
+  { longitude: node.longitude!, latitude: node.latitude! },
+  { longitude: node.longitude! + 0.12, latitude: node.latitude! + 0.08 },
+  { longitude: node.longitude! - 0.12, latitude: node.latitude! - 0.08 },
+  { longitude: node.longitude! + 0.08, latitude: node.latitude! - 0.1 },
+]);
 const ctaOptions = {
   email: settings.data.enquiryEmail,
   whatsappNumber: settings.data.defaultWhatsapp,
@@ -197,7 +206,7 @@ const ogImageUrl = seo?.ogImage
               alt="An independent accommodation owner preparing her guesthouse"
               widths={[480, 800, 1200, 1408]}
               sizes="(min-width: 768px) 58vw, 100vw"
-              class="bg-muted aspect-[4/3] w-full rounded-xl object-contain"
+              class="bg-muted aspect-[4/3] w-full rounded-xl object-cover"
             />
             {whoWeWorkWithSection.secondaryImage && (
               <Image
@@ -294,21 +303,7 @@ const ogImageUrl = seo?.ogImage
               class="aspect-[4/3] w-full rounded-xl object-cover object-[55%_center] lg:aspect-video"
             />
             <div class="ring-background bg-navy relative mx-auto mt-4 aspect-[4/3] w-full overflow-hidden rounded-xl p-3 ring-4 sm:p-4 sm:ring-8 md:absolute md:right-0 md:bottom-0 md:mt-0 md:w-[56%] lg:p-6">
-              <SaMap
-                pins={mapNodes
-                  .filter(
-                    (node) =>
-                      node.longitude !== undefined &&
-                      node.latitude !== undefined,
-                  )
-                  .map((node, index) => ({
-                    longitude:
-                      node.longitude! + ((index % 3) - 1) * 0.12,
-                    latitude:
-                      node.latitude! + (Math.floor(index / 3) - 1) * 0.08,
-                  }))}
-                className="text-ivory"
-              />
+              <SaMap pins={valueMapPins} className="text-ivory" />
             </div>
           </div>
         )
