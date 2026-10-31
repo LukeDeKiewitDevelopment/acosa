@@ -20,6 +20,7 @@ type Props = {
   body: string;
   image: ImageMetadata;
   imagePosition?: "center" | "top";
+  mobileImageFit?: "cover" | "contain";
   desktopAspectRatio?: "video";
   imageAlt: string;
   actions: Action[];
@@ -33,6 +34,7 @@ const {
   body,
   image,
   imagePosition = "center",
+  mobileImageFit = "cover",
   desktopAspectRatio = "video",
   imageAlt,
   actions,
@@ -58,7 +60,8 @@ const headingFinalWord = heading.trim().slice(lastSpace + 1);
     widths={[480, 800, 1200, 1408, 1920]}
     sizes="100vw"
     class:list={[
-      "absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]",
+      "absolute inset-0 z-0 h-full w-full object-[72%_center] md:object-cover",
+      mobileImageFit === "contain" ? "object-contain" : "object-cover",
       imagePosition === "top" && "md:object-[72%_top]",
     ]}
   />
