@@ -21,7 +21,6 @@ type Props = {
   image: ImageMetadata;
   imagePosition?: "center" | "top";
   desktopAspectRatio?: "video";
-  mobileLayout?: "overlay" | "stacked";
   imageAlt: string;
   actions: Action[];
 };
@@ -35,7 +34,6 @@ const {
   image,
   imagePosition = "center",
   desktopAspectRatio = "video",
-  mobileLayout = "overlay",
   imageAlt,
   actions,
 } = Astro.props;
@@ -48,7 +46,6 @@ const headingFinalWord = heading.trim().slice(lastSpace + 1);
   id={id}
   class:list={[
     "surface-navy relative isolate overflow-hidden",
-    mobileLayout === "stacked" && "flex flex-col md:block",
     desktopAspectRatio === "video" && "md:aspect-video",
   ]}
 >
@@ -61,25 +58,18 @@ const headingFinalWord = heading.trim().slice(lastSpace + 1);
     widths={[480, 800, 1200, 1408, 1920]}
     sizes="100vw"
     class:list={[
-      mobileLayout === "stacked"
-        ? "relative z-0 h-56 w-full object-cover object-[72%_center] md:absolute md:inset-0 md:h-full"
-        : "absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]",
+      "absolute inset-0 z-0 h-full w-full object-cover object-[72%_center]",
       imagePosition === "top" && "md:object-[72%_top]",
     ]}
   />
   <div
     aria-hidden="true"
-    class:list={[
-      "from-navy/90 via-navy/60 to-navy/10 absolute inset-0 z-10 bg-linear-to-t md:bg-linear-to-r md:to-transparent",
-      mobileLayout === "stacked" && "hidden md:block",
-    ]}
+    class="from-navy/90 via-navy/60 to-navy/10 absolute inset-0 z-10 bg-linear-to-t md:bg-linear-to-r md:to-transparent"
   >
   </div>
   <div
     class:list={[
-      mobileLayout === "stacked"
-        ? "container-page relative z-20 flex flex-1 items-start py-10 md:min-h-136 md:items-center md:py-20"
-        : "container-page relative z-20 flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20",
+      "container-page relative z-20 flex min-h-120 items-end py-14 md:min-h-136 md:items-center md:py-20",
       desktopAspectRatio === "video" && "md:absolute md:inset-0 md:min-h-0",
     ]}
   >
