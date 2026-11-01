@@ -78,25 +78,34 @@ Last updated: 2026-10-28
 - Use responsive WebP sources at quality 75 and lazy-load noninitial gallery
   photos.
 
-### For Properties Responsive Imagery
+### Shared Properties Node Map
 
-File: `src/pages/list-your-property/index.astro`
-Last updated: 2026-10-29
+File: `src/components/custom/properties-node-map.tsx`
+Last updated: 2026-11-01
 
-| Property       | Class                                                |
-| -------------- | ---------------------------------------------------- |
-| Hero animation | `motion-safe:animate-[acosa-zoom_10s_ease-out_both]` |
-| Hero image     | Responsive aspect-ratio frame with `object-cover`    |
-| Map panel      | `w-[56%] sm:w-[48%]`, responsive padding and ring    |
-| Map graphic    | `h-auto w-full` via `SaMap`                          |
+| Property         | Class                                       |
+| ---------------- | ------------------------------------------- |
+| Background       | `bg-navy` map with `bg-card` node callout   |
+| Border           | `border-border` and responsive `ring-4`     |
+| Border radius    | `rounded-xl` callout; `rounded-lg` compact  |
+| Text — primary   | `text-foreground`, `text-ivory`             |
+| Text — secondary | `text-muted-foreground`                     |
+| Spacing          | `p-5` callout, compact responsive padding   |
+| Hover state      | `hover:text-gold` on node links             |
+| Shadow           | `shadow-[0_24px_50px_-28px_rgb(0_0_0/0.6)]` |
+| Accent usage     | `bg-gold` region marker and pulse           |
 
 **Pattern notes:**
 
-- The hero uses a noticeable 10-second zoom and respects reduced-motion
-  preferences through the `motion-safe` utility.
-- The South Africa map remains contained inside a responsive overlay panel,
-  using a larger mobile width and smaller mobile padding so it stays legible
-  without overflowing the supporting image.
+- Share the South Africa map, highlighted Gauteng region and node links across
+  the properties and list-your-property pages.
+- The hero presents its live-node callout inline; the compact image overlay
+  uses a smaller responsive footprint and a disclosure to keep the node list
+  usable on mobile without obscuring the property photo.
+- Keep the compact map at `w-[52%]` on mobile and `sm:w-[48%]` from small
+  screens upward so the supporting property image remains visible.
+- Keep the main listing photo responsive with `object-cover`; the page hero
+  may use its existing `motion-safe` zoom animation.
 
 ### Shared Responsive Images
 
