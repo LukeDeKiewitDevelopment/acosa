@@ -70,11 +70,21 @@ const mapNodes = await buildNodeSummaries("gauteng");
 const mappedValueNodes = mapNodes.filter(
   (node) => node.longitude !== undefined && node.latitude !== undefined,
 );
+const valueMapPinOffsets: [number, number][] = [
+  [0, 0],
+  [0.12, 0.08],
+  [-0.12, -0.08],
+  [0.08, -0.1],
+  [-0.2, 0.16],
+  [0.18, 0.2],
+  [-0.18, -0.2],
+  [0.22, -0.14],
+];
 const valueMapPins = mappedValueNodes.flatMap((node) => [
-  { longitude: node.longitude!, latitude: node.latitude! },
-  { longitude: node.longitude! + 0.12, latitude: node.latitude! + 0.08 },
-  { longitude: node.longitude! - 0.12, latitude: node.latitude! - 0.08 },
-  { longitude: node.longitude! + 0.08, latitude: node.latitude! - 0.1 },
+  ...valueMapPinOffsets.map(([longitudeOffset, latitudeOffset]) => ({
+    longitude: node.longitude! + longitudeOffset,
+    latitude: node.latitude! + latitudeOffset,
+  })),
 ]);
 const ctaOptions = {
   email: settings.data.enquiryEmail,
