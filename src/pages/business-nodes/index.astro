@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import southAfricaFlagMap from "@/assets/images/pages/south-africa-flag-map.png";
 import Layout from "@/layouts/Layout.astro";
 import {
   getPublishedProperties,
@@ -72,24 +73,20 @@ const askAcosaHref = resolveCtaLink("whatsapp", {
     id="directory"
     tone="warm"
     className="isolate overflow-hidden"
-    containerClassName="relative z-10"
+    fullWidth
   >
-    {
-      directoryCopy.heroImage && (
-        <Image
-          src={directoryCopy.heroImage}
-          format="webp"
-          quality={75}
-          loading="lazy"
-          alt=""
-          aria-hidden="true"
-          widths={[768, 1200, 1600]}
-          sizes="100vw"
-          class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[70%_center] opacity-20"
-        />
-      )
-    }
-    <div class="flex flex-col gap-8 md:gap-10">
+    <Image
+      src={southAfricaFlagMap}
+      format="webp"
+      quality={75}
+      loading="lazy"
+      alt=""
+      aria-hidden="true"
+      widths={[768, 1200, 1600]}
+      sizes="100vw"
+      class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[70%_center] opacity-20"
+    />
+    <div class="container-page relative z-10 flex flex-col gap-8 md:gap-10">
       <SectionHeader
         eyebrow={directoryCopy.directoryEyebrow}
         title={directoryCopy.directoryHeading}
