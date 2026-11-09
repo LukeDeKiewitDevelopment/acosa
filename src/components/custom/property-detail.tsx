@@ -107,6 +107,9 @@ export const PropertyDetail = ({
       data-property-page="true"
       data-property-id={property.id}
       data-property-name={property.name}
+      data-business-node={property.businessNodeLabel || undefined}
+      data-province={property.provinceLabel || undefined}
+      data-property-type={property.propertyTypeLabel || undefined}
       className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_23rem] lg:gap-16"
     >
       {/* ==================== main column ==================== */}

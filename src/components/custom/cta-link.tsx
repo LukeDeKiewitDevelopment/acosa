@@ -95,7 +95,7 @@ export function CtaLink({
         rel={external ? "noopener noreferrer" : undefined}
         data-acosa-track={trackingKey || "cta_click"}
         data-property-id={propertyId}
-        data-property-name={propertyName || label}
+        data-property-name={propertyName}
       >
         {leadingIcons[icon]}
         {label}

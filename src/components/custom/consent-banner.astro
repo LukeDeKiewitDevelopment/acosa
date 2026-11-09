@@ -1,0 +1,35 @@
+---
+import { Button } from "@/components/ui/button";
+import { textLinkClassName } from "@/components/custom/text-link";
+---
+
+<div
+  id="acosa-consent"
+  role="region"
+  aria-label="Cookie preferences"
+  class="bg-card border-border text-foreground fixed inset-x-0 bottom-0 z-[60] hidden flex-col gap-4 border-t p-4 shadow-lg sm:inset-x-auto sm:right-6 sm:bottom-6 sm:left-6 sm:mx-auto sm:max-w-2xl sm:flex-row sm:items-center sm:rounded-lg sm:border"
+>
+  <p class="type-small flex-1">
+    We use analytics cookies to understand how visitors use this site.
+    <a href="/privacy" class={textLinkClassName + " ml-1 align-baseline"}>
+      <span
+        class="decoration-gold underline decoration-2 underline-offset-[6px]"
+        >Privacy policy</span
+      >
+    </a>
+  </p>
+  <div class="grid grid-cols-2 gap-3 sm:flex sm:shrink-0">
+    <Button
+      type="button"
+      variant="default"
+      data-consent="granted"
+      className="sm:w-28">Accept</Button
+    >
+    <Button
+      type="button"
+      variant="outline"
+      data-consent="denied"
+      className="sm:w-28">Decline</Button
+    >
+  </div>
+</div>

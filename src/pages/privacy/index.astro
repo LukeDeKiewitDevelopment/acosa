@@ -1,6 +1,12 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { Section } from "@/components/custom/section";
+import { textLinkClassName } from "@/components/custom/text-link";
+import { getGaMeasurementId } from "@/lib/analytics";
+
+const gaEnabled = getGaMeasurementId(
+  import.meta.env.PUBLIC_GA_MEASUREMENT_ID,
+) !== "";
 ---
 
 <Layout
@@ -252,9 +258,25 @@ import { Section } from "@/components/custom/section";
           services enabled on the website.
         </p>
         <p class="text-foreground/80 leading-relaxed">
-          <strong>Website technologies currently used:</strong> [Insert confirmed
-          hosting, analytics and cookie technologies.]
+          <strong>Website technologies currently used:</strong> Vercel (website
+          hosting) and Google Analytics 4 (website usage analytics, which only
+          runs after you accept analytics cookies).
         </p>
+        {
+          gaEnabled && (
+            <p>
+              <button
+                type="button"
+                data-consent-reset
+                class={`${textLinkClassName} cursor-pointer`}
+              >
+                <span class="decoration-gold group-hover/link:decoration-current underline decoration-2 underline-offset-[6px] transition-colors">
+                  Change your cookie choice
+                </span>
+              </button>
+            </p>
+          )
+        }
         <p class="text-foreground/80 leading-relaxed">
           Where required by applicable law, visitors will be given appropriate
           information and choices regarding non-essential tracking.

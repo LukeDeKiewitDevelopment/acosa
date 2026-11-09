@@ -111,6 +111,9 @@ export const PropertyCard = ({
               data-acosa-track="property_card_click"
               data-property-id={item.id}
               data-property-name={item.name}
+              data-business-node={item.businessNodeLabel || undefined}
+              data-province={item.provinceLabel || undefined}
+              data-property-type={item.propertyTypeLabel || undefined}
             >
               {item.name}
             </a>

@@ -6,6 +6,8 @@ import {
 } from "@/components/custom/header";
 import { Footer, type FooterColumn } from "@/components/custom/footer";
 import { FloatingActions } from "@/components/custom/floating-actions";
+import ConsentBanner from "@/components/custom/consent-banner.astro";
+import { getGaMeasurementId } from "@/lib/analytics";
 import "@/styles/global.css";
 import { getImage } from "astro:assets";
 import {
@@ -151,11 +153,17 @@ const footerColumns: FooterColumn[] = settings.data.footerColumns.map(
 );
 
 const siteBase: string = import.meta.env.SITE || Astro.url.origin;
-const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
-const gaScript = `window.dataLayer = window.dataLayer || [];
-window.gtag = function() { window.dataLayer.push(arguments); };
-window.gtag("js", new Date());
-window.gtag("config", ${JSON.stringify(gaMeasurementId)}, { send_page_view: false });`;
+const gaMeasurementId = getGaMeasurementId(
+  import.meta.env.PUBLIC_GA_MEASUREMENT_ID,
+);
+const gaBootstrap = `window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+window.gtag = gtag;
+var acosaConsent = "denied";
+try { if (localStorage.getItem("acosa_consent") === "granted") acosaConsent = "granted"; } catch (e) {}
+gtag("consent", "default", { analytics_storage: acosaConsent, ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
+gtag("js", new Date());
+gtag("config", ${JSON.stringify(gaMeasurementId)});`;
 const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
 // new URL() leaves an already-absolute ogImage untouched, so pages may pass
 // either a getImage() src or a full URL.
@@ -214,7 +222,7 @@ const organisationSchema: Record<string, unknown> = {
         />
       )
     }
-    {gaMeasurementId && <script is:inline set:html={gaScript} />}
+    {gaMeasurementId && <script is:inline set:html={gaBootstrap} />}
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -265,62 +273,6 @@ const organisationSchema: Record<string, unknown> = {
         targets.forEach((el) => observer.observe(el));
       });
 
-      window.acosaTrack = function (eventName, payload = {}) {
-        const queryParams = new URLSearchParams(window.location.search);
-        const event = {
-          event: eventName,
-          page: window.location.pathname,
-          referrer: document.referrer || undefined,
-          utm_source: queryParams.get("utm_source") || undefined,
-          utm_medium: queryParams.get("utm_medium") || undefined,
-          utm_campaign: queryParams.get("utm_campaign") || undefined,
-          ...payload,
-          timestamp: new Date().toISOString(),
-        };
-        if (window.dataLayer) {
-          window.dataLayer.push(event);
-        }
-        if (window.gtag) {
-          window.gtag("event", eventName, payload);
-        }
-        return event;
-      };
-
-      document.addEventListener("click", (event) => {
-        const target =
-          event.target instanceof Element
-            ? event.target.closest("[data-acosa-track]")
-            : null;
-        if (!target) return;
-        const payload = {
-          property_name: target.getAttribute("data-property-name") || undefined,
-          property_id: target.getAttribute("data-property-id") || undefined,
-          link: target.getAttribute("href") || undefined,
-          label: target.getAttribute("data-acosa-track") || undefined,
-        };
-        window.acosaTrack(
-          target.getAttribute("data-acosa-track") || "link_click",
-          payload,
-        );
-      });
-
-      const propertyDetail = document.querySelector("[data-property-id]");
-      if (propertyDetail?.getAttribute("data-property-page") === "true") {
-        window.acosaTrack("property_view", {
-          property_id:
-            propertyDetail.getAttribute("data-property-id") || undefined,
-          property_name:
-            propertyDetail.getAttribute("data-property-name") || undefined,
-        });
-      }
-
-      if (window.gtag) {
-        window.acosaTrack("page_view", {
-          page_title: document.title,
-          page_location: window.location.href,
-        });
-      }
-
       if (typeof localStorage !== "undefined") {
         const observer = new MutationObserver(() => {
           const isDark = document.documentElement.classList.contains("dark");
@@ -359,5 +311,13 @@ const organisationSchema: Record<string, unknown> = {
       whatsappLabel={"WhatsApp ACOSA"}
       client:load
     />
+    {gaMeasurementId && <ConsentBanner />}
+    {
+      gaMeasurementId && (
+        <script>
+          import "@/scripts/analytics";
+        </script>
+      )
+    }
   </body>
 </html>

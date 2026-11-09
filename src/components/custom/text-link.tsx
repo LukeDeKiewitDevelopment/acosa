@@ -44,7 +44,7 @@ export function TextLink({
       rel={external ? "noopener noreferrer" : undefined}
       data-acosa-track={trackingKey || "text_link_click"}
       data-property-id={propertyId}
-      data-property-name={propertyName || label}
+      data-property-name={propertyName}
       className={cn(textLinkClassName, className)}
     >
       {icon === "whatsapp" && (
