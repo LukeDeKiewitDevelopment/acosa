@@ -34,6 +34,14 @@ export type PropertyGalleryProps = {
   propertyName?: string;
 };
 
+const SLIDE_ASPECT = 3 / 2;
+
+/** A backdrop is only needed when the photo does not already fill the 3:2 slide. */
+const needsBackdrop = (image: ResolvedAcosaImage) =>
+  !image.width ||
+  !image.height ||
+  Math.abs(image.width / image.height - SLIDE_ASPECT) > 0.02;
+
 const SlideCarousel = ({
   slides,
   startIndex = 0,
@@ -77,6 +85,14 @@ const SlideCarousel = ({
                     : "bg-muted aspect-4/3",
                 )}
               >
+                {fit === "contain" && needsBackdrop(slide.image) && (
+                  <StaticAcosaImage
+                    {...slide.image}
+                    alt=""
+                    loading={index === 0 ? "eager" : "lazy"}
+                    className="absolute inset-0 h-full w-full max-w-none scale-110 object-cover blur-2xl"
+                  />
+                )}
                 <StaticAcosaImage
                   {...slide.image}
                   alt={slide.alt}
@@ -163,7 +179,7 @@ export const PropertyGallery = ({
                 alt=""
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : "auto"}
-                className="absolute inset-0 h-full w-full max-w-none object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                className="absolute inset-0 h-full w-full max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]"
               />
             </button>
           ))}
