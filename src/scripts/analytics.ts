@@ -4,16 +4,18 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
+    /** Google's opt-out switch for one GA property: true stops gtag.js sending. */
+    [gaDisable: `ga-disable-${string}`]: boolean | undefined;
   }
 }
 
 const GA_ID = getGaMeasurementId(import.meta.env.PUBLIC_GA_MEASUREMENT_ID);
-const CONSENT_KEY = "acosa_consent";
+const OPTOUT_KEY = "acosa_analytics_optout";
+const DISABLE_FLAG = `ga-disable-${GA_ID}` as const;
 type Params = Record<string, string>;
-type Choice = "granted" | "denied";
 
-/** True only while the visitor has accepted AND gtag has been loaded.
- *  Nothing is sent, queued or buffered while this is false. */
+/** True only while gtag has been loaded AND the visitor has not switched
+ *  analytics off. Nothing is sent, queued or buffered while this is false. */
 let analyticsOn = false;
 
 function track(name: string, params: Params): void {
@@ -86,9 +88,6 @@ function handleLinkClick(event: MouseEvent): void {
   });
 }
 
-document.addEventListener("click", handleLinkClick);
-document.addEventListener("auxclick", handleLinkClick);
-
 function trackPropertyView(): void {
   const page = document.querySelector<HTMLElement>(
     '[data-property-page="true"]',
@@ -96,13 +95,12 @@ function trackPropertyView(): void {
   if (page) track("property_view", readContext(page));
 }
 
-/* ---------- GA loading (only ever after Accept) ---------- */
+/* GA loading. Skipped on every page while the visitor has analytics off. */
 
 function loadGa(): void {
   if (!GA_ID || analyticsOn) return;
   if (document.getElementById("acosa-gtag")) {
-    // Re-accepted on the same page after withdrawing: gtag is already loaded.
-    window.gtag?.("consent", "update", { analytics_storage: "granted" });
+    // Switched back on after switching off on this page: gtag is already loaded.
     analyticsOn = true;
     return;
   }
@@ -118,7 +116,10 @@ function loadGa(): void {
     ad_personalization: "denied",
   });
   window.gtag("js", new Date());
-  window.gtag("config", GA_ID);
+  window.gtag("config", GA_ID, {
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+  });
   const script = document.createElement("script");
   script.id = "acosa-gtag";
   script.async = true;
@@ -147,81 +148,87 @@ function deleteGaCookies(): void {
   }
 }
 
-/** Withdrawal: stop sending, tell Google, and remove the analytics cookies. */
-function stopGa(): void {
+/* Opt-out, remembered in localStorage as "1". If storage is blocked, reading
+   it means "not opted out" and an opt-out lasts for the current page only. */
+
+function isOptedOut(): boolean {
+  try {
+    return localStorage.getItem(OPTOUT_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function optOut(): void {
+  try {
+    localStorage.setItem(OPTOUT_KEY, "1");
+  } catch {
+    /* storage blocked: the opt-out lasts for this page only */
+  }
+  window[DISABLE_FLAG] = true;
   analyticsOn = false;
-  window.gtag?.("consent", "update", { analytics_storage: "denied" });
   deleteGaCookies();
+  refreshToggleUi();
 }
 
-/* ---------- consent ---------- */
-
-function storedChoice(): Choice | null {
+function optIn(): void {
   try {
-    const v = localStorage.getItem(CONSENT_KEY);
-    return v === "granted" || v === "denied" ? v : null;
+    localStorage.removeItem(OPTOUT_KEY);
   } catch {
-    return null;
+    /* storage blocked: nothing was stored */
   }
+  window[DISABLE_FLAG] = false;
+  loadGa();
+  trackPropertyView();
+  refreshToggleUi();
 }
 
-function applyChoice(choice: Choice): void {
-  try {
-    localStorage.setItem(CONSENT_KEY, choice);
-  } catch {
-    /* storage blocked: the choice lasts for this page only */
-  }
-  if (choice === "granted") {
-    loadGa();
-    trackPropertyView();
-  } else {
-    stopGa();
-  }
-}
-
-function setBanner(visible: boolean): void {
-  const banner = document.getElementById("acosa-consent");
-  if (!banner) return;
-  banner.classList.toggle("hidden", !visible);
-  banner.classList.toggle("flex", visible);
-}
-
-function initConsent(): void {
-  if (!GA_ID || !document.getElementById("acosa-consent")) return;
-  const choice = storedChoice();
-  setBanner(choice === null);
-  if (choice === "granted") {
-    loadGa();
-    trackPropertyView();
-  }
-
-  document.addEventListener("click", (event) => {
-    if (!(event.target instanceof Element)) return;
-    const choiceEl = event.target.closest<HTMLElement>("[data-consent]");
-    if (choiceEl) {
-      const picked = choiceEl.dataset.consent;
-      if (picked === "granted" || picked === "denied") {
-        applyChoice(picked);
-        setBanner(false);
-      }
-      return;
-    }
-    if (event.target.closest("[data-consent-reset]")) {
-      stopGa();
-      try {
-        localStorage.removeItem(CONSENT_KEY);
-      } catch {
-        /* ignore */
-      }
-      setBanner(true);
-    }
+/** Brings the status text and the toggle label on /privacy in line with the
+ *  current state. */
+function refreshToggleUi(): void {
+  const status = analyticsOn
+    ? "Analytics is currently on in this browser."
+    : "Analytics is currently off in this browser.";
+  const label = analyticsOn ? "Switch off analytics" : "Switch on analytics";
+  document.querySelectorAll("[data-analytics-status]").forEach((el) => {
+    el.textContent = status;
+  });
+  document.querySelectorAll("[data-analytics-toggle]").forEach((el) => {
+    // The label sits in a styled span; replacing the button's own text
+    // would drop that styling.
+    (el.querySelector("span") ?? el).textContent = label;
   });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initConsent);
-} else {
-  initConsent();
+function handleToggleClick(event: Event): void {
+  if (!(event.target instanceof Element)) return;
+  if (!event.target.closest("[data-analytics-toggle]")) return;
+  if (analyticsOn) optOut();
+  else optIn();
 }
+
+function onDomReady(fn: () => void): void {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fn, { once: true });
+  } else {
+    fn();
+  }
+}
+
+function init(): void {
+  const optedOut = isOptedOut();
+  // Google requires this flag on every page, before any gtag() call.
+  window[DISABLE_FLAG] = optedOut;
+  document.addEventListener("click", handleLinkClick);
+  document.addEventListener("auxclick", handleLinkClick);
+  document.addEventListener("click", handleToggleClick);
+  if (!optedOut) {
+    loadGa();
+    onDomReady(trackPropertyView);
+  }
+  onDomReady(refreshToggleUi);
+}
+
+if (GA_ID) init();
 
 export {};

@@ -6,7 +6,6 @@ import {
 } from "@/components/custom/header";
 import { Footer, type FooterColumn } from "@/components/custom/footer";
 import { FloatingActions } from "@/components/custom/floating-actions";
-import ConsentBanner from "@/components/custom/consent-banner.astro";
 import { getGaMeasurementId } from "@/lib/analytics";
 import "@/styles/global.css";
 import { getImage } from "astro:assets";
@@ -254,15 +253,25 @@ const organisationSchema: Record<string, unknown> = {
         targets.forEach((el) => observer.observe(el));
       });
 
-      if (typeof localStorage !== "undefined") {
-        const observer = new MutationObserver(() => {
-          const isDark = document.documentElement.classList.contains("dark");
-          localStorage.setItem("theme", isDark ? "dark" : "light");
-        });
-        observer.observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["class"],
-        });
+      // Blocked storage throws on any access, even typeof. The default theme
+      // set above still applies; the theme is just not saved.
+      try {
+        if (typeof localStorage !== "undefined") {
+          const observer = new MutationObserver(() => {
+            const isDark = document.documentElement.classList.contains("dark");
+            try {
+              localStorage.setItem("theme", isDark ? "dark" : "light");
+            } catch {
+              /* storage blocked or full: skip saving */
+            }
+          });
+          observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+          });
+        }
+      } catch {
+        /* storage blocked: keep the default theme */
       }
     </script>
   </head>
@@ -292,13 +301,6 @@ const organisationSchema: Record<string, unknown> = {
       whatsappLabel={"WhatsApp ACOSA"}
       client:load
     />
-    {gaMeasurementId && <ConsentBanner />}
-    {
-      gaMeasurementId && (
-        <script>
-          import "@/scripts/analytics";
-        </script>
-      )
-    }
+    {gaMeasurementId && <script>import "@/scripts/analytics";</script>}
   </body>
 </html>

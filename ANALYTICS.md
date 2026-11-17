@@ -1,13 +1,13 @@
 # ACOSA analytics (GA4)
 
-Tracking runs only when `PUBLIC_GA_MEASUREMENT_ID` holds a valid `G-` ID at build time. Without it, the site renders no Google script, no consent banner and no tracking code.
+Tracking runs only when `PUBLIC_GA_MEASUREMENT_ID` holds a valid `G-` ID at build time. Without it, the site renders no Google script, no tracking code and no analytics switch on `/privacy`.
 
-- Loading: GA is loaded by `src/scripts/analytics.ts` only after the visitor accepts; `Layout.astro` no longer contains any Google code. GA's automatic `page_view` is the only page view.
-- Events and consent: `src/scripts/analytics.ts`.
-- Banner: `src/components/custom/consent-banner.astro`.
+- Loading: with a valid ID, `src/scripts/analytics.ts` loads GA on every page load unless the visitor has switched analytics off. There is no cookie banner. `Layout.astro` contains no Google code. GA's automatic `page_view` is the only page view.
+- Events and opt-out: `src/scripts/analytics.ts`.
+- Opt-out button: section 9 of `src/pages/privacy/index.astro`.
 - ID validation: `src/lib/analytics.ts`.
 
-Consent: nothing is loaded, set or sent until the visitor clicks Accept. After Accept the site grants `analytics_storage` only, and `ad_storage`, `ad_user_data` and `ad_personalization` stay denied. The choice is stored in `localStorage` as `acosa_consent`. Declining, or choosing "Change your cookie choice" on `/privacy`, stops tracking and deletes the `_ga` cookies.
+Opt-out: GA runs by default. Visitors can switch it off, and back on, with the button on `/privacy`. Switching off stores `acosa_analytics_optout` with the value `1` in `localStorage`, stops tracking and deletes the `_ga` cookies. Opted-out visitors load nothing from Google on later pages. On every page, before any `gtag()` call, the script sets `window["ga-disable-<ID>"]` to `true` for opted-out visitors and `false` for everyone else, as Google requires. If the browser blocks storage, an opt-out lasts for the current page only. Ad features are off: `ad_storage`, `ad_user_data` and `ad_personalization` stay denied, and the GA config sets `allow_google_signals` and `allow_ad_personalization_signals` to `false`.
 
 ## 1. Events
 
@@ -74,4 +74,4 @@ GA4, Explore, Free form:
 - Values: `Event count`
 - Filter: `Event name` exactly matches one of `property_view`, `property_whatsapp_click`, `property_email_click`, `property_phone_click`, `property_website_click`, `property_maps_click`
 
-The result shows each property with its views, WhatsApps, emails, calls, website clicks and map clicks. Only visitors who accepted are counted; visitors who decline are not counted at all, so totals will be lower than real traffic.
+The result shows each property with its views, WhatsApps, emails, calls, website clicks and map clicks. Visitors who switch analytics off, or who block Google with a browser or extension, are not counted.

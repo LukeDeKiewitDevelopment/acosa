@@ -4,9 +4,8 @@ import { Section } from "@/components/custom/section";
 import { textLinkClassName } from "@/components/custom/text-link";
 import { getGaMeasurementId } from "@/lib/analytics";
 
-const gaEnabled = getGaMeasurementId(
-  import.meta.env.PUBLIC_GA_MEASUREMENT_ID,
-) !== "";
+const gaEnabled =
+  getGaMeasurementId(import.meta.env.PUBLIC_GA_MEASUREMENT_ID) !== "";
 ---
 
 <Layout
@@ -253,27 +252,43 @@ const gaEnabled = getGaMeasurementId(
           Our website may use cookies or similar technologies to support
           functionality, understand website usage and improve performance.
         </p>
-        <p class="text-foreground/80 leading-relaxed">
-          The technologies used, and whether they require consent, depend on the
-          services enabled on the website.
-        </p>
-        <p class="text-foreground/80 leading-relaxed">
-          <strong>Website technologies currently used:</strong> Vercel (website
-          hosting) and Google Analytics 4 (website usage analytics, which only
-          runs after you accept analytics cookies).
-        </p>
         {
-          gaEnabled && (
-            <p>
-              <button
-                type="button"
-                data-consent-reset
-                class={`${textLinkClassName} cursor-pointer`}
+          gaEnabled ? (
+            <>
+              <p class="text-foreground/80 leading-relaxed">
+                We use Google Analytics on the basis of our legitimate interest
+                in understanding how the website is used and improving it.
+              </p>
+              <p class="text-foreground/80 leading-relaxed">
+                <strong>Website technologies currently used:</strong> Vercel
+                (website hosting) and Google Analytics 4 (website usage
+                analytics). Google Analytics runs by default on this website. It
+                counts page visits and clicks on contact buttons, and it does
+                not use advertising features. You can switch it off at any time
+                using the button below.
+              </p>
+              <p
+                data-analytics-status
+                class="text-foreground/80 leading-relaxed"
               >
-                <span class="decoration-gold group-hover/link:decoration-current underline decoration-2 underline-offset-[6px] transition-colors">
-                  Change your cookie choice
-                </span>
-              </button>
+                Analytics is currently on in this browser.
+              </p>
+              <p>
+                <button
+                  type="button"
+                  data-analytics-toggle
+                  class={`${textLinkClassName} cursor-pointer`}
+                >
+                  <span class="decoration-gold underline decoration-2 underline-offset-[6px] transition-colors group-hover/link:decoration-current">
+                    Switch off analytics
+                  </span>
+                </button>
+              </p>
+            </>
+          ) : (
+            <p class="text-foreground/80 leading-relaxed">
+              <strong>Website technologies currently used:</strong> Vercel
+              (website hosting).
             </p>
           )
         }
