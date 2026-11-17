@@ -2,12 +2,12 @@
 
 Tracking runs only when `PUBLIC_GA_MEASUREMENT_ID` holds a valid `G-` ID at build time. Without it, the site renders no Google script, no consent banner and no tracking code.
 
-- Bootstrap: `src/layouts/Layout.astro`. It sets consent defaults, then `config`. GA's automatic `page_view` is the only page view.
+- Loading: GA is loaded by `src/scripts/analytics.ts` only after the visitor accepts; `Layout.astro` no longer contains any Google code. GA's automatic `page_view` is the only page view.
 - Events and consent: `src/scripts/analytics.ts`.
 - Banner: `src/components/custom/consent-banner.astro`.
 - ID validation: `src/lib/analytics.ts`.
 
-Consent: `analytics_storage` starts as `denied` and becomes `granted` only after the visitor clicks Accept. The choice is stored in `localStorage` under `acosa_consent`. `ad_storage`, `ad_user_data` and `ad_personalization` stay `denied` permanently. "Change your cookie choice" on `/privacy` clears the stored choice and shows the banner again.
+Consent: nothing is loaded, set or sent until the visitor clicks Accept. After Accept the site grants `analytics_storage` only, and `ad_storage`, `ad_user_data` and `ad_personalization` stay denied. The choice is stored in `localStorage` as `acosa_consent`. Declining, or choosing "Change your cookie choice" on `/privacy`, stops tracking and deletes the `_ga` cookies.
 
 ## 1. Events
 
@@ -24,6 +24,8 @@ Consent: `analytics_storage` starts as `denied` and becomes `granted` only after
 
 A button renders only when the property has that field (email, phone, WhatsApp, website, map URL) in Keystatic. If the button is absent, its event cannot fire. New properties are tracked automatically and need no code or configuration.
 
+Middle-clicks on tracked links are counted the same as normal clicks.
+
 ### Supporting events
 
 | Event | Fires when | Parameters |
@@ -38,7 +40,7 @@ A button renders only when the property has that field (email, phone, WhatsApp, 
 | `cta_click` | Any `CtaLink` without its own tracking key | `link_type`, `link_domain` if external |
 | `text_link_click` | Any `TextLink` without its own tracking key | `link_type`, `link_domain` if external |
 
-Other page CTAs send their own key with the same parameters as `cta_click`. Examples include `hero_primary_click`, `home_*`, `companies_*`, `contact_*`, `listing_*`, `node_assistance_click` and `business_node_maps_click`. All clicks also carry `transport_type=beacon`, which is a delivery setting and not a reporting dimension.
+Other page CTAs send their own key with the same parameters as `cta_click`. Examples include `hero_primary_click`, `home_*`, `companies_*`, `contact_*`, `listing_*`, `node_assistance_click` and `business_node_maps_click`.
 
 Non-property CTAs never carry `property_id` or `property_name`.
 
@@ -72,4 +74,4 @@ GA4, Explore, Free form:
 - Values: `Event count`
 - Filter: `Event name` exactly matches one of `property_view`, `property_whatsapp_click`, `property_email_click`, `property_phone_click`, `property_website_click`, `property_maps_click`
 
-The result shows each property with its views, WhatsApps, emails, calls, website clicks and map clicks. Only visitors who accepted analytics cookies are counted in full.
+The result shows each property with its views, WhatsApps, emails, calls, website clicks and map clicks. Only visitors who accepted are counted; visitors who decline are not counted at all, so totals will be lower than real traffic.

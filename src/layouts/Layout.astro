@@ -156,14 +156,6 @@ const siteBase: string = import.meta.env.SITE || Astro.url.origin;
 const gaMeasurementId = getGaMeasurementId(
   import.meta.env.PUBLIC_GA_MEASUREMENT_ID,
 );
-const gaBootstrap = `window.dataLayer = window.dataLayer || [];
-function gtag(){ dataLayer.push(arguments); }
-window.gtag = gtag;
-var acosaConsent = "denied";
-try { if (localStorage.getItem("acosa_consent") === "granted") acosaConsent = "granted"; } catch (e) {}
-gtag("consent", "default", { analytics_storage: acosaConsent, ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
-gtag("js", new Date());
-gtag("config", ${JSON.stringify(gaMeasurementId)});`;
 const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
 // new URL() leaves an already-absolute ogImage untouched, so pages may pass
 // either a getImage() src or a full URL.
@@ -212,17 +204,6 @@ const organisationSchema: Record<string, unknown> = {
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
     <link rel="canonical" href={canonicalUrl} />
-
-    {
-      gaMeasurementId && (
-        <script
-          is:inline
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-        />
-      )
-    }
-    {gaMeasurementId && <script is:inline set:html={gaBootstrap} />}
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

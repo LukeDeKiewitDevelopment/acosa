@@ -1,3 +1,5 @@
+import { getGaMeasurementId } from "@/lib/analytics";
+
 declare global {
   interface Window {
     dataLayer: unknown[];
@@ -5,11 +7,17 @@ declare global {
   }
 }
 
+const GA_ID = getGaMeasurementId(import.meta.env.PUBLIC_GA_MEASUREMENT_ID);
 const CONSENT_KEY = "acosa_consent";
 type Params = Record<string, string>;
+type Choice = "granted" | "denied";
+
+/** True only while the visitor has accepted AND gtag has been loaded.
+ *  Nothing is sent, queued or buffered while this is false. */
+let analyticsOn = false;
 
 function track(name: string, params: Params): void {
-  if (typeof window.gtag !== "function") return;
+  if (!analyticsOn || typeof window.gtag !== "function") return;
   window.gtag("event", name, params);
 }
 
@@ -61,7 +69,10 @@ function describeLink(href: string): Params {
 
 const EVENT_NAME = /^[a-z][a-z0-9_]{0,39}$/;
 
-document.addEventListener("click", (event) => {
+/** Handles normal clicks, and middle-clicks (which browsers report as
+ *  "auxclick", not "click"), so links opened in a new tab are still counted. */
+function handleLinkClick(event: MouseEvent): void {
+  if (event.type === "auxclick" && event.button !== 1) return;
   const el =
     event.target instanceof Element
       ? event.target.closest<HTMLAnchorElement>("a[data-acosa-track]")
@@ -72,9 +83,11 @@ document.addEventListener("click", (event) => {
   track(name, {
     ...readContext(el),
     ...describeLink(el.getAttribute("href") ?? ""),
-    transport_type: "beacon",
   });
-});
+}
+
+document.addEventListener("click", handleLinkClick);
+document.addEventListener("auxclick", handleLinkClick);
 
 function trackPropertyView(): void {
   const page = document.querySelector<HTMLElement>(
@@ -83,8 +96,65 @@ function trackPropertyView(): void {
   if (page) track("property_view", readContext(page));
 }
 
+/* ---------- GA loading (only ever after Accept) ---------- */
+
+function loadGa(): void {
+  if (!GA_ID || analyticsOn) return;
+  if (document.getElementById("acosa-gtag")) {
+    // Re-accepted on the same page after withdrawing: gtag is already loaded.
+    window.gtag?.("consent", "update", { analytics_storage: "granted" });
+    analyticsOn = true;
+    return;
+  }
+  window.dataLayer = window.dataLayer || [];
+  // gtag.js requires the real `arguments` object to be pushed, not an array.
+  window.gtag = function gtag(..._args: unknown[]): void {
+    window.dataLayer.push(arguments);
+  };
+  window.gtag("consent", "default", {
+    analytics_storage: "granted",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
+  window.gtag("js", new Date());
+  window.gtag("config", GA_ID);
+  const script = document.createElement("script");
+  script.id = "acosa-gtag";
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;
+  document.head.appendChild(script);
+  analyticsOn = true;
+}
+
+function deleteGaCookies(): void {
+  const host = window.location.hostname;
+  const parts = host.split(".");
+  const domains = new Set<string | undefined>([undefined, host, `.${host}`]);
+  for (let i = 1; i < parts.length - 1; i++) {
+    const parent = parts.slice(i).join(".");
+    domains.add(parent);
+    domains.add(`.${parent}`);
+  }
+  const names = document.cookie
+    .split(";")
+    .map((c) => c.split("=")[0]?.trim() ?? "")
+    .filter((n) => n === "_ga" || n.startsWith("_ga_"));
+  for (const name of names) {
+    for (const domain of domains) {
+      document.cookie = `${name}=; Max-Age=0; path=/${domain ? `; domain=${domain}` : ""}`;
+    }
+  }
+}
+
+/** Withdrawal: stop sending, tell Google, and remove the analytics cookies. */
+function stopGa(): void {
+  analyticsOn = false;
+  window.gtag?.("consent", "update", { analytics_storage: "denied" });
+  deleteGaCookies();
+}
+
 /* ---------- consent ---------- */
-type Choice = "granted" | "denied";
 
 function storedChoice(): Choice | null {
   try {
@@ -101,7 +171,12 @@ function applyChoice(choice: Choice): void {
   } catch {
     /* storage blocked: the choice lasts for this page only */
   }
-  window.gtag?.("consent", "update", { analytics_storage: choice });
+  if (choice === "granted") {
+    loadGa();
+    trackPropertyView();
+  } else {
+    stopGa();
+  }
 }
 
 function setBanner(visible: boolean): void {
@@ -112,22 +187,27 @@ function setBanner(visible: boolean): void {
 }
 
 function initConsent(): void {
-  if (!document.getElementById("acosa-consent")) return; // GA not configured
-  setBanner(storedChoice() === null);
+  if (!GA_ID || !document.getElementById("acosa-consent")) return;
+  const choice = storedChoice();
+  setBanner(choice === null);
+  if (choice === "granted") {
+    loadGa();
+    trackPropertyView();
+  }
 
   document.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
     const choiceEl = event.target.closest<HTMLElement>("[data-consent]");
     if (choiceEl) {
-      const choice = choiceEl.dataset.consent;
-      if (choice === "granted" || choice === "denied") {
-        applyChoice(choice);
+      const picked = choiceEl.dataset.consent;
+      if (picked === "granted" || picked === "denied") {
+        applyChoice(picked);
         setBanner(false);
       }
       return;
     }
     if (event.target.closest("[data-consent-reset]")) {
-      applyChoice("denied");
+      stopGa();
       try {
         localStorage.removeItem(CONSENT_KEY);
       } catch {
@@ -138,15 +218,10 @@ function initConsent(): void {
   });
 }
 
-function init(): void {
-  trackPropertyView();
-  initConsent();
-}
-
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("DOMContentLoaded", initConsent);
 } else {
-  init();
+  initConsent();
 }
 
 export {};
