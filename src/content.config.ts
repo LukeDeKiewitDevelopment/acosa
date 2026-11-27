@@ -390,7 +390,14 @@ const listYourPropertyPage = defineCollection({
         body: z.string(),
         note: z.string().optional().default(""),
         image: ctx.image().optional().nullable(),
-        cta: z.object({ label: z.string(), link: z.string() }).optional(),
+        // Optional button: if only one of its two boxes is filled in,
+        // Keystatic drops the empty one, so default both to "".
+        cta: z
+          .object({
+            label: z.string().default(""),
+            link: z.string().default(""),
+          })
+          .optional(),
       }),
       pricingSection: z.object({
         eyebrow: z.string().optional().default(""),
@@ -461,8 +468,8 @@ const contactPage = defineCollection({
             learnMoreLink: z.string().optional(),
             cta: z
               .object({
-                label: z.string(),
-                link: z.string(),
+                label: z.string().default(""),
+                link: z.string().default(""),
                 prefilledMessage: z.string().optional(),
                 subject: z.string().optional(),
                 requirementsRequest: z.boolean().optional(),
@@ -470,8 +477,8 @@ const contactPage = defineCollection({
               .optional(),
             primaryCta: z
               .object({
-                label: z.string(),
-                link: z.string(),
+                label: z.string().default(""),
+                link: z.string().default(""),
                 prefilledMessage: z.string().optional(),
                 subject: z.string().optional(),
                 applicationRequest: z.boolean().optional(),
@@ -480,8 +487,8 @@ const contactPage = defineCollection({
               .optional(),
             secondaryCta: z
               .object({
-                label: z.string(),
-                link: z.string(),
+                label: z.string().default(""),
+                link: z.string().default(""),
                 prefilledMessage: z.string().optional(),
               })
               .optional(),

@@ -55,14 +55,21 @@ export async function getPropertiesByProvince(
   return properties.filter((property) => property.data.province === province);
 }
 
+/** Drop references to tags that no longer exist. getEntries() returns
+ *  undefined for a deleted or renamed tag, which would otherwise crash the
+ *  build when a page reads tag.data. */
+function existingEntries<T>(entries: (T | undefined)[]): T[] {
+  return entries.filter((entry): entry is T => entry !== undefined);
+}
+
 /** Resolve a property's tag references into full entries (name + icon). */
 export async function resolvePropertyTags(property: Property) {
   const [essentials, facilities, nearbyConvenience, perfectFor] =
     await Promise.all([
-      getEntries(property.data.essentials),
-      getEntries(property.data.facilities),
-      getEntries(property.data.nearbyConvenience),
-      getEntries(property.data.perfectFor),
+      getEntries(property.data.essentials).then(existingEntries),
+      getEntries(property.data.facilities).then(existingEntries),
+      getEntries(property.data.nearbyConvenience).then(existingEntries),
+      getEntries(property.data.perfectFor).then(existingEntries),
     ]);
   return { essentials, facilities, nearbyConvenience, perfectFor };
 }
@@ -90,7 +97,7 @@ export async function buildPropertyListingItems(
           quality: 75,
         }),
         getEntry(property.data.businessNode),
-        getEntries(property.data.essentials),
+        getEntries(property.data.essentials).then(existingEntries),
       ]);
       return {
         id: property.id,

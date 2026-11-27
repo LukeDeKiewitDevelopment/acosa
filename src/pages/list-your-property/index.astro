@@ -443,7 +443,7 @@ const ogImageUrl = seo?.ogImage
           )
         }
         {
-          promotionalVisibilitySection.cta && promoHref && (
+          promotionalVisibilitySection.cta?.label && promoHref && (
             <CtaLink
               label={promotionalVisibilitySection.cta.label}
               href={promoHref}

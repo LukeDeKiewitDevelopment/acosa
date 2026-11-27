@@ -35,11 +35,13 @@ const ctaFields = (label: string) =>
       label: fields.text({
         label: "Button text",
         description: "Visible text shown to visitors.",
+        validation: { isRequired: true },
       }),
       link: fields.text({
         label: "Destination",
         description:
           "Use a page path such as /contact, /business-nodes, or a special value like email or whatsapp.",
+        validation: { isRequired: true },
       }),
     },
     { label },
@@ -52,7 +54,9 @@ const tagCollection = (label: string, path: string) =>
     slugField: "name",
     path: `src/content/${path}/*`,
     schema: {
-      name: fields.slug({ name: { label: "Name" } }),
+      name: fields.slug({
+        name: { label: "Name", validation: { isRequired: true } },
+      }),
       icon: fields.text({
         label: "Icon",
         description:
@@ -101,7 +105,7 @@ export default config({
       format: { contentField: "longDescription" },
       schema: {
         name: fields.slug({
-          name: { label: "Property name" },
+          name: { label: "Property name", validation: { isRequired: true } },
           slug: {
             label: "URL slug",
             description:
@@ -149,6 +153,7 @@ export default config({
           description:
             "The commercial area this property belongs to. Create the node first if it is missing from the Business Nodes collection.",
           collection: "businessNodes",
+          validation: { isRequired: true },
         }),
         propertyType: fields.select({
           label: "Property type",
@@ -218,6 +223,7 @@ export default config({
           fields.relationship({
             label: "Business Traveller Essential",
             collection: "essentials",
+            validation: { isRequired: true },
           }),
           {
             label: "Business Traveller Essentials",
@@ -230,6 +236,7 @@ export default config({
           fields.relationship({
             label: "Facility",
             collection: "facilities",
+            validation: { isRequired: true },
           }),
           {
             label: "Facilities",
@@ -242,6 +249,7 @@ export default config({
           fields.relationship({
             label: "Nearby Convenience",
             collection: "nearbyConvenience",
+            validation: { isRequired: true },
           }),
           {
             label: "Nearby Convenience",
@@ -254,6 +262,7 @@ export default config({
           fields.relationship({
             label: "Perfect For",
             collection: "perfectFor",
+            validation: { isRequired: true },
           }),
           {
             label: "Perfect For",
@@ -324,7 +333,7 @@ export default config({
       format: { contentField: "description" },
       schema: {
         name: fields.slug({
-          name: { label: "Node Name" },
+          name: { label: "Node Name", validation: { isRequired: true } },
           slug: {
             label: "Slug",
             description:
@@ -421,6 +430,7 @@ export default config({
             label: "Reviewer Name",
             description:
               "Full name of the reviewer as it will appear publicly on the site. E.g. 'Michael D.' or 'Sarah van der Merwe'.",
+            validation: { isRequired: true },
           },
         }),
         review: fields.text({
@@ -510,15 +520,27 @@ export default config({
             }),
             primaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Primary CTA" },
             ),
             secondaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Secondary CTA" },
             ),
@@ -563,8 +585,15 @@ export default config({
         businessTravelSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Image",
               directory: "src/assets/images/pages",
@@ -582,8 +611,15 @@ export default config({
         businessNodesSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             backgroundImage: fields.image({
               label: "Section background image",
               directory: "src/assets/images/pages",
@@ -596,16 +632,30 @@ export default config({
         featuredPropertiesSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
           },
           { label: "Featured properties" },
         ),
         corporateBookersSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Image",
               directory: "src/assets/images/pages",
@@ -623,8 +673,15 @@ export default config({
         ),
         humanAssistanceSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Section image",
               directory: "src/assets/images/pages",
@@ -637,8 +694,15 @@ export default config({
         propertyOwnersSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Image",
               directory: "src/assets/images/pages",
@@ -652,8 +716,15 @@ export default config({
         closingSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Image",
               directory: "src/assets/images/pages",
@@ -691,8 +762,14 @@ export default config({
             }),
             cta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "CTA" },
             ),
@@ -702,8 +779,15 @@ export default config({
         experienceSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Experience image",
               directory: "src/assets/images/pages",
@@ -715,17 +799,30 @@ export default config({
         curationSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Curation Image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            factorsInclude: fields.array(fields.text({ label: "Factor" }), {
-              label: "Assessment Factors",
-              itemLabel: (props) => props.value || "Factor",
-            }),
+            factorsInclude: fields.array(
+              fields.text({
+                label: "Factor",
+                validation: { isRequired: true },
+              }),
+              {
+                label: "Assessment Factors",
+                itemLabel: (props) => props.value || "Factor",
+              },
+            ),
             highlightStatement: fields.text({ label: "Highlight Statement" }),
             note: fields.text({ label: "Note", multiline: true }),
           },
@@ -733,8 +830,15 @@ export default config({
         ),
         approvedSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Approved image",
               directory: "src/assets/images/pages",
@@ -742,8 +846,14 @@ export default config({
             }),
             cta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "CTA" },
             ),
@@ -752,8 +862,15 @@ export default config({
         ),
         outcomeSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Outcome Image",
               directory: "src/assets/images/pages",
@@ -761,8 +878,14 @@ export default config({
             }),
             cta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "CTA" },
             ),
@@ -797,15 +920,27 @@ export default config({
             }),
             primaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Primary CTA" },
             ),
             secondaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Secondary CTA" },
             ),
@@ -814,23 +949,35 @@ export default config({
         ),
         whoWeHelpSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body" }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              validation: { isRequired: true },
+            }),
             backgroundImage: fields.image({
               label: "Section background image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            roles: fields.array(fields.text({ label: "Role" }), {
-              label: "Who We Help",
-              itemLabel: (props) => props.value || "Role",
-            }),
+            roles: fields.array(
+              fields.text({ label: "Role", validation: { isRequired: true } }),
+              {
+                label: "Who We Help",
+                itemLabel: (props) => props.value || "Role",
+              },
+            ),
           },
           { label: "Who We Help" },
         ),
         howAcosaHelpsSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
             backgroundImage: fields.image({
               label: "Section background image",
               directory: "src/assets/images/pages",
@@ -838,8 +985,15 @@ export default config({
             }),
             features: fields.array(
               fields.object({
-                title: fields.text({ label: "Title" }),
-                body: fields.text({ label: "Body", multiline: true }),
+                title: fields.text({
+                  label: "Title",
+                  validation: { isRequired: true },
+                }),
+                body: fields.text({
+                  label: "Body",
+                  multiline: true,
+                  validation: { isRequired: true },
+                }),
               }),
               {
                 label: "How ACOSA Helps",
@@ -851,15 +1005,25 @@ export default config({
         ),
         teamsAndProjectsSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Team Stay Image",
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            body: fields.text({ label: "Body", multiline: true }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             requirementsList: fields.array(
-              fields.text({ label: "Requirement" }),
+              fields.text({
+                label: "Requirement",
+                validation: { isRequired: true },
+              }),
               {
                 label: "Requirements",
                 itemLabel: (props) => props.value || "Requirement",
@@ -867,15 +1031,27 @@ export default config({
             ),
             primaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Primary CTA" },
             ),
             secondaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Secondary CTA" },
             ),
@@ -885,8 +1061,15 @@ export default config({
         finalCta: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Closing image",
               directory: "src/assets/images/pages",
@@ -894,15 +1077,27 @@ export default config({
             }),
             primaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Primary CTA" },
             ),
             secondaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Secondary CTA" },
             ),
@@ -921,8 +1116,15 @@ export default config({
         hero: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Hero Image",
               directory: "src/assets/images/pages",
@@ -933,13 +1135,28 @@ export default config({
         ),
         contactRoutes: fields.array(
           fields.object({
-            number: fields.text({ label: "Number" }),
-            title: fields.text({ label: "Title" }),
-            description: fields.text({ label: "Description" }),
-            details: fields.array(fields.text({ label: "Detail" }), {
-              label: "Details to include",
-              itemLabel: (props) => props.value || "Detail",
+            number: fields.text({
+              label: "Number",
+              validation: { isRequired: true },
             }),
+            title: fields.text({
+              label: "Title",
+              validation: { isRequired: true },
+            }),
+            description: fields.text({
+              label: "Description",
+              validation: { isRequired: true },
+            }),
+            details: fields.array(
+              fields.text({
+                label: "Detail",
+                validation: { isRequired: true },
+              }),
+              {
+                label: "Details to include",
+                itemLabel: (props) => props.value || "Detail",
+              },
+            ),
             note: fields.text({ label: "Note", multiline: true }),
             learnMoreLabel: fields.text({ label: "Learn more label" }),
             learnMoreLink: fields.text({ label: "Learn more link" }),
@@ -979,22 +1196,38 @@ export default config({
           {
             business: fields.object(
               {
-                heading: fields.text({ label: "Heading" }),
-                tagline: fields.text({ label: "Tagline" }),
+                heading: fields.text({
+                  label: "Heading",
+                  validation: { isRequired: true },
+                }),
+                tagline: fields.text({
+                  label: "Tagline",
+                  validation: { isRequired: true },
+                }),
                 description: fields.text({
                   label: "Description",
                   multiline: true,
+                  validation: { isRequired: true },
                 }),
               },
               { label: "Business" },
             ),
             sections: fields.array(
               fields.object({
-                title: fields.text({ label: "Title" }),
+                title: fields.text({
+                  label: "Title",
+                  validation: { isRequired: true },
+                }),
                 links: fields.array(
                   fields.object({
-                    label: fields.text({ label: "Label" }),
-                    link: fields.text({ label: "Link" }),
+                    label: fields.text({
+                      label: "Label",
+                      validation: { isRequired: true },
+                    }),
+                    link: fields.text({
+                      label: "Link",
+                      validation: { isRequired: true },
+                    }),
                   }),
                   {
                     label: "Links",
@@ -1009,8 +1242,14 @@ export default config({
             ),
             legal: fields.array(
               fields.object({
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               }),
               {
                 label: "Legal links",
@@ -1037,7 +1276,11 @@ export default config({
               label: "Heading",
               validation: { isRequired: true },
             }),
-            body: fields.text({ label: "Body", multiline: true }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Hero Image",
               directory: "src/assets/images/pages",
@@ -1045,15 +1288,27 @@ export default config({
             }),
             primaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Primary CTA" },
             ),
             secondaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Secondary CTA" },
             ),
@@ -1063,8 +1318,15 @@ export default config({
         whoWeWorkWithSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Image",
               directory: "src/assets/images/pages",
@@ -1075,10 +1337,16 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            properties: fields.array(fields.text({ label: "Property" }), {
-              label: "Who We Work With",
-              itemLabel: (props) => props.value || "Property",
-            }),
+            properties: fields.array(
+              fields.text({
+                label: "Property",
+                validation: { isRequired: true },
+              }),
+              {
+                label: "Who We Work With",
+                itemLabel: (props) => props.value || "Property",
+              },
+            ),
             highlight: fields.text({ label: "Highlight" }),
             note: fields.text({ label: "Note" }),
           },
@@ -1087,8 +1355,15 @@ export default config({
         valueSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Image",
               directory: "src/assets/images/pages",
@@ -1096,8 +1371,15 @@ export default config({
             }),
             includes: fields.array(
               fields.object({
-                title: fields.text({ label: "Title" }),
-                detail: fields.text({ label: "Detail", multiline: true }),
+                title: fields.text({
+                  label: "Title",
+                  validation: { isRequired: true },
+                }),
+                detail: fields.text({
+                  label: "Detail",
+                  multiline: true,
+                  validation: { isRequired: true },
+                }),
               }),
               {
                 label: "What's Included",
@@ -1110,8 +1392,15 @@ export default config({
         curationSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             image: fields.image({
               label: "Curation Image",
               directory: "src/assets/images/pages",
@@ -1122,19 +1411,35 @@ export default config({
               directory: "src/assets/images/pages",
               publicPath: "../../assets/images/pages/",
             }),
-            criteria: fields.array(fields.text({ label: "Criterion" }), {
-              label: "Assessment Criteria",
-              itemLabel: (props) => props.value || "Criterion",
+            criteria: fields.array(
+              fields.text({
+                label: "Criterion",
+                validation: { isRequired: true },
+              }),
+              {
+                label: "Assessment Criteria",
+                itemLabel: (props) => props.value || "Criterion",
+              },
+            ),
+            approvedHeading: fields.text({
+              label: "Approved Heading",
+              validation: { isRequired: true },
             }),
-            approvedHeading: fields.text({ label: "Approved Heading" }),
             approvedBody: fields.text({
               label: "Approved Explanation",
               multiline: true,
+              validation: { isRequired: true },
             }),
             cta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "CTA" },
             ),
@@ -1144,8 +1449,15 @@ export default config({
         promotionalVisibilitySection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             note: fields.text({ label: "Note", multiline: true }),
             image: fields.image({
               label: "Section Image (optional)",
@@ -1165,13 +1477,28 @@ export default config({
         pricingSection: fields.object(
           {
             eyebrow: fields.text({ label: "Eyebrow" }),
-            heading: fields.text({ label: "Heading" }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
             pricing: fields.array(
               fields.object({
-                tier: fields.text({ label: "Tier" }),
-                price: fields.text({ label: "Price" }),
-                period: fields.text({ label: "Period" }),
-                detail: fields.text({ label: "Detail" }),
+                tier: fields.text({
+                  label: "Tier",
+                  validation: { isRequired: true },
+                }),
+                price: fields.text({
+                  label: "Price",
+                  validation: { isRequired: true },
+                }),
+                period: fields.text({
+                  label: "Period",
+                  validation: { isRequired: true },
+                }),
+                detail: fields.text({
+                  label: "Detail",
+                  validation: { isRequired: true },
+                }),
               }),
               {
                 label: "Pricing",
@@ -1180,8 +1507,14 @@ export default config({
             ),
             cta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "CTA" },
             ),
@@ -1190,10 +1523,20 @@ export default config({
         ),
         listingUpdatesSection: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             refreshIncludes: fields.array(
-              fields.text({ label: "Refresh Item" }),
+              fields.text({
+                label: "Refresh Item",
+                validation: { isRequired: true },
+              }),
               {
                 label: "Refresh Includes",
                 itemLabel: (props) => props.value || "Item",
@@ -1222,9 +1565,19 @@ export default config({
             }),
             steps: fields.array(
               fields.object({
-                number: fields.text({ label: "Number" }),
-                title: fields.text({ label: "Title" }),
-                detail: fields.text({ label: "Detail", multiline: true }),
+                number: fields.text({
+                  label: "Number",
+                  validation: { isRequired: true },
+                }),
+                title: fields.text({
+                  label: "Title",
+                  validation: { isRequired: true },
+                }),
+                detail: fields.text({
+                  label: "Detail",
+                  multiline: true,
+                  validation: { isRequired: true },
+                }),
               }),
               {
                 label: "Steps",
@@ -1233,8 +1586,14 @@ export default config({
             ),
             cta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "CTA" },
             ),
@@ -1243,19 +1602,38 @@ export default config({
         ),
         finalCta: fields.object(
           {
-            heading: fields.text({ label: "Heading" }),
-            body: fields.text({ label: "Body", multiline: true }),
+            heading: fields.text({
+              label: "Heading",
+              validation: { isRequired: true },
+            }),
+            body: fields.text({
+              label: "Body",
+              multiline: true,
+              validation: { isRequired: true },
+            }),
             primaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Primary CTA" },
             ),
             secondaryCta: fields.object(
               {
-                label: fields.text({ label: "Label" }),
-                link: fields.text({ label: "Link" }),
+                label: fields.text({
+                  label: "Label",
+                  validation: { isRequired: true },
+                }),
+                link: fields.text({
+                  label: "Link",
+                  validation: { isRequired: true },
+                }),
               },
               { label: "Secondary CTA" },
             ),
@@ -1612,11 +1990,13 @@ export default config({
               label: "Platform name",
               description:
                 "Use the platform name exactly as it should appear, for example LinkedIn, Instagram or Facebook.",
+              validation: { isRequired: true },
             }),
             url: fields.url({
               label: "Profile URL",
               description:
                 "Full profile URL, for example https://www.linkedin.com/company/acosa",
+              validation: { isRequired: true },
             }),
           }),
           {
